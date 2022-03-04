@@ -1,3 +1,3 @@
-# C_Data_Structure_Library
-General data structure library in C
-CINO: CINO Is Not OOP
+# CINO
+
+`CINO` stands for `CINO Is Not OOP`
