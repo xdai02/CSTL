@@ -69,6 +69,33 @@ void test_array_len() {
     assert(array_len(arr5) == 6);
 }
 
+void test_string_equal() {
+    assert(string_equal("hello", "hello"));
+    assert(string_equal("Hello", "Hello"));
+    assert(string_equal("", ""));
+    assert(string_equal("ABCDabcd", "ABCDabcd"));
+    assert(string_equal("12345", "12345"));
+    assert(string_equal("abc", "abc"));
+    assert(string_equal("   ", "   "));
+    assert(string_equal("\n", "\n"));
+
+    const char *s1 = "XYZ";
+    const char *s2 = "XYZ";
+    assert(string_equal(s1, s2));
+
+    s1 = "987654321";
+    s2 = "987654321 ";
+    assert(!string_equal(s1, s2));
+
+    char s3[] = "!@#$^&*()";
+    char s4[32] = "!@#$^&*()";
+    assert(string_equal(s3, s4));
+
+    assert(string_equal(NULL, NULL));
+    assert(!string_equal("", NULL));
+    assert(!string_equal(NULL, ""));
+}
+
 void test_equals_ignore_case() {
     assert(equals_ignore_case("hello", "hello"));
     assert(equals_ignore_case("Hello", "hElLo"));
@@ -87,9 +114,72 @@ void test_equals_ignore_case() {
     s2 = "987654321 ";
     assert(!equals_ignore_case(s1, s2));
 
-    char s3[] = "!@#$%^&*()";
-    char s4[32] = "!@#$%^&*()";
+    char s3[] = "!@#$^&*()";
+    char s4[32] = "!@#$^&*()";
     assert(equals_ignore_case(s3, s4));
+
+    assert(equals_ignore_case(NULL, NULL));
+    assert(!equals_ignore_case("", NULL));
+    assert(!equals_ignore_case(NULL, ""));
+}
+
+void test_string_clear() {
+    char s1[] = "hello world!";
+    string_clear(s1, sizeof(s1));
+    assert(strlen(s1) == 0);
+
+    char s2[32];
+    string_clear(s2, sizeof(s2));
+    assert(strlen(s1) == 0);
+}
+
+void test_string_length() {
+    assert(string_length("") == 0);
+    assert(string_length(NULL) == 0);
+    assert(string_length("\n\t") == 2);
+    assert(string_length("ABC\nabc\0XYZ") == 7);
+
+    char s1[] = "hello world!";
+    assert(string_length(s1) == 12);
+
+    char s2[32] = "This is a test";
+    assert(string_length(s2) == 14);
+
+    const char *s3 = "!@#$^&*()";
+    assert(string_length(s3) == 9);
+}
+
+void test_string_copy() {
+    char *p = NULL;
+
+    char s1[] = "hello";
+    char s2[] = "world";
+    p = string_copy(s1, s2);
+    assert(strncmp(s1, "world", strlen(s1)) == 0);
+    assert(strncmp(s2, "world", strlen(s2)) == 0);
+    assert(strncmp(p, "world", strlen(p)) == 0);
+
+    char s3[32] = {0};
+    char *s4 = "This is a test.";
+    p = string_copy(s3, s4);
+    assert(strncmp(s3, "This is a test.", strlen(s3)) == 0);
+    assert(strncmp(s4, "This is a test.", strlen(s4)) == 0);
+    assert(strncmp(p, "This is a test.", strlen(p)) == 0);
+
+    char s5[16] = "Lorem ipsum";
+    char *s6 = "test";
+    p = string_copy(s5, s6);
+    assert(strncmp(s5, "test", strlen(s5)) == 0);
+    assert(strncmp(s6, "test", strlen(s6)) == 0);
+    assert(strncmp(p, "test", strlen(p)) == 0);
+
+    p = string_copy(NULL, "test");
+    assert(!p);
+
+    char s7[16] = "Lorem ipsum";
+    p = string_copy(s7, NULL);
+    assert(strncmp(s7, "Lorem ipsum", strlen(s7)) == 0);
+    assert(strncmp(p, "Lorem ipsum", strlen(p)) == 0);
 }
 
 void test_string_to_bool() {
@@ -122,4 +212,124 @@ void test_bool_to_string() {
     assert(strncmp(bool_to_string(0.0), "false", strlen("false")) == 0);
     assert(strncmp(bool_to_string(123), "true", strlen("true")) == 0);
     assert(strncmp(bool_to_string(-0), "false", strlen("false")) == 0);
+}
+
+void test_string_to_int() {
+    assert(string_to_int("123") == 123);
+    assert(string_to_int("-123") == -123);
+    assert(string_to_int("0") == 0);
+    assert(string_to_int("+0") == 0);
+    assert(string_to_int("-0") == 0);
+    assert(string_to_int("3.14") == 3);
+    assert(string_to_int("2.717") == 2);
+    assert(string_to_int("-3.14") == -3);
+    assert(string_to_int("2147483647") == 2147483647);
+    assert(string_to_int("-2147483648") == -2147483648);
+}
+
+void test_int_to_string() {
+    const char *p = NULL;
+
+    char s1[4] = {0};
+    p = int_to_string(123, s1, sizeof(s1));
+    assert(strncmp(s1, "123", strlen(s1)) == 0);
+    assert(strncmp(p, "123", strlen(p)) == 0);
+
+    char s2[32] = {0};
+    p = int_to_string(-987, s2, sizeof(s2));
+    assert(strncmp(s2, "-987", strlen(s2)) == 0);
+    assert(strncmp(p, "-987", strlen(p)) == 0);
+
+    char s3[12] = {0};
+    p = int_to_string(2147483647, s3, sizeof(s3));
+    assert(strncmp(s3, "2147483647", strlen(s3)) == 0);
+    assert(strncmp(p, "2147483647", strlen(p)) == 0);
+
+    char s4[13] = {0};
+    p = int_to_string(-2147483648, s4, sizeof(s4));
+    assert(strncmp(s4, "-2147483648", strlen(s4)) == 0);
+    assert(strncmp(p, "-2147483648", strlen(p)) == 0);
+
+    char *s5 = (char *)malloc(sizeof(char) * 5);
+    p = int_to_string(3.14, s5, 5);
+    assert(strncmp(s5, "3", strlen(s5)) == 0);
+    assert(strncmp(p, "3", strlen(p)) == 0);
+    free(s5);
+
+    char *s6 = (char *)malloc(sizeof(char) * 5);
+    p = int_to_string(-2.717, s6, 5);
+    assert(strncmp(s6, "-2", strlen(s6)) == 0);
+    assert(strncmp(p, "-2", strlen(p)) == 0);
+    free(s6);
+
+    p = int_to_string(0, NULL, 0);
+    assert(!p);
+}
+
+void test_string_to_double() {
+    assert(string_to_double("123") == 123.0);
+    assert(string_to_double("-123") == -123.0);
+    assert(string_to_double("0") == 0.0);
+    assert(string_to_double("+0") == 0.0);
+    assert(string_to_double("-0") == 0.0);
+    assert(string_to_double("3.14") == 3.14);
+    assert(string_to_double("2.717") == 2.717);
+    assert(string_to_double("-3.14") == -3.14);
+    assert(string_to_double("2147483647") == 2147483647.0);
+    assert(string_to_double("-2147483648") == -2147483648.0);
+    assert(string_to_double("0.00") == 0.0);
+    assert(string_to_double("3.1415926") == 3.1415926);
+    assert(string_to_double("1e2") == 100.0);
+    assert(string_to_double("-2.3e4") == -23000.0);
+}
+
+void test_double_to_string() {
+    const char *p = NULL;
+
+    char s1[6] = {0};
+    p = double_to_string(123, 1, s1, sizeof(s1));
+    assert(strncmp(s1, "123.0", strlen(s1)) == 0);
+    assert(strncmp(p, "123.0", strlen(p)) == 0);
+
+    char s2[32] = {0};
+    p = double_to_string(-987, 4, s2, sizeof(s2));
+    assert(strncmp(s2, "-987.0000", strlen(s2)) == 0);
+    assert(strncmp(p, "-987.0000", strlen(p)) == 0);
+
+    char s3[16] = {0};
+    p = double_to_string(2147483647, 0, s3, sizeof(s3));
+    assert(strncmp(s3, "2147483647", strlen(s3)) == 0);
+    assert(strncmp(p, "2147483647", strlen(p)) == 0);
+
+    char s4[16] = {0};
+    p = double_to_string(-3.141592, 4, s4, sizeof(s4));
+    assert(strncmp(s4, "-3.1416", strlen(s4)) == 0);
+    assert(strncmp(p, "-3.1416", strlen(p)) == 0);
+
+    char *s5 = (char *)malloc(sizeof(char) * 5);
+    p = double_to_string(3.14, 1, s5, 5);
+    assert(strncmp(s5, "3.1", strlen(s5)) == 0);
+    assert(strncmp(p, "3.1", strlen(p)) == 0);
+    free(s5);
+
+    char *s6 = (char *)malloc(sizeof(char) * 8);
+    p = double_to_string(2.717, 0, s6, 5);
+    assert(strncmp(s6, "3", strlen(s6)) == 0);
+    assert(strncmp(p, "3", strlen(p)) == 0);
+    free(s6);
+
+    char *s7 = (char *)malloc(sizeof(char) * 8);
+    p = double_to_string(1e2, 3, s7, 8);
+    assert(strncmp(s7, "100.000", strlen(s7)) == 0);
+    assert(strncmp(p, "100.000", strlen(p)) == 0);
+    free(s7);
+
+    char *s8 = (char *)malloc(sizeof(char) * 32);
+    p = double_to_string(-2.71e7, 2, s8, 32);
+    assert(strncmp(s8, "-27100000.00", strlen(s8)) == 0);
+    assert(strncmp(p, "-27100000.00", strlen(p)) == 0);
+    free(s8);
+
+    p = double_to_string(0, -1, NULL, 0);
+    assert(!p);
 }

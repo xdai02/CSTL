@@ -6,14 +6,11 @@ BIN = ./bin/
 TEST = ./test/
 
 ############### CINO ###############
-all: cino_utils cino_string cino
-	$(CC) $(CFLAGS) $(BIN)cino_utils.o $(BIN)cino_string.o $(BIN)cino.o -o $(BIN)cino
+all: cino_utils cino
+	$(CC) $(CFLAGS) $(BIN)cino_utils.o $(BIN)cino.o -o $(BIN)cino
 
 cino_utils: $(SRC)cino_utils.c
 	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)cino_utils.c -o $(BIN)cino_utils.o
-
-cino_string: $(SRC)cino_string.c
-	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)cino_string.c -o $(BIN)cino_string.o
 
 cino: $(SRC)cino.c
 	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)cino.c -o $(BIN)cino.o
