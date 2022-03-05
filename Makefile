@@ -1,17 +1,32 @@
 CC = gcc
 CFLAGS = -Wall -std=c99
+INC = ./include/
+SRC = ./src/
+BIN = ./bin/
+TEST = ./test/
 
-all: cino_utils.o cino_string.o cino.o
-	$(CC) $(CFLAGS) cino_utils.o cino_string.o cino.o -o cino
+############### CINO ###############
+all: cino_utils cino_string cino
+	$(CC) $(CFLAGS) $(BIN)cino_utils.o $(BIN)cino_string.o $(BIN)cino.o -o $(BIN)cino
 
-cino.o: cino.c
-	$(CC) $(CFLAGS) -c cino.c
+cino_utils: $(SRC)cino_utils.c
+	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)cino_utils.c -o $(BIN)cino_utils.o
 
-cino_utils.o: cino_utils.c
-	$(CC) $(CFLAGS) -c cino_utils.c
+cino_string: $(SRC)cino_string.c
+	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)cino_string.c -o $(BIN)cino_string.o
 
-cino_string.o: cino_string.c
-	$(CC) $(CFLAGS) -c cino_string.c
+cino: $(SRC)cino.c
+	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)cino.c -o $(BIN)cino.o
+
+############### TEST ###############
+test: test_cino_utils test_cino
+	$(CC) $(CFLAGS) $(BIN)cino_utils.o $(BIN)test_cino_utils.o $(BIN)test_cino.o -o $(BIN)test_cino
+
+test_cino_utils: cino_utils $(TEST)test_cino_utils.c
+	$(CC) $(CFLAGS) -I$(INC) -c $(TEST)test_cino_utils.c -o $(BIN)test_cino_utils.o
+
+test_cino: $(TEST)test_cino.c
+	$(CC) $(CFLAGS) -I$(INC) -c $(TEST)test_cino.c -o $(BIN)test_cino.o
 
 clean:
-	rm -rf *.o *.exe cino
+	rm -rf $(BIN)*
