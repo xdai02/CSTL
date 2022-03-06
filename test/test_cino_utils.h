@@ -17,12 +17,20 @@ void test_array_len();
 
 void test_string_equal();
 void test_equals_ignore_case();
+void test_string_starts_with();
+void test_string_ends_with();
 void test_string_clear();
 void test_string_length();
 void test_string_copy();
+void test_string_concat();
+void test_string_append_char();
+void test_string_append_int();
+void test_string_append_double();
 
 void test_string_to_bool();
 void test_bool_to_string();
+void test_string_to_char();
+void test_char_to_string();
 void test_string_to_int();
 void test_int_to_string();
 void test_string_to_double();

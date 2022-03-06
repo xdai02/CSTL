@@ -10,12 +10,20 @@ void test_cino_utils() {
 
     test_string_equal();
     test_equals_ignore_case();
+    test_string_starts_with();
+    test_string_ends_with();
     test_string_clear();
     test_string_length();
     test_string_copy();
+    test_string_concat();
+    test_string_append_char();
+    test_string_append_int();
+    test_string_append_double();
 
     test_string_to_bool();
     test_bool_to_string();
+    test_string_to_char();
+    test_char_to_string();
     test_string_to_int();
     test_int_to_string();
     test_string_to_double();
