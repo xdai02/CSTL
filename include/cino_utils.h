@@ -277,4 +277,27 @@ char *string_insert_char(char *str, int pos, char c);
  */
 char *string_insert_string(char *str, int pos, const char *substr);
 
+/**
+ * @brief   截取字符串指定范围子串
+ * @note    调用者需要确保substr分配了足够的空间、substr_size的长度正确。
+ * @param str           :   主串
+ * @param start         :   开始下标
+ * @param end           :   结束下标
+ * @param substr        :   保存子串
+ * @param substr_size   :   sizeof(substr)
+ * @return  返回[start, end]返回的子串，start或end不合法返回空串。
+ */
+char *string_substring(char *str, int start, int end, char *substr, int substr_size);
+
+/**
+ * @brief   全部替换字符串中指定字符
+ * @param str       :   字符串
+ * @param old_char  :   被替换字符
+ * @param new_char  :   新字符
+ * @return  新字符串
+ */
+char *string_replace_char(char *str, char old_char, char new_char);
+
+char *string_replace(char *str, const char *old_str, const char *new_str);
+
 #endif

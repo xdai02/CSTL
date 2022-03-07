@@ -745,3 +745,138 @@ void test_string_insert_string() {
     p = string_insert_string(NULL, 0, "s");
     assert(!p);
 }
+
+void test_string_substring() {
+    char *p = NULL;
+    char substr[32] = {0};
+
+    char s1[8] = "hello";
+    p = string_substring(s1, 0, 2, substr, sizeof(substr));
+    assert(strncmp(s1, "hello", sizeof(s1)) == 0);
+    assert(strncmp(substr, "hel", sizeof(substr)) == 0);
+    assert(strncmp(p, "hel", sizeof(substr)) == 0);
+
+    char s2[8] = "hello";
+    p = string_substring(s2, 1, 3, substr, sizeof(substr));
+    assert(strncmp(s2, "hello", sizeof(s2)) == 0);
+    assert(strncmp(substr, "ell", sizeof(substr)) == 0);
+    assert(strncmp(p, "ell", sizeof(substr)) == 0);
+
+    char s3[8] = "hello";
+    p = string_substring(s3, 0, 4, substr, sizeof(substr));
+    assert(strncmp(s3, "hello", sizeof(s3)) == 0);
+    assert(strncmp(substr, "hello", sizeof(substr)) == 0);
+    assert(strncmp(p, "hello", sizeof(substr)) == 0);
+
+    char s4[32] = "hello World!";
+    p = string_substring(s4, 5, 99, substr, sizeof(substr));
+    assert(strncmp(s4, "hello World!", sizeof(s4)) == 0);
+    assert(strncmp(substr, " World!", sizeof(substr)) == 0);
+    assert(strncmp(p, " World!", sizeof(substr)) == 0);
+
+    char s5[32] = "hello World!";
+    p = string_substring(s5, -99, 99, substr, sizeof(substr));
+    assert(strncmp(s5, "hello World!", sizeof(s5)) == 0);
+    assert(strncmp(substr, "hello World!", sizeof(substr)) == 0);
+    assert(strncmp(p, "hello World!", sizeof(substr)) == 0);
+
+    char s6[32] = "hello World!";
+    p = string_substring(s6, 8, 2, substr, sizeof(substr));
+    assert(strncmp(s6, "hello World!", sizeof(s6)) == 0);
+    assert(strncmp(substr, "", sizeof(substr)) == 0);
+    assert(strncmp(p, "", sizeof(substr)) == 0);
+
+    char s7[32] = "hello World!";
+    p = string_substring(s7, 7, 7, substr, sizeof(substr));
+    assert(strncmp(s7, "hello World!", sizeof(s7)) == 0);
+    assert(strncmp(substr, "o", sizeof(substr)) == 0);
+    assert(strncmp(p, "o", sizeof(substr)) == 0);
+
+    char s8[32] = "hello World!";
+    p = string_substring(s8, -99, 9, substr, sizeof(substr));
+    assert(strncmp(s8, "hello World!", sizeof(s8)) == 0);
+    assert(strncmp(substr, "hello Worl", sizeof(substr)) == 0);
+    assert(strncmp(p, "hello Worl", sizeof(substr)) == 0);
+
+    p = string_substring(NULL, 7, 7, NULL, -2);
+    assert(!p);
+}
+
+void test_string_replace_char() {
+    char *p = NULL;
+
+    char s1[16] = "Hello World!";
+    p = string_replace_char(s1, 'l', 'L');
+    assert(strncmp(s1, "HeLLo WorLd!", sizeof(s1)) == 0);
+    assert(strncmp(p, "HeLLo WorLd!", sizeof(s1)) == 0);
+
+    char s2[16] = "Hello World!";
+    p = string_replace_char(s2, 'e', 'a');
+    assert(strncmp(s2, "Hallo World!", sizeof(s2)) == 0);
+    assert(strncmp(p, "Hallo World!", sizeof(s2)) == 0);
+
+    char s3[16] = "Hello World!";
+    p = string_replace_char(s3, ' ', '#');
+    assert(strncmp(s3, "Hello#World!", sizeof(s3)) == 0);
+    assert(strncmp(p, "Hello#World!", sizeof(s3)) == 0);
+
+    char s4[16] = "Hello World!";
+    p = string_replace_char(s4, 'X', ' ');
+    assert(strncmp(s4, "Hello World!", sizeof(s4)) == 0);
+    assert(strncmp(p, "Hello World!", sizeof(s4)) == 0);
+
+    char s5[16] = "Hello World!";
+    p = string_replace_char(s5, 'l', '\0');
+    assert(strncmp(s5, "He", sizeof(s5)) == 0);
+    assert(strncmp(p, "He", sizeof(s5)) == 0);
+
+    p = string_replace_char(NULL, 'a', 'b');
+    assert(!p);
+}
+
+void test_string_replace() {
+    char *p = NULL;
+
+    char s1[32] = "This is a test.";
+    p = string_replace(s1, "is", "IS");
+    assert(strncmp(s1, "ThIS IS a test.", sizeof(s1)) == 0);
+    assert(strncmp(p, "ThIS IS a test.", sizeof(s1)) == 0);
+
+    char s2[32] = "This is a test.";
+    p = string_replace(s2, "a", "A");
+    assert(strncmp(s2, "This is A test.", sizeof(s2)) == 0);
+    assert(strncmp(p, "This is A test.", sizeof(s2)) == 0);
+
+    char s3[32] = "foobar foobar foobar";
+    p = string_replace(s3, "foobar", "func");
+    assert(strncmp(s3, "func func func", sizeof(s3)) == 0);
+    assert(strncmp(p, "func func func", sizeof(s3)) == 0);
+
+    char s4[32] = "CCCCCCCCCCCCCCC";
+    p = string_replace(s4, "C", "U");
+    assert(strncmp(s4, "UUUUUUUUUUUUUUU", sizeof(s4)) == 0);
+    assert(strncmp(p, "UUUUUUUUUUUUUUU", sizeof(s4)) == 0);
+
+    char s5[32] = "CCCCCCCCCCCCCCC";
+    p = string_replace(s5, "A", "I");
+    assert(strncmp(s5, "CCCCCCCCCCCCCCC", sizeof(s5)) == 0);
+    assert(strncmp(p, "CCCCCCCCCCCCCCC", sizeof(s5)) == 0);
+
+    char s6[32] = "foobar foobar foobar";
+    p = string_replace(s6, "foobar", "");
+    assert(strncmp(s6, "  ", sizeof(s6)) == 0);
+    assert(strncmp(p, "  ", sizeof(s6)) == 0);
+
+    char s7[32] = "foobarfoobaoobar";
+    p = string_replace(s7, "foobar", "Replace");
+    assert(strncmp(s7, "Replacefoobaoobar", sizeof(s7)) == 0);
+    assert(strncmp(p, "Replacefoobaoobar", sizeof(s7)) == 0);
+
+    char s8[8] = "";
+    p = string_replace(s8, "foobar", "Replace");
+    assert(strncmp(s8, "", sizeof(s8)) == 0);
+    assert(strncmp(p, "", sizeof(s8)) == 0);
+
+    p = string_replace(NULL, NULL, NULL);
+    assert(!p);
+}

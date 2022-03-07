@@ -418,3 +418,61 @@ char *string_insert_string(char *str, int pos, const char *substr) {
 
     return str;
 }
+
+/**
+ * @brief   截取字符串指定范围子串
+ * @note    调用者需要确保substr分配了足够的空间、substr_size的长度正确。
+ * @param str           :   主串
+ * @param start         :   开始下标，小于0默认为0，大于主串长度默认为末尾下标
+ * @param end           :   结束下标，小于0默认为0，大于主串长度默认为末尾下标
+ * @param substr        :   保存子串
+ * @param substr_size   :   sizeof(substr)
+ * @return  返回[start, end]返回的子串，start或end不合法返回空串。
+ */
+char *string_substring(char *str, int start, int end, char *substr, int substr_size) {
+    return_value_if_fail(str != NULL && substr != NULL && substr_size > 0, NULL);
+
+    memset(substr, '\0', substr_size);
+
+    // 设置start、end默认值
+    int str_len = strlen(str);
+    start = start >= 0 ? start : 0;
+    start = start < str_len ? start : str_len - 1;
+    end = end < str_len ? end : str_len - 1;
+    end = end >= 0 ? end : 0;
+
+    // 截取范围不合法返回空串
+    return_value_if_fail(end >= start, substr);
+
+    strncpy(substr, str + start, end - start + 1);
+    return substr;
+}
+
+/**
+ * @brief   全部替换字符串中指定字符
+ * @param str       :   字符串
+ * @param old_char  :   被替换字符
+ * @param new_char  :   新字符
+ * @return  新字符串
+ */
+char *string_replace_char(char *str, char old_char, char new_char) {
+    return_value_if_fail(str != NULL, NULL);
+    int i = 0;
+    while (str[i] != '\0') {
+        if (str[i] == old_char) {
+            str[i] = new_char;
+        }
+        i++;
+    }
+    return str;
+}
+
+char *string_replace(char *str, const char *old_str, const char *new_str) {
+    return_value_if_fail(str != NULL && old_str != NULL && new_str != NULL, str);
+    char *p = NULL;
+    while ((p = strstr(str, old_str))) {
+        memmove(p + strlen(new_str), p + strlen(old_str), strlen(p) - strlen(old_str) + 1);
+        memcpy(p, new_str, strlen(new_str));
+    }
+    return str;
+}

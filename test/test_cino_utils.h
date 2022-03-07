@@ -41,5 +41,8 @@ void test_string_append_int();
 void test_string_append_double();
 void test_string_insert_char();
 void test_string_insert_string();
+void test_string_substring();
+void test_string_replace_char();
+void test_string_replace();
 
 #endif

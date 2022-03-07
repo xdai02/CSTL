@@ -33,6 +33,9 @@ void test_cino_utils() {
     test_string_append_double();
     test_string_insert_char();
     test_string_insert_string();
+    test_string_substring();
+    test_string_replace_char();
+    test_string_replace();
 
     printf("[PASS] test_cino_utils\n");
 }
