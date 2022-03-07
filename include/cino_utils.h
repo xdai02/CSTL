@@ -4,9 +4,9 @@
  * 分类 :
  *          - 合法性检查
  *          - 数组操作
- *          - 字符串操作
  *          - 类型转换
-****************************************/
+ *          - 字符串操作
+ ****************************************/
 
 #ifndef _CINO_UTILS_H_
 #define _CINO_UTILS_H_
@@ -19,7 +19,7 @@
 
 /****************************************
  *              合法性检查
-****************************************/
+ ****************************************/
 
 /**
  * @brief   判断表达式expr是否成立，不成立直接返回。
@@ -57,7 +57,7 @@
 
 /****************************************
  *              数组操作
-****************************************/
+ ****************************************/
 
 /**
  * @brief   获取C数组元素个数
@@ -65,8 +65,83 @@
 #define array_len(arr) ((int)(sizeof(arr) / sizeof((arr)[0])))
 
 /****************************************
+ *              类型转换
+ ****************************************/
+
+/**
+ * @brief   string转bool
+ * @param str   :   字符串
+ * @return  返回false的情况：
+ *              1. str == NULL
+ *              2. strlen(str) == 0
+ *              3. equals_ignore_case(str, "false")
+ *              4. str为全0字符串
+ *          其它情况返回true。
+ */
+bool string_to_bool(const char *str);
+
+/**
+ * @brief   bool转string
+ * @param val   :   bool值
+ * @return  val为true返回"true"，val为false返回"false"。
+ */
+const char *bool_to_string(bool val);
+
+/**
+ * @brief   string转char
+ * @param  str  :   保存转换结果的字符串
+ * @return  如果str == NULL返回'\0'，否则返回str的第一个字符。
+ */
+char string_to_char(const char *str);
+
+/**
+ * @brief   char转string
+ * @note    调用者需要确保str分配了足够的空间、str_size的长度正确。
+ * @param  c            :   字符
+ * @param  str          :   保存转换结果的字符串
+ * @param  str_size     :   sizeof(str)
+ * @return   转换后字符串
+ */
+char *char_to_string(char c, char *str, int str_size);
+
+/**
+ * @brief   string转int
+ * @param str   :   字符串
+ * @return  当str == NULL时返回0，其它情况返回atoi()的结果。
+ */
+int string_to_int(const char *str);
+
+/**
+ * @brief   int转string
+ * @note    调用者需要确保str分配了足够的空间、str_size的长度正确。
+ * @param  val      :   int值
+ * @param  str      :   保存转换结果的字符串
+ * @param  str_size :   sizeof(str)
+ * @return   转换后字符串
+ */
+char *int_to_string(int val, char *str, int str_size);
+
+/**
+ * @brief   string转double
+ * @param str   :   字符串
+ * @return  当str == NULL时返回0.0，其它情况返回atof()的结果。
+ */
+double string_to_double(const char *str);
+
+/**
+ * @brief   double转string
+ * @note    调用者需要确保str分配了足够的空间、str_size的长度正确。
+ * @param  val          :   double值
+ * @param  precision    :   四舍五入保留小数点后数位，默认保留2位，最大支持16位
+ * @param  str          :   保存转换结果的字符串
+ * @param  str_size     :   sizeof(str)
+ * @return   转换后字符串
+ */
+char *double_to_string(double val, int precision, char *str, int str_size);
+
+/****************************************
  *              字符串操作
-****************************************/
+ ****************************************/
 
 /**
  * @brief   比较字符串
@@ -83,6 +158,20 @@ bool string_equal(const char *s1, const char *s2);
  * @return  如果s1和s2忽略大小写相同返回true，否则返回false。
  */
 bool equals_ignore_case(const char *s1, const char *s2);
+
+/**
+ * @brief   字符串转小写
+ * @param str   :   字符串
+ * @return  小写字符串
+ */
+char *string_tolower(char *str);
+
+/**
+ * @brief   字符串转大写
+ * @param str   :   字符串
+ * @return  大写字符串
+ */
+char *string_toupper(char *str);
 
 /**
  * @brief   判断字符串是否以指定子串开头
@@ -120,7 +209,7 @@ int string_length(const char *str);
  * @note    调用者需要确保destination和source的长度足够。
  * @param destination   :   目标字符串
  * @param source        :   源字符串
- * @return  返回目标字符串。
+ * @return  返回目标字符串
  */
 char *string_copy(char *destination, const char *source);
 
@@ -129,7 +218,7 @@ char *string_copy(char *destination, const char *source);
  * @note    调用者需要确保destination和source的长度足够。
  * @param destination   :   目标字符串
  * @param source        :   源字符串
- * @return  返回目标字符串。
+ * @return  返回目标字符串
  */
 char *string_concat(char *destination, const char *source);
 
@@ -161,79 +250,24 @@ char *string_append_int(char *str, int val);
  */
 char *string_append_double(char *str, double val, int precision);
 
-/****************************************
- *              类型转换
-****************************************/
-
 /**
- * @brief   string转bool
+ * @brief   在字符串指定位置插入字符
+ * @note    调用者需要确保str的长度足够。
  * @param str   :   字符串
- * @return  返回false的情况：
- *              1. str == NULL
- *              2. strlen(str) == 0
- *              3. equals_ignore_case(str, "false")
- *              4. str为全0字符串
- *          其它情况返回true。
+ * @param pos   :   插入位置（从0开始）
+ * @param c     :   字符
+ * @return  新字符串
  */
-bool string_to_bool(const char *str);
+char *string_insert_char(char *str, int pos, char c);
 
 /**
- * @brief   bool转string
- * @param val   :   bool值
- * @return  val为true返回"true"，val为false返回"false"。
+ * @brief   在字符串指定位置插入子串
+ * @note    调用者需要确保str的长度足够。
+ * @param str       :   字符串
+ * @param pos       :   插入位置（从0开始）
+ * @param substr    :   子串
+ * @return  新字符串
  */
-const char *bool_to_string(bool val);
-
-/**
- * @brief   string转char
- * @param  str  :   保存转换结果的字符串
- * @return  如果str == NULL返回'\0'，否则返回str的第一个字符。
- */
-char string_to_char(const char *str);
-
-/**
- * @brief   char转string
- * @note    调用者需要确保str分配了足够的空间、str_size的长度正确。
- * @param  c            :   字符
- * @param  str          :   保存转换结果的字符串
- * @param  str_size     :   sizeof(str)
- * @return   转换后字符串。
- */
-char *char_to_string(char c, char *str, int str_size);
-
-/**
- * @brief   string转int
- * @param str   :   字符串
- * @return  当str == NULL时返回0，其它情况返回atoi()的结果。
- */
-int string_to_int(const char *str);
-
-/**
- * @brief   int转string
- * @note    调用者需要确保str分配了足够的空间、str_size的长度正确。
- * @param  val      :   int值
- * @param  str      :   保存转换结果的字符串
- * @param  str_size :   sizeof(str)
- * @return   转换后字符串。
- */
-char *int_to_string(int val, char *str, int str_size);
-
-/**
- * @brief   string转double
- * @param str   :   字符串
- * @return  当str == NULL时返回0.0，其它情况返回atof()的结果。
- */
-double string_to_double(const char *str);
-
-/**
- * @brief   double转string
- * @note    调用者需要确保str分配了足够的空间、str_size的长度正确。
- * @param  val          :   double值
- * @param  precision    :   四舍五入保留小数点后数位，默认保留2位，最大支持16位
- * @param  str          :   保存转换结果的字符串
- * @param  str_size     :   sizeof(str)
- * @return   转换后字符串。
- */
-char *double_to_string(double val, int precision, char *str, int str_size);
+char *string_insert_string(char *str, int pos, const char *substr);
 
 #endif
