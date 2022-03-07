@@ -501,6 +501,58 @@ void test_string_concat() {
     assert(strncmp(p, "Lorem ipsum", sizeof(s7)) == 0);
 }
 
+void test_string_trim() {
+    char *p = NULL;
+
+    char s1[8] = " hello";
+    p = string_trim(s1);
+    assert(strncmp(s1, "hello", sizeof(s1)) == 0);
+    assert(strncmp(p, "hello", sizeof(s1)) == 0);
+
+    char s2[8] = "hello ";
+    p = string_trim(s2);
+    assert(strncmp(s2, "hello", sizeof(s2)) == 0);
+    assert(strncmp(p, "hello", sizeof(s2)) == 0);
+
+    char s3[8] = " hello ";
+    p = string_trim(s3);
+    assert(strncmp(s3, "hello", sizeof(s3)) == 0);
+    assert(strncmp(p, "hello", sizeof(s3)) == 0);
+
+    char s4[32] = "   hello        ";
+    p = string_trim(s4);
+    assert(strncmp(s4, "hello", sizeof(s4)) == 0);
+    assert(strncmp(p, "hello", sizeof(s4)) == 0);
+
+    char s5[32] = "\nhello        ";
+    p = string_trim(s5);
+    assert(strncmp(s5, "hello", sizeof(s5)) == 0);
+    assert(strncmp(p, "hello", sizeof(s5)) == 0);
+
+    char s6[32] = "\t  hello  \n   \t \n      ";
+    p = string_trim(s6);
+    assert(strncmp(s6, "hello", sizeof(s6)) == 0);
+    assert(strncmp(p, "hello", sizeof(s6)) == 0);
+
+    char s7[8] = "hello";
+    p = string_trim(s7);
+    assert(strncmp(s7, "hello", sizeof(s7)) == 0);
+    assert(strncmp(p, "hello", sizeof(s7)) == 0);
+
+    char s8[16] = "        ";
+    p = string_trim(s8);
+    assert(strncmp(s8, "", sizeof(s8)) == 0);
+    assert(strncmp(p, "", sizeof(s8)) == 0);
+
+    char s9[16] = "\n\t\r\n\r\n\r\t";
+    p = string_trim(s9);
+    assert(strncmp(s9, "", sizeof(s9)) == 0);
+    assert(strncmp(p, "", sizeof(s9)) == 0);
+
+    p = string_trim(NULL);
+    assert(!p);
+}
+
 void test_string_append_char() {
     char *p = NULL;
 
@@ -646,23 +698,20 @@ void test_string_insert_char() {
 }
 
 void test_string_insert_string() {
-    const char *p = NULL;
+    char *p = NULL;
 
     char s1[16] = "World";
     p = string_insert_string(s1, 0, "Hello");
-    printf("s1 = [%s]\n", p);
     assert(strncmp(s1, "HelloWorld", sizeof(s1)) == 0);
     assert(strncmp(p, "HelloWorld", sizeof(s1)) == 0);
 
     char s2[16] = "Hello";
     p = string_insert_string(s2, strlen(s2), "World");
-    printf("s2 = [%s]\n", p);
     assert(strncmp(s2, "HelloWorld", sizeof(s2)) == 0);
     assert(strncmp(p, "HelloWorld", sizeof(s2)) == 0);
 
     char s3[8] = "Hello";
     p = string_insert_string(s3, strlen(s3), "!");
-    printf("s3 = [%s]\n", p);
     assert(strncmp(s3, "Hello!", sizeof(s3)) == 0);
     assert(strncmp(p, "Hello!", sizeof(s3)) == 0);
 

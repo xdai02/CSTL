@@ -34,6 +34,7 @@ void test_string_clear();
 void test_string_length();
 void test_string_copy();
 void test_string_concat();
+void test_string_trim();
 void test_string_append_char();
 void test_string_append_int();
 void test_string_append_double();

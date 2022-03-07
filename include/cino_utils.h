@@ -223,6 +223,13 @@ char *string_copy(char *destination, const char *source);
 char *string_concat(char *destination, const char *source);
 
 /**
+ * @brief   去除字符串首尾空白字符
+ * @param str   :   字符串
+ * @return  新字符串
+ */
+char *string_trim(char *str);
+
+/**
  * @brief   字符串追加字符
  * @note    调用者需要确保str的长度足够。
  * @param str   :   字符串

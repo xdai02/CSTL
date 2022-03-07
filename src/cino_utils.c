@@ -293,6 +293,41 @@ char *string_concat(char *destination, const char *source) {
 }
 
 /**
+ * @brief   去除字符串首尾空白字符
+ * @param str   :   字符串
+ * @return  新字符串
+ */
+char *string_trim(char *str) {
+    return_value_if_fail(str != NULL, NULL);
+
+    char *cur = str;
+    char *end = str + strlen(str) - 1;
+
+    while (isspace(*cur)) {
+        cur++;
+    }
+
+    // All whitespaces
+    if (*cur == '\0') {
+        memset(str, '\0', end - str + 1);
+        return str;
+    }
+
+    if (cur != str) {
+        memmove(str, cur, end - cur + 1);
+        *end = '\0';
+        end--;
+    }
+
+    while (end > str && isspace(*end)) {
+        end--;
+    }
+    *(end + 1) = '\0';
+
+    return str;
+}
+
+/**
  * @brief   字符串追加字符
  * @note    调用者需要确保str的长度足够。
  * @param str   :   字符串
@@ -373,7 +408,13 @@ char *string_insert_char(char *str, int pos, char c) {
  */
 char *string_insert_string(char *str, int pos, const char *substr) {
     return_value_if_fail(str != NULL && pos >= 0 && pos <= strlen(str) && substr != NULL, str);
-    memmove(str + pos + strlen(substr), str + pos, strlen(str) - 1 + strlen(substr));
-    strncpy(str + pos, substr, strlen(substr));
+
+    int str_len = strlen(str);
+    int substr_len = strlen(substr);
+
+    memmove(str + pos + substr_len, str + pos, strlen(str + pos));
+    memcpy(str + pos, substr, substr_len);
+    str[str_len + substr_len] = '\0';
+
     return str;
 }
