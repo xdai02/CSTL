@@ -1,6 +1,8 @@
 #include "test_cino_utils.h"
 #include "cino_utils.h"
 
+const double EPS = 1e-6;  // 用于比较浮点数的精度
+
 void test_return_if_fail() {
     int cnt = 0;
     cnt++;
@@ -198,20 +200,20 @@ void test_int_to_string() {
 }
 
 void test_string_to_double() {
-    assert(string_to_double("123") == 123.0);
-    assert(string_to_double("-123") == -123.0);
-    assert(string_to_double("0") == 0.0);
-    assert(string_to_double("+0") == 0.0);
-    assert(string_to_double("-0") == 0.0);
-    assert(string_to_double("3.14") == 3.14);
-    assert(string_to_double("2.717") == 2.717);
-    assert(string_to_double("-3.14") == -3.14);
-    assert(string_to_double("2147483647") == 2147483647.0);
-    assert(string_to_double("-2147483648") == -2147483648.0);
-    assert(string_to_double("0.00") == 0.0);
-    assert(string_to_double("3.1415926") == 3.1415926);
-    assert(string_to_double("1e2") == 100.0);
-    assert(string_to_double("-2.3e4") == -23000.0);
+    assert(fabs(string_to_double("123") - 123.0) <= EPS);
+    assert(fabs(string_to_double("-123") - (-123.0)) <= EPS);
+    assert(fabs(string_to_double("0") - 0.0) <= EPS);
+    assert(fabs(string_to_double("+0") - 0.0) <= EPS);
+    assert(fabs(string_to_double("-0") - 0.0) <= EPS);
+    assert(fabs(string_to_double("3.14") - 3.14) <= EPS);
+    assert(fabs(string_to_double("2.717") - 2.717) <= EPS);
+    assert(fabs(string_to_double("-3.14") - (-3.14)) <= EPS);
+    assert(fabs(string_to_double("2147483647") - 2147483647.0) <= EPS);
+    assert(fabs(string_to_double("-2147483648") - (-2147483648.0)) <= EPS);
+    assert(fabs(string_to_double("0.00") - 0.0) <= EPS);
+    assert(fabs(string_to_double("3.1415926") - 3.1415926) <= EPS);
+    assert(fabs(string_to_double("1e2") - 100.0) <= EPS);
+    assert(fabs(string_to_double("-2.3e4") - (-23000.0)) <= EPS);
 }
 
 void test_double_to_string() {
