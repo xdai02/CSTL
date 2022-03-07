@@ -467,6 +467,13 @@ char *string_replace_char(char *str, char old_char, char new_char) {
     return str;
 }
 
+/**
+ * @brief   全部替换字符串中指定子串
+ * @param str       :   字符串
+ * @param old_str	:   被替换子串
+ * @param new_str	:   新串
+ * @return  新字符串
+ */
 char *string_replace(char *str, const char *old_str, const char *new_str) {
     return_value_if_fail(str != NULL && old_str != NULL && new_str != NULL, str);
     char *p = NULL;

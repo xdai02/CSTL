@@ -298,6 +298,13 @@ char *string_substring(char *str, int start, int end, char *substr, int substr_s
  */
 char *string_replace_char(char *str, char old_char, char new_char);
 
+/**
+ * @brief   全部替换字符串中指定子串
+ * @param str       :   字符串
+ * @param old_str	:   被替换子串
+ * @param new_str	:   新串
+ * @return  新字符串
+ */
 char *string_replace(char *str, const char *old_str, const char *new_str);
 
 #endif
