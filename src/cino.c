@@ -1,10 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "cino.h"
 
-int main(int argc, char *argv[])
-{
-
+int main(int argc, char *argv[]) {
+    printf("CINO - CINO Is Not OOP\n");
     return 0;
 }

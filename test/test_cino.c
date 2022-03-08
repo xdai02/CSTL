@@ -1,4 +1,5 @@
 #include "test_cino_utils.h"
+#include "test_cino_string.h"
 
 void test_cino_utils() {
     test_return_if_fail();
@@ -50,8 +51,19 @@ void test_cino_utils() {
     printf("[PASS] test_cino_utils\n");
 }
 
+void test_cino_string() {
+    test_cino_string_create();
+    test_cino_string_destroy();
+    test_cino_string_get();
+    test_cino_string_length();
+    test_cino_string_clear();
+
+    printf("[PASS] test_cino_string\n");
+}
+
 int main(int argc, char *argv[]) {
     test_cino_utils();
+    test_cino_string();
 
     return 0;
 }
