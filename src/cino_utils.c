@@ -744,6 +744,41 @@ int string_last_index_of_substring_from(const char *str, const char *substr, int
     return -1;
 }
 
-int string_split(char *str, const char *delimiter) {
-    return 0;  // dummy
+/**
+ * @brief   字符串分割
+ * @note    调用者需要确保字符串数组items的空间分配正确。
+ * @param str       :   字符串
+ * @param delimiter :   分割串
+ * @param items     :   保存分割后子串的二维数组
+ * @return  返回分割后产生的子串数量。
+ */
+int string_split(const char *str, const char *delimiter, char **items) {
+    return_value_if_fail(str != NULL && delimiter != NULL && items != NULL, 0);
+
+    int str_len = strlen(str);
+    int delimiter_len = strlen(delimiter);
+
+    int cnt = 0;  // 分割子串数量
+
+    const char *end = str + str_len - 1;
+    const char *p = NULL;
+
+    while ((p = strstr(str, delimiter))) {
+        if (p - str == 0) {
+            str += delimiter_len;
+        } else {
+            strncpy(items[cnt], str, p - str);
+            items[cnt][p - str] = '\0';
+            cnt++;
+            str = p + delimiter_len;
+        }
+    }
+
+    if (str < end) {
+        strncpy(items[cnt], str, end - str + 1);
+        items[cnt][end - str + 1] = '\0';
+        cnt++;
+    }
+
+    return cnt;
 }

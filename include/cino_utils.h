@@ -387,4 +387,14 @@ int string_last_index_of_substring(const char *str, const char *substr);
  */
 int string_last_index_of_substring_from(const char *str, const char *substr, int from);
 
+/**
+ * @brief   字符串分割
+ * @note    调用者需要确保字符串数组items的空间分配正确。
+ * @param str       :   字符串
+ * @param delimiter :   分割串
+ * @param items     :   保存分割后子串的二维数组
+ * @return  返回分割后产生的子串数量。
+ */
+int string_split(const char *str, const char *delimiter, char **items);
+
 #endif

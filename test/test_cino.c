@@ -45,6 +45,7 @@ void test_cino_utils() {
     test_string_last_index_of_char_from();
     test_string_last_index_of_substring();
     test_string_last_index_of_substring_from();
+    test_string_split();
 
     printf("[PASS] test_cino_utils\n");
 }

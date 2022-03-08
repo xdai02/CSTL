@@ -1058,3 +1058,67 @@ void test_string_last_index_of_substring_from() {
     assert(string_last_index_of_substring_from("", "Hello", 0) == -1);
     assert(string_last_index_of_substring_from(NULL, "", 99) == -1);
 }
+
+void test_string_split() {
+    const int ITEM_NUM = 10;
+    const int ITEM_MAX_LEN = 64;
+    char **items = (char **)calloc(ITEM_NUM, sizeof(char *));
+    for (int i = 0; i < ITEM_NUM; i++) {
+        items[i] = (char *)calloc(ITEM_MAX_LEN + 1, sizeof(char));
+    }
+
+    int cnt = 0;
+
+    cnt = string_split("This is a test", " ", items);
+    assert(cnt == 4);
+    assert(strncmp(items[0], "This", ITEM_MAX_LEN) == 0);
+    assert(strncmp(items[1], "is", ITEM_MAX_LEN) == 0);
+    assert(strncmp(items[2], "a", ITEM_MAX_LEN) == 0);
+    assert(strncmp(items[3], "test", ITEM_MAX_LEN) == 0);
+
+    cnt = string_split("this_is_a_test", "_", items);
+    assert(cnt == 4);
+    assert(strncmp(items[0], "this", ITEM_MAX_LEN) == 0);
+    assert(strncmp(items[1], "is", ITEM_MAX_LEN) == 0);
+    assert(strncmp(items[2], "a", ITEM_MAX_LEN) == 0);
+    assert(strncmp(items[3], "test", ITEM_MAX_LEN) == 0);
+
+    cnt = string_split("this_is_a_test", "i", items);
+    assert(cnt == 3);
+    assert(strncmp(items[0], "th", ITEM_MAX_LEN) == 0);
+    assert(strncmp(items[1], "s_", ITEM_MAX_LEN) == 0);
+    assert(strncmp(items[2], "s_a_test", ITEM_MAX_LEN) == 0);
+
+    cnt = string_split("this_is_a_test", "is", items);
+    assert(cnt == 3);
+    assert(strncmp(items[0], "th", ITEM_MAX_LEN) == 0);
+    assert(strncmp(items[1], "_", ITEM_MAX_LEN) == 0);
+    assert(strncmp(items[2], "_a_test", ITEM_MAX_LEN) == 0);
+
+    cnt = string_split("This    is a            test", "  ", items);
+    assert(cnt == 3);
+    assert(strncmp(items[0], "This", ITEM_MAX_LEN) == 0);
+    assert(strncmp(items[1], "is a", ITEM_MAX_LEN) == 0);
+    assert(strncmp(items[2], "test", ITEM_MAX_LEN) == 0);
+
+    cnt = string_split("  This   is   a   test  ", "  ", items);
+    assert(cnt == 4);
+    assert(strncmp(items[0], "This", ITEM_MAX_LEN) == 0);
+    assert(strncmp(items[1], " is", ITEM_MAX_LEN) == 0);
+    assert(strncmp(items[2], " a", ITEM_MAX_LEN) == 0);
+    assert(strncmp(items[3], " test", ITEM_MAX_LEN) == 0);
+
+    cnt = string_split(" This  is   a    test   a  is This", "  ", items);
+    assert(cnt == 6);
+    assert(strncmp(items[0], " This", ITEM_MAX_LEN) == 0);
+    assert(strncmp(items[1], "is", ITEM_MAX_LEN) == 0);
+    assert(strncmp(items[2], " a", ITEM_MAX_LEN) == 0);
+    assert(strncmp(items[3], "test", ITEM_MAX_LEN) == 0);
+    assert(strncmp(items[4], " a", ITEM_MAX_LEN) == 0);
+    assert(strncmp(items[5], "is This", ITEM_MAX_LEN) == 0);
+
+    for (int i = 0; i < ITEM_NUM; i++) {
+        free(items[i]);
+    }
+    free(items);
+}

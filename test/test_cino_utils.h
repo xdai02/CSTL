@@ -53,5 +53,6 @@ void test_string_last_index_of_char();
 void test_string_last_index_of_char_from();
 void test_string_last_index_of_substring();
 void test_string_last_index_of_substring_from();
+void test_string_split();
 
 #endif
