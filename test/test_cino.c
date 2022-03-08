@@ -19,7 +19,7 @@ void test_cino_utils() {
     test_double_to_string();
 
     test_string_equal();
-    test_equals_ignore_case();
+    test_string_equal_ignore_case();
     test_string_starts_with();
     test_string_tolower();
     test_string_toupper();
@@ -53,10 +53,18 @@ void test_cino_utils() {
 
 void test_cino_string() {
     test_cino_string_create();
+    test_cino_string_create_from_char();
+    test_cino_string_create_from_int();
+    test_cino_string_create_from_double();
     test_cino_string_destroy();
     test_cino_string_get();
+    test_cino_string_set();
     test_cino_string_length();
     test_cino_string_clear();
+    test_cino_string_equal();
+    test_cino_string_equal_ignore_case();
+    test_cino_string_tolower();
+    test_cino_string_toupper();
 
     printf("[PASS] test_cino_string\n");
 }

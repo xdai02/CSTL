@@ -26,7 +26,7 @@ void test_string_to_double();
 void test_double_to_string();
 
 void test_string_equal();
-void test_equals_ignore_case();
+void test_string_equal_ignore_case();
 void test_string_tolower();
 void test_string_toupper();
 void test_string_starts_with();

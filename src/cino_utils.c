@@ -10,12 +10,12 @@
  * @return  返回false的情况：
  *              1. str == NULL
  *              2. strlen(str) == 0
- *              3. equals_ignore_case(str, "false")
+ *              3. string_equal_ignore_case(str, "false")
  *              4. str为全0字符串
  *          其它情况返回true。
  */
 bool string_to_bool(const char *str) {
-    if (!str || strlen(str) == 0 || equals_ignore_case(str, "false")) {
+    if (!str || strlen(str) == 0 || string_equal_ignore_case(str, "false")) {
         return false;
     }
 
@@ -159,7 +159,7 @@ bool string_equal(const char *s1, const char *s2) {
  * @param s2    :   字符串2
  * @return  如果s1和s2忽略大小写相同返回true，否则返回false。
  */
-bool equals_ignore_case(const char *s1, const char *s2) {
+bool string_equal_ignore_case(const char *s1, const char *s2) {
     if (!s1 && !s2) {
         return true;
     }

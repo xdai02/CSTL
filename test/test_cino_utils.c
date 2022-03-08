@@ -294,31 +294,31 @@ void test_string_equal() {
     assert(!string_equal(NULL, ""));
 }
 
-void test_equals_ignore_case() {
-    assert(equals_ignore_case("hello", "hello"));
-    assert(equals_ignore_case("Hello", "hElLo"));
-    assert(equals_ignore_case("", ""));
-    assert(equals_ignore_case("ABCDabcd", "abcdABCD"));
-    assert(equals_ignore_case("12345", "12345"));
-    assert(!equals_ignore_case("abc", "cba"));
-    assert(!equals_ignore_case("  ", "    "));
-    assert(!equals_ignore_case("\n", "\t"));
+void test_string_equal_ignore_case() {
+    assert(string_equal_ignore_case("hello", "hello"));
+    assert(string_equal_ignore_case("Hello", "hElLo"));
+    assert(string_equal_ignore_case("", ""));
+    assert(string_equal_ignore_case("ABCDabcd", "abcdABCD"));
+    assert(string_equal_ignore_case("12345", "12345"));
+    assert(!string_equal_ignore_case("abc", "cba"));
+    assert(!string_equal_ignore_case("  ", "    "));
+    assert(!string_equal_ignore_case("\n", "\t"));
 
     const char *s1 = "XYZ";
     const char *s2 = "xYz";
-    assert(equals_ignore_case(s1, s2));
+    assert(string_equal_ignore_case(s1, s2));
 
     s1 = "987654321";
     s2 = "987654321 ";
-    assert(!equals_ignore_case(s1, s2));
+    assert(!string_equal_ignore_case(s1, s2));
 
     char s3[] = "!@#$^&*()";
     char s4[32] = "!@#$^&*()";
-    assert(equals_ignore_case(s3, s4));
+    assert(string_equal_ignore_case(s3, s4));
 
-    assert(equals_ignore_case(NULL, NULL));
-    assert(!equals_ignore_case("", NULL));
-    assert(!equals_ignore_case(NULL, ""));
+    assert(string_equal_ignore_case(NULL, NULL));
+    assert(!string_equal_ignore_case("", NULL));
+    assert(!string_equal_ignore_case(NULL, ""));
 }
 
 void test_string_tolower() {

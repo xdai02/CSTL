@@ -30,12 +30,14 @@ test: test_cino_utils test_cino_string test_cino
 test_cino_utils: cino_utils $(TEST)test_cino_utils.c
 	$(CC) $(CFLAGS) -I$(INC) -c $(TEST)test_cino_utils.c -o $(BIN)test_cino_utils.o
 
-test_cino_string: cino_utils $(TEST)test_cino_string.c
+test_cino_string: cino_string $(TEST)test_cino_string.c
 	$(CC) $(CFLAGS) -I$(INC) -c $(TEST)test_cino_string.c -o $(BIN)test_cino_string.o
 
 test_cino: $(TEST)test_cino.c
 	$(CC) $(CFLAGS) -I$(INC) -c $(TEST)test_cino.c -o $(BIN)test_cino.o
 
-.PHONY : clean
+############### CLEAN ###############
+
+.PHONY: clean
 clean:
 	rm -rf $(BIN)
