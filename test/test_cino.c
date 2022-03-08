@@ -36,6 +36,15 @@ void test_cino_utils() {
     test_string_substring();
     test_string_replace_char();
     test_string_replace();
+    test_string_remove();
+    test_string_index_of_char();
+    test_string_index_of_char_from();
+    test_string_index_of_substring();
+    test_string_index_of_substring_from();
+    test_string_last_index_of_char();
+    test_string_last_index_of_char_from();
+    test_string_last_index_of_substring();
+    test_string_last_index_of_substring_from();
 
     printf("[PASS] test_cino_utils\n");
 }

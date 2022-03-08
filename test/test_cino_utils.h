@@ -44,5 +44,14 @@ void test_string_insert_string();
 void test_string_substring();
 void test_string_replace_char();
 void test_string_replace();
+void test_string_remove();
+void test_string_index_of_char();
+void test_string_index_of_char_from();
+void test_string_index_of_substring();
+void test_string_index_of_substring_from();
+void test_string_last_index_of_char();
+void test_string_last_index_of_char_from();
+void test_string_last_index_of_substring();
+void test_string_last_index_of_substring_from();
 
 #endif

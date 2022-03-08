@@ -307,4 +307,84 @@ char *string_replace_char(char *str, char old_char, char new_char);
  */
 char *string_replace(char *str, const char *old_str, const char *new_str);
 
+/**
+ * @brief   字符串删除指定子串
+ * @param str       :   字符串
+ * @param substr	:   子串
+ * @return  新字符串
+ */
+char *string_remove(char *str, const char *substr);
+
+/**
+ * @brief   字符串中查找首次出现指定字符的下标
+ * @param str   :   字符串
+ * @param c     :   字符
+ * @return  返回字符首次出现的下标，不存在返回-1。
+ */
+int string_index_of_char(const char *str, char c);
+
+/**
+ * @brief   字符串中查找从指定位置开始首次出现指定字符的下标
+ * @param str   :   字符串
+ * @param c     :   字符
+ * @param from  :   开始查找下标
+ * @return  返回字符从指定位置开始首次出现的下标，不存在返回-1。
+ */
+int string_index_of_char_from(const char *str, char c, int from);
+
+/**
+ * @brief   字符串中查找从指定位置开始首次出现指定子串的下标
+ * @param str       :   字符串
+ * @param substr    :   子串
+ * @return  返回子串首次出现的下标，不存在返回-1。
+ */
+int string_index_of_substring(const char *str, const char *substr);
+
+/**
+ * @brief   字符串中查找从指定位置开始首次出现指定子串的下标
+ * @param str       :   字符串
+ * @param substr    :   子串
+ * @param from      :   开始查找下标
+ * @return  返回子串从指定位置开始首次出现的下标，不存在返回-1。
+ */
+int string_index_of_substring_from(const char *str, const char *substr, int from);
+
+/**
+ * @brief   字符串中查找最后一次出现指定字符的下标
+ * @note    空串中查找\0，返回0
+ * @param str   :   字符串
+ * @param c     :   字符
+ * @return  返回字符最后一次出现的下标，不存在返回-1。
+ */
+int string_last_index_of_char(const char *str, char c);
+
+/**
+ * @brief   字符串中查找从开始位置向前最后一次出现指定字符的下标
+ * @note    空串中从0开始查找\0，返回0
+ * @param str   :   字符串
+ * @param c     :   字符
+ * @param from  :   开始下标
+ * @return  返回字符从开始位置向前最后一次出现的下标，不存在返回-1。
+ */
+int string_last_index_of_char_from(const char *str, char c, int from);
+
+/**
+ * @brief   字符串中查找最后一次出现指定子串的下标
+ * @note    空串中查找空串，返回0
+ * @param str       :   字符串
+ * @param substr    :   子串
+ * @return  返回子串最后一次出现的下标，不存在返回-1。
+ */
+int string_last_index_of_substring(const char *str, const char *substr);
+
+/**
+ * @brief   字符串中查找从指定位置开始向前最后一次出现指定子串的下标
+ * @note    空串中从0开始查找空串，返回0
+ * @param str       :   字符串
+ * @param substr    :   子串
+ * @param from      :   开始查找下标
+ * @return  返回子串从指定位置开始向前最后一次出现的下标，不存在返回-1。
+ */
+int string_last_index_of_substring_from(const char *str, const char *substr, int from);
+
 #endif

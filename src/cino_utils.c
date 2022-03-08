@@ -483,3 +483,267 @@ char *string_replace(char *str, const char *old_str, const char *new_str) {
     }
     return str;
 }
+
+/**
+ * @brief   字符串删除指定子串
+ * @param str       :   字符串
+ * @param substr	:   子串
+ * @return  新字符串
+ */
+char *string_remove(char *str, const char *substr) {
+    return_value_if_fail(str != NULL && substr != NULL, str);
+
+    int substr_len = strlen(substr);
+    if (substr_len > 0) {
+        char *p = str;
+        int size = 0;
+        while ((p = strstr(p, substr))) {
+            size = (size == 0) ? p - str + strlen(p + substr_len) + 1 : size - substr_len;
+            memmove(p, p + substr_len, size - (p - str));
+        }
+    }
+
+    return str;
+}
+
+/**
+ * @brief   字符串中查找首次出现指定字符的下标
+ * @note    空串中查找\0，返回0
+ * @param str   :   字符串
+ * @param c     :   字符
+ * @return  返回字符首次出现的下标，不存在返回-1。
+ */
+int string_index_of_char(const char *str, char c) {
+    return_value_if_fail(str != NULL, -1);
+
+    int str_len = strlen(str);
+
+    // 空串中查找\0，返回0
+    if (str_len == 0 && c == '\0') {
+        return 0;
+    }
+
+    int i = 0;
+    while (str[i] != '\0') {
+        if (str[i] == c) {
+            return i;
+        }
+        i++;
+    }
+
+    return -1;
+}
+
+/**
+ * @brief   字符串中查找从指定位置开始首次出现指定字符的下标
+ * @note    空串中从0开始查找\0，返回0
+ * @param str   :   字符串
+ * @param c     :   字符
+ * @param from  :   开始查找下标
+ * @return  返回字符从指定位置开始首次出现的下标，不存在返回-1。
+ */
+int string_index_of_char_from(const char *str, char c, int from) {
+    return_value_if_fail(str != NULL, -1);
+
+    int str_len = strlen(str);
+
+    // 空串中查找\0，返回0
+    if (str_len == 0 && c == '\0' && from == 0) {
+        return 0;
+    }
+
+    return_value_if_fail(from >= 0 && from < str_len, -1);
+
+    int i = from;
+    while (str[i] != '\0') {
+        if (str[i] == c) {
+            return i;
+        }
+        i++;
+    }
+
+    return -1;
+}
+
+/**
+ * @brief   字符串中查找从指定位置开始首次出现指定子串的下标
+ * @note    空串中查找空串，返回0
+ * @param str       :   字符串
+ * @param substr    :   子串
+ * @return  返回子串首次出现的下标，不存在返回-1。
+ */
+int string_index_of_substring(const char *str, const char *substr) {
+    return_value_if_fail(str != NULL && substr != NULL, -1);
+
+    int str_len = strlen(str);
+    int substr_len = strlen(substr);
+
+    // 主串和子串都为空串返回0
+    if (str_len == 0 && substr_len == 0) {
+        return 0;
+    }
+    // 主串不为空串，子串为空串，返回-1未找到
+    else if (substr_len == 0) {
+        return -1;
+    }
+
+    const char *p = strstr(str, substr);
+    return p ? p - str : -1;
+}
+
+/**
+ * @brief   字符串中查找从指定位置开始首次出现指定子串的下标
+ * @note    空串中从0开始查找空串，返回0
+ * @param str       :   字符串
+ * @param substr    :   子串
+ * @param from      :   开始查找下标
+ * @return  返回子串从指定位置开始首次出现的下标，不存在返回-1。
+ */
+int string_index_of_substring_from(const char *str, const char *substr, int from) {
+    return_value_if_fail(str != NULL && substr != NULL, -1);
+
+    int str_len = strlen(str);
+    int substr_len = strlen(substr);
+
+    // 从0开始，如果主串和子串都为空串返回0
+    if (str_len == 0 && substr_len == 0 && from == 0) {
+        return 0;
+    }
+    // 主串不为空串，子串为空串，返回-1未找到
+    else if (substr_len == 0) {
+        return -1;
+    }
+
+    return_value_if_fail(from >= 0 && from < str_len, -1);
+
+    const char *p = strstr(str + from, substr);
+    return p ? p - str : -1;
+}
+
+/**
+ * @brief   字符串中查找最后一次出现指定字符的下标
+ * @note    空串中查找\0，返回0
+ * @param str   :   字符串
+ * @param c     :   字符
+ * @return  返回字符最后一次出现的下标，不存在返回-1。
+ */
+int string_last_index_of_char(const char *str, char c) {
+    return_value_if_fail(str != NULL, -1);
+
+    int str_len = strlen(str);
+
+    // 空串中查找\0，返回0
+    if (str_len == 0 && c == '\0') {
+        return 0;
+    }
+
+    int i = str_len - 1;
+    while (i >= 0 && str[i] != '\0') {
+        if (str[i] == c) {
+            return i;
+        }
+        i--;
+    }
+
+    return -1;
+}
+
+/**
+ * @brief   字符串中查找从开始位置向前最后一次出现指定字符的下标
+ * @note    空串中从0开始查找\0，返回0
+ * @param str   :   字符串
+ * @param c     :   字符
+ * @param from  :   开始下标
+ * @return  返回字符从开始位置向前最后一次出现的下标，不存在返回-1。
+ */
+int string_last_index_of_char_from(const char *str, char c, int from) {
+    return_value_if_fail(str != NULL, -1);
+
+    int str_len = strlen(str);
+
+    // 空串中查找\0，返回0
+    if (str_len == 0 && c == '\0' && from == 0) {
+        return 0;
+    }
+
+    return_value_if_fail(from >= 0 && from < str_len, -1);
+
+    int i = from;
+    while (i >= 0 && str[i] != '\0') {
+        if (str[i] == c) {
+            return i;
+        }
+        i--;
+    }
+
+    return -1;
+}
+
+/**
+ * @brief   字符串中查找最后一次出现指定子串的下标
+ * @note    空串中查找空串，返回0
+ * @param str       :   字符串
+ * @param substr    :   子串
+ * @return  返回子串最后一次出现的下标，不存在返回-1。
+ */
+int string_last_index_of_substring(const char *str, const char *substr) {
+    return_value_if_fail(str != NULL && substr != NULL, -1);
+
+    int str_len = strlen(str);
+    int substr_len = strlen(substr);
+
+    // 主串和子串都为空串返回0
+    if (str_len == 0 && substr_len == 0) {
+        return 0;
+    }
+    // 主串不为空串，子串为空串，返回-1未找到
+    else if (substr_len == 0) {
+        return -1;
+    }
+
+    for (const char *p = str + str_len - substr_len; p >= str; p--) {
+        if (strncmp(p, substr, substr_len) == 0) {
+            return p - str;
+        }
+    }
+
+    return -1;
+}
+
+/**
+ * @brief   字符串中查找从指定位置开始向前最后一次出现指定子串的下标
+ * @note    空串中从0开始查找空串，返回0
+ * @param str       :   字符串
+ * @param substr    :   子串
+ * @param from      :   开始查找下标
+ * @return  返回子串从指定位置开始向前最后一次出现的下标，不存在返回-1。
+ */
+int string_last_index_of_substring_from(const char *str, const char *substr, int from) {
+    return_value_if_fail(str != NULL && substr != NULL, -1);
+
+    int str_len = strlen(str);
+    int substr_len = strlen(substr);
+
+    // 从0开始，如果主串和子串都为空串返回0
+    if (str_len == 0 && substr_len == 0 && from == 0) {
+        return 0;
+    }
+    // 主串不为空串，子串为空串，返回-1未找到
+    else if (substr_len == 0) {
+        return -1;
+    }
+
+    return_value_if_fail(from >= 0 && from < str_len, -1);
+
+    for (const char *p = str + from - substr_len + 1; p >= str; p--) {
+        if (strncmp(p, substr, substr_len) == 0) {
+            return p - str;
+        }
+    }
+
+    return -1;
+}
+
+int string_split(char *str, const char *delimiter) {
+    return 0;  // dummy
+}

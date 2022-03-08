@@ -1,8 +1,6 @@
 #include "test_cino_utils.h"
 #include "cino_utils.h"
 
-const double EPS = 1e-6;  // 用于比较浮点数的精度
-
 void test_return_if_fail() {
     int cnt = 0;
     cnt++;
@@ -200,6 +198,8 @@ void test_int_to_string() {
 }
 
 void test_string_to_double() {
+    const double EPS = 1e-6;  // 用于比较浮点数的精度
+
     assert(fabs(string_to_double("123") - 123.0) <= EPS);
     assert(fabs(string_to_double("-123") - (-123.0)) <= EPS);
     assert(fabs(string_to_double("0") - 0.0) <= EPS);
@@ -879,4 +879,182 @@ void test_string_replace() {
 
     p = string_replace(NULL, NULL, NULL);
     assert(!p);
+}
+
+void test_string_remove() {
+    char *p = NULL;
+
+    char s1[] = "Hello World";
+    p = string_remove(s1, "llo");
+    assert(strncmp(s1, "He World", sizeof(s1)) == 0);
+    assert(strncmp(p, "He World", sizeof(s1)) == 0);
+
+    char s2[] = "Hello World";
+    p = string_remove(s2, " ");
+    assert(strncmp(s2, "HelloWorld", sizeof(s2)) == 0);
+    assert(strncmp(p, "HelloWorld", sizeof(s2)) == 0);
+
+    char s3[] = "Hello World";
+    p = string_remove(s3, "Hello");
+    assert(strncmp(s3, " World", sizeof(s3)) == 0);
+    assert(strncmp(p, " World", sizeof(s3)) == 0);
+
+    char s4[] = "Hello World";
+    p = string_remove(s4, "World");
+    assert(strncmp(s4, "Hello ", sizeof(s4)) == 0);
+    assert(strncmp(p, "Hello ", sizeof(s4)) == 0);
+
+    char s5[] = "Hello World";
+    p = string_remove(s5, "Hello World");
+    assert(strncmp(s5, "", sizeof(s5)) == 0);
+    assert(strncmp(p, "", sizeof(s5)) == 0);
+
+    char s6[] = "This is a test";
+    p = string_remove(s6, "is");
+    assert(strncmp(s6, "Th  a test", sizeof(s6)) == 0);
+    assert(strncmp(p, "Th  a test", sizeof(s6)) == 0);
+
+    char s7[] = "This is a test";
+    p = string_remove(s7, "hello");
+    assert(strncmp(s7, "This is a test", sizeof(s7)) == 0);
+    assert(strncmp(p, "This is a test", sizeof(s7)) == 0);
+
+    p = string_remove(NULL, NULL);
+    assert(!p);
+}
+
+void test_string_index_of_char() {
+    assert(string_index_of_char("Hello World", 'l') == 2);
+    assert(string_index_of_char("Hello World", 'e') == 1);
+    assert(string_index_of_char("Hello World", 'd') == 10);
+    assert(string_index_of_char("Hello World", 'H') == 0);
+    assert(string_index_of_char("Hello World", '#') == -1);
+    assert(string_index_of_char("", 'a') == -1);
+    assert(string_index_of_char(NULL, 'a') == -1);
+    assert(string_index_of_char("", '\0') == 0);
+}
+
+void test_string_index_of_char_from() {
+    assert(string_index_of_char_from("Hello World", 'l', 0) == 2);
+    assert(string_index_of_char_from("Hello World", 'l', 1) == 2);
+    assert(string_index_of_char_from("Hello World", 'l', 2) == 2);
+    assert(string_index_of_char_from("Hello World", 'l', 3) == 3);
+    assert(string_index_of_char_from("Hello World", 'l', 7) == 9);
+    assert(string_index_of_char_from("Hello World", 'l', 9) == 9);
+    assert(string_index_of_char_from("Hello World", 'l', 10) == -1);
+    assert(string_index_of_char_from("Hello World", 'a', 0) == -1);
+    assert(string_index_of_char_from("Hello World", 'e', 1) == 1);
+    assert(string_index_of_char_from("Hello World", 'o', 6) == 7);
+    assert(string_index_of_char_from("Hello World", 'H', 5) == -1);
+    assert(string_index_of_char_from("", 'a', 0) == -1);
+    assert(string_index_of_char_from(NULL, 'a', 5) == -1);
+    assert(string_index_of_char_from("Hello World", 'l', 99) == -1);
+    assert(string_index_of_char_from("Hello World", 'l', -99) == -1);
+    assert(string_index_of_char_from("", '\0', 0) == 0);
+}
+
+void test_string_index_of_substring() {
+    assert(string_index_of_substring("Hello World", "l") == 2);
+    assert(string_index_of_substring("Hello World", "ll") == 2);
+    assert(string_index_of_substring("Hello World", "llo") == 2);
+    assert(string_index_of_substring("Hello World", "World") == 6);
+    assert(string_index_of_substring("Hello World", "Hello") == 0);
+    assert(string_index_of_substring("Hello World", "") == -1);
+    assert(string_index_of_substring("Hello World", " ") == 5);
+    assert(string_index_of_substring("Hello World", "hell") == -1);
+    assert(string_index_of_substring("Hello World", "lo W") == 3);
+    assert(string_index_of_substring("Hello World", "Hello World!") == -1);
+    assert(string_index_of_substring("", "") == 0);
+    assert(string_index_of_substring("", "Hello") == -1);
+    assert(string_index_of_substring(NULL, "") == -1);
+}
+
+void test_string_index_of_substring_from() {
+    assert(string_index_of_substring_from("Hello World", "l", 0) == 2);
+    assert(string_index_of_substring_from("Hello World", "ll", 0) == 2);
+    assert(string_index_of_substring_from("Hello World", "llo", 0) == 2);
+    assert(string_index_of_substring_from("Hello World", "World", 3) == 6);
+    assert(string_index_of_substring_from("Hello World", "World", 8) == -1);
+    assert(string_index_of_substring_from("Hello World", "Hello", 0) == 0);
+    assert(string_index_of_substring_from("Hello World", "Hello", 5) == -1);
+    assert(string_index_of_substring_from("Hello World", "Hello", -99) == -1);
+    assert(string_index_of_substring_from("Hello World", "", 0) == -1);
+    assert(string_index_of_substring_from("Hello World", " ", 4) == 5);
+    assert(string_index_of_substring_from("Hello World", " ", 7) == -1);
+    assert(string_index_of_substring_from("Hello World", "hell", 0) == -1);
+    assert(string_index_of_substring_from("Hello World", "lo W", 3) == 3);
+    assert(string_index_of_substring_from("Hello World", "Hello World!", 0) == -1);
+    assert(string_index_of_substring_from("", "", 0) == 0);
+    assert(string_index_of_substring_from("", "", 6) == -1);
+    assert(string_index_of_substring_from("", "Hello", 0) == -1);
+    assert(string_index_of_substring_from(NULL, "", 99) == -1);
+}
+
+void test_string_last_index_of_char() {
+    assert(string_last_index_of_char("Hello World", 'l') == 9);
+    assert(string_last_index_of_char("Hello World", 'e') == 1);
+    assert(string_last_index_of_char("Hello World", 'd') == 10);
+    assert(string_last_index_of_char("Hello World", 'H') == 0);
+    assert(string_last_index_of_char("Hello World", ' ') == 5);
+    assert(string_last_index_of_char("", 'a') == -1);
+    assert(string_last_index_of_char(NULL, 'a') == -1);
+    assert(string_last_index_of_char("", '\0') == 0);
+}
+
+void test_string_last_index_of_char_from() {
+    assert(string_last_index_of_char_from("Hello World", 'l', 0) == -1);
+    assert(string_last_index_of_char_from("Hello World", 'l', 1) == -1);
+    assert(string_last_index_of_char_from("Hello World", 'l', 10) == 9);
+    assert(string_last_index_of_char_from("Hello World", 'l', 8) == 3);
+    assert(string_last_index_of_char_from("Hello World", 'l', 3) == 3);
+    assert(string_last_index_of_char_from("Hello World", 'l', 2) == 2);
+    assert(string_last_index_of_char_from("Hello World", 'l', 1) == -1);
+    assert(string_last_index_of_char_from("Hello World", 'a', 5) == -1);
+    assert(string_last_index_of_char_from("Hello World", 'e', 7) == 1);
+    assert(string_last_index_of_char_from("Hello World", 'o', 5) == 4);
+    assert(string_last_index_of_char_from("Hello World", 'H', 0) == 0);
+    assert(string_last_index_of_char_from("", 'a', 0) == -1);
+    assert(string_last_index_of_char_from(NULL, 'a', 5) == -1);
+    assert(string_last_index_of_char_from("Hello World", 'l', 99) == -1);
+    assert(string_last_index_of_char_from("Hello World", 'l', -99) == -1);
+    assert(string_last_index_of_char_from("", '\0', 0) == 0);
+}
+
+void test_string_last_index_of_substring() {
+    assert(string_last_index_of_substring("Hello World", "l") == 9);
+    assert(string_last_index_of_substring("Hello World", "ll") == 2);
+    assert(string_last_index_of_substring("Hello World", "llo") == 2);
+    assert(string_last_index_of_substring("Hello World", "World") == 6);
+    assert(string_last_index_of_substring("Hello World", "Hello") == 0);
+    assert(string_last_index_of_substring("Hello World", "o") == 7);
+    assert(string_last_index_of_substring("Hello World", " ") == 5);
+    assert(string_last_index_of_substring("Hello World", "hell") == -1);
+    assert(string_last_index_of_substring("Hello World", "lo W") == 3);
+    assert(string_last_index_of_substring("Hello World", "Hello World!") == -1);
+    assert(string_last_index_of_substring("", "") == 0);
+    assert(string_last_index_of_substring("", "Hello") == -1);
+    assert(string_last_index_of_substring(NULL, "") == -1);
+    assert(string_last_index_of_substring("Hello World", "") == -1);
+}
+
+void test_string_last_index_of_substring_from() {
+    assert(string_last_index_of_substring_from("Hello World", "l", 0) == -1);
+    assert(string_last_index_of_substring_from("Hello World", "ll", 0) == -1);
+    assert(string_last_index_of_substring_from("Hello World", "llo", 10) == 2);
+    assert(string_last_index_of_substring_from("Hello World", "World", 10) == 6);
+    assert(string_last_index_of_substring_from("Hello World", "World", 8) == -1);
+    assert(string_last_index_of_substring_from("Hello World", "Hello", 5) == 0);
+    assert(string_last_index_of_substring_from("Hello World", "Hello", 4) == 0);
+    assert(string_last_index_of_substring_from("Hello World", "Hello", 3) == -1);
+    assert(string_last_index_of_substring_from("Hello World", "Hello", -99) == -1);
+    assert(string_last_index_of_substring_from("Hello World", "", 0) == -1);
+    assert(string_last_index_of_substring_from("Hello World", " ", 6) == 5);
+    assert(string_last_index_of_substring_from("Hello World", " ", 3) == -1);
+    assert(string_last_index_of_substring_from("Hello World", "hell", 6) == -1);
+    assert(string_last_index_of_substring_from("Hello World", "lo W", 3) == -1);
+    assert(string_last_index_of_substring_from("Hello World", "Hello World!", 8) == -1);
+    assert(string_last_index_of_substring_from("", "", 0) == 0);
+    assert(string_last_index_of_substring_from("", "", 6) == -1);
+    assert(string_last_index_of_substring_from("", "Hello", 0) == -1);
+    assert(string_last_index_of_substring_from(NULL, "", 99) == -1);
 }
