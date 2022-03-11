@@ -5,12 +5,9 @@ SRC = ./src/
 BIN = ./bin/
 TEST = ./test/
 
-# Create bin directory
-$(shell mkdir -p $(BIN))
-
 ############### CINO ###############
 
-all: cino_utils cino_string cino
+all: cino_utils cino_string cino test
 	$(CC) $(CFLAGS) $(BIN)cino_utils.o $(BIN)cino_string.o $(BIN)cino.o -o $(BIN)cino
 
 cino_utils: $(SRC)cino_utils.c
@@ -40,4 +37,4 @@ test_cino: $(TEST)test_cino.c
 
 .PHONY: clean
 clean:
-	rm -rf $(BIN)
+	rm -rf $(BIN)*
