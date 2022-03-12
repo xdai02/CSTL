@@ -32,28 +32,6 @@ typedef struct cino_string_t cino_string_t;
  */
 cino_string_t *cino_string_create(const char *str);
 
-/**
- * @brief   通过字符创建cino字符串
- * @param c :   字符
- * @return  返回构造好的cino字符串指针，失败返回NULL。
- */
-cino_string_t *cino_string_create_from_char(char c);
-
-/**
- * @brief   通过int创建cino字符串
- * @param int   :   int值
- * @return  返回构造好的cino字符串指针，失败返回NULL。
- */
-cino_string_t *cino_string_create_from_int(int val);
-
-/**
- * @brief   通过double创建cino字符串
- * @param val       :   double值
- * @param precision :   四舍五入保留小数点后数位，默认保留2位，最大支持16位
- * @return  返回构造好的cino字符串指针，失败返回NULL。
- */
-cino_string_t *cino_string_create_from_double(double val, int precision);
-
 /****************************************
  *            cino字符串销毁
  ****************************************/
@@ -126,5 +104,21 @@ cino_string_t *cino_string_tolower(cino_string_t *string);
  * @return  cino大写字符串
  */
 cino_string_t *cino_string_toupper(cino_string_t *string);
+
+/**
+ * @brief   判断cino字符串是否以指定cino子串开头
+ * @param string    :   cino字符串
+ * @param prefix    :   cino子串
+ * @return  如果string以prefix开头返回true，否则返回false。
+ */
+bool cino_string_starts_with(cino_string_t *string, cino_string_t *prefix);
+
+/**
+ * @brief   判断cino字符串是否以指定cino子串结尾
+ * @param string    :   cino字符串
+ * @param postfix    :   cino子串
+ * @return  如果string以postfix结尾返回true，否则返回false。
+ */
+bool cino_string_ends_with(cino_string_t *string, cino_string_t *postfix);
 
 #endif

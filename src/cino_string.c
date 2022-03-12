@@ -36,40 +36,6 @@ cino_string_t *cino_string_create(const char *str) {
     return string;
 }
 
-/**
- * @brief   通过字符创建cino字符串
- * @param c :   字符
- * @return  返回构造好的cino字符串指针，失败返回NULL。
- */
-cino_string_t *cino_string_create_from_char(char c) {
-    char str[2] = {0};
-    char_to_string(c, str, sizeof(str));
-    return cino_string_create(str);
-}
-
-/**
- * @brief   通过int创建cino字符串
- * @param val   :   int值
- * @return  返回构造好的cino字符串指针，失败返回NULL。
- */
-cino_string_t *cino_string_create_from_int(int val) {
-    char str[13] = {0};
-    int_to_string(val, str, sizeof(str));
-    return cino_string_create(str);
-}
-
-/**
- * @brief   通过double创建cino字符串
- * @param val       :   double值
- * @param precision :   四舍五入保留小数点后数位，默认保留2位，最大支持16位
- * @return  返回构造好的cino字符串指针，失败返回NULL。
- */
-cino_string_t *cino_string_create_from_double(double val, int precision) {
-    char str[64] = {0};
-    double_to_string(val, precision, str, sizeof(str));
-    return cino_string_create(str);
-}
-
 /****************************************
  *            cino字符串销毁
  ****************************************/
@@ -164,10 +130,7 @@ cino_string_t *cino_string_clear(cino_string_t *string) {
     return_value_if_fail(string != NULL, NULL);
     string->length = 0;
     string->capacity = 0;
-    // 如果新空间分配失败，返回原cino字符串
-    char *memory = (char *)realloc(string->string, sizeof(char) * (string->capacity + 1));
-    return_value_if_fail(memory != NULL, string);
-    string->string = memory;
+    string->string = (char *)realloc(string->string, sizeof(char) * (string->capacity + 1));
     memset(string->string, '\0', string->capacity + 1);
     return string;
 }
@@ -228,4 +191,32 @@ cino_string_t *cino_string_toupper(cino_string_t *string) {
     return_value_if_fail(string != NULL, NULL);
     string_toupper(string->string);
     return string;
+}
+
+/**
+ * @brief   判断cino字符串是否以指定cino子串开头
+ * @param string    :   cino字符串
+ * @param prefix    :   cino子串
+ * @return  如果string以prefix开头返回true，否则返回false。
+ */
+bool cino_string_starts_with(cino_string_t *string, cino_string_t *prefix) {
+    if (!string && !prefix) {
+        return true;
+    }
+    return_value_if_fail(string != NULL && prefix != NULL, false);
+    return string_starts_with(cino_string_get(string), cino_string_get(prefix));
+}
+
+/**
+ * @brief   判断cino字符串是否以指定cino子串结尾
+ * @param string    :   cino字符串
+ * @param postfix    :   cino子串
+ * @return  如果string以postfix结尾返回true，否则返回false。
+ */
+bool cino_string_ends_with(cino_string_t *string, cino_string_t *postfix) {
+    if (!string && !postfix) {
+        return true;
+    }
+    return_value_if_fail(string != NULL && postfix != NULL, false);
+    return string_ends_with(cino_string_get(string), cino_string_get(postfix));
 }

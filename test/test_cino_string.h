@@ -10,9 +10,6 @@
 #include "cino_string.h"
 
 void test_cino_string_create();
-void test_cino_string_create_from_char();
-void test_cino_string_create_from_int();
-void test_cino_string_create_from_double();
 void test_cino_string_destroy();
 void test_cino_string_get();
 void test_cino_string_set();
@@ -22,5 +19,7 @@ void test_cino_string_equal();
 void test_cino_string_equal_ignore_case();
 void test_cino_string_tolower();
 void test_cino_string_toupper();
+void test_cino_string_starts_with();
+void test_cino_string_ends_with();
 
 #endif

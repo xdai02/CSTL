@@ -53,9 +53,6 @@ void test_cino_utils() {
 
 void test_cino_string() {
     test_cino_string_create();
-    test_cino_string_create_from_char();
-    test_cino_string_create_from_int();
-    test_cino_string_create_from_double();
     test_cino_string_destroy();
     test_cino_string_get();
     test_cino_string_set();
@@ -65,6 +62,8 @@ void test_cino_string() {
     test_cino_string_equal_ignore_case();
     test_cino_string_tolower();
     test_cino_string_toupper();
+    test_cino_string_starts_with();
+    test_cino_string_ends_with();
 
     printf("[PASS] test_cino_string\n");
 }
