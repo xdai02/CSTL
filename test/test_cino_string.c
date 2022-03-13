@@ -348,3 +348,77 @@ void test_cino_string_ends_with() {
     cino_string_destroy(s1);
     cino_string_destroy(s2);
 }
+
+void test_cino_string_copy() {
+    cino_string_t *s1 = NULL;
+    cino_string_t *s2 = NULL;
+
+    s1 = cino_string_create("hello");
+    s2 = cino_string_create("world");
+    s1 = cino_string_copy(s1, s2);
+    assert(strncmp(cino_string_get(s1), cino_string_get(s2), strlen(cino_string_get(s2))) == 0);
+    assert(cino_string_length(s1) == strlen("world"));
+    cino_string_destroy(s1);
+    cino_string_destroy(s2);
+
+    s1 = NULL;
+    s2 = cino_string_create("This is a test.");
+    s1 = cino_string_copy(s1, s2);
+    assert(!s1);
+    cino_string_destroy(s2);
+
+    s1 = cino_string_create("Lorem ipsum");
+    s2 = cino_string_create("test");
+    s1 = cino_string_copy(s1, s2);
+    assert(strncmp(cino_string_get(s1), cino_string_get(s2), strlen(cino_string_get(s2))) == 0);
+    assert(cino_string_length(s1) == strlen("test"));
+    cino_string_destroy(s1);
+    cino_string_destroy(s2);
+
+    s1 = cino_string_create("Lorem ipsum");
+    s2 = NULL;
+    s1 = cino_string_copy(s1, s2);
+    assert(cino_string_length(s1) == 0);
+    cino_string_destroy(s1);
+}
+
+void test_cino_string_concat() {
+    cino_string_t *s1 = NULL;
+    cino_string_t *s2 = NULL;
+
+    s1 = cino_string_create("hello");
+    s2 = cino_string_create("world");
+    s1 = cino_string_concat(s1, s2);
+    assert(strncmp(cino_string_get(s1), "helloworld", strlen("helloworld")) == 0);
+    assert(cino_string_length(s1) == strlen("helloworld"));
+    cino_string_destroy(s1);
+    cino_string_destroy(s2);
+
+    s1 = cino_string_create("");
+    s2 = cino_string_create("This is a test.");
+    s1 = cino_string_concat(s1, s2);
+    assert(strncmp(cino_string_get(s1), "This is a test.", strlen("This is a test.")) == 0);
+    assert(cino_string_length(s1) == strlen("This is a test."));
+    cino_string_destroy(s1);
+    cino_string_destroy(s2);
+
+    s1 = cino_string_create("Lorem ipsum");
+    s2 = cino_string_create("test");
+    s1 = cino_string_concat(s1, s2);
+    assert(strncmp(cino_string_get(s1), "Lorem ipsumtest", strlen("Lorem ipsumtest")) == 0);
+    assert(cino_string_length(s1) == strlen("Lorem ipsumtest"));
+    cino_string_destroy(s1);
+    cino_string_destroy(s2);
+
+    s1 = NULL;
+    s2 = cino_string_create("test");
+    s1 = cino_string_concat(s1, s2);
+    assert(!s1);
+    cino_string_destroy(s2);
+
+    s1 = cino_string_create("Lorem ipsum");
+    s2 = NULL;
+    s1 = cino_string_concat(s1, s2);
+    assert(strncmp(cino_string_get(s1), "Lorem ipsum", strlen("Lorem ipsum")) == 0);
+    cino_string_destroy(s1);
+}

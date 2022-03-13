@@ -443,23 +443,23 @@ void test_string_copy() {
     char s1[] = "hello";
     char s2[] = "world";
     p = string_copy(s1, s2);
-    assert(strncmp(s1, "world", sizeof(s1)) == 0);
+    assert(strncmp(s1, s2, sizeof(s1)) == 0);
     assert(strncmp(s2, "world", sizeof(s2)) == 0);
-    assert(strncmp(p, "world", sizeof(s1)) == 0);
+    assert(strncmp(p, s1, sizeof(s1)) == 0);
 
     char s3[32] = {0};
     char *s4 = "This is a test.";
     p = string_copy(s3, s4);
-    assert(strncmp(s3, "This is a test.", sizeof(s3)) == 0);
+    assert(strncmp(s3, s4, sizeof(s3)) == 0);
     assert(strncmp(s4, "This is a test.", strlen("This is a test.")) == 0);
-    assert(strncmp(p, "This is a test.", sizeof(s3)) == 0);
+    assert(strncmp(p, s3, sizeof(s3)) == 0);
 
     char s5[16] = "Lorem ipsum";
     char *s6 = "test";
     p = string_copy(s5, s6);
-    assert(strncmp(s5, "test", sizeof(s5)) == 0);
+    assert(strncmp(s5, s6, sizeof(s5)) == 0);
     assert(strncmp(s6, "test", strlen("test")) == 0);
-    assert(strncmp(p, "test", sizeof(s5)) == 0);
+    assert(strncmp(p, s5, sizeof(s5)) == 0);
 
     p = string_copy(NULL, "test");
     assert(!p);
@@ -467,7 +467,7 @@ void test_string_copy() {
     char s7[16] = "Lorem ipsum";
     p = string_copy(s7, NULL);
     assert(strncmp(s7, "Lorem ipsum", sizeof(s7)) == 0);
-    assert(strncmp(p, "Lorem ipsum", sizeof(s7)) == 0);
+    assert(strncmp(p, s7, sizeof(s7)) == 0);
 }
 
 void test_string_concat() {
@@ -478,21 +478,21 @@ void test_string_concat() {
     p = string_concat(s1, s2);
     assert(strncmp(s1, "helloworld", sizeof(s1)) == 0);
     assert(strncmp(s2, "world", sizeof(s2)) == 0);
-    assert(strncmp(p, "helloworld", sizeof(s1)) == 0);
+    assert(strncmp(p, s1, sizeof(s1)) == 0);
 
     char s3[32] = {0};
     char *s4 = "This is a test.";
     p = string_concat(s3, s4);
     assert(strncmp(s3, "This is a test.", sizeof(s3)) == 0);
     assert(strncmp(s4, "This is a test.", strlen("This is a test.")) == 0);
-    assert(strncmp(p, "This is a test.", sizeof(s3)) == 0);
+    assert(strncmp(p, s3, sizeof(s3)) == 0);
 
     char s5[16] = "Lorem ipsum";
     char *s6 = "test";
     p = string_concat(s5, s6);
     assert(strncmp(s5, "Lorem ipsumtest", sizeof(s5)) == 0);
     assert(strncmp(s6, "test", strlen("test")) == 0);
-    assert(strncmp(p, "Lorem ipsumtest", sizeof(s5)) == 0);
+    assert(strncmp(p, s5, sizeof(s5)) == 0);
 
     p = string_concat(NULL, "test");
     assert(!p);
@@ -500,7 +500,7 @@ void test_string_concat() {
     char s7[16] = "Lorem ipsum";
     p = string_concat(s7, NULL);
     assert(strncmp(s7, "Lorem ipsum", sizeof(s7)) == 0);
-    assert(strncmp(p, "Lorem ipsum", sizeof(s7)) == 0);
+    assert(strncmp(p, s7, sizeof(s7)) == 0);
 }
 
 void test_string_trim() {

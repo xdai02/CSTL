@@ -64,6 +64,8 @@ void test_cino_string() {
     test_cino_string_toupper();
     test_cino_string_starts_with();
     test_cino_string_ends_with();
+    test_cino_string_copy();
+    test_cino_string_concat();
 
     printf("[PASS] test_cino_string\n");
 }

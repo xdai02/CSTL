@@ -6,7 +6,6 @@
 typedef struct cino_string_t {
     char *string;  // 字符串
     int length;    // 字符串长度
-    int capacity;  // 最大容量
 } cino_string_t;
 
 /****************************************
@@ -25,9 +24,8 @@ cino_string_t *cino_string_create(const char *str) {
     return_value_if_fail(string != NULL, NULL);
 
     string->length = string_length(str);
-    string->capacity = string_length(str);
 
-    string->string = (char *)calloc(string->capacity + 1, sizeof(char));
+    string->string = (char *)calloc(string->length + 1, sizeof(char));
     call_and_return_value_if_fail(string->string != NULL, cino_string_destroy(string), NULL);
 
     strncpy(string->string, str, string->length);
@@ -48,7 +46,6 @@ void cino_string_destroy(cino_string_t *string) {
     return_if_fail(string != NULL);
 
     string->length = 0;
-    string->capacity = 0;
 
     if (string->string) {
         free(string->string);
@@ -85,29 +82,16 @@ cino_string_t *cino_string_set(cino_string_t *string, const char *str) {
     return_value_if_fail(string != NULL, NULL);
     call_and_return_value_if_fail(str != NULL, cino_string_clear(string), string);
 
-    int str_len = strlen(str);
-    double ratio = 1.0 * string->capacity / str_len;  // 旧串与新串长度比
-
-    // 长度比小于1，说明原字符串容量不足，扩容为新字符串长度
-    if (ratio < 1) {
-        // 如果新空间分配失败，返回原cino字符串
+    int str_len = string_length(str);
+    if (string->length != str_len) {
         char *memory = (char *)realloc(string->string, sizeof(char) * (str_len + 1));
+        // 如果新空间分配失败，返回原cino字符串
         return_value_if_fail(memory != NULL, string);
-        string->capacity = str_len;
         string->string = memory;
     }
-    // 长度比大于2，说明原字符串有至少一半容量多余，按比例缩小空间
-    else if (ratio >= 2) {
-        while (string->capacity / 2 > str_len) {
-            string->capacity /= 2;
-        }
-        string->string = (char *)realloc(string->string, sizeof(char) * (string->capacity + 1));
-    }
 
+    string_copy(string->string, str);
     string->length = str_len;
-    strncpy(string->string, str, string->length);
-    string->string[string->length] = '\0';
-
     return string;
 }
 
@@ -116,7 +100,7 @@ cino_string_t *cino_string_set(cino_string_t *string, const char *str) {
  * @param string    :   cino字符串
  * @return  cino字符串长度
  */
-int cino_string_length(cino_string_t *string) {
+int cino_string_length(const cino_string_t *string) {
     return_value_if_fail(string != NULL && string->string != NULL, 0);
     return string->length;
 }
@@ -129,9 +113,8 @@ int cino_string_length(cino_string_t *string) {
 cino_string_t *cino_string_clear(cino_string_t *string) {
     return_value_if_fail(string != NULL, NULL);
     string->length = 0;
-    string->capacity = 0;
-    string->string = (char *)realloc(string->string, sizeof(char) * (string->capacity + 1));
-    memset(string->string, '\0', string->capacity + 1);
+    string->string = (char *)realloc(string->string, sizeof(char) * (string->length + 1));
+    string_clear(string->string, string->length + 1);
     return string;
 }
 
@@ -150,7 +133,7 @@ bool cino_string_equal(const cino_string_t *s1, const cino_string_t *s2) {
         return false;
     }
 
-    return string_equal(cino_string_get(s1), cino_string_get(s2));
+    return string_equal(s1->string, s2->string);
 }
 
 /**
@@ -168,7 +151,7 @@ bool cino_string_equal_ignore_case(const cino_string_t *s1, const cino_string_t 
         return false;
     }
 
-    return string_equal_ignore_case(cino_string_get(s1), cino_string_get(s2));
+    return string_equal_ignore_case(s1->string, s2->string);
 }
 
 /**
@@ -204,7 +187,7 @@ bool cino_string_starts_with(cino_string_t *string, cino_string_t *prefix) {
         return true;
     }
     return_value_if_fail(string != NULL && prefix != NULL, false);
-    return string_starts_with(cino_string_get(string), cino_string_get(prefix));
+    return string_starts_with(string->string, prefix->string);
 }
 
 /**
@@ -218,5 +201,46 @@ bool cino_string_ends_with(cino_string_t *string, cino_string_t *postfix) {
         return true;
     }
     return_value_if_fail(string != NULL && postfix != NULL, false);
-    return string_ends_with(cino_string_get(string), cino_string_get(postfix));
+    return string_ends_with(string->string, postfix->string);
+}
+
+/**
+ * @brief   cino字符串拷贝
+ * @param destination   :   目标cino字符串
+ * @param source        :   源cino字符串
+ * @return  返回目标cino字符串
+ */
+cino_string_t *cino_string_copy(cino_string_t *destination, const cino_string_t *source) {
+    return_value_if_fail(destination != NULL, NULL);
+    call_and_return_value_if_fail(source != NULL, cino_string_clear(destination), destination);
+
+    if (destination->length != source->length) {
+        char *memory = (char *)realloc(destination->string, sizeof(char) * (source->length + 1));
+        // 如果新空间分配失败，返回原cino字符串
+        return_value_if_fail(memory != NULL, destination);
+        destination->string = memory;
+    }
+
+    string_copy(destination->string, source->string);
+    destination->length = source->length;
+    return destination;
+}
+
+/**
+ * @brief   cino字符串拼接
+ * @param destination   :   目标cino字符串
+ * @param source        :   源cino字符串
+ * @return  返回目标cino字符串。
+ */
+cino_string_t *cino_string_concat(cino_string_t *destination, const cino_string_t *source) {
+    return_value_if_fail(destination != NULL && source != NULL, destination);
+
+    char *memory = (char *)realloc(destination->string, sizeof(char) * (destination->length + source->length + 1));
+    // 如果新空间分配失败，返回原cino字符串
+    return_value_if_fail(memory != NULL, destination);
+    destination->string = memory;
+
+    string_concat(destination->string, source->string);
+    destination->length += source->length;
+    return destination;
 }

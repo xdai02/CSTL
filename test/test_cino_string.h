@@ -21,5 +21,7 @@ void test_cino_string_tolower();
 void test_cino_string_toupper();
 void test_cino_string_starts_with();
 void test_cino_string_ends_with();
+void test_cino_string_copy();
+void test_cino_string_concat();
 
 #endif
