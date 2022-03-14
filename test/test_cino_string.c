@@ -389,7 +389,7 @@ void test_cino_string_concat() {
     s1 = cino_string_create("hello");
     s2 = cino_string_create("world");
     s1 = cino_string_concat(s1, s2);
-    assert(strncmp(cino_string_get(s1), "helloworld", strlen("helloworld")) == 0);
+    assert(strncmp(cino_string_get(s1), "helloworld", strlen(cino_string_get(s1))) == 0);
     assert(cino_string_length(s1) == strlen("helloworld"));
     cino_string_destroy(s1);
     cino_string_destroy(s2);
@@ -397,7 +397,7 @@ void test_cino_string_concat() {
     s1 = cino_string_create("");
     s2 = cino_string_create("This is a test.");
     s1 = cino_string_concat(s1, s2);
-    assert(strncmp(cino_string_get(s1), "This is a test.", strlen("This is a test.")) == 0);
+    assert(strncmp(cino_string_get(s1), "This is a test.", strlen(cino_string_get(s1))) == 0);
     assert(cino_string_length(s1) == strlen("This is a test."));
     cino_string_destroy(s1);
     cino_string_destroy(s2);
@@ -405,7 +405,7 @@ void test_cino_string_concat() {
     s1 = cino_string_create("Lorem ipsum");
     s2 = cino_string_create("test");
     s1 = cino_string_concat(s1, s2);
-    assert(strncmp(cino_string_get(s1), "Lorem ipsumtest", strlen("Lorem ipsumtest")) == 0);
+    assert(strncmp(cino_string_get(s1), "Lorem ipsumtest", strlen(cino_string_get(s1))) == 0);
     assert(cino_string_length(s1) == strlen("Lorem ipsumtest"));
     cino_string_destroy(s1);
     cino_string_destroy(s2);
@@ -419,7 +419,7 @@ void test_cino_string_concat() {
     s1 = cino_string_create("Lorem ipsum");
     s2 = NULL;
     s1 = cino_string_concat(s1, s2);
-    assert(strncmp(cino_string_get(s1), "Lorem ipsum", strlen("Lorem ipsum")) == 0);
+    assert(strncmp(cino_string_get(s1), "Lorem ipsum", strlen(cino_string_get(s1))) == 0);
     cino_string_destroy(s1);
 }
 
@@ -428,43 +428,43 @@ void test_cino_string_insert_char() {
 
     s = cino_string_create("ello");
     s = cino_string_insert_char(s, 0, 'H');
-    assert(strncmp(cino_string_get(s), "Hello", strlen("Hello")) == 0);
+    assert(strncmp(cino_string_get(s), "Hello", strlen(cino_string_get(s))) == 0);
     cino_string_destroy(s);
 
     s = cino_string_create("Hello");
     s = cino_string_insert_char(s, cino_string_length(s), 'o');
-    assert(strncmp(cino_string_get(s), "Helloo", strlen("Helloo")) == 0);
+    assert(strncmp(cino_string_get(s), "Helloo", strlen(cino_string_get(s))) == 0);
     cino_string_destroy(s);
 
     s = cino_string_create("Hello");
     s = cino_string_insert_char(s, 3, 'l');
-    assert(strncmp(cino_string_get(s), "Helllo", strlen("Helllo")) == 0);
+    assert(strncmp(cino_string_get(s), "Helllo", strlen(cino_string_get(s))) == 0);
     cino_string_destroy(s);
 
     s = cino_string_create("Hello");
     s = cino_string_insert_char(s, 1, '\n');
-    assert(strncmp(cino_string_get(s), "H\nello", strlen("H\nello")) == 0);
+    assert(strncmp(cino_string_get(s), "H\nello", strlen(cino_string_get(s))) == 0);
     cino_string_destroy(s);
 
     s = cino_string_create("Hello");
     s = cino_string_insert_char(s, 0, '\0');
-    assert(strncmp(cino_string_get(s), "", strlen("")) == 0);
+    assert(strncmp(cino_string_get(s), "", strlen(cino_string_get(s))) == 0);
     assert(cino_string_length(s) == 0);
     cino_string_destroy(s);
 
     s = cino_string_create("Hello");
     s = cino_string_insert_char(s, cino_string_length(s) - 1, '\0');
-    assert(strncmp(cino_string_get(s), "Hell", strlen("Hell")) == 0);
+    assert(strncmp(cino_string_get(s), "Hell", strlen(cino_string_get(s))) == 0);
     cino_string_destroy(s);
 
     s = cino_string_create("");
     s = cino_string_insert_char(s, 0, 'A');
-    assert(strncmp(cino_string_get(s), "A", strlen("A")) == 0);
+    assert(strncmp(cino_string_get(s), "A", strlen(cino_string_get(s))) == 0);
     cino_string_destroy(s);
 
     s = cino_string_create("Test");
     s = cino_string_insert_char(s, 5, 's');
-    assert(strncmp(cino_string_get(s), "Test", strlen("Test")) == 0);
+    assert(strncmp(cino_string_get(s), "Test", strlen(cino_string_get(s))) == 0);
     cino_string_destroy(s);
 
     s = NULL;
@@ -473,4 +473,68 @@ void test_cino_string_insert_char() {
 }
 
 void test_cino_string_insert_string() {
+    cino_string_t *s1 = NULL;
+    cino_string_t *s2 = NULL;
+
+    s1 = cino_string_create("World");
+    s2 = cino_string_create("Hello");
+    s1 = cino_string_insert_string(s1, 0, s2);
+    assert(strncmp(cino_string_get(s1), "HelloWorld", strlen(cino_string_get(s1))) == 0);
+    cino_string_destroy(s1);
+    cino_string_destroy(s2);
+
+    s1 = cino_string_create("Hello");
+    s2 = cino_string_create("World");
+    s1 = cino_string_insert_string(s1, cino_string_length(s1), s2);
+    assert(strncmp(cino_string_get(s1), "HelloWorld", strlen(cino_string_get(s1))) == 0);
+    cino_string_destroy(s1);
+    cino_string_destroy(s2);
+
+    s1 = cino_string_create("Hello");
+    s2 = cino_string_create("!");
+    s1 = cino_string_insert_string(s1, cino_string_length(s1), s2);
+    assert(strncmp(cino_string_get(s1), "Hello!", strlen(cino_string_get(s1))) == 0);
+    cino_string_destroy(s1);
+    cino_string_destroy(s2);
+
+    s1 = cino_string_create("Hello");
+    s2 = cino_string_create("He");
+    s1 = cino_string_insert_string(s1, 1, s2);
+    assert(strncmp(cino_string_get(s1), "HHeello", strlen(cino_string_get(s1))) == 0);
+    cino_string_destroy(s1);
+    cino_string_destroy(s2);
+
+    s1 = cino_string_create("Hello");
+    s2 = cino_string_create("This is a test.");
+    s1 = cino_string_insert_string(s1, 2, s2);
+    assert(strncmp(cino_string_get(s1), "HeThis is a test.llo", strlen(cino_string_get(s1))) == 0);
+    cino_string_destroy(s1);
+    cino_string_destroy(s2);
+
+    s1 = cino_string_create("Hello");
+    s2 = cino_string_create("\n\t");
+    s1 = cino_string_insert_string(s1, cino_string_length(s1) - 1, s2);
+    assert(strncmp(cino_string_get(s1), "Hell\n\to", strlen(cino_string_get(s1))) == 0);
+    cino_string_destroy(s1);
+    cino_string_destroy(s2);
+
+    s1 = cino_string_create("");
+    s2 = cino_string_create("A");
+    s1 = cino_string_insert_string(s1, 0, s2);
+    assert(strncmp(cino_string_get(s1), "A", strlen(cino_string_get(s1))) == 0);
+    cino_string_destroy(s1);
+    cino_string_destroy(s2);
+
+    s1 = cino_string_create("Test");
+    s2 = cino_string_create("s");
+    s1 = cino_string_insert_string(s1, 5, s2);
+    assert(strncmp(cino_string_get(s1), "Test", strlen(cino_string_get(s1))) == 0);
+    cino_string_destroy(s1);
+    cino_string_destroy(s2);
+
+    s1 = NULL;
+    s2 = cino_string_create("s");
+    s1 = cino_string_insert_string(s1, 0, s2);
+    assert(!s1);
+    cino_string_destroy(s2);
 }

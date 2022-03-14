@@ -1,5 +1,6 @@
 #include "test_cino_utils.h"
 #include "test_cino_string.h"
+#include "test_cino_array.h"
 
 void test_cino_utils() {
     test_min();
@@ -78,9 +79,16 @@ void test_cino_string() {
     printf("[PASS] test_cino_string\n");
 }
 
+void test_cino_array() {
+    test_cino_array_create();
+
+    printf("[PASS] test_cino_array\n");
+}
+
 int main(int argc, char *argv[]) {
     test_cino_utils();
     test_cino_string();
+    test_cino_array();
 
     return 0;
 }

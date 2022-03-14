@@ -82,10 +82,8 @@ cino_string_t *cino_string_set(cino_string_t *string, const char *str) {
 
     int str_len = string_length(str);
     if (string->length != str_len) {
-        char *memory = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (str_len + 1));
-        // 如果新空间分配失败，返回原cino字符串
-        return_value_if_fail(memory != NULL, string);
-        string->string = memory;
+        string->string = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (str_len + 1));
+        call_and_return_value_if_fail(string->string != NULL, cino_string_destroy(string), NULL);
     }
 
     string_copy(string->string, str);
@@ -112,6 +110,7 @@ cino_string_t *cino_string_clear(cino_string_t *string) {
     return_value_if_fail(string != NULL, NULL);
     string->length = 0;
     string->string = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (string->length + 1));
+    call_and_return_value_if_fail(string->string != NULL, cino_string_destroy(string), NULL);
     string_clear(string->string, string->length + 1);
     return string;
 }
@@ -213,10 +212,8 @@ cino_string_t *cino_string_copy(cino_string_t *destination, const cino_string_t 
     call_and_return_value_if_fail(source != NULL, cino_string_clear(destination), destination);
 
     if (destination->length != source->length) {
-        char *memory = (char *)cino_realloc(destination->string, sizeof(char) * (destination->length + 1), sizeof(char) * (source->length + 1));
-        // 如果新空间分配失败，返回原cino字符串
-        return_value_if_fail(memory != NULL, destination);
-        destination->string = memory;
+        destination->string = (char *)cino_realloc(destination->string, sizeof(char) * (destination->length + 1), sizeof(char) * (source->length + 1));
+        call_and_return_value_if_fail(destination->string != NULL, cino_string_destroy(destination), NULL);
     }
 
     string_copy(destination->string, source->string);
@@ -232,12 +229,8 @@ cino_string_t *cino_string_copy(cino_string_t *destination, const cino_string_t 
  */
 cino_string_t *cino_string_concat(cino_string_t *destination, const cino_string_t *source) {
     return_value_if_fail(destination != NULL && source != NULL, destination);
-
-    char *memory = (char *)cino_realloc(destination->string, sizeof(char) * (destination->length + 1), sizeof(char) * (destination->length + source->length + 1));
-    // 如果新空间分配失败，返回原cino字符串
-    return_value_if_fail(memory != NULL, destination);
-    destination->string = memory;
-
+    destination->string = (char *)cino_realloc(destination->string, sizeof(char) * (destination->length + 1), sizeof(char) * (destination->length + source->length + 1));
+    call_and_return_value_if_fail(destination->string != NULL, cino_string_destroy(destination), NULL);
     string_concat(destination->string, source->string);
     destination->length += source->length;
     return destination;
@@ -254,10 +247,8 @@ cino_string_t *cino_string_insert_char(cino_string_t *string, int pos, char c) {
     return_value_if_fail(string != NULL && pos >= 0 && pos <= string->length, string);
 
     int new_len = string->length + 1;
-    char *memory = (char *)cino_realloc(string->string, sizeof(char) * new_len, sizeof(char) * (new_len + 1));
-    // 如果新空间分配失败，返回原cino字符串
-    return_value_if_fail(memory != NULL, string);
-    string->string = memory;
+    string->string = (char *)cino_realloc(string->string, sizeof(char) * new_len, sizeof(char) * (new_len + 1));
+    call_and_return_value_if_fail(string->string != NULL, cino_string_destroy(string), NULL);
 
     string_insert_char(string->string, pos, c);
 
@@ -265,6 +256,7 @@ cino_string_t *cino_string_insert_char(cino_string_t *string, int pos, char c) {
     string->length = string_length(string->string);
     if (string->length < new_len) {
         string->string = (char *)cino_realloc(string->string, sizeof(char) * (new_len + 1), sizeof(char) * (string->length + 1));
+        call_and_return_value_if_fail(string->string != NULL, cino_string_destroy(string), NULL);
     }
 
     return string;
@@ -279,12 +271,8 @@ cino_string_t *cino_string_insert_char(cino_string_t *string, int pos, char c) {
  */
 cino_string_t *cino_string_insert_string(cino_string_t *string, int pos, const cino_string_t *substr) {
     return_value_if_fail(string != NULL && pos >= 0 && pos <= cino_string_length(string) && substr != NULL, string);
-
-    char *memory = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (string->length + substr->length + 1));
-    // 如果新空间分配失败，返回原cino字符串
-    return_value_if_fail(memory != NULL, string);
-    string->string = memory;
-
+    string->string = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (string->length + substr->length + 1));
+    call_and_return_value_if_fail(string->string != NULL, cino_string_destroy(string), NULL);
     string_insert_string(string->string, pos, substr->string);
     return string;
 }
