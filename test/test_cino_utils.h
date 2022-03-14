@@ -9,6 +9,9 @@
 #include <math.h>
 #include <assert.h>
 
+void test_min();
+void test_max();
+
 void test_return_if_fail();
 void test_return_value_if_fail();
 void test_call_and_return_if_fail();
@@ -54,5 +57,8 @@ void test_string_last_index_of_char_from();
 void test_string_last_index_of_substring();
 void test_string_last_index_of_substring_from();
 void test_string_split();
+
+void test_cino_alloc();
+void test_cino_realloc();
 
 #endif

@@ -1,6 +1,30 @@
 #include "test_cino_utils.h"
 #include "cino_utils.h"
 
+void test_min() {
+    assert(min(5, 2) == 2);
+    assert(min(2, 2) == 2);
+    assert(min(-5, -2) == -5);
+    assert(min(0, 2) == 0);
+    assert(min(3.1415, 3.1416) == 3.1415);
+    assert(min('a', 'b') == 'a');
+    assert(min('X', 'H') == 'H');
+    assert(min('A', 'a') == 'A');
+    assert(min('z', 'Z') == 'Z');
+}
+
+void test_max() {
+    assert(max(5, 2) == 5);
+    assert(max(2, 2) == 2);
+    assert(max(-5, -2) == -2);
+    assert(max(0, 2) == 2);
+    assert(max(3.1415, 3.1416) == 3.1416);
+    assert(max('a', 'b') == 'b');
+    assert(max('X', 'H') == 'X');
+    assert(max('A', 'a') == 'a');
+    assert(max('z', 'Z') == 'z');
+}
+
 void test_return_if_fail() {
     int cnt = 0;
     cnt++;
@@ -1121,4 +1145,96 @@ void test_string_split() {
         free(items[i]);
     }
     free(items);
+}
+
+void test_cino_alloc() {
+    int *arr1 = (int *)cino_alloc(100 * sizeof(int));
+    for (int i = 0; i < 100; i++) {
+        arr1[i] = i;
+        assert(arr1[i] == i);
+    }
+    free(arr1);
+
+    double *arr2 = (double *)cino_alloc(0 * sizeof(double));
+    assert(!arr2);
+
+    char *p1 = (char *)cino_alloc(6 * sizeof(char));
+    strncpy(p1, "Hello", strlen("Hello"));
+    assert(strncmp(p1, "Hello", strlen(p1)) == 0);
+    free(p1);
+
+    char **p2 = (char **)cino_alloc(5 * sizeof(char *));
+    for (int i = 0; i < 5; i++) {
+        p2[i] = (char *)cino_alloc(10 * sizeof(char));
+        snprintf(p2[i], 10, "Test-%d", i);
+        char real[10] = {0};
+        snprintf(real, 10, "Test-%d", i);
+        assert(strncmp(p2[i], real, strlen(real)) == 0);
+    }
+    for (int i = 0; i < 5; i++) {
+        free(p2[i]);
+    }
+    free(p2);
+
+    struct test_t {
+        int a;
+        char *p;
+    };
+
+    struct test_t *test = (struct test_t *)cino_alloc(sizeof(struct test_t));
+    test->a = 123;
+    test->p = (char *)cino_alloc(16 * sizeof(char));
+    strncpy(test->p, "Hello World!", strlen("Hello World!"));
+    assert(test->a == 123);
+    assert(strncmp(test->p, "Hello World!", strlen(test->p)) == 0);
+    free(test->p);
+    free(test);
+}
+
+void test_cino_realloc() {
+    int *arr1 = (int *)cino_alloc(100 * sizeof(int));
+    for (int i = 0; i < 100; i++) {
+        arr1[i] = i;
+        assert(arr1[i] == i);
+    }
+    arr1 = (int *)cino_realloc(arr1, 100 * sizeof(int), 200 * sizeof(int));
+    for (int i = 0; i < 100; i++) {
+        assert(arr1[i] == i);
+    }
+    for (int i = 100; i < 200; i++) {
+        assert(arr1[i] == 0);
+    }
+    free(arr1);
+
+    double *arr2 = (double *)cino_realloc(arr1, 5, 0 * sizeof(double));
+    assert(!arr2);
+
+    float *arr3 = (float *)cino_realloc(NULL, 0, 10 * sizeof(float));
+    assert(arr3);
+    free(arr3);
+
+    char *p1 = (char *)cino_alloc(6 * sizeof(char));
+    strncpy(p1, "Hello", strlen("Hello"));
+    assert(strncmp(p1, "Hello", strlen(p1)) == 0);
+    p1 = (char *)cino_realloc(p1, 6, 12 * sizeof(char));
+    assert(strncmp(p1, "Hello", strlen(p1)) == 0);
+    free(p1);
+
+    // struct test_t {
+    //     int a;
+    //     char *p;
+    // };
+
+    // struct test_t *test = (struct test_t *)cino_alloc(sizeof(struct test_t));
+    // test->a = 123;
+    // test->p = (char *)cino_alloc(16 * sizeof(char));
+    // strncpy(test->p, "Hello World!", strlen("Hello World!"));
+    // assert(test->a == 123);
+    // assert(strncmp(test->p, "Hello World!", strlen(test->p)) == 0);
+    // test->p = (char *)cino_realloc(test->p, 16, 8);
+    // assert(test->a == 123);
+    // test->p[8] = '\0';
+    // assert(strncmp(test->p, "Hello W", strlen(test->p)) == 0);
+    // free(test->p);
+    // free(test);
 }

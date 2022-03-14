@@ -20,7 +20,7 @@ typedef struct cino_string_t {
 cino_string_t *cino_string_create(const char *str) {
     return_value_if_fail(str != NULL, NULL);
 
-    cino_string_t *string = (cino_string_t *)malloc(sizeof(cino_string_t));
+    cino_string_t *string = (cino_string_t *)cino_alloc(sizeof(cino_string_t));
     return_value_if_fail(string != NULL, NULL);
 
     string->length = string_length(str);
@@ -28,9 +28,7 @@ cino_string_t *cino_string_create(const char *str) {
     string->string = (char *)calloc(string->length + 1, sizeof(char));
     call_and_return_value_if_fail(string->string != NULL, cino_string_destroy(string), NULL);
 
-    strncpy(string->string, str, string->length);
-    string->string[string->length] = '\0';
-
+    string_copy(string->string, str);
     return string;
 }
 
@@ -84,7 +82,7 @@ cino_string_t *cino_string_set(cino_string_t *string, const char *str) {
 
     int str_len = string_length(str);
     if (string->length != str_len) {
-        char *memory = (char *)realloc(string->string, sizeof(char) * (str_len + 1));
+        char *memory = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (str_len + 1));
         // 如果新空间分配失败，返回原cino字符串
         return_value_if_fail(memory != NULL, string);
         string->string = memory;
@@ -113,7 +111,7 @@ int cino_string_length(const cino_string_t *string) {
 cino_string_t *cino_string_clear(cino_string_t *string) {
     return_value_if_fail(string != NULL, NULL);
     string->length = 0;
-    string->string = (char *)realloc(string->string, sizeof(char) * (string->length + 1));
+    string->string = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (string->length + 1));
     string_clear(string->string, string->length + 1);
     return string;
 }
@@ -215,7 +213,7 @@ cino_string_t *cino_string_copy(cino_string_t *destination, const cino_string_t 
     call_and_return_value_if_fail(source != NULL, cino_string_clear(destination), destination);
 
     if (destination->length != source->length) {
-        char *memory = (char *)realloc(destination->string, sizeof(char) * (source->length + 1));
+        char *memory = (char *)cino_realloc(destination->string, sizeof(char) * (destination->length + 1), sizeof(char) * (source->length + 1));
         // 如果新空间分配失败，返回原cino字符串
         return_value_if_fail(memory != NULL, destination);
         destination->string = memory;
@@ -230,12 +228,12 @@ cino_string_t *cino_string_copy(cino_string_t *destination, const cino_string_t 
  * @brief   cino字符串拼接
  * @param destination   :   目标cino字符串
  * @param source        :   源cino字符串
- * @return  返回目标cino字符串。
+ * @return  返回目标cino字符串
  */
 cino_string_t *cino_string_concat(cino_string_t *destination, const cino_string_t *source) {
     return_value_if_fail(destination != NULL && source != NULL, destination);
 
-    char *memory = (char *)realloc(destination->string, sizeof(char) * (destination->length + source->length + 1));
+    char *memory = (char *)cino_realloc(destination->string, sizeof(char) * (destination->length + 1), sizeof(char) * (destination->length + source->length + 1));
     // 如果新空间分配失败，返回原cino字符串
     return_value_if_fail(memory != NULL, destination);
     destination->string = memory;
@@ -243,4 +241,50 @@ cino_string_t *cino_string_concat(cino_string_t *destination, const cino_string_
     string_concat(destination->string, source->string);
     destination->length += source->length;
     return destination;
+}
+
+/**
+ * @brief   在cino字符串指定位置插入字符
+ * @param string    :   cino字符串
+ * @param pos       :   插入位置（从0开始）
+ * @param c         :   字符
+ * @return  新cino字符串
+ */
+cino_string_t *cino_string_insert_char(cino_string_t *string, int pos, char c) {
+    return_value_if_fail(string != NULL && pos >= 0 && pos <= string->length, string);
+
+    int new_len = string->length + 1;
+    char *memory = (char *)cino_realloc(string->string, sizeof(char) * new_len, sizeof(char) * (new_len + 1));
+    // 如果新空间分配失败，返回原cino字符串
+    return_value_if_fail(memory != NULL, string);
+    string->string = memory;
+
+    string_insert_char(string->string, pos, c);
+
+    // 如果插入'\0'会缩短字符串长度
+    string->length = string_length(string->string);
+    if (string->length < new_len) {
+        string->string = (char *)cino_realloc(string->string, sizeof(char) * (new_len + 1), sizeof(char) * (string->length + 1));
+    }
+
+    return string;
+}
+
+/**
+ * @brief   在cino字符串指定位置插入cino子串
+ * @param string    :   cino字符串
+ * @param pos       :   插入位置（从0开始）
+ * @param substr    :   cino子串
+ * @return  新cino字符串
+ */
+cino_string_t *cino_string_insert_string(cino_string_t *string, int pos, const cino_string_t *substr) {
+    return_value_if_fail(string != NULL && pos >= 0 && pos <= cino_string_length(string) && substr != NULL, string);
+
+    char *memory = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (string->length + substr->length + 1));
+    // 如果新空间分配失败，返回原cino字符串
+    return_value_if_fail(memory != NULL, string);
+    string->string = memory;
+
+    string_insert_string(string->string, pos, substr->string);
+    return string;
 }

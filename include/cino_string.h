@@ -137,4 +137,22 @@ cino_string_t *cino_string_copy(cino_string_t *destination, const cino_string_t 
  */
 cino_string_t *cino_string_concat(cino_string_t *destination, const cino_string_t *source);
 
+/**
+ * @brief   在cino字符串指定位置插入字符
+ * @param string    :   cino字符串
+ * @param pos       :   插入位置（从0开始）
+ * @param c         :   字符
+ * @return  新cino字符串
+ */
+cino_string_t *cino_string_insert_char(cino_string_t *string, int pos, char c);
+
+/**
+ * @brief   在cino字符串指定位置插入cino子串
+ * @param string    :   cino字符串
+ * @param pos       :   插入位置（从0开始）
+ * @param substr    :   cino子串
+ * @return  新cino字符串
+ */
+cino_string_t *cino_string_insert_string(cino_string_t *string, int pos, const cino_string_t *substr);
+
 #endif

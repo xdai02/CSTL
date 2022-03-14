@@ -2,10 +2,12 @@
  * 模块 :   cino_util
  * 功能 :   提供常用操作接口
  * 分类 :
+ *          - 数值运算
  *          - 合法性检查
  *          - 数组操作
  *          - 类型转换
  *          - 字符串操作
+ *          - 动态内存管理
  ****************************************/
 
 #ifndef _CINO_UTILS_H_
@@ -16,6 +18,20 @@
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
+
+/****************************************
+ *              数值运算
+ ****************************************/
+
+/**
+ * @brief   返回两数的最小值
+ */
+#define min(x, y) (((x) < (y)) ? (x) : (y))
+
+/**
+ * @brief   返回两数的最大值
+ */
+#define max(x, y) (((x) > (y)) ? (x) : (y))
 
 /****************************************
  *              合法性检查
@@ -396,5 +412,27 @@ int string_last_index_of_substring_from(const char *str, const char *substr, int
  * @return  返回分割后产生的子串数量。
  */
 int string_split(const char *str, const char *delimiter, char **items);
+
+/****************************************
+ *              动态内存管理
+ ****************************************/
+
+/**
+ * @brief   动态内存申请，并初始化为0。
+ * @note    使用完需要通过free()释放。
+ * @param size  :   申请空间大小（单位：字节）
+ * @return  申请成功返回首地址，失败返回NULL。
+ */
+void *cino_alloc(size_t size);
+
+/**
+ * @brief   重新分配内存
+ * @note    使用完需要通过free()释放。
+ * @param p         :   需要重新分配内存的指针
+ * @param old_size  :   原空间大小（单位：字节）
+ * @param new_size  :   新空间大小（单位：字节）
+ * @return  申请成功返回首地址，失败返回NULL。
+ */
+void *cino_realloc(void *p, size_t old_size, size_t new_size);
 
 #endif

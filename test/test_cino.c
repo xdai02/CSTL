@@ -2,6 +2,9 @@
 #include "test_cino_string.h"
 
 void test_cino_utils() {
+    test_min();
+    test_max();
+
     test_return_if_fail();
     test_return_value_if_fail();
     test_call_and_return_if_fail();
@@ -48,6 +51,9 @@ void test_cino_utils() {
     test_string_last_index_of_substring_from();
     test_string_split();
 
+    test_cino_alloc();
+    test_cino_realloc();
+
     printf("[PASS] test_cino_utils\n");
 }
 
@@ -66,6 +72,8 @@ void test_cino_string() {
     test_cino_string_ends_with();
     test_cino_string_copy();
     test_cino_string_concat();
+    test_cino_string_insert_char();
+    test_cino_string_insert_string();
 
     printf("[PASS] test_cino_string\n");
 }

@@ -422,3 +422,55 @@ void test_cino_string_concat() {
     assert(strncmp(cino_string_get(s1), "Lorem ipsum", strlen("Lorem ipsum")) == 0);
     cino_string_destroy(s1);
 }
+
+void test_cino_string_insert_char() {
+    cino_string_t *s = NULL;
+
+    s = cino_string_create("ello");
+    s = cino_string_insert_char(s, 0, 'H');
+    assert(strncmp(cino_string_get(s), "Hello", strlen("Hello")) == 0);
+    cino_string_destroy(s);
+
+    s = cino_string_create("Hello");
+    s = cino_string_insert_char(s, cino_string_length(s), 'o');
+    assert(strncmp(cino_string_get(s), "Helloo", strlen("Helloo")) == 0);
+    cino_string_destroy(s);
+
+    s = cino_string_create("Hello");
+    s = cino_string_insert_char(s, 3, 'l');
+    assert(strncmp(cino_string_get(s), "Helllo", strlen("Helllo")) == 0);
+    cino_string_destroy(s);
+
+    s = cino_string_create("Hello");
+    s = cino_string_insert_char(s, 1, '\n');
+    assert(strncmp(cino_string_get(s), "H\nello", strlen("H\nello")) == 0);
+    cino_string_destroy(s);
+
+    s = cino_string_create("Hello");
+    s = cino_string_insert_char(s, 0, '\0');
+    assert(strncmp(cino_string_get(s), "", strlen("")) == 0);
+    assert(cino_string_length(s) == 0);
+    cino_string_destroy(s);
+
+    s = cino_string_create("Hello");
+    s = cino_string_insert_char(s, cino_string_length(s) - 1, '\0');
+    assert(strncmp(cino_string_get(s), "Hell", strlen("Hell")) == 0);
+    cino_string_destroy(s);
+
+    s = cino_string_create("");
+    s = cino_string_insert_char(s, 0, 'A');
+    assert(strncmp(cino_string_get(s), "A", strlen("A")) == 0);
+    cino_string_destroy(s);
+
+    s = cino_string_create("Test");
+    s = cino_string_insert_char(s, 5, 's');
+    assert(strncmp(cino_string_get(s), "Test", strlen("Test")) == 0);
+    cino_string_destroy(s);
+
+    s = NULL;
+    s = cino_string_insert_char(s, 0, 's');
+    assert(!s);
+}
+
+void test_cino_string_insert_string() {
+}

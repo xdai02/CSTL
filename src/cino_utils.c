@@ -281,7 +281,7 @@ char *string_copy(char *destination, const char *source) {
  * @note    调用者需要确保destination和source的长度足够。
  * @param destination   :   目标字符串
  * @param source        :   源字符串
- * @return  返回目标字符串。
+ * @return  返回目标字符串
  */
 char *string_concat(char *destination, const char *source) {
     return_value_if_fail(destination != NULL && source != NULL, destination);
@@ -781,4 +781,45 @@ int string_split(const char *str, const char *delimiter, char **items) {
     }
 
     return cnt;
+}
+
+/****************************************
+ *              动态内存管理
+ ****************************************/
+
+/**
+ * @brief   动态内存申请，并初始化为0。
+ * @note    使用完需要通过free()释放。
+ * @param size  :   申请空间大小（单位：字节）
+ * @return  申请成功返回首地址，失败返回NULL。
+ */
+void *cino_alloc(size_t size) {
+    if (size <= 0) {
+        return NULL;
+    }
+    return calloc(1, size);
+}
+
+/**
+ * @brief   重新分配内存
+ * @note    使用完需要通过free()释放。
+ * @param p         :   需要重新分配内存的指针
+ * @param old_size  :   原空间大小（单位：字节）
+ * @param new_size  :   新空间大小（单位：字节）
+ * @return  申请成功返回首地址，失败返回NULL。
+ */
+void *cino_realloc(void *p, size_t old_size, size_t new_size) {
+    if (new_size <= 0) {
+        return NULL;
+    }
+
+    if (!p) {
+        return calloc(1, new_size);
+    }
+
+    void *new_mem = calloc(1, new_size);
+    memcpy(new_mem, p, min(old_size, new_size));
+    free(p);
+    p = NULL;
+    return new_mem;
 }

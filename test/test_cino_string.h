@@ -23,5 +23,7 @@ void test_cino_string_starts_with();
 void test_cino_string_ends_with();
 void test_cino_string_copy();
 void test_cino_string_concat();
+void test_cino_string_insert_char();
+void test_cino_string_insert_string();
 
 #endif
