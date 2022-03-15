@@ -9,21 +9,21 @@
 #include "cino_utils.h"
 #include "cino_string.h"
 
-void test_cino_string_create();
-void test_cino_string_destroy();
-void test_cino_string_get();
-void test_cino_string_set();
-void test_cino_string_length();
-void test_cino_string_clear();
-void test_cino_string_equal();
-void test_cino_string_equal_ignore_case();
-void test_cino_string_tolower();
-void test_cino_string_toupper();
-void test_cino_string_starts_with();
-void test_cino_string_ends_with();
-void test_cino_string_copy();
-void test_cino_string_concat();
-void test_cino_string_insert_char();
-void test_cino_string_insert_string();
+void test_string_create();
+void test_string_destroy();
+void test_string_get();
+void test_string_set();
+void test_string_length();
+void test_string_clear();
+void test_string_equal();
+void test_string_equal_ignore_case();
+void test_string_to_lower();
+void test_string_to_upper();
+void test_string_starts_with();
+void test_string_ends_with();
+void test_string_copy();
+void test_string_concat();
+void test_string_insert_char();
+void test_string_insert_string();
 
 #endif

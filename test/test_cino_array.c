@@ -1,8 +1,11 @@
 #include "test_cino_array.h"
 
-void test_cino_array_create() {
-    cino_array_t *arr = cino_array_create(sizeof(int));
+void test_array_create() {
+    array_t *arr = array_create(sizeof(int));
     assert(arr);
-    cino_array_append(arr, 1);
-    free(arr);
+    int num = 1;
+    array_append(arr, &num);
+    int result = *(int *)array_get(arr, 0);
+    assert(result == 1);
+    array_destroy(arr);
 }

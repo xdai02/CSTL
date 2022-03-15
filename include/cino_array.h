@@ -19,7 +19,7 @@
 /**
  * @brief cino数组结构
  */
-typedef struct cino_array_t cino_array_t;
+typedef struct array_t array_t;
 
 /****************************************
  *            cino数组创建
@@ -30,7 +30,7 @@ typedef struct cino_array_t cino_array_t;
  * @param elem_size :   每个元素大小
  * @return  返回构造好的cino数组，失败返回NULL。
  */
-cino_array_t *cino_array_create(int elem_size);
+array_t *array_create(int elem_size);
 
 /****************************************
  *            cino数组销毁
@@ -40,7 +40,7 @@ cino_array_t *cino_array_create(int elem_size);
  * @brief   销毁cino数组
  * @param array    :   cino数组
  */
-void cino_array_destroy(cino_array_t *array);
+void array_destroy(array_t *array);
 
 /****************************************
  *            cino数组操作
@@ -51,8 +51,10 @@ void cino_array_destroy(cino_array_t *array);
  * @param string    :   cino数组
  * @return  cino数组元素个数
  */
-int cino_array_length(const cino_array_t *array);
+int array_length(const array_t *array);
 
-void cino_array_append(cino_array_t *array, void *data);
+void *array_get(const array_t *array, int index);
+
+void array_append(array_t *array, const void *data);
 
 #endif

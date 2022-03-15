@@ -19,6 +19,8 @@
 #include <stdbool.h>
 #include <ctype.h>
 
+#define str_t char *  // str_t等价于char *
+
 /****************************************
  *              数值运算
  ****************************************/
@@ -85,67 +87,67 @@
  ****************************************/
 
 /**
- * @brief   string转bool
+ * @brief   str转bool
  * @param str   :   字符串
  * @return  返回false的情况：
  *              1. str == NULL
  *              2. strlen(str) == 0
- *              3. string_equal_ignore_case(str, "false")
+ *              3. str_equal_ignore_case(str, "false")
  *              4. str为全0字符串
  *          其它情况返回true。
  */
-bool string_to_bool(const char *str);
+bool str_to_bool(const str_t str);
 
 /**
- * @brief   bool转string
+ * @brief   bool转str
  * @param val   :   bool值
  * @return  val为true返回"true"，val为false返回"false"。
  */
-const char *bool_to_string(bool val);
+const str_t bool_to_str(bool val);
 
 /**
- * @brief   string转char
+ * @brief   str转char
  * @param  str  :   保存转换结果的字符串
  * @return  如果str == NULL返回'\0'，否则返回str的第一个字符。
  */
-char string_to_char(const char *str);
+char str_to_char(const str_t str);
 
 /**
- * @brief   char转string
+ * @brief   char转str
  * @note    调用者需要确保str分配了足够的空间、str_size的长度正确。
  * @param  c            :   字符
  * @param  str          :   保存转换结果的字符串
  * @param  str_size     :   sizeof(str)
  * @return   转换后字符串
  */
-char *char_to_string(char c, char *str, int str_size);
+str_t char_to_str(char c, str_t str, int str_size);
 
 /**
- * @brief   string转int
+ * @brief   str转int
  * @param str   :   字符串
  * @return  当str == NULL时返回0，其它情况返回atoi()的结果。
  */
-int string_to_int(const char *str);
+int str_to_int(const str_t str);
 
 /**
- * @brief   int转string
+ * @brief   int转str
  * @note    调用者需要确保str分配了足够的空间、str_size的长度正确。
  * @param  val      :   int值
  * @param  str      :   保存转换结果的字符串
  * @param  str_size :   sizeof(str)
  * @return   转换后字符串
  */
-char *int_to_string(int val, char *str, int str_size);
+str_t int_to_str(int val, str_t str, int str_size);
 
 /**
- * @brief   string转double
+ * @brief   str转double
  * @param str   :   字符串
  * @return  当str == NULL时返回0.0，其它情况返回atof()的结果。
  */
-double string_to_double(const char *str);
+double str_to_double(const str_t str);
 
 /**
- * @brief   double转string
+ * @brief   double转str
  * @note    调用者需要确保str分配了足够的空间、str_size的长度正确。
  * @param  val          :   double值
  * @param  precision    :   四舍五入保留小数点后数位，默认保留2位，最大支持16位
@@ -153,7 +155,7 @@ double string_to_double(const char *str);
  * @param  str_size     :   sizeof(str)
  * @return   转换后字符串
  */
-char *double_to_string(double val, int precision, char *str, int str_size);
+str_t double_to_str(double val, int precision, str_t str, int str_size);
 
 /****************************************
  *              字符串操作
@@ -165,7 +167,7 @@ char *double_to_string(double val, int precision, char *str, int str_size);
  * @param s2    :   字符串2
  * @return  如果s1和s2相同返回true，否则返回false。
  */
-bool string_equal(const char *s1, const char *s2);
+bool str_equal(const str_t s1, const str_t s2);
 
 /**
  * @brief   忽略大小写比较字符串
@@ -173,21 +175,21 @@ bool string_equal(const char *s1, const char *s2);
  * @param s2    :   字符串2
  * @return  如果s1和s2忽略大小写相同返回true，否则返回false。
  */
-bool string_equal_ignore_case(const char *s1, const char *s2);
+bool str_equal_ignore_case(const str_t s1, const str_t s2);
 
 /**
  * @brief   字符串转小写
  * @param str   :   字符串
  * @return  小写字符串
  */
-char *string_tolower(char *str);
+str_t str_to_lower(str_t str);
 
 /**
  * @brief   字符串转大写
  * @param str   :   字符串
  * @return  大写字符串
  */
-char *string_toupper(char *str);
+str_t str_to_upper(str_t str);
 
 /**
  * @brief   判断字符串是否以指定子串开头
@@ -195,7 +197,7 @@ char *string_toupper(char *str);
  * @param prefix    :   子串
  * @return  如果str以prefix开头返回true，否则返回false。
  */
-bool string_starts_with(const char *str, const char *prefix);
+bool str_starts_with(const str_t str, const str_t prefix);
 
 /**
  * @brief   判断字符串是否以指定子串结尾
@@ -203,7 +205,7 @@ bool string_starts_with(const char *str, const char *prefix);
  * @param postfix   :   子串
  * @return  如果str以postfix结尾返回true，否则返回false。
  */
-bool string_ends_with(const char *str, const char *postfix);
+bool str_ends_with(const str_t str, const str_t postfix);
 
 /**
  * @brief   清空字符串
@@ -211,14 +213,14 @@ bool string_ends_with(const char *str, const char *postfix);
  * @param str       :   字符串
  * @param str_size  :   sizeof(str)
  */
-void string_clear(char *str, int str_size);
+void str_clear(str_t str, int str_size);
 
 /**
  * @brief   计算字符串长度
  * @param str   :   字符串
  * @return  str为NULL返回0，否则返回字符串长度。
  */
-int string_length(const char *str);
+int str_length(const str_t str);
 
 /**
  * @brief   字符串拷贝
@@ -227,7 +229,7 @@ int string_length(const char *str);
  * @param source        :   源字符串
  * @return  返回目标字符串
  */
-char *string_copy(char *destination, const char *source);
+str_t str_copy(str_t destination, const str_t source);
 
 /**
  * @brief   字符串拼接
@@ -236,14 +238,14 @@ char *string_copy(char *destination, const char *source);
  * @param source        :   源字符串
  * @return  返回目标字符串
  */
-char *string_concat(char *destination, const char *source);
+str_t str_concat(str_t destination, const str_t source);
 
 /**
  * @brief   去除字符串首尾空白字符
  * @param str   :   字符串
  * @return  新字符串
  */
-char *string_trim(char *str);
+str_t str_trim(str_t str);
 
 /**
  * @brief   字符串追加字符
@@ -252,7 +254,7 @@ char *string_trim(char *str);
  * @param c     :   字符
  * @return  新字符串
  */
-char *string_append_char(char *str, char c);
+str_t str_append_char(str_t str, char c);
 
 /**
  * @brief   字符串追加int
@@ -261,7 +263,7 @@ char *string_append_char(char *str, char c);
  * @param val   :   int值
  * @return  新字符串
  */
-char *string_append_int(char *str, int val);
+str_t str_append_int(str_t str, int val);
 
 /**
  * @brief   字符串追加double
@@ -271,7 +273,7 @@ char *string_append_int(char *str, int val);
  * @param  precision    :   四舍五入保留小数点后数位，默认保留2位，最大支持16位
  * @return  新字符串
  */
-char *string_append_double(char *str, double val, int precision);
+str_t str_append_double(str_t str, double val, int precision);
 
 /**
  * @brief   在字符串指定位置插入字符
@@ -281,7 +283,7 @@ char *string_append_double(char *str, double val, int precision);
  * @param c     :   字符
  * @return  新字符串
  */
-char *string_insert_char(char *str, int pos, char c);
+str_t str_insert_char(str_t str, int pos, char c);
 
 /**
  * @brief   在字符串指定位置插入子串
@@ -291,7 +293,7 @@ char *string_insert_char(char *str, int pos, char c);
  * @param substr    :   子串
  * @return  新字符串
  */
-char *string_insert_string(char *str, int pos, const char *substr);
+str_t str_insert_string(str_t str, int pos, const str_t substr);
 
 /**
  * @brief   截取字符串指定范围子串
@@ -303,7 +305,7 @@ char *string_insert_string(char *str, int pos, const char *substr);
  * @param substr_size   :   sizeof(substr)
  * @return  返回[start, end]返回的子串，start或end不合法返回空串。
  */
-char *string_substring(char *str, int start, int end, char *substr, int substr_size);
+str_t str_substring(str_t str, int start, int end, str_t substr, int substr_size);
 
 /**
  * @brief   全部替换字符串中指定字符
@@ -312,7 +314,7 @@ char *string_substring(char *str, int start, int end, char *substr, int substr_s
  * @param new_char  :   新字符
  * @return  新字符串
  */
-char *string_replace_char(char *str, char old_char, char new_char);
+str_t str_replace_char(str_t str, char old_char, char new_char);
 
 /**
  * @brief   全部替换字符串中指定子串
@@ -321,7 +323,7 @@ char *string_replace_char(char *str, char old_char, char new_char);
  * @param new_str	:   新串
  * @return  新字符串
  */
-char *string_replace(char *str, const char *old_str, const char *new_str);
+str_t str_replace(str_t str, const str_t old_str, const str_t new_str);
 
 /**
  * @brief   字符串删除指定子串
@@ -329,7 +331,7 @@ char *string_replace(char *str, const char *old_str, const char *new_str);
  * @param substr	:   子串
  * @return  新字符串
  */
-char *string_remove(char *str, const char *substr);
+str_t str_remove(str_t str, const str_t substr);
 
 /**
  * @brief   字符串中查找首次出现指定字符的下标
@@ -337,7 +339,7 @@ char *string_remove(char *str, const char *substr);
  * @param c     :   字符
  * @return  返回字符首次出现的下标，不存在返回-1。
  */
-int string_index_of_char(const char *str, char c);
+int str_index_of_char(const str_t str, char c);
 
 /**
  * @brief   字符串中查找从指定位置开始首次出现指定字符的下标
@@ -346,7 +348,7 @@ int string_index_of_char(const char *str, char c);
  * @param from  :   开始查找下标
  * @return  返回字符从指定位置开始首次出现的下标，不存在返回-1。
  */
-int string_index_of_char_from(const char *str, char c, int from);
+int str_index_of_char_from(const str_t str, char c, int from);
 
 /**
  * @brief   字符串中查找从指定位置开始首次出现指定子串的下标
@@ -354,7 +356,7 @@ int string_index_of_char_from(const char *str, char c, int from);
  * @param substr    :   子串
  * @return  返回子串首次出现的下标，不存在返回-1。
  */
-int string_index_of_substring(const char *str, const char *substr);
+int str_index_of_substring(const str_t str, const str_t substr);
 
 /**
  * @brief   字符串中查找从指定位置开始首次出现指定子串的下标
@@ -363,7 +365,7 @@ int string_index_of_substring(const char *str, const char *substr);
  * @param from      :   开始查找下标
  * @return  返回子串从指定位置开始首次出现的下标，不存在返回-1。
  */
-int string_index_of_substring_from(const char *str, const char *substr, int from);
+int str_index_of_substring_from(const str_t str, const str_t substr, int from);
 
 /**
  * @brief   字符串中查找最后一次出现指定字符的下标
@@ -372,7 +374,7 @@ int string_index_of_substring_from(const char *str, const char *substr, int from
  * @param c     :   字符
  * @return  返回字符最后一次出现的下标，不存在返回-1。
  */
-int string_last_index_of_char(const char *str, char c);
+int str_last_index_of_char(const str_t str, char c);
 
 /**
  * @brief   字符串中查找从开始位置向前最后一次出现指定字符的下标
@@ -382,7 +384,7 @@ int string_last_index_of_char(const char *str, char c);
  * @param from  :   开始下标
  * @return  返回字符从开始位置向前最后一次出现的下标，不存在返回-1。
  */
-int string_last_index_of_char_from(const char *str, char c, int from);
+int str_last_index_of_char_from(const str_t str, char c, int from);
 
 /**
  * @brief   字符串中查找最后一次出现指定子串的下标
@@ -391,7 +393,7 @@ int string_last_index_of_char_from(const char *str, char c, int from);
  * @param substr    :   子串
  * @return  返回子串最后一次出现的下标，不存在返回-1。
  */
-int string_last_index_of_substring(const char *str, const char *substr);
+int str_last_index_of_substring(const str_t str, const str_t substr);
 
 /**
  * @brief   字符串中查找从指定位置开始向前最后一次出现指定子串的下标
@@ -401,7 +403,7 @@ int string_last_index_of_substring(const char *str, const char *substr);
  * @param from      :   开始查找下标
  * @return  返回子串从指定位置开始向前最后一次出现的下标，不存在返回-1。
  */
-int string_last_index_of_substring_from(const char *str, const char *substr, int from);
+int str_last_index_of_substring_from(const str_t str, const str_t substr, int from);
 
 /**
  * @brief   字符串分割
@@ -411,7 +413,7 @@ int string_last_index_of_substring_from(const char *str, const char *substr, int
  * @param items     :   保存分割后子串的二维数组
  * @return  返回分割后产生的子串数量。
  */
-int string_split(const char *str, const char *delimiter, char **items);
+int str_split(const str_t str, const str_t delimiter, str_t *items);
 
 /****************************************
  *              动态内存管理

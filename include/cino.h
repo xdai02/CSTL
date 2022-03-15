@@ -9,5 +9,6 @@
 #include <math.h>
 #include "cino_utils.h"
 #include "cino_string.h"
+#include "cino_array.h"
 
 #endif

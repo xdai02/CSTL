@@ -13,44 +13,44 @@ void test_cino_utils() {
 
     test_array_len();
 
-    test_string_to_bool();
-    test_bool_to_string();
-    test_string_to_char();
-    test_char_to_string();
-    test_string_to_int();
-    test_int_to_string();
-    test_string_to_double();
-    test_double_to_string();
+    test_str_to_bool();
+    test_bool_to_str();
+    test_str_to_char();
+    test_char_to_str();
+    test_str_to_int();
+    test_int_to_str();
+    test_str_to_double();
+    test_double_to_str();
 
-    test_string_equal();
-    test_string_equal_ignore_case();
-    test_string_starts_with();
-    test_string_tolower();
-    test_string_toupper();
-    test_string_ends_with();
-    test_string_clear();
-    test_string_length();
-    test_string_copy();
-    test_string_concat();
-    test_string_trim();
-    test_string_append_char();
-    test_string_append_int();
-    test_string_append_double();
-    test_string_insert_char();
-    test_string_insert_string();
-    test_string_substring();
-    test_string_replace_char();
-    test_string_replace();
-    test_string_remove();
-    test_string_index_of_char();
-    test_string_index_of_char_from();
-    test_string_index_of_substring();
-    test_string_index_of_substring_from();
-    test_string_last_index_of_char();
-    test_string_last_index_of_char_from();
-    test_string_last_index_of_substring();
-    test_string_last_index_of_substring_from();
-    test_string_split();
+    test_str_equal();
+    test_str_equal_ignore_case();
+    test_str_starts_with();
+    test_str_to_lower();
+    test_str_to_upper();
+    test_str_ends_with();
+    test_str_clear();
+    test_str_length();
+    test_str_copy();
+    test_str_concat();
+    test_str_trim();
+    test_str_append_char();
+    test_str_append_int();
+    test_str_append_double();
+    test_str_insert_char();
+    test_str_insert_string();
+    test_str_substring();
+    test_str_replace_char();
+    test_str_replace();
+    test_str_remove();
+    test_str_index_of_char();
+    test_str_index_of_char_from();
+    test_str_index_of_substring();
+    test_str_index_of_substring_from();
+    test_str_last_index_of_char();
+    test_str_last_index_of_char_from();
+    test_str_last_index_of_substring();
+    test_str_last_index_of_substring_from();
+    test_str_split();
 
     test_cino_alloc();
     test_cino_realloc();
@@ -59,28 +59,28 @@ void test_cino_utils() {
 }
 
 void test_cino_string() {
-    test_cino_string_create();
-    test_cino_string_destroy();
-    test_cino_string_get();
-    test_cino_string_set();
-    test_cino_string_length();
-    test_cino_string_clear();
-    test_cino_string_equal();
-    test_cino_string_equal_ignore_case();
-    test_cino_string_tolower();
-    test_cino_string_toupper();
-    test_cino_string_starts_with();
-    test_cino_string_ends_with();
-    test_cino_string_copy();
-    test_cino_string_concat();
-    test_cino_string_insert_char();
-    test_cino_string_insert_string();
+    test_string_create();
+    test_string_destroy();
+    test_string_get();
+    test_string_set();
+    test_string_length();
+    test_string_clear();
+    test_string_equal();
+    test_string_equal_ignore_case();
+    test_string_to_lower();
+    test_string_to_upper();
+    test_string_starts_with();
+    test_string_ends_with();
+    test_string_copy();
+    test_string_concat();
+    test_string_insert_char();
+    test_string_insert_string();
 
     printf("[PASS] test_cino_string\n");
 }
 
 void test_cino_array() {
-    test_cino_array_create();
+    test_array_create();
 
     printf("[PASS] test_cino_array\n");
 }
