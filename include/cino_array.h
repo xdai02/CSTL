@@ -48,10 +48,10 @@ void array_destroy(array_t *array);
 
 /**
  * @brief   获取cino数组元素个数
- * @param string    :   cino数组
+ * @param array :   cino数组
  * @return  cino数组元素个数
  */
-int array_length(const array_t *array);
+int array_size(const array_t *array);
 
 void *array_get(const array_t *array, int index);
 
