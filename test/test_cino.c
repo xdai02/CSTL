@@ -83,7 +83,8 @@ void test_cino_string() {
 }
 
 void test_cino_array() {
-    test_array_create();
+    test_array_int_create();
+    test_array_int_destroy();
 
     printf("[PASS] test_cino_array\n");
 }

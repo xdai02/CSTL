@@ -1,6 +1,14 @@
 #include "test_cino_array.h"
 
-void test_array_create() {
+void test_array_int_create() {
+
+}
+
+void test_array_int_destroy() {
+    
+}
+
+// void test_array_create() {
     // array_t *arr1 = array_create(sizeof(int));
     // assert(arr1);
     // for (int i = 0; i < 100; i++) {
@@ -83,4 +91,4 @@ void test_array_create() {
     //     free(s);
     // }
     // array_destroy(arr5);
-}
+// }

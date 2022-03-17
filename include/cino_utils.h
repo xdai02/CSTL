@@ -2,6 +2,8 @@
  * 模块 :   cino_util
  * 功能 :   提供常用操作接口
  * 分类 :
+ *          - 状态类型
+ *          - 日志等级
  *          - 数值运算
  *          - 合法性检查
  *          - 数组操作
@@ -20,6 +22,72 @@
 #include <ctype.h>
 
 #define str_t char *  // str_t等价于char *
+
+/****************************************
+ *              状态类型
+ ****************************************/
+
+/**
+ * @brief  状态类型
+ */
+typedef enum status_t {
+    STATUS_OK,              // 成功
+    STATUS_FAIL,            // 失败
+    STATUS_OUT_OF_MEMORY,   // Out of Memory
+    STATUS_FOUND,           // 找到
+    STATUS_NOT_FOUND,       // 未找到
+    STATUS_BAD_PARAMETERS,  // 无效参数
+    STATUS_IO_ERROR,        // I/O错误
+    STATUS_OUT_OF_BOUNDS,   // 越界
+    STATUS_UNDEFINED,       // 未定义
+} status_t;
+
+/****************************************
+ *              日志等级
+ ****************************************/
+
+/**
+ * @brief   日志等级
+ */
+typedef enum log_level_t {
+    NONE,     // 不输出
+    DEBUG,    // 调试
+    INFO,     // 信息
+    WARNING,  // 警告
+    ERROR,    // 错误
+} log_level_t;
+
+#ifdef WIN32
+#define LOGGER(level, format, ...)                                                                                          \
+    do {                                                                                                                    \
+        if (level == NONE) {                                                                                                \
+            break;                                                                                                          \
+        } else if (level == DEBUG) {                                                                                        \
+            fprintf(stderr, "[DEBUG] >>> %s->%s()->line.%d : " format "\n", __FILE__, __FUNCTION__, __LINE__, __VA_ARGS__); \
+        } else if (level == INFO) {                                                                                         \
+            fprintf(stderr, "[INFO] >>> " format "\n", __VA_ARGS__);                                                        \
+        } else if (level == WARNING) {                                                                                      \
+            fprintf(stderr, "[WARNING] >>> " format "\n", __VA_ARGS__);                                                     \
+        } else if (level == ERROR) {                                                                                        \
+            fprintf(stderr, "[ERROR] >>> " format "\n", __VA_ARGS__);                                                       \
+        }                                                                                                                   \
+    } while (0)
+#else
+#define LOGGER(level, format, args...)                                                                                 \
+    do {                                                                                                               \
+        if (level == NONE) {                                                                                           \
+            break;                                                                                                     \
+        } else if (level == DEBUG) {                                                                                   \
+            fprintf(stderr, "[DEBUG] >>> %s->%s()->line.%d : " format "\n", __FILE__, __FUNCTION__, __LINE__, ##args); \
+        } else if (level == INFO) {                                                                                    \
+            fprintf(stderr, "[INFO] >>> " format "\n", ##args);                                                        \
+        } else if (level == WARNING) {                                                                                 \
+            fprintf(stderr, "[WARNING] >>> " format "\n", ##args);                                                     \
+        } else if (level == ERROR) {                                                                                   \
+            fprintf(stderr, "[ERROR] >>> " format "\n", ##args);                                                       \
+        }                                                                                                              \
+    } while (0)
+#endif
 
 /****************************************
  *              数值运算

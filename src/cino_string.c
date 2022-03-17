@@ -1,7 +1,7 @@
 #include "cino_string.h"
 
 /**
- * @brief cino字符串结构
+ * @brief   cino字符串结构
  */
 typedef struct string_t {
     char *string;  // 字符串
@@ -22,8 +22,7 @@ string_t *string_create(const char *str) {
     return_value_if_fail(string != NULL, NULL);
 
     string->length = str ? str_length(str) : 0;
-
-    string->string = (char *)calloc(string->length + 1, sizeof(char));
+    string->string = (char *)cino_alloc((string->length + 1) * sizeof(char));
     call_and_return_value_if_fail(string->string != NULL, string_destroy(string), NULL);
 
     str_copy(string->string, str);
@@ -81,7 +80,10 @@ string_t *string_set(string_t *string, const char *str) {
     int str_len = str_length(str);
     if (string->length != str_len) {
         string->string = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (str_len + 1));
-        call_and_return_value_if_fail(string->string != NULL, string_destroy(string), NULL);
+        if (!string->string) {
+            string_destroy(string);
+            exit(STATUS_OUT_OF_MEMORY);
+        }
     }
 
     str_copy(string->string, str);
@@ -95,7 +97,7 @@ string_t *string_set(string_t *string, const char *str) {
  * @return  cino字符串长度
  */
 int string_length(const string_t *string) {
-    return_value_if_fail(string != NULL && string->string != NULL, 0);
+    return_value_if_fail(string != NULL, 0);
     return string->length;
 }
 
@@ -108,7 +110,6 @@ string_t *string_clear(string_t *string) {
     return_value_if_fail(string != NULL, NULL);
     string->length = 0;
     string->string = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (string->length + 1));
-    call_and_return_value_if_fail(string->string != NULL, string_destroy(string), NULL);
     str_clear(string->string, string->length + 1);
     return string;
 }
@@ -121,6 +122,7 @@ string_t *string_clear(string_t *string) {
  */
 bool string_equal(const string_t *s1, const string_t *s2) {
     if (!s1 && !s2) {
+        LOGGER(WARNING, "Comparison between null string_t is undefined.");
         return true;
     }
 
@@ -139,6 +141,7 @@ bool string_equal(const string_t *s1, const string_t *s2) {
  */
 bool string_equal_ignore_case(const string_t *s1, const string_t *s2) {
     if (!s1 && !s2) {
+        LOGGER(WARNING, "Comparison between null string_t is undefined.");
         return true;
     }
 
@@ -179,6 +182,7 @@ string_t *string_to_upper(string_t *string) {
  */
 bool string_starts_with(string_t *string, string_t *prefix) {
     if (!string && !prefix) {
+        LOGGER(WARNING, "Comparison between null string_t is undefined.");
         return true;
     }
     return_value_if_fail(string != NULL && prefix != NULL, false);
@@ -193,6 +197,7 @@ bool string_starts_with(string_t *string, string_t *prefix) {
  */
 bool string_ends_with(string_t *string, string_t *postfix) {
     if (!string && !postfix) {
+        LOGGER(WARNING, "Comparison between null string_t is undefined.");
         return true;
     }
     return_value_if_fail(string != NULL && postfix != NULL, false);
@@ -211,7 +216,10 @@ string_t *string_copy(string_t *destination, const string_t *source) {
 
     if (destination->length != source->length) {
         destination->string = (char *)cino_realloc(destination->string, sizeof(char) * (destination->length + 1), sizeof(char) * (source->length + 1));
-        call_and_return_value_if_fail(destination->string != NULL, string_destroy(destination), NULL);
+        if (!destination->string) {
+            string_destroy(destination);
+            exit(STATUS_OUT_OF_MEMORY);
+        }
     }
 
     str_copy(destination->string, source->string);
@@ -228,7 +236,10 @@ string_t *string_copy(string_t *destination, const string_t *source) {
 string_t *string_concat(string_t *destination, const string_t *source) {
     return_value_if_fail(destination != NULL && source != NULL, destination);
     destination->string = (char *)cino_realloc(destination->string, sizeof(char) * (destination->length + 1), sizeof(char) * (destination->length + source->length + 1));
-    call_and_return_value_if_fail(destination->string != NULL, string_destroy(destination), NULL);
+    if (!destination->string) {
+        string_destroy(destination);
+        exit(STATUS_OUT_OF_MEMORY);
+    }
     str_concat(destination->string, source->string);
     destination->length += source->length;
     return destination;
@@ -258,7 +269,10 @@ string_t *string_append_char(string_t *string, char c) {
 
     if (c != '\0') {
         string->string = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (string->length + 2));
-        call_and_return_value_if_fail(string->string != NULL, string_destroy(string), NULL);
+        if (!string->string) {
+            string_destroy(string);
+            exit(STATUS_OUT_OF_MEMORY);
+        }
     }
 
     str_append_char(string->string, c);
@@ -278,7 +292,10 @@ string_t *string_insert_char(string_t *string, int pos, char c) {
 
     int new_len = string->length + 1;
     string->string = (char *)cino_realloc(string->string, sizeof(char) * new_len, sizeof(char) * (new_len + 1));
-    call_and_return_value_if_fail(string->string != NULL, string_destroy(string), NULL);
+    if (!string->string) {
+        string_destroy(string);
+        exit(STATUS_OUT_OF_MEMORY);
+    }
 
     str_insert_char(string->string, pos, c);
 
@@ -302,7 +319,10 @@ string_t *string_insert_char(string_t *string, int pos, char c) {
 string_t *string_insert_string(string_t *string, int pos, const string_t *substr) {
     return_value_if_fail(string != NULL && pos >= 0 && pos <= string_length(string) && substr != NULL, string);
     string->string = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (string->length + substr->length + 1));
-    call_and_return_value_if_fail(string->string != NULL, string_destroy(string), NULL);
+    if (!string->string) {
+        string_destroy(string);
+        exit(STATUS_OUT_OF_MEMORY);
+    }
     str_insert_string(string->string, pos, substr->string);
     return string;
 }

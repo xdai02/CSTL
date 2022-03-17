@@ -313,7 +313,6 @@ void test_str_equal() {
     char s4[32] = "!@#$^&*()";
     assert(str_equal(s3, s4));
 
-    assert(str_equal(NULL, NULL));
     assert(!str_equal("", NULL));
     assert(!str_equal(NULL, ""));
 }
@@ -340,7 +339,6 @@ void test_str_equal_ignore_case() {
     char s4[32] = "!@#$^&*()";
     assert(str_equal_ignore_case(s3, s4));
 
-    assert(str_equal_ignore_case(NULL, NULL));
     assert(!str_equal_ignore_case("", NULL));
     assert(!str_equal_ignore_case(NULL, ""));
 }
@@ -410,7 +408,6 @@ void test_str_starts_with() {
     assert(!str_starts_with("hello", "HE"));
     assert(str_starts_with("123ABC", "1"));
     assert(str_starts_with("\n\t\0", "\n"));
-    assert(str_starts_with(NULL, NULL));
     assert(!str_starts_with(NULL, "\0"));
     assert(!str_starts_with("\0", NULL));
     assert(!str_starts_with("   ", "\t"));
@@ -426,7 +423,6 @@ void test_str_ends_with() {
     assert(str_ends_with("hello", "o"));
     assert(str_ends_with("123ABC", "BC"));
     assert(str_ends_with("\n\t\0", "\0"));
-    assert(str_ends_with(NULL, NULL));
     assert(!str_ends_with(NULL, "\0"));
     assert(!str_ends_with("\0", NULL));
     assert(!str_ends_with("   ", "\t"));
@@ -1224,7 +1220,7 @@ void test_cino_realloc() {
     }
     free(arr1);
 
-    double *arr2 = (double *)cino_realloc(arr1, 5, 0 * sizeof(double));
+    double *arr2 = (double *)cino_realloc(NULL, 5, 0 * sizeof(double));
     assert(!arr2);
 
     float *arr3 = (float *)cino_realloc(NULL, 0, 10 * sizeof(float));

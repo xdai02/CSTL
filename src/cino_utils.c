@@ -139,6 +139,7 @@ str_t double_to_str(double val, int precision, str_t str, int str_size) {
  */
 bool str_equal(const str_t s1, const str_t s2) {
     if (!s1 && !s2) {
+        LOGGER(WARNING, "Comparison between null strings is undefined.");
         return true;
     }
 
@@ -161,6 +162,7 @@ bool str_equal(const str_t s1, const str_t s2) {
  */
 bool str_equal_ignore_case(const str_t s1, const str_t s2) {
     if (!s1 && !s2) {
+        LOGGER(WARNING, "Comparison between null strings is undefined.");
         return true;
     }
 
@@ -217,6 +219,7 @@ str_t str_to_upper(str_t str) {
  */
 bool str_starts_with(const str_t str, const str_t prefix) {
     if (!str && !prefix) {
+        LOGGER(WARNING, "Comparison between null strings is undefined.");
         return true;
     }
     return_value_if_fail(str != NULL && prefix != NULL, false);
@@ -231,6 +234,7 @@ bool str_starts_with(const str_t str, const str_t prefix) {
  */
 bool str_ends_with(const str_t str, const str_t postfix) {
     if (!str && !postfix) {
+        LOGGER(WARNING, "Comparison between null strings is undefined.");
         return true;
     }
     return_value_if_fail(str != NULL && postfix != NULL, false);
@@ -367,19 +371,9 @@ str_t str_append_int(str_t str, int val) {
  */
 str_t str_append_double(str_t str, double val, int precision) {
     return_value_if_fail(str != NULL, NULL);
-
-    // 小数点后精度参数不合法时，默认保留2位小数
-    const int MIN_PRECISION = 0;
-    const int MAX_PRECISION = 16;
-    const int DEFAULT_PRECISION = 2;
-    if (precision < MIN_PRECISION || precision > MAX_PRECISION) {
-        precision = DEFAULT_PRECISION;
-    }
-
     char str_val[64] = {0};
     double_to_str(val, precision, str_val, sizeof(str_val));
     str_concat(str, str_val);
-
     return str;
 }
 
@@ -818,10 +812,12 @@ int str_split(const str_t str, const str_t delimiter, str_t *items) {
  * @return  申请成功返回首地址，失败返回NULL。
  */
 void *cino_alloc(size_t size) {
-    if (size <= 0) {
+    void *new_mem = NULL;
+    if (size <= 0 || !(new_mem = calloc(1, size))) {
+        LOGGER(WARNING, "Memory allocation failed.");
         return NULL;
     }
-    return calloc(1, size);
+    return new_mem;
 }
 
 /**
@@ -833,17 +829,19 @@ void *cino_alloc(size_t size) {
  * @return  申请成功返回首地址，失败返回NULL。
  */
 void *cino_realloc(void *p, size_t old_size, size_t new_size) {
-    if (new_size <= 0) {
+    void *new_mem = NULL;
+
+    if (new_size <= 0 || !(new_mem = calloc(1, new_size))) {
+        LOGGER(WARNING, "Memory allocation failed.");
+        if (p) {
+            free(p);
+            p = NULL;
+        }
         return NULL;
     }
 
-    if (!p) {
-        return calloc(1, new_size);
-    }
-
-    void *new_mem = calloc(1, new_size);
     memcpy(new_mem, p, min(old_size, new_size));
     free(p);
-    p = NULL;
+    p = new_mem;
     return new_mem;
 }

@@ -5,6 +5,7 @@
 #include "cino_utils.h"
 #include "cino_array.h"
 
-void test_array_create();
+void test_array_int_create();
+void test_array_int_destroy();
 
 #endif
