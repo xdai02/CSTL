@@ -39,6 +39,7 @@ void test_cino_utils() {
     test_str_insert_char();
     test_str_insert_string();
     test_str_substring();
+    test_str_count_substring();
     test_str_replace_char();
     test_str_replace();
     test_str_remove();
@@ -73,6 +74,8 @@ void test_cino_string() {
     test_string_ends_with();
     test_string_copy();
     test_string_concat();
+    test_string_trim();
+    test_string_append_char();
     test_string_insert_char();
     test_string_insert_string();
 

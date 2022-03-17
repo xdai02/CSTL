@@ -449,6 +449,30 @@ str_t str_substring(str_t str, int start, int end, str_t substr, int substr_size
 }
 
 /**
+ * @brief   计算指定子串出现次数
+ * @param  str      :   主串
+ * @param  substr   :   子串
+ * @retval  子串出现次数
+ */
+int str_count_substring(const str_t str, const str_t substr) {
+    return_value_if_fail(str != NULL && substr != NULL, 0);
+    int str_len = strlen(str);
+    int substr_len = strlen(substr);
+    if (str_len == 0 && substr_len == 0) {
+        return 1;
+    }
+    return_value_if_fail(substr_len > 0, 0);
+
+    int cnt = 0;
+    const char *p = str;
+    while ((p = strstr(p, substr))) {
+        cnt++;
+        p += substr_len;
+    }
+    return cnt;
+}
+
+/**
  * @brief   全部替换字符串中指定字符
  * @param str       :   字符串
  * @param old_char  :   被替换字符

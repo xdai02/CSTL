@@ -18,12 +18,10 @@ typedef struct string_t {
  * @return  返回构造好的cino字符串指针，失败返回NULL。
  */
 string_t *string_create(const char *str) {
-    return_value_if_fail(str != NULL, NULL);
-
     string_t *string = (string_t *)cino_alloc(sizeof(string_t));
     return_value_if_fail(string != NULL, NULL);
 
-    string->length = str_length(str);
+    string->length = str ? str_length(str) : 0;
 
     string->string = (char *)calloc(string->length + 1, sizeof(char));
     call_and_return_value_if_fail(string->string != NULL, string_destroy(string), NULL);
@@ -234,6 +232,38 @@ string_t *string_concat(string_t *destination, const string_t *source) {
     str_concat(destination->string, source->string);
     destination->length += source->length;
     return destination;
+}
+
+/**
+ * @brief   去除cino字符串首尾空白字符
+ * @param string    :   cino字符串
+ * @return  新cino字符串
+ */
+string_t *string_trim(string_t *string) {
+    return_value_if_fail(string != NULL, NULL);
+    str_trim(string->string);
+    string->string = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (str_length(string->string) + 1));
+    string->length = str_length(string->string);
+    return string;
+}
+
+/**
+ * @brief   cino字符串追加字符
+ * @param string    :   cino字符串
+ * @param c         :   字符
+ * @return  新cino字符串
+ */
+string_t *string_append_char(string_t *string, char c) {
+    return_value_if_fail(string != NULL, NULL);
+
+    if (c != '\0') {
+        string->string = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (string->length + 2));
+        call_and_return_value_if_fail(string->string != NULL, string_destroy(string), NULL);
+    }
+
+    str_append_char(string->string, c);
+    string->length = str_length(string->string);
+    return string;
 }
 
 /**

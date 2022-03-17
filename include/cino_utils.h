@@ -308,6 +308,14 @@ str_t str_insert_string(str_t str, int pos, const str_t substr);
 str_t str_substring(str_t str, int start, int end, str_t substr, int substr_size);
 
 /**
+ * @brief   计算指定子串出现次数
+ * @param  str      :   主串
+ * @param  substr   :   子串
+ * @retval  子串出现次数
+ */
+int str_count_substring(const str_t str, const str_t substr);
+
+/**
  * @brief   全部替换字符串中指定字符
  * @param str       :   字符串
  * @param old_char  :   被替换字符

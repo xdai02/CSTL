@@ -826,6 +826,24 @@ void test_str_substring() {
     assert(!p);
 }
 
+void test_str_count_substring() {
+    assert(str_count_substring("hello", "hel") == 1);
+    assert(str_count_substring("hello", "ell") == 1);
+    assert(str_count_substring("hello", "hello") == 1);
+    assert(str_count_substring("hello", "l") == 2);
+    assert(str_count_substring("hello World!", "l") == 3);
+    assert(str_count_substring("This is a test.", "is") == 2);
+    assert(str_count_substring("This is a test.", "hello") == 0);
+    assert(str_count_substring("This is a test.", "") == 0);
+    assert(str_count_substring("", "hello") == 0);
+    assert(str_count_substring("", "") == 1);
+    assert(str_count_substring(NULL, NULL) == 0);
+    assert(str_count_substring("goooooood", "o") == 7);
+    assert(str_count_substring("goooooood", "oo") == 3);
+    assert(str_count_substring("goooooood", "ooo") == 2);
+    assert(str_count_substring("goooooood", "oooo") == 1);
+}
+
 void test_str_replace_char() {
     char *p = NULL;
 
@@ -1159,7 +1177,7 @@ void test_cino_alloc() {
     assert(!arr2);
 
     char *p1 = (char *)cino_alloc(6 * sizeof(char));
-    strncpy(p1, "Hello", strlen("Hello"));
+    memcpy(p1, "Hello", strlen("Hello"));
     assert(strncmp(p1, "Hello", strlen(p1)) == 0);
     free(p1);
 
@@ -1184,7 +1202,7 @@ void test_cino_alloc() {
     struct test_t *test = (struct test_t *)cino_alloc(sizeof(struct test_t));
     test->a = 123;
     test->p = (char *)cino_alloc(16 * sizeof(char));
-    strncpy(test->p, "Hello World!", strlen("Hello World!"));
+    memcpy(test->p, "Hello World!", strlen("Hello World!"));
     assert(test->a == 123);
     assert(strncmp(test->p, "Hello World!", strlen(test->p)) == 0);
     free(test->p);
@@ -1214,27 +1232,27 @@ void test_cino_realloc() {
     free(arr3);
 
     char *p1 = (char *)cino_alloc(6 * sizeof(char));
-    strncpy(p1, "Hello", strlen("Hello"));
+    memcpy(p1, "Hello", strlen("Hello"));
     assert(strncmp(p1, "Hello", strlen(p1)) == 0);
     p1 = (char *)cino_realloc(p1, 6, 12 * sizeof(char));
     assert(strncmp(p1, "Hello", strlen(p1)) == 0);
     free(p1);
 
-    // struct test_t {
-    //     int a;
-    //     char *p;
-    // };
+    struct test_t {
+        int a;
+        char *p;
+    };
 
-    // struct test_t *test = (struct test_t *)cino_alloc(sizeof(struct test_t));
-    // test->a = 123;
-    // test->p = (char *)cino_alloc(16 * sizeof(char));
-    // strncpy(test->p, "Hello World!", strlen("Hello World!"));
-    // assert(test->a == 123);
-    // assert(strncmp(test->p, "Hello World!", strlen(test->p)) == 0);
-    // test->p = (char *)cino_realloc(test->p, 16, 8);
-    // assert(test->a == 123);
-    // test->p[8] = '\0';
-    // assert(strncmp(test->p, "Hello W", strlen(test->p)) == 0);
-    // free(test->p);
-    // free(test);
+    struct test_t *test = (struct test_t *)cino_alloc(sizeof(struct test_t));
+    test->a = 123;
+    test->p = (char *)cino_alloc(16 * sizeof(char));
+    memcpy(test->p, "Hello World!", strlen("Hello World!"));
+    assert(test->a == 123);
+    assert(strncmp(test->p, "Hello World!", strlen(test->p)) == 0);
+    test->p = (char *)cino_realloc(test->p, 16, 8);
+    assert(test->a == 123);
+    test->p[7] = '\0';
+    assert(strncmp(test->p, "Hello W", strlen(test->p)) == 0);
+    free(test->p);
+    free(test);
 }

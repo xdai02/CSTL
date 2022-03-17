@@ -10,10 +10,6 @@
 #ifndef _CINO_STRING_H_
 #define _CINO_STRING_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
 #include "cino_utils.h"
 
 /**
@@ -136,6 +132,21 @@ string_t *string_copy(string_t *destination, const string_t *source);
  * @return  返回目标cino字符串。
  */
 string_t *string_concat(string_t *destination, const string_t *source);
+
+/**
+ * @brief   去除cino字符串首尾空白字符
+ * @param string    :   cino字符串
+ * @return  新cino字符串
+ */
+string_t *string_trim(string_t *string);
+
+/**
+ * @brief   cino字符串追加字符
+ * @param string    :   cino字符串
+ * @param c         :   字符
+ * @return  新cino字符串
+ */
+string_t *string_append_char(string_t *string, char c);
 
 /**
  * @brief   在cino字符串指定位置插入字符

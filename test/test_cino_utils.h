@@ -45,6 +45,7 @@ void test_str_append_double();
 void test_str_insert_char();
 void test_str_insert_string();
 void test_str_substring();
+void test_str_count_substring();
 void test_str_replace_char();
 void test_str_replace();
 void test_str_remove();

@@ -10,10 +10,6 @@
 #ifndef _CINO_ARRAY_H_
 #define _CINO_ARRAY_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
 #include "cino_utils.h"
 
 /**
