@@ -526,7 +526,7 @@ str_t str_remove(str_t str, const str_t substr) {
 
 /**
  * @brief   字符串中查找首次出现指定字符的下标
- * @note    空串中查找\0，返回0
+ * @note    空串中查找'\0'，返回0
  * @param str   :   字符串
  * @param c     :   字符
  * @return  返回字符首次出现的下标，不存在返回-1。
@@ -554,7 +554,7 @@ int str_index_of_char(const str_t str, char c) {
 
 /**
  * @brief   字符串中查找从指定位置开始首次出现指定字符的下标
- * @note    空串中从0开始查找\0，返回0
+ * @note    空串中从0开始查找'\0'，返回0
  * @param str   :   字符串
  * @param c     :   字符
  * @param from  :   开始查找下标

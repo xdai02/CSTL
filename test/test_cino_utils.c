@@ -915,6 +915,11 @@ void test_str_replace() {
     assert(strncmp(s8, "", sizeof(s8)) == 0);
     assert(strncmp(p, "", sizeof(s8)) == 0);
 
+    char s9[32] = "This is a test";
+    p = str_replace(s9, "is", "THISIS");
+    assert(strncmp(s9, "ThTHISIS THISIS a test", sizeof(s9)) == 0);
+    assert(strncmp(p, "ThTHISIS THISIS a test", sizeof(s9)) == 0);
+
     p = str_replace(NULL, NULL, NULL);
     assert(!p);
 }

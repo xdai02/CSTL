@@ -102,20 +102,20 @@ string_t *string_to_lower(string_t *string);
 string_t *string_to_upper(string_t *string);
 
 /**
- * @brief   判断cino字符串是否以指定cino子串开头
+ * @brief   判断cino字符串是否以指定子串开头
  * @param string    :   cino字符串
- * @param prefix    :   cino子串
+ * @param prefix    :   子串
  * @return  如果string以prefix开头返回true，否则返回false。
  */
-bool string_starts_with(string_t *string, string_t *prefix);
+bool string_starts_with(const string_t *string, const str_t prefix);
 
 /**
- * @brief   判断cino字符串是否以指定cino子串结尾
+ * @brief   判断cino字符串是否以指定子串结尾
  * @param string    :   cino字符串
- * @param postfix    :   cino子串
+ * @param postfix   :   子串
  * @return  如果string以postfix结尾返回true，否则返回false。
  */
-bool string_ends_with(string_t *string, string_t *postfix);
+bool string_ends_with(const string_t *string, const str_t postfix);
 
 /**
  * @brief   cino字符串拷贝
@@ -158,12 +158,46 @@ string_t *string_append_char(string_t *string, char c);
 string_t *string_insert_char(string_t *string, int pos, char c);
 
 /**
- * @brief   在cino字符串指定位置插入cino子串
+ * @brief   在cino字符串指定位置插入子串
  * @param string    :   cino字符串
  * @param pos       :   插入位置（从0开始）
- * @param substr    :   cino子串
+ * @param substr    :   子串
  * @return  新cino字符串
  */
-string_t *string_insert_string(string_t *string, int pos, const string_t *substr);
+string_t *string_insert_string(string_t *string, int pos, const str_t substr);
+
+/**
+ * @brief   计算指定子串出现次数
+ * @param  string   :   cino主串
+ * @param  substr   :   子串
+ * @retval  子串出现次数
+ */
+int string_count_substring(const string_t *string, const str_t substr);
+
+/**
+ * @brief   全部替换cino字符串中指定字符
+ * @param string    :   cino字符串
+ * @param old_char  :   被替换字符
+ * @param new_char  :   新字符
+ * @return  新cino字符串
+ */
+string_t *string_replace_char(string_t *string, char old_char, char new_char);
+
+/**
+ * @brief   全部替换cino字符串中指定子串
+ * @param string    :   cino字符串
+ * @param old_str	:   被替换子串
+ * @param new_str	:   新串
+ * @return  新cino字符串
+ */
+string_t *string_replace(string_t *string, const str_t old_str, const str_t new_str);
+
+/**
+ * @brief   cino字符串删除指定子串
+ * @param string    :   cino字符串
+ * @param substr	:   子串
+ * @return  新cino字符串
+ */
+string_t *string_remove(string_t *string, const str_t substr);
 
 #endif

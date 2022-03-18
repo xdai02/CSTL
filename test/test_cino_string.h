@@ -23,5 +23,9 @@ void test_string_trim();
 void test_string_append_char();
 void test_string_insert_char();
 void test_string_insert_string();
+void test_string_count_substring();
+void test_string_replace_char();
+void test_string_replace();
+void test_string_remove();
 
 #endif

@@ -445,7 +445,7 @@ int str_index_of_substring_from(const str_t str, const str_t substr, int from);
 
 /**
  * @brief   字符串中查找最后一次出现指定字符的下标
- * @note    空串中查找\0，返回0
+ * @note    空串中查找'\0'，返回0
  * @param str   :   字符串
  * @param c     :   字符
  * @return  返回字符最后一次出现的下标，不存在返回-1。
@@ -454,7 +454,7 @@ int str_last_index_of_char(const str_t str, char c);
 
 /**
  * @brief   字符串中查找从开始位置向前最后一次出现指定字符的下标
- * @note    空串中从0开始查找\0，返回0
+ * @note    空串中从0开始查找'\0'，返回0
  * @param str   :   字符串
  * @param c     :   字符
  * @param from  :   开始下标

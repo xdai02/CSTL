@@ -175,33 +175,29 @@ string_t *string_to_upper(string_t *string) {
 }
 
 /**
- * @brief   判断cino字符串是否以指定cino子串开头
+ * @brief   判断cino字符串是否以指定子串开头
  * @param string    :   cino字符串
- * @param prefix    :   cino子串
+ * @param prefix    :   子串
  * @return  如果string以prefix开头返回true，否则返回false。
  */
-bool string_starts_with(string_t *string, string_t *prefix) {
-    if (!string && !prefix) {
-        LOGGER(WARNING, "Comparison between null string_t is undefined.");
-        return true;
+bool string_starts_with(const string_t *string, const str_t prefix) {
+    if (!string) {
+        return false;
     }
-    return_value_if_fail(string != NULL && prefix != NULL, false);
-    return str_starts_with(string->string, prefix->string);
+    return str_starts_with(string->string, prefix);
 }
 
 /**
- * @brief   判断cino字符串是否以指定cino子串结尾
+ * @brief   判断cino字符串是否以指定子串结尾
  * @param string    :   cino字符串
- * @param postfix    :   cino子串
+ * @param postfix   :   子串
  * @return  如果string以postfix结尾返回true，否则返回false。
  */
-bool string_ends_with(string_t *string, string_t *postfix) {
-    if (!string && !postfix) {
-        LOGGER(WARNING, "Comparison between null string_t is undefined.");
-        return true;
+bool string_ends_with(const string_t *string, const str_t postfix) {
+    if (!string) {
+        return false;
     }
-    return_value_if_fail(string != NULL && postfix != NULL, false);
-    return str_ends_with(string->string, postfix->string);
+    return str_ends_with(string->string, postfix);
 }
 
 /**
@@ -213,17 +209,7 @@ bool string_ends_with(string_t *string, string_t *postfix) {
 string_t *string_copy(string_t *destination, const string_t *source) {
     return_value_if_fail(destination != NULL, NULL);
     call_and_return_value_if_fail(source != NULL, string_clear(destination), destination);
-
-    if (destination->length != source->length) {
-        destination->string = (char *)cino_realloc(destination->string, sizeof(char) * (destination->length + 1), sizeof(char) * (source->length + 1));
-        if (!destination->string) {
-            string_destroy(destination);
-            exit(STATUS_OUT_OF_MEMORY);
-        }
-    }
-
-    str_copy(destination->string, source->string);
-    destination->length = source->length;
+    string_set(destination, source->string);
     return destination;
 }
 
@@ -303,26 +289,121 @@ string_t *string_insert_char(string_t *string, int pos, char c) {
     string->length = str_length(string->string);
     if (string->length < new_len) {
         string->string = (char *)cino_realloc(string->string, sizeof(char) * (new_len + 1), sizeof(char) * (string->length + 1));
-        call_and_return_value_if_fail(string->string != NULL, string_destroy(string), NULL);
     }
 
     return string;
 }
 
 /**
- * @brief   在cino字符串指定位置插入cino子串
+ * @brief   在cino字符串指定位置插入子串
  * @param string    :   cino字符串
  * @param pos       :   插入位置（从0开始）
- * @param substr    :   cino子串
+ * @param substr    :   子串
  * @return  新cino字符串
  */
-string_t *string_insert_string(string_t *string, int pos, const string_t *substr) {
+string_t *string_insert_string(string_t *string, int pos, const str_t substr) {
     return_value_if_fail(string != NULL && pos >= 0 && pos <= string_length(string) && substr != NULL, string);
-    string->string = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (string->length + substr->length + 1));
+
+    int string_len = string->length;
+    int substr_len = str_length(substr);
+    string->string = (char *)cino_realloc(string->string, sizeof(char) * (string_len + 1), sizeof(char) * (string_len + substr_len + 1));
     if (!string->string) {
         string_destroy(string);
         exit(STATUS_OUT_OF_MEMORY);
     }
-    str_insert_string(string->string, pos, substr->string);
+
+    str_insert_string(string->string, pos, substr);
+
+    // 如果插入"\0"可能会缩短字符串长度
+    string->length = str_length(string->string);
+    if (string->length < string_len) {
+        string->string = (char *)cino_realloc(string->string, sizeof(char) * (string_len + substr_len + 1), sizeof(char) * (string->length + 1));
+    }
+
+    return string;
+}
+
+/**
+ * @brief   计算指定子串出现次数
+ * @param  string   :   cino主串
+ * @param  substr   :   子串
+ * @retval  子串出现次数
+ */
+int string_count_substring(const string_t *string, const str_t substr) {
+    return_value_if_fail(string != NULL && substr != NULL, 0);
+    return str_count_substring(string->string, substr);
+}
+
+/**
+ * @brief   全部替换cino字符串中指定字符
+ * @param string    :   cino字符串
+ * @param old_char  :   被替换字符
+ * @param new_char  :   新字符
+ * @return  新cino字符串
+ */
+string_t *string_replace_char(string_t *string, char old_char, char new_char) {
+    return_value_if_fail(string != NULL, NULL);
+
+    int string_len = string->length;
+    str_replace_char(string->string, old_char, new_char);
+
+    // 如果替换"\0"可能会缩短字符串长度
+    string->length = str_length(string->string);
+    if (string->length < string_len) {
+        string->string = (char *)cino_realloc(string->string, sizeof(char) * (string_len + 1), sizeof(char) * (string->length + 1));
+    }
+
+    return string;
+}
+
+/**
+ * @brief   全部替换cino字符串中指定子串
+ * @param string    :   cino字符串
+ * @param old_str	:   被替换子串
+ * @param new_str	:   新串
+ * @return  新cino字符串
+ */
+string_t *string_replace(string_t *string, const str_t old_str, const str_t new_str) {
+    return_value_if_fail(string != NULL && old_str != NULL && new_str != NULL, string);
+
+    int old_str_len = str_length(old_str);
+    int new_str_len = str_length(new_str);
+    int replace_cnt = string_count_substring(string, old_str);
+    int new_len = string->length + replace_cnt * (new_str_len - old_str_len);
+    new_len = new_len < string->length ? string->length : new_len;
+
+    string->string = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (new_len + 1));
+    if (!string->string) {
+        string_destroy(string);
+        exit(STATUS_OUT_OF_MEMORY);
+    }
+
+    str_replace(string->string, old_str, new_str);
+
+    string->length = str_length(string->string);
+    if (string->length < new_len) {
+        string->string = (char *)cino_realloc(string->string, sizeof(char) * (new_len + 1), sizeof(char) * (string->length + 1));
+    }
+
+    return string;
+}
+
+/**
+ * @brief   cino字符串删除指定子串
+ * @param string    :   cino字符串
+ * @param substr	:   子串
+ * @return  新cino字符串
+ */
+string_t *string_remove(string_t *string, const str_t substr) {
+    return_value_if_fail(string != NULL && substr != NULL, string);
+
+    int string_len = string->length;
+    str_remove(string->string, substr);
+    string->length = str_length(string->string);
+
+    if (string->length < string_len) {
+        string->string = (char *)cino_realloc(string->string, sizeof(char) * (string_len + 1), sizeof(char) * (string->length + 1));
+    }
+
     return string;
 }

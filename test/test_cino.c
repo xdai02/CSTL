@@ -78,6 +78,10 @@ void test_cino_string() {
     test_string_append_char();
     test_string_insert_char();
     test_string_insert_string();
+    test_string_count_substring();
+    test_string_replace_char();
+    test_string_replace();
+    test_string_remove();
 
     printf("[PASS] test_cino_string\n");
 }
