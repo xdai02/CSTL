@@ -8,6 +8,18 @@ void test_array_int_destroy() {
     
 }
 
+void test_array_int_is_empty() {
+
+}
+
+void test_array_int_size() {
+
+}
+
+void test_array_int_get() {
+    
+}
+
 // void test_array_create() {
     // array_t *arr1 = array_create(sizeof(int));
     // assert(arr1);

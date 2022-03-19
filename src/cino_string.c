@@ -82,7 +82,7 @@ string_t *string_set(string_t *string, const char *str) {
         string->string = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (str_len + 1));
         if (!string->string) {
             string_destroy(string);
-            exit(STATUS_OUT_OF_MEMORY);
+            return NULL;
         }
     }
 
@@ -224,7 +224,7 @@ string_t *string_concat(string_t *destination, const string_t *source) {
     destination->string = (char *)cino_realloc(destination->string, sizeof(char) * (destination->length + 1), sizeof(char) * (destination->length + source->length + 1));
     if (!destination->string) {
         string_destroy(destination);
-        exit(STATUS_OUT_OF_MEMORY);
+        return NULL;
     }
     str_concat(destination->string, source->string);
     destination->length += source->length;
@@ -257,7 +257,7 @@ string_t *string_append_char(string_t *string, char c) {
         string->string = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (string->length + 2));
         if (!string->string) {
             string_destroy(string);
-            exit(STATUS_OUT_OF_MEMORY);
+            return NULL;
         }
     }
 
@@ -280,7 +280,7 @@ string_t *string_insert_char(string_t *string, int pos, char c) {
     string->string = (char *)cino_realloc(string->string, sizeof(char) * new_len, sizeof(char) * (new_len + 1));
     if (!string->string) {
         string_destroy(string);
-        exit(STATUS_OUT_OF_MEMORY);
+        return NULL;
     }
 
     str_insert_char(string->string, pos, c);
@@ -309,7 +309,7 @@ string_t *string_insert_string(string_t *string, int pos, const str_t substr) {
     string->string = (char *)cino_realloc(string->string, sizeof(char) * (string_len + 1), sizeof(char) * (string_len + substr_len + 1));
     if (!string->string) {
         string_destroy(string);
-        exit(STATUS_OUT_OF_MEMORY);
+        return NULL;
     }
 
     str_insert_string(string->string, pos, substr);
@@ -375,7 +375,7 @@ string_t *string_replace(string_t *string, const str_t old_str, const str_t new_
     string->string = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (new_len + 1));
     if (!string->string) {
         string_destroy(string);
-        exit(STATUS_OUT_OF_MEMORY);
+        return NULL;
     }
 
     str_replace(string->string, old_str, new_str);

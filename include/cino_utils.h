@@ -103,6 +103,16 @@ typedef enum log_level_t {
  */
 #define max(x, y) (((x) > (y)) ? (x) : (y))
 
+/**
+ * @brief   交换两个变量的值
+ */
+#define swap(x, y, type) \
+    do {                 \
+        type temp = x;   \
+        x = y;           \
+        y = temp;        \
+    } while (0)
+
 /****************************************
  *              合法性检查
  ****************************************/

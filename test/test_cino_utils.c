@@ -25,6 +25,44 @@ void test_max() {
     assert(max('z', 'Z') == 'z');
 }
 
+void test_swap() {
+    const double EPS = 1e-6;  // 用于比较浮点数的精度
+
+    int num1 = 1;
+    int num2 = 2;
+    swap(num1, num2, int);
+    assert(num1 == 2);
+    assert(num2 == 1);
+
+    double num3 = 3.14;
+    double num4 = 2.71;
+    swap(num3, num4, double);
+    assert(fabs(num3 - 2.71) <= EPS);
+    assert(fabs(num4 - 3.14) <= EPS);
+
+    int num5 = 123;
+    int num6 = 789;
+    int *p1 = &num5;
+    int *p2 = &num6;
+    swap(*p1, *p2, int);
+    assert(num5 == 789);
+    assert(num6 == 123);
+    assert(*p1 == 789);
+    assert(*p2 == 123);
+
+    int num7 = 321;
+    int num8 = 987;
+    int *p3 = &num7;
+    int *p4 = &num8;
+    swap(p3, p4, int *);
+    assert(num7 == 321);
+    assert(num8 == 987);
+    assert(*p3 == 987);
+    assert(*p4 == 321);
+    assert(p3 == &num8);
+    assert(p4 == &num7);
+}
+
 void test_return_if_fail() {
     int cnt = 0;
     cnt++;
@@ -665,11 +703,6 @@ void test_str_append_double() {
     p = str_append_double(s5, 0.00001, 0);
     assert(strncmp(s5, "Lorem ipsum0", sizeof(s5)) == 0);
     assert(strncmp(p, "Lorem ipsum0", sizeof(s5)) == 0);
-
-    char s6[32] = "This is a test";
-    p = str_append_double(s6, -12.34567, -2);
-    assert(strncmp(s6, "This is a test-12.35", sizeof(s6)) == 0);
-    assert(strncmp(p, "This is a test-12.35", sizeof(s6)) == 0);
 }
 
 void test_str_insert_char() {
@@ -1174,9 +1207,6 @@ void test_cino_alloc() {
     }
     free(arr1);
 
-    double *arr2 = (double *)cino_alloc(0 * sizeof(double));
-    assert(!arr2);
-
     char *p1 = (char *)cino_alloc(6 * sizeof(char));
     memcpy(p1, "Hello", strlen("Hello"));
     assert(strncmp(p1, "Hello", strlen(p1)) == 0);
@@ -1225,12 +1255,9 @@ void test_cino_realloc() {
     }
     free(arr1);
 
-    double *arr2 = (double *)cino_realloc(NULL, 5, 0 * sizeof(double));
-    assert(!arr2);
-
-    float *arr3 = (float *)cino_realloc(NULL, 0, 10 * sizeof(float));
-    assert(arr3);
-    free(arr3);
+    float *arr2 = (float *)cino_realloc(NULL, 0, 10 * sizeof(float));
+    assert(arr2);
+    free(arr2);
 
     char *p1 = (char *)cino_alloc(6 * sizeof(char));
     memcpy(p1, "Hello", strlen("Hello"));

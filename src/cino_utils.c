@@ -116,6 +116,7 @@ str_t double_to_str(double val, int precision, str_t str, int str_size) {
     const int MAX_PRECISION = 16;
     const int DEFAULT_PRECISION = 2;
     if (precision < MIN_PRECISION || precision > MAX_PRECISION) {
+        LOGGER(WARNING, "Invalid parameter `precision`.");
         precision = DEFAULT_PRECISION;
     }
 
@@ -814,7 +815,7 @@ int str_split(const str_t str, const str_t delimiter, str_t *items) {
 void *cino_alloc(size_t size) {
     void *new_mem = NULL;
     if (size <= 0 || !(new_mem = calloc(1, size))) {
-        LOGGER(WARNING, "Memory allocation failed.");
+        LOGGER(ERROR, "Memory allocation failed.");
         return NULL;
     }
     return new_mem;
@@ -831,13 +832,17 @@ void *cino_alloc(size_t size) {
 void *cino_realloc(void *p, size_t old_size, size_t new_size) {
     void *new_mem = NULL;
 
-    if (new_size <= 0 || !(new_mem = calloc(1, new_size))) {
-        LOGGER(WARNING, "Memory allocation failed.");
+    if (old_size < 0 || new_size <= 0 || !(new_mem = calloc(1, new_size))) {
+        LOGGER(ERROR, "Memory allocation failed.");
         if (p) {
             free(p);
             p = NULL;
         }
         return NULL;
+    }
+
+    if (!p && old_size == 0) {
+        return new_mem;
     }
 
     memcpy(new_mem, p, min(old_size, new_size));
