@@ -392,7 +392,7 @@ array_int_t *array_int_sort(array_int_t *array, bool reverse) {
 //     void **arr;     // 数组
 //     int size;       // 元素个数
 //     int capacity;   // 容量
-//     int elem_size;  // 每个元素大小
+//     size_t elem_size;  // 每个元素大小
 // } array_t;
 
 // /****************************************

@@ -1,18 +1,18 @@
 #include "cino_utils.h"
 
 /****************************************
- *              类型转换
+ *            Type Conversion
  ****************************************/
 
 /**
- * @brief   str转bool
- * @param str   :   字符串
- * @return  返回false的情况：
+ * @brief   Convert string to boolean.
+ * @param str   string
+ * @return  Returns false if:
  *              1. str == NULL
  *              2. strlen(str) == 0
  *              3. str_equal_ignore_case(str, "false")
- *              4. str为全0字符串
- *          其它情况返回true。
+ *              4. a string of zeros
+ *          Otherwise return true.
  */
 bool str_to_bool(const str_t str) {
     if (!str || strlen(str) == 0 || str_equal_ignore_case(str, "false")) {
@@ -30,18 +30,18 @@ bool str_to_bool(const str_t str) {
 }
 
 /**
- * @brief   bool转str
- * @param val   :   bool值
- * @return  val为true返回"true"，val为false返回"false"。
+ * @brief   Convert boolean to string.
+ * @param val   boolean value
+ * @return  Returns "true" if the boolean value is `true`, otherwise retuens "false".
  */
 const str_t bool_to_str(bool val) {
     return val ? "true" : "false";
 }
 
 /**
- * @brief   str转char
- * @param  str  :   保存转换结果的字符串
- * @return  如果str == NULL返回'\0'，否则返回str的第一个字符。
+ * @brief   Convert string to char.
+ * @param str   string
+ * @return  Returns the first character of the string. Returns '\0' if string is NULL.
  */
 char str_to_char(const str_t str) {
     return_value_if_fail(str != NULL, '\0');
@@ -49,12 +49,13 @@ char str_to_char(const str_t str) {
 }
 
 /**
- * @brief   char转str
- * @note    调用者需要确保str分配了足够的空间、str_size的长度正确。
- * @param  c            :   字符
- * @param  str          :   保存转换结果的字符串
- * @param  str_size     :   sizeof(str)
- * @return   转换后字符串
+ * @brief   Convert char to string.
+ * @note    It is caller's responsibility to ensure the validity of the passing string 
+ *          and its size.
+ * @param c         char
+ * @param str       string used to store the result after conversion
+ * @param str_size  sizeof(str)
+ * @return  Returns the string after conversion.
  */
 str_t char_to_str(char c, str_t str, int str_size) {
     return_value_if_fail(str != NULL && str_size > 0, NULL);
@@ -65,9 +66,9 @@ str_t char_to_str(char c, str_t str, int str_size) {
 }
 
 /**
- * @brief   str转int
- * @param str   :   字符串
- * @return  当str == NULL时返回0，其它情况返回atoi()的结果。
+ * @brief   Convert string to int.
+ * @param str   string
+ * @return  Returns 0 if str == NULL, otherwise returns the result given by atoi().
  */
 int str_to_int(const str_t str) {
     return_value_if_fail(str != NULL, 0);
@@ -75,12 +76,13 @@ int str_to_int(const str_t str) {
 }
 
 /**
- * @brief   int转str
- * @note    调用者需要确保str分配了足够的空间、str_size的长度正确。
- * @param  val      :   int值
- * @param  str      :   保存转换结果的字符串
- * @param  str_size :   sizeof(str)
- * @return   转换后字符串
+ * @brief   Convert int to string.
+ * @note    It is caller's responsibility to ensure the validity of the passing string 
+ *          and its size.
+ * @param val       int value
+ * @param str       string used to store the result after conversion
+ * @param str_size  sizeof(str)
+ * @return   Returns the string after conversion.
  */
 str_t int_to_str(int val, str_t str, int str_size) {
     return_value_if_fail(str != NULL && str_size > 0, NULL);
@@ -90,9 +92,9 @@ str_t int_to_str(int val, str_t str, int str_size) {
 }
 
 /**
- * @brief   str转double
- * @param str   :   字符串
- * @return  当str == NULL时返回0.0，其它情况返回atof()的结果。
+ * @brief   Convert string to double.
+ * @param str   string
+ * @return  Returns 0.0 if str == NULL，otherwise returns the result given `atof()`.
  */
 double str_to_double(const str_t str) {
     return_value_if_fail(str != NULL, 0.0);
@@ -100,18 +102,18 @@ double str_to_double(const str_t str) {
 }
 
 /**
- * @brief   double转str
- * @note    调用者需要确保str分配了足够的空间、str_size的长度正确。
- * @param  val          :   double值
- * @param  precision    :   四舍五入保留小数点后数位，默认保留2位，最大支持16位
- * @param  str          :   保存转换结果的字符串
- * @param  str_size     :   sizeof(str)
- * @return   转换后字符串
+ * @brief   Convert double to string.
+ * @note    It is caller's responsibility to ensure the validity of the passing string 
+ *          and its size.
+ * @param val           double value
+ * @param precision     number of decimal places when rounding (default=2, max=16)
+ * @param str           string used to store the result after conversion
+ * @param str_size      sizeof(str)
+ * @return  Returns the string after conversion.
  */
 str_t double_to_str(double val, int precision, str_t str, int str_size) {
     return_value_if_fail(str != NULL && str_size > 0, NULL);
 
-    // 小数点后精度参数不合法时，默认保留2位小数
     const int MIN_PRECISION = 0;
     const int MAX_PRECISION = 16;
     const int DEFAULT_PRECISION = 2;
@@ -129,14 +131,14 @@ str_t double_to_str(double val, int precision, str_t str, int str_size) {
 }
 
 /****************************************
- *              字符串操作
+ *          String Operation
  ****************************************/
 
 /**
- * @brief   比较字符串
- * @param s1    :   字符串1
- * @param s2    :   字符串2
- * @return  如果s1和s2相同返回true，否则返回false。
+ * @brief   Determine if two strings are equal.
+ * @param s1    string 1
+ * @param s2    string 2
+ * @return  Returns true if two strings are equal, otherwise returns false.
  */
 bool str_equal(const str_t s1, const str_t s2) {
     if (!s1 && !s2) {
@@ -156,10 +158,11 @@ bool str_equal(const str_t s1, const str_t s2) {
 }
 
 /**
- * @brief   忽略大小写比较字符串
- * @param s1    :   字符串1
- * @param s2    :   字符串2
- * @return  如果s1和s2忽略大小写相同返回true，否则返回false。
+ * @brief   Determine if two strings are equal, ignoring case considerations.
+ * @param s1    string 1
+ * @param s2    string 2
+ * @return  Returns true if s1 equals s2 ignoring case considerations, otherwise 
+ *          returns false.
  */
 bool str_equal_ignore_case(const str_t s1, const str_t s2) {
     if (!s1 && !s2) {
@@ -183,9 +186,9 @@ bool str_equal_ignore_case(const str_t s1, const str_t s2) {
 }
 
 /**
- * @brief   字符串转小写
- * @param str   :   字符串
- * @return  小写字符串
+ * @brief   Converts all of the characters to lower case
+ * @param str   string
+ * @return  String in lower case.
  */
 str_t str_to_lower(str_t str) {
     return_value_if_fail(str != NULL, NULL);
@@ -198,9 +201,9 @@ str_t str_to_lower(str_t str) {
 }
 
 /**
- * @brief   字符串转大写
- * @param str   :   字符串
- * @return  大写字符串
+ * @brief   Converts all of the characters to upper case
+ * @param str   string
+ * @return  String in upper case.
  */
 str_t str_to_upper(str_t str) {
     return_value_if_fail(str != NULL, NULL);
@@ -213,10 +216,11 @@ str_t str_to_upper(str_t str) {
 }
 
 /**
- * @brief   判断字符串是否以指定子串开头
- * @param str       :   字符串
- * @param prefix    :   子串
- * @return  如果str以prefix开头返回true，否则返回false。
+ * @brief   Tests if the string starts with the specified prefix.
+ * @param str       string
+ * @param prefix    prefix string
+ * @return  Returns true if the string starts with the specified prefix, otherwise 
+ *          returns false.
  */
 bool str_starts_with(const str_t str, const str_t prefix) {
     if (!str && !prefix) {
@@ -228,29 +232,30 @@ bool str_starts_with(const str_t str, const str_t prefix) {
 }
 
 /**
- * @brief   判断字符串是否以指定子串结尾
- * @param str       :   字符串
- * @param postfix   :   子串
- * @return  如果str以postfix结尾返回true，否则返回false。
+ * @brief   Tests if the string ends with the specified suffix.
+ * @param str       string
+ * @param suffix    suffix string
+ * @return  Returns true if `str` ends with `postfix`, otherwise returns false.
  */
-bool str_ends_with(const str_t str, const str_t postfix) {
-    if (!str && !postfix) {
+bool str_ends_with(const str_t str, const str_t suffix) {
+    if (!str && !suffix) {
         LOGGER(WARNING, "Comparison between null strings is undefined.");
         return true;
     }
-    return_value_if_fail(str != NULL && postfix != NULL, false);
+    return_value_if_fail(str != NULL && suffix != NULL, false);
     int str_len = strlen(str);
-    int postfix_len = strlen(postfix);
-    int offset = str_len - postfix_len;
+    int suffix_len = strlen(suffix);
+    int offset = str_len - suffix_len;
     return_value_if_fail(offset >= 0, false);
-    return strncmp(str + offset, postfix, strlen(postfix)) == 0;
+    return strncmp(str + offset, suffix, strlen(suffix)) == 0;
 }
 
 /**
- * @brief   清空字符串
- * @note    调用者需要确保str分配了足够的空间、str_size的长度正确。
- * @param str       :   字符串
- * @param str_size  :   sizeof(str)
+ * @brief   Reset string with '\0'.
+ * @note    It is caller's responsibility to ensure the validity of the passing string 
+ *          and its size.
+ * @param str       string
+ * @param str_size  sizeof(str)
  */
 void str_clear(str_t str, int str_size) {
     return_if_fail(str != NULL && str_size > 0);
@@ -258,9 +263,9 @@ void str_clear(str_t str, int str_size) {
 }
 
 /**
- * @brief   计算字符串长度
- * @param str   :   字符串
- * @return  str为NULL返回0，否则返回字符串长度。
+ * @brief   Returns the length of the string.
+ * @param str   string
+ * @return  Returns the length of the string. Returns 0 if stirng is NULL.
  */
 int str_length(const str_t str) {
     return_value_if_fail(str != NULL, 0);
@@ -268,11 +273,11 @@ int str_length(const str_t str) {
 }
 
 /**
- * @brief   字符串拷贝
- * @note    调用者需要确保destination和source的长度足够。
- * @param destination   :   目标字符串
- * @param source        :   源字符串
- * @return  返回目标字符串
+ * @brief   String copy.
+ * @note    It is caller's responsibility to ensure the validity of the passing strings.
+ * @param destination   destination string
+ * @param source        source string
+ * @return  Returns destination string.
  */
 str_t str_copy(str_t destination, const str_t source) {
     return_value_if_fail(destination != NULL && source != NULL, destination);
@@ -282,11 +287,11 @@ str_t str_copy(str_t destination, const str_t source) {
 }
 
 /**
- * @brief   字符串拼接
- * @note    调用者需要确保destination和source的长度足够。
- * @param destination   :   目标字符串
- * @param source        :   源字符串
- * @return  返回目标字符串
+ * @brief   String concatenate.
+ * @note    It is caller's responsibility to ensure the validity of the passing strings.
+ * @param destination   destination string
+ * @param source        source string
+ * @return  Returns destination string.
  */
 str_t str_concat(str_t destination, const str_t source) {
     return_value_if_fail(destination != NULL && source != NULL, destination);
@@ -298,9 +303,9 @@ str_t str_concat(str_t destination, const str_t source) {
 }
 
 /**
- * @brief   去除字符串首尾空白字符
- * @param str   :   字符串
- * @return  新字符串
+ * @brief   Removes leading and trailing whitespaces.
+ * @param str   string
+ * @return  Returns a string with any leading and trailing whitespace removed.
  */
 str_t str_trim(str_t str) {
     return_value_if_fail(str != NULL, NULL);
@@ -333,11 +338,11 @@ str_t str_trim(str_t str) {
 }
 
 /**
- * @brief   字符串追加字符
- * @note    调用者需要确保str的长度足够。
- * @param str   :   字符串
- * @param c     :   字符
- * @return  新字符串
+ * @brief   Append a char to the string.
+ * @note    It is caller's responsibility to ensure the validity of the passing string.
+ * @param str   string
+ * @param c     char
+ * @return  Returns the modified string.
  */
 str_t str_append_char(str_t str, char c) {
     return_value_if_fail(str != NULL, NULL);
@@ -348,11 +353,11 @@ str_t str_append_char(str_t str, char c) {
 }
 
 /**
- * @brief   字符串追加int
- * @note    调用者需要确保str的长度足够。
- * @param str   :   字符串
- * @param val   :   int值
- * @return  新字符串
+ * @brief   Append an int to the string.
+ * @note    It is caller's responsibility to ensure the validity of the passing string.
+ * @param str   string
+ * @param val   int value
+ * @return  Returns the modified string.
  */
 str_t str_append_int(str_t str, int val) {
     return_value_if_fail(str != NULL, NULL);
@@ -363,12 +368,12 @@ str_t str_append_int(str_t str, int val) {
 }
 
 /**
- * @brief   字符串追加double
- * @note    调用者需要确保str的长度足够。
- * @param str           :   字符串
- * @param val           :   double值
- * @param  precision    :   四舍五入保留小数点后数位，默认保留2位，最大支持16位
- * @return  新字符串
+ * @brief   Append a double to the string.
+ * @note    It is caller's responsibility to ensure the validity of the passing string.
+ * @param str       string
+ * @param val       double value
+ * @param precision number of decimal places when rounding (default=2, max=16)
+ * @return  Returns the modified string.
  */
 str_t str_append_double(str_t str, double val, int precision) {
     return_value_if_fail(str != NULL, NULL);
@@ -379,64 +384,63 @@ str_t str_append_double(str_t str, double val, int precision) {
 }
 
 /**
- * @brief   在字符串指定位置插入字符
- * @note    调用者需要确保str的长度足够。
- * @param str   :   字符串
- * @param pos   :   插入位置（从0开始）
- * @param c     :   字符
- * @return  新字符串
+ * @brief   Insert a char into the string.
+ * @note    It is caller's responsibility to ensure the validity of the passing string.
+ * @param str   string
+ * @param index insert position
+ * @param c     char
+ * @return  Returns the modified string.
  */
-str_t str_insert_char(str_t str, int pos, char c) {
-    return_value_if_fail(str != NULL && pos >= 0 && pos <= strlen(str), str);
-    memmove(str + pos + 1, str + pos, strlen(str + pos));
-    str[pos] = c;
+str_t str_insert_char(str_t str, int index, char c) {
+    return_value_if_fail(str != NULL && index >= 0 && index <= strlen(str), str);
+    memmove(str + index + 1, str + index, strlen(str + index));
+    str[index] = c;
     return str;
 }
 
 /**
- * @brief   在字符串指定位置插入子串
- * @note    调用者需要确保str的长度足够。
- * @param str       :   字符串
- * @param pos       :   插入位置（从0开始）
- * @param substr    :   子串
- * @return  新字符串
+ * @brief   Insert a string into the string.
+ * @note    It is caller's responsibility to ensure the validity of the passing string.
+ * @param str       string
+ * @param index     insert position
+ * @param substr    inserted string
+ * @return  Returns the modified string.
  */
-str_t str_insert_string(str_t str, int pos, const str_t substr) {
-    return_value_if_fail(str != NULL && pos >= 0 && pos <= strlen(str) && substr != NULL, str);
+str_t str_insert_string(str_t str, int index, const str_t substr) {
+    return_value_if_fail(str != NULL && index >= 0 && index <= strlen(str) && substr != NULL, str);
 
     int str_len = strlen(str);
     int substr_len = strlen(substr);
 
-    memmove(str + pos + substr_len, str + pos, strlen(str + pos));
-    memcpy(str + pos, substr, substr_len);
+    memmove(str + index + substr_len, str + index, strlen(str + index));
+    memcpy(str + index, substr, substr_len);
     str[str_len + substr_len] = '\0';
 
     return str;
 }
 
 /**
- * @brief   截取字符串指定范围子串
- * @note    调用者需要确保substr分配了足够的空间、substr_size的长度正确。
- * @param str           :   主串
- * @param start         :   开始下标，小于0默认为0，大于主串长度默认为末尾下标
- * @param end           :   结束下标，小于0默认为0，大于主串长度默认为末尾下标
- * @param substr        :   保存子串
- * @param substr_size   :   sizeof(substr)
- * @return  返回[start, end]返回的子串，start或end不合法返回空串。
+ * @brief   Returns a substring [start, end].
+ * @note    It is caller's responsibility to ensure the validity of the passing string 
+ *          and its size.
+ * @param str           string
+ * @param start         start index
+ * @param end           end index
+ * @param substr        string used to store the substring
+ * @param substr_size   sizeof(substr)
+ * @return  Returns a substring [start, end].
  */
 str_t str_substring(str_t str, int start, int end, str_t substr, int substr_size) {
     return_value_if_fail(str != NULL && substr != NULL && substr_size > 0, NULL);
 
     memset(substr, '\0', substr_size);
 
-    // 设置start、end默认值
     int str_len = strlen(str);
     start = start >= 0 ? start : 0;
     start = start < str_len ? start : str_len - 1;
     end = end < str_len ? end : str_len - 1;
     end = end >= 0 ? end : 0;
 
-    // 截取范围不合法返回空串
     return_value_if_fail(end >= start, substr);
 
     strncpy(substr, str + start, end - start + 1);
@@ -444,10 +448,10 @@ str_t str_substring(str_t str, int start, int end, str_t substr, int substr_size
 }
 
 /**
- * @brief   计算指定子串出现次数
- * @param  str      :   主串
- * @param  substr   :   子串
- * @retval  子串出现次数
+ * @brief   Count the number of substring occurrences.
+ * @param str       string
+ * @param substr    substring
+ * @return  The number of substring occurrences.
  */
 int str_count_substring(const str_t str, const str_t substr) {
     return_value_if_fail(str != NULL && substr != NULL, 0);
@@ -468,11 +472,11 @@ int str_count_substring(const str_t str, const str_t substr) {
 }
 
 /**
- * @brief   全部替换字符串中指定字符
- * @param str       :   字符串
- * @param old_char  :   被替换字符
- * @param new_char  :   新字符
- * @return  新字符串
+ * @brief   Replacing all occurrences of old char with new char.
+ * @param str       string
+ * @param old_char  old char 
+ * @param new_char  new char
+ * @return  Returns the modified string.
  */
 str_t str_replace_char(str_t str, char old_char, char new_char) {
     return_value_if_fail(str != NULL, NULL);
@@ -487,11 +491,11 @@ str_t str_replace_char(str_t str, char old_char, char new_char) {
 }
 
 /**
- * @brief   全部替换字符串中指定子串
- * @param str       :   字符串
- * @param old_str	:   被替换子串
- * @param new_str	:   新串
- * @return  新字符串
+ * @brief   Replacing all occurrences of old string with new string.
+ * @param str       string
+ * @param old_str   old string 
+ * @param new_str   new string
+ * @return  Returns the modified string.
  */
 str_t str_replace(str_t str, const str_t old_str, const str_t new_str) {
     return_value_if_fail(str != NULL && old_str != NULL && new_str != NULL, str);
@@ -504,10 +508,10 @@ str_t str_replace(str_t str, const str_t old_str, const str_t new_str) {
 }
 
 /**
- * @brief   字符串删除指定子串
- * @param str       :   字符串
- * @param substr	:   子串
- * @return  新字符串
+ * @brief   Removing all occurrences of the given substring.
+ * @param str       string
+ * @param substr    string to be removed
+ * @return  Returns the modified string.
  */
 str_t str_remove(str_t str, const str_t substr) {
     return_value_if_fail(str != NULL && substr != NULL, str);
@@ -526,18 +530,16 @@ str_t str_remove(str_t str, const str_t substr) {
 }
 
 /**
- * @brief   字符串中查找首次出现指定字符的下标
- * @note    空串中查找'\0'，返回0
- * @param str   :   字符串
- * @param c     :   字符
- * @return  返回字符首次出现的下标，不存在返回-1。
+ * @brief   Find the first occurrence of the specified character.
+ * @param str   string
+ * @param c     char
+ * @return  Returns the index within the string of the first occurrence of the specified 
+ *          character. Returns -1 if the character is not found.
  */
 int str_index_of_char(const str_t str, char c) {
     return_value_if_fail(str != NULL, -1);
 
     int str_len = strlen(str);
-
-    // 空串中查找\0，返回0
     if (str_len == 0 && c == '\0') {
         return 0;
     }
@@ -554,19 +556,19 @@ int str_index_of_char(const str_t str, char c) {
 }
 
 /**
- * @brief   字符串中查找从指定位置开始首次出现指定字符的下标
- * @note    空串中从0开始查找'\0'，返回0
- * @param str   :   字符串
- * @param c     :   字符
- * @param from  :   开始查找下标
- * @return  返回字符从指定位置开始首次出现的下标，不存在返回-1。
+ * @brief   Find the first occurrence of the specified character, starting the 
+ *          search at the specified index.
+ * @param str   string
+ * @param c     char
+ * @param from  start index for searching
+ * @return  Returns the index within the string of the first occurrence of the specified 
+ *          character, starting the search at the specified index. Returns -1 if the 
+ *          character is not found.
  */
 int str_index_of_char_from(const str_t str, char c, int from) {
     return_value_if_fail(str != NULL, -1);
 
     int str_len = strlen(str);
-
-    // 空串中查找\0，返回0
     if (str_len == 0 && c == '\0' && from == 0) {
         return 0;
     }
@@ -585,24 +587,20 @@ int str_index_of_char_from(const str_t str, char c, int from) {
 }
 
 /**
- * @brief   字符串中查找从指定位置开始首次出现指定子串的下标
- * @note    空串中查找空串，返回0
- * @param str       :   字符串
- * @param substr    :   子串
- * @return  返回子串首次出现的下标，不存在返回-1。
+ * @brief   Find the first occurrence of the specified substring.
+ * @param str       string
+ * @param substr    substring
+ * @return  Returns the index within the string of the first occurrence of the specified 
+ *          substring. Returns -1 if the substring is not found.
  */
 int str_index_of_substring(const str_t str, const str_t substr) {
     return_value_if_fail(str != NULL && substr != NULL, -1);
 
     int str_len = strlen(str);
     int substr_len = strlen(substr);
-
-    // 主串和子串都为空串返回0
     if (str_len == 0 && substr_len == 0) {
         return 0;
-    }
-    // 主串不为空串，子串为空串，返回-1未找到
-    else if (substr_len == 0) {
+    } else if (substr_len == 0) {
         return -1;
     }
 
@@ -611,25 +609,23 @@ int str_index_of_substring(const str_t str, const str_t substr) {
 }
 
 /**
- * @brief   字符串中查找从指定位置开始首次出现指定子串的下标
- * @note    空串中从0开始查找空串，返回0
- * @param str       :   字符串
- * @param substr    :   子串
- * @param from      :   开始查找下标
- * @return  返回子串从指定位置开始首次出现的下标，不存在返回-1。
+ * @brief   Find the first occurrence of the specified substring, starting the 
+ *          search at the specified index.
+ * @param str       string
+ * @param substr    substring
+ * @param from      start index for searching
+ * @return  Returns the index within the string of the first occurrence of the specified 
+ *          substring, starting the search at the specified index. Returns -1 if the 
+ *          substring is not found.
  */
 int str_index_of_substring_from(const str_t str, const str_t substr, int from) {
     return_value_if_fail(str != NULL && substr != NULL, -1);
 
     int str_len = strlen(str);
     int substr_len = strlen(substr);
-
-    // 从0开始，如果主串和子串都为空串返回0
     if (str_len == 0 && substr_len == 0 && from == 0) {
         return 0;
-    }
-    // 主串不为空串，子串为空串，返回-1未找到
-    else if (substr_len == 0) {
+    } else if (substr_len == 0) {
         return -1;
     }
 
@@ -640,18 +636,16 @@ int str_index_of_substring_from(const str_t str, const str_t substr, int from) {
 }
 
 /**
- * @brief   字符串中查找最后一次出现指定字符的下标
- * @note    空串中查找\0，返回0
- * @param str   :   字符串
- * @param c     :   字符
- * @return  返回字符最后一次出现的下标，不存在返回-1。
+ * @brief   Find the last occurrence of the specified character.
+ * @param str   string
+ * @param c     char
+ * @return  Returns the index within the string of the last occurrence of the specified 
+ *          character. Returns -1 if the character is not found.
  */
 int str_last_index_of_char(const str_t str, char c) {
     return_value_if_fail(str != NULL, -1);
 
     int str_len = strlen(str);
-
-    // 空串中查找\0，返回0
     if (str_len == 0 && c == '\0') {
         return 0;
     }
@@ -668,19 +662,19 @@ int str_last_index_of_char(const str_t str, char c) {
 }
 
 /**
- * @brief   字符串中查找从开始位置向前最后一次出现指定字符的下标
- * @note    空串中从0开始查找\0，返回0
- * @param str   :   字符串
- * @param c     :   字符
- * @param from  :   开始下标
- * @return  返回字符从开始位置向前最后一次出现的下标，不存在返回-1。
+ * @brief   Find the last occurrence of the specified character, searching backward 
+ *          starting at the specified index.
+ * @param str   string
+ * @param c     char
+ * @param from  start index for searching
+ * @return  Returns the index within the string of the last occurrence of the specified 
+ *          character, searching backward starting at the specified index. Returns -1 
+ *          if the character is not found.
  */
 int str_last_index_of_char_from(const str_t str, char c, int from) {
     return_value_if_fail(str != NULL, -1);
 
     int str_len = strlen(str);
-
-    // 空串中查找\0，返回0
     if (str_len == 0 && c == '\0' && from == 0) {
         return 0;
     }
@@ -699,11 +693,11 @@ int str_last_index_of_char_from(const str_t str, char c, int from) {
 }
 
 /**
- * @brief   字符串中查找最后一次出现指定子串的下标
- * @note    空串中查找空串，返回0
- * @param str       :   字符串
- * @param substr    :   子串
- * @return  返回子串最后一次出现的下标，不存在返回-1。
+ * @brief   Find the last occurrence of the specified substring.
+ * @param str       string
+ * @param substr    substring
+ * @return  Returns the index within the string of the last occurrence of the specified 
+ *          substring. Returns -1 if the substring is not found.
  */
 int str_last_index_of_substring(const str_t str, const str_t substr) {
     return_value_if_fail(str != NULL && substr != NULL, -1);
@@ -711,12 +705,9 @@ int str_last_index_of_substring(const str_t str, const str_t substr) {
     int str_len = strlen(str);
     int substr_len = strlen(substr);
 
-    // 主串和子串都为空串返回0
     if (str_len == 0 && substr_len == 0) {
         return 0;
-    }
-    // 主串不为空串，子串为空串，返回-1未找到
-    else if (substr_len == 0) {
+    } else if (substr_len == 0) {
         return -1;
     }
 
@@ -730,25 +721,23 @@ int str_last_index_of_substring(const str_t str, const str_t substr) {
 }
 
 /**
- * @brief   字符串中查找从指定位置开始向前最后一次出现指定子串的下标
- * @note    空串中从0开始查找空串，返回0
- * @param str       :   字符串
- * @param substr    :   子串
- * @param from      :   开始查找下标
- * @return  返回子串从指定位置开始向前最后一次出现的下标，不存在返回-1。
+ * @brief   Find the last occurrence of the specified substring, searching backward 
+ *          starting at the specified index.
+ * @param str       string
+ * @param substr    substring
+ * @param from  start index for searching
+ * @return  Returns the index within the string of the last occurrence of the specified 
+ *          substring, searching backward starting at the specified index. Returns -1 
+ *          if the substring is not found.
  */
 int str_last_index_of_substring_from(const str_t str, const str_t substr, int from) {
     return_value_if_fail(str != NULL && substr != NULL, -1);
 
     int str_len = strlen(str);
     int substr_len = strlen(substr);
-
-    // 从0开始，如果主串和子串都为空串返回0
     if (str_len == 0 && substr_len == 0 && from == 0) {
         return 0;
-    }
-    // 主串不为空串，子串为空串，返回-1未找到
-    else if (substr_len == 0) {
+    } else if (substr_len == 0) {
         return -1;
     }
 
@@ -764,12 +753,13 @@ int str_last_index_of_substring_from(const str_t str, const str_t substr, int fr
 }
 
 /**
- * @brief   字符串分割
- * @note    调用者需要确保字符串数组items的空间分配正确。
- * @param str       :   字符串
- * @param delimiter :   分割串
- * @param items     :   保存分割后子串的二维数组
- * @return  返回分割后产生的子串数量。
+ * @brief   Splits the string around matches of the given delimiter.
+ * @note    It is caller's responsibility to ensure the validity of the passing string 
+ *          array of items
+ * @param str           string
+ * @param delimiter     delimiter
+ * @param items         string array used to store the substrings
+ * @return  Returns the number of splits.
  */
 int str_split(const str_t str, const str_t delimiter, str_t *items) {
     return_value_if_fail(str != NULL && delimiter != NULL && items != NULL, 0);
@@ -777,7 +767,7 @@ int str_split(const str_t str, const str_t delimiter, str_t *items) {
     int str_len = strlen(str);
     int delimiter_len = strlen(delimiter);
 
-    int cnt = 0;  // 分割子串数量
+    int cnt = 0;
 
     const str_t end = str + str_len - 1;
     const str_t p = NULL;
@@ -803,14 +793,15 @@ int str_split(const str_t str, const str_t delimiter, str_t *items) {
 }
 
 /****************************************
- *              动态内存管理
+ *      Dynamic Memory Management
  ****************************************/
 
 /**
- * @brief   动态内存申请，并初始化为0。
- * @note    使用完需要通过free()释放。
- * @param size  :   申请空间大小（单位：字节）
- * @return  申请成功返回首地址，失败返回NULL。
+ * @brief   Dynamically allocate memory of the specified byte size.
+ * @note    It is caller's responsibility to `free()` after using it.
+ * @param size  requested memory size in bytes
+ * @return  Returns a pointer to the beginning of the block. If the function failed 
+ *          to allocate the requested block of memory, a null pointer is returned.
  */
 void *cino_alloc(size_t size) {
     void *new_mem = NULL;
@@ -822,12 +813,13 @@ void *cino_alloc(size_t size) {
 }
 
 /**
- * @brief   重新分配内存
- * @note    使用完需要通过free()释放。
- * @param p         :   需要重新分配内存的指针
- * @param old_size  :   原空间大小（单位：字节）
- * @param new_size  :   新空间大小（单位：字节）
- * @return  申请成功返回首地址，失败返回NULL。
+ * @brief   Changes the size of the memory block pointed to by given pointer.
+ * @note    It is caller's responsibility to `free()` after using it.
+ * @param p         pointer to a memory block previously allocated
+ * @param old_size  old size for the memory block in bytes
+ * @param new_size  new size for the memory block in bytes
+ * @return  Returns a pointer to the beginning of the block. If the function failed 
+ *          to allocate the requested block of memory, a null pointer is returned.
  */
 void *cino_realloc(void *p, size_t old_size, size_t new_size) {
     void *new_mem = NULL;

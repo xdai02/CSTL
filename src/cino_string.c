@@ -327,7 +327,7 @@ string_t *string_insert_string(string_t *string, int pos, const str_t substr) {
  * @brief   计算指定子串出现次数
  * @param  string   :   cino主串
  * @param  substr   :   子串
- * @retval  子串出现次数
+ * @return  子串出现次数
  */
 int string_count_substring(const string_t *string, const str_t substr) {
     return_value_if_fail(string != NULL && substr != NULL, 0);

@@ -1,11 +1,11 @@
-/****************************************
+/**************************************************
  * 模块 :   cino_string
  * 功能 :   提供cino字符串操作
  * 分类 :
  *          - cino字符串创建
  *          - cino字符串销毁
  *          - cino字符串操作
- ****************************************/
+ **************************************************/
 
 #ifndef _CINO_STRING_H_
 #define _CINO_STRING_H_
@@ -170,7 +170,7 @@ string_t *string_insert_string(string_t *string, int pos, const str_t substr);
  * @brief   计算指定子串出现次数
  * @param  string   :   cino主串
  * @param  substr   :   子串
- * @retval  子串出现次数
+ * @return  子串出现次数
  */
 int string_count_substring(const string_t *string, const str_t substr);
 
