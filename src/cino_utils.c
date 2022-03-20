@@ -161,7 +161,7 @@ bool str_equal(const str_t s1, const str_t s2) {
  * @brief   Determine if two strings are equal, ignoring case considerations.
  * @param s1    string 1
  * @param s2    string 2
- * @return  Returns true if s1 equals s2 ignoring case considerations, otherwise 
+ * @return  Returns true if two strings are equal ignoring case considerations, otherwise 
  *          returns false.
  */
 bool str_equal_ignore_case(const str_t s1, const str_t s2) {

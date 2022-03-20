@@ -114,7 +114,7 @@ typedef enum logger_t {
  ****************************************/
 
 /**
- * @brief   Determine if the specified expression is true, return if it fails.
+ * @brief   Determine if the specified expression is true, return if it failed.
  */
 #define return_if_fail(expr) \
     if (!(expr)) {           \
@@ -123,7 +123,7 @@ typedef enum logger_t {
 
 /**
  * @brief   Determine if the specified expression is true, return the given value if 
- *          it fails.
+ *          it failed.
  */
 #define return_value_if_fail(expr, ret) \
     if (!(expr)) {                      \
@@ -132,7 +132,7 @@ typedef enum logger_t {
 
 /**
  * @brief   Determine if the specified expression is true, call the specified function 
- *          and return if it fails.
+ *          and return if it failed.
  */
 #define call_and_return_if_fail(expr, func) \
     if (!(expr)) {                          \
@@ -142,7 +142,7 @@ typedef enum logger_t {
 
 /**
  * @brief   Determine if the specified expression is true, call the specified function 
- *          and return the given value if it fails.
+ *          and return the given value if it failed.
  */
 #define call_and_return_value_if_fail(expr, func, ret) \
     if (!(expr)) {                                     \
@@ -253,7 +253,7 @@ bool str_equal(const str_t s1, const str_t s2);
  * @brief   Determine if two strings are equal, ignoring case considerations.
  * @param s1    string 1
  * @param s2    string 2
- * @return  Returns true if s1 equals s2 ignoring case considerations, otherwise 
+ * @return  Returns true if two strings are equal ignoring case considerations, otherwise 
  *          returns false.
  */
 bool str_equal_ignore_case(const str_t s1, const str_t s2);

@@ -1,21 +1,14 @@
 #include "cino_string.h"
 
-/**
- * @brief   cino字符串结构
- */
 typedef struct string_t {
-    char *string;  // 字符串
-    int length;    // 字符串长度
+    char *string;
+    int length;
 } string_t;
 
-/****************************************
- *            cino字符串创建
- ****************************************/
-
 /**
- * @brief   创建cino字符串
- * @param str   :   字符串
- * @return  返回构造好的cino字符串指针，失败返回NULL。
+ * @brief   Create cino-string.
+ * @param str   string
+ * @return  Returns the pointer to cino-string. Returns NULL if the creation failed.
  */
 string_t *string_create(const char *str) {
     string_t *string = (string_t *)cino_alloc(sizeof(string_t));
@@ -29,13 +22,9 @@ string_t *string_create(const char *str) {
     return string;
 }
 
-/****************************************
- *            cino字符串销毁
- ****************************************/
-
 /**
- * @brief   销毁cino字符串
- * @param string    :   cino字符串
+ * @brief   Destroy cino-string.
+ * @param string    cino-string
  */
 void string_destroy(string_t *string) {
     return_if_fail(string != NULL);
@@ -53,14 +42,10 @@ void string_destroy(string_t *string) {
     }
 }
 
-/****************************************
- *            cino字符串操作
- ****************************************/
-
 /**
- * @brief   获取cino字符串值
- * @param string    :   cino字符串
- * @return  cino字符串值
+ * @brief   Get the string literal.
+ * @param string    cino-string
+ * @return  String literal.
  */
 const char *string_get(const string_t *string) {
     return_value_if_fail(string != NULL, NULL);
@@ -68,10 +53,10 @@ const char *string_get(const string_t *string) {
 }
 
 /**
- * @brief   设置cino字符串
- * @param string    :   cino字符串
- * @param str       :   字符串值
- * @return  cino字符串
+ * @brief   Set the string value.
+ * @param string    cino-string
+ * @param str       string literal
+ * @return  Returns the modified cino-string.
  */
 string_t *string_set(string_t *string, const char *str) {
     return_value_if_fail(string != NULL, NULL);
@@ -92,9 +77,9 @@ string_t *string_set(string_t *string, const char *str) {
 }
 
 /**
- * @brief   获取cino字符串长度
- * @param string    :   cino字符串
- * @return  cino字符串长度
+ * @brief   Returns the length of the cino-string.
+ * @param str   cino-string
+ * @return  Returns the length of the cino-string. Returns 0 if cino-string is NULL.
  */
 int string_length(const string_t *string) {
     return_value_if_fail(string != NULL, 0);
@@ -102,9 +87,9 @@ int string_length(const string_t *string) {
 }
 
 /**
- * @brief   清空cino字符串
- * @param string    :   cino字符串
- * @return  cino字符串
+ * @brief   Reset cino-string with '\0'.
+ * @param string    cino-string
+ * @return  Returns the modified cino-string.
  */
 string_t *string_clear(string_t *string) {
     return_value_if_fail(string != NULL, NULL);
@@ -115,10 +100,10 @@ string_t *string_clear(string_t *string) {
 }
 
 /**
- * @brief   比较cino字符串
- * @param s1    :   cino字符串1
- * @param s2    :   cino字符串2
- * @return  如果s1和s2相同返回true，否则返回false。
+ * @brief   Determine if two cino-strings are equal.
+ * @param s1    cino-string 1
+ * @param s2    cino-string 2
+ * @return  Returns true if two cino-strings are equal, otherwise returns false.
  */
 bool string_equal(const string_t *s1, const string_t *s2) {
     if (!s1 && !s2) {
@@ -134,10 +119,11 @@ bool string_equal(const string_t *s1, const string_t *s2) {
 }
 
 /**
- * @brief   忽略大小写比较cino字符串
- * @param s1    :   cino字符串1
- * @param s2    :   cino字符串2
- * @return  如果s1和s2忽略大小写相同返回true，否则返回false。
+ * @brief   Determine if two cino-strings are equal, ignoring case considerations.
+ * @param s1    cino-string 1
+ * @param s2    cino-string 2
+ * @return  Returns true if two cino-strings are equal ignoring case considerations, otherwise 
+ *          returns false.
  */
 bool string_equal_ignore_case(const string_t *s1, const string_t *s2) {
     if (!s1 && !s2) {
@@ -153,9 +139,9 @@ bool string_equal_ignore_case(const string_t *s1, const string_t *s2) {
 }
 
 /**
- * @brief   cino字符串转小写
- * @param string    :   cino字符串
- * @return  小写cino字符串
+ * @brief   Converts all of the characters to lower case
+ * @param string    cino-string
+ * @return  Returns the modified cino-string.
  */
 string_t *string_to_lower(string_t *string) {
     return_value_if_fail(string != NULL, NULL);
@@ -164,9 +150,9 @@ string_t *string_to_lower(string_t *string) {
 }
 
 /**
- * @brief   cino字符串转大写
- * @param string    :   cino字符串
- * @return  cino大写字符串
+ * @brief   Converts all of the characters to upper case
+ * @param string    cino-string
+ * @return  Returns the modified cino-string.
  */
 string_t *string_to_upper(string_t *string) {
     return_value_if_fail(string != NULL, NULL);
@@ -175,10 +161,11 @@ string_t *string_to_upper(string_t *string) {
 }
 
 /**
- * @brief   判断cino字符串是否以指定子串开头
- * @param string    :   cino字符串
- * @param prefix    :   子串
- * @return  如果string以prefix开头返回true，否则返回false。
+ * @brief   Tests if the cino-string starts with the specified prefix.
+ * @param string    cino-string
+ * @param prefix    prefix string
+ * @return  Returns true if the cino-string starts with the specified prefix, otherwise 
+ *          returns false.
  */
 bool string_starts_with(const string_t *string, const str_t prefix) {
     if (!string) {
@@ -188,10 +175,11 @@ bool string_starts_with(const string_t *string, const str_t prefix) {
 }
 
 /**
- * @brief   判断cino字符串是否以指定子串结尾
- * @param string    :   cino字符串
- * @param postfix   :   子串
- * @return  如果string以postfix结尾返回true，否则返回false。
+ * @brief   Tests if the cino-string ends with the specified suffix.
+ * @param string    cino-string
+ * @param suffix    suffix string
+ * @return  Returns true if the cino-string ends with the specified suffix, otherwise 
+ *          returns false.
  */
 bool string_ends_with(const string_t *string, const str_t postfix) {
     if (!string) {
@@ -201,10 +189,10 @@ bool string_ends_with(const string_t *string, const str_t postfix) {
 }
 
 /**
- * @brief   cino字符串拷贝
- * @param destination   :   目标cino字符串
- * @param source        :   源cino字符串
- * @return  返回目标cino字符串
+ * @brief   cino-string copy.
+ * @param destination   destination cino-string
+ * @param source        source cino-string
+ * @return  Returns the destination cino-string.
  */
 string_t *string_copy(string_t *destination, const string_t *source) {
     return_value_if_fail(destination != NULL, NULL);
@@ -214,10 +202,10 @@ string_t *string_copy(string_t *destination, const string_t *source) {
 }
 
 /**
- * @brief   cino字符串拼接
- * @param destination   :   目标cino字符串
- * @param source        :   源cino字符串
- * @return  返回目标cino字符串
+ * @brief   cino-string concatenate.
+ * @param destination   destination cino-string
+ * @param source        source cino-string
+ * @return  Returns destination cino-string.
  */
 string_t *string_concat(string_t *destination, const string_t *source) {
     return_value_if_fail(destination != NULL && source != NULL, destination);
@@ -232,9 +220,9 @@ string_t *string_concat(string_t *destination, const string_t *source) {
 }
 
 /**
- * @brief   去除cino字符串首尾空白字符
- * @param string    :   cino字符串
- * @return  新cino字符串
+ * @brief   Removes leading and trailing whitespaces.
+ * @param string    cino-string
+ * @return  Returns a cino-string with any leading and trailing whitespace removed.
  */
 string_t *string_trim(string_t *string) {
     return_value_if_fail(string != NULL, NULL);
@@ -245,10 +233,10 @@ string_t *string_trim(string_t *string) {
 }
 
 /**
- * @brief   cino字符串追加字符
- * @param string    :   cino字符串
- * @param c         :   字符
- * @return  新cino字符串
+ * @brief   Append a char to the cino-string.
+ * @param string    cino-string
+ * @param c         char
+ * @return  Returns the modified cino-string.
  */
 string_t *string_append_char(string_t *string, char c) {
     return_value_if_fail(string != NULL, NULL);
@@ -267,14 +255,14 @@ string_t *string_append_char(string_t *string, char c) {
 }
 
 /**
- * @brief   在cino字符串指定位置插入字符
- * @param string    :   cino字符串
- * @param pos       :   插入位置（从0开始）
- * @param c         :   字符
- * @return  新cino字符串
+ * @brief   Insert a char into the cino-string.
+ * @param string    cino-string
+ * @param index     insert position
+ * @param c         char
+ * @return  Returns the modified cino-string.
  */
-string_t *string_insert_char(string_t *string, int pos, char c) {
-    return_value_if_fail(string != NULL && pos >= 0 && pos <= string->length, string);
+string_t *string_insert_char(string_t *string, int index, char c) {
+    return_value_if_fail(string != NULL && index >= 0 && index <= string->length, string);
 
     int new_len = string->length + 1;
     string->string = (char *)cino_realloc(string->string, sizeof(char) * new_len, sizeof(char) * (new_len + 1));
@@ -283,9 +271,8 @@ string_t *string_insert_char(string_t *string, int pos, char c) {
         return NULL;
     }
 
-    str_insert_char(string->string, pos, c);
+    str_insert_char(string->string, index, c);
 
-    // 如果插入'\0'会缩短字符串长度
     string->length = str_length(string->string);
     if (string->length < new_len) {
         string->string = (char *)cino_realloc(string->string, sizeof(char) * (new_len + 1), sizeof(char) * (string->length + 1));
@@ -295,14 +282,14 @@ string_t *string_insert_char(string_t *string, int pos, char c) {
 }
 
 /**
- * @brief   在cino字符串指定位置插入子串
- * @param string    :   cino字符串
- * @param pos       :   插入位置（从0开始）
- * @param substr    :   子串
- * @return  新cino字符串
+ * @brief   Insert a string into the cino-string.
+ * @param string    cino-string
+ * @param index     insert position
+ * @param substr    inserted string
+ * @return  Returns the modified cino-string.
  */
-string_t *string_insert_string(string_t *string, int pos, const str_t substr) {
-    return_value_if_fail(string != NULL && pos >= 0 && pos <= string_length(string) && substr != NULL, string);
+string_t *string_insert_string(string_t *string, int index, const str_t substr) {
+    return_value_if_fail(string != NULL && index >= 0 && index <= string_length(string) && substr != NULL, string);
 
     int string_len = string->length;
     int substr_len = str_length(substr);
@@ -312,9 +299,8 @@ string_t *string_insert_string(string_t *string, int pos, const str_t substr) {
         return NULL;
     }
 
-    str_insert_string(string->string, pos, substr);
+    str_insert_string(string->string, index, substr);
 
-    // 如果插入"\0"可能会缩短字符串长度
     string->length = str_length(string->string);
     if (string->length < string_len) {
         string->string = (char *)cino_realloc(string->string, sizeof(char) * (string_len + substr_len + 1), sizeof(char) * (string->length + 1));
@@ -324,10 +310,10 @@ string_t *string_insert_string(string_t *string, int pos, const str_t substr) {
 }
 
 /**
- * @brief   计算指定子串出现次数
- * @param  string   :   cino主串
- * @param  substr   :   子串
- * @return  子串出现次数
+ * @brief   Count the number of substring occurrences.
+ * @param string    cino-string
+ * @param substr    substring
+ * @return  The number of substring occurrences.
  */
 int string_count_substring(const string_t *string, const str_t substr) {
     return_value_if_fail(string != NULL && substr != NULL, 0);
@@ -335,11 +321,11 @@ int string_count_substring(const string_t *string, const str_t substr) {
 }
 
 /**
- * @brief   全部替换cino字符串中指定字符
- * @param string    :   cino字符串
- * @param old_char  :   被替换字符
- * @param new_char  :   新字符
- * @return  新cino字符串
+ * @brief   Replacing all occurrences of old char with new char.
+ * @param string    cino-string
+ * @param old_char  old char 
+ * @param new_char  new char
+ * @return  Returns the modified cino-string.
  */
 string_t *string_replace_char(string_t *string, char old_char, char new_char) {
     return_value_if_fail(string != NULL, NULL);
@@ -347,7 +333,6 @@ string_t *string_replace_char(string_t *string, char old_char, char new_char) {
     int string_len = string->length;
     str_replace_char(string->string, old_char, new_char);
 
-    // 如果替换"\0"可能会缩短字符串长度
     string->length = str_length(string->string);
     if (string->length < string_len) {
         string->string = (char *)cino_realloc(string->string, sizeof(char) * (string_len + 1), sizeof(char) * (string->length + 1));
@@ -357,11 +342,11 @@ string_t *string_replace_char(string_t *string, char old_char, char new_char) {
 }
 
 /**
- * @brief   全部替换cino字符串中指定子串
- * @param string    :   cino字符串
- * @param old_str	:   被替换子串
- * @param new_str	:   新串
- * @return  新cino字符串
+ * @brief   Replacing all occurrences of old string with new string.
+ * @param string    cino-string
+ * @param old_str   old string 
+ * @param new_str   new string
+ * @return  Returns the modified cino-string.
  */
 string_t *string_replace(string_t *string, const str_t old_str, const str_t new_str) {
     return_value_if_fail(string != NULL && old_str != NULL && new_str != NULL, string);
@@ -389,10 +374,10 @@ string_t *string_replace(string_t *string, const str_t old_str, const str_t new_
 }
 
 /**
- * @brief   cino字符串删除指定子串
- * @param string    :   cino字符串
- * @param substr	:   子串
- * @return  新cino字符串
+ * @brief   Removing all occurrences of the given substring.
+ * @param string    cino-string
+ * @param substr    string to be removed
+ * @return  Returns the modified cino-string.
  */
 string_t *string_remove(string_t *string, const str_t substr) {
     return_value_if_fail(string != NULL && substr != NULL, string);
