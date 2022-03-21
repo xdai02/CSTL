@@ -1,8 +1,8 @@
 /**************************************************
- * 模块 :   cino_array
- * 功能 :   提供cino数组操作
- * 分类 :
- *          - cino int数组
+ * Module   :   cino_array
+ * Function :   Operations on cino_array
+ * Category :
+ *              - array_int_t
  **************************************************/
 
 #ifndef _CINO_ARRAY_H_
@@ -10,211 +10,158 @@
 
 #include "cino_utils.h"
 
-/**
- * @brief cino int数组结构
- */
-typedef struct array_int_t array_int_t;
-
 /****************************************
- *          cino int数组创建
+ *             array_int_t
  ****************************************/
 
+typedef struct array_int_t array_int_t;
+
 /**
- * @brief   创建cino int数组
- * @return  返回构造好的cino int数组，失败返回NULL。
+ * @brief   Create cino-int-array.
+ * @return  Returns the pointer to cino-int-array. Returns NULL if the creation failed.
  */
 array_int_t *array_int_create();
 
-/****************************************
- *          cino int数组销毁
- ****************************************/
-
 /**
- * @brief   销毁cino int数组
- * @param array    :   cino int数组
+ * @brief   Destroy cino-int-array.
+ * @param array cino-int-array
  */
 void array_int_destroy(array_int_t *array);
 
-/****************************************
- *          cino int数组操作
- ****************************************/
-
 /**
- * @brief   判断cino int数组是否为空
- * @param array :   cino int数组
- * @return  空数组返回true，非空返回false。
+ * @brief   Determine if the cino-int-array is empty.
+ * @param array cino-int-array
+ * @return  Returns true if the cino-int-array is empty, otherwise retuens false.
  */
 bool array_int_is_empty(const array_int_t *array);
 
 /**
- * @brief   获取cino int数组元素个数
- * @param array :   cino int数组
- * @return  cino int数组元素个数
+ * @brief   Get the number of elements in the cino-int-array.
+ * @param array cino-int-array
+ * @return  Returns the number of elements in the cino-int-array.
  */
 int array_int_size(const array_int_t *array);
 
 /**
- * @brief   清空cino int数组
- * @param array :   cino int数组
- * @return  清空后的cino int数组
+ * @brief   Clear all the elments in the cino-int-array.
+ * @param array cino-int-array
+ * @return  Returns the modified cino-int-array.
  */
 array_int_t *array_int_clear(array_int_t *array);
 
 /**
- * @brief   获取cino int数组指定下标元素
- * @param array :   cino int数组
- * @param index :   下标
- * @return  cino int数组指定下标元素
+ * @brief   Get the value of the indexed component in the cino-int-array.
+ * @param array cino-int-array
+ * @return  Returns the value of the indexed component in the cino-int-array.
  */
 int array_int_get(const array_int_t *array, int index);
 
 /**
- * @brief   更新cino int数组指定下标元素
- * @param array :   cino int数组
- * @param index :   下标
- * @param data  :   新元素
+ * @brief   Update the value of the indexed component in the cino-int-array.
+ * @param array cino-int-array
+ * @param index index
+ * @param data  new element
  */
 void array_int_set(array_int_t *array, int index, int data);
 
 /**
- * @brief   cino int数组末尾追加元素
- * @param array :   cino int数组
- * @param data  :   新元素
- * @return  cino int数组
+ * @brief   Appends the specified element to the end of the cino-int-array.
+ * @param array cino-int-array
+ * @param data  new element
+ * @return  Returns the modified cino-int-array.
  */
 array_int_t *array_int_append(array_int_t *array, int data);
 
 /**
- * @brief   cino int数组末尾追加数组
- * @param array     :   cino int数组
- * @param arr       :   追加数组
- * @param arr_len   :   追加数组元素个数
- * @return  cino int数组
+ * @brief   Appends an int array to the end of the cino-int-array.
+ * @param array     cino-int-array
+ * @param arr       new element
+ * @param arr_len   number of elements in the int array
+ * @return  Returns the modified cino-int-array.
  */
 array_int_t *array_int_expend(array_int_t *array, int *arr, int arr_len);
 
 /**
- * @brief   在cino int数组指定位置插入元素
- * @param array :   cino int数组
- * @param pos   :   位置（从0开始）
- * @param data  :   新元素
- * @return  cino int数组
+ * @brief   Inserts the specified element at the specified position in the cino-int-array.
+ * @param array cino-int-array
+ * @param index index
+ * @param data  new element
+ * @return  Returns the modified cino-int-array.
  */
-array_int_t *array_int_insert(array_int_t *array, int pos, int data);
+array_int_t *array_int_insert(array_int_t *array, int index, int data);
 
 /**
- * @brief   删除cino int数组指定下标元素
- * @param array :   cino int数组
- * @param index :   下标
- * @return  cino int数组
+ * @brief   Removes the element at the specified position in the cino-int-array.
+ * @param array cino-int-array
+ * @param index index
+ * @return  Returns the modified cino-int-array.
  */
 array_int_t *array_int_remove(array_int_t *array, int index);
 
 /**
- * @brief   获取cino int数组最小值
- * @param array :   cino int数组
- * @return  cino int数组最小值
+ * @brief   Get the minimum value in the cino-int-array.
+ * @param array cino-int-array
+ * @return  Returns the minimum value.
  */
 int array_int_min(const array_int_t *array);
 
 /**
- * @brief   获取cino int数组最大值
- * @param array :   cino int数组
- * @return  cino int数组最大值
+ * @brief   Get the maximum value in the cino-int-array.
+ * @param array cino-int-array
+ * @return  Returns the maximum value.
  */
 int array_int_max(const array_int_t *array);
 
 /**
- * @brief   查找cino int数组指定元素首次出现下标
- * @param array :   cino int数组
- * @param data  :   查询元素
- * @return  查询元素首次出现下标，未找到返回-1。
+ * @brief   Find the index of the first occurrence of the specified element in the
+ *          cino-int-array.
+ * @param array cino-int-array
+ * @param data  element
+ * @return  Returns the index of the first occurrence of the specified element in the
+ *          cino-int-array, or -1 if it does not contain the element.
  */
 int array_int_index_of(const array_int_t *array, int data);
 
 /**
- * @brief   查找cino int数组指定元素最后一次出现下标
- * @param array :   cino int数组
- * @param data  :   查询元素
- * @return  查询元素最后一次出现下标，未找到返回-1。
+ * @brief   Find the index of the last occurrence of the specified element in the
+ *          cino-int-array.
+ * @param array cino-int-array
+ * @param data  element
+ * @return  Returns the index of the last occurrence of the specified element in the
+ *          cino-int-array, or -1 if it does not contain the element.
  */
 int array_int_last_index_of(const array_int_t *array, int data);
 
 /**
- * @brief   统计指定元素在cino int数组中出现次数
- * @param array :   cino int数组
- * @param data  :   查询元素
- * @return  查询元素出现次数
+ * @brief   Count the occurrences of the specified element.
+ * @param array cino-int-array
+ * @param data  element
+ * @return  Returns the occurrences of the specified element.
  */
 int array_int_count(const array_int_t *array, int data);
 
 /**
- * @brief   反转cino int数组
- * @param array :   cino int数组
- * @return  反转后的cino int数组
+ * @brief   Reverses the order of all elements in the cino-int-array.
+ * @param array cino-int-array
+ * @return  Returns the modified cino-int-array.
  */
 array_int_t *array_int_reverse(array_int_t *array);
 
 /**
- * @brief   交换cino int数组中指定下标元素
- * @param array     :   cino int数组
- * @param index1    :   被交换元素下标
- * @param index2    :   被交换元素下标
- * @return  交换后的cino int数组
+ * @brief   Swap two elements at specified indices in the cino-int-array.
+ * @param array     cino-int-array
+ * @param index1    index 1
+ * @param index2    index 2
+ * @return  Returns the modified cino-int-array.
  */
 array_int_t *array_int_swap(array_int_t *array, int index1, int index2);
 
 /**
- * @brief   排序cino int数组
- * @param array     :   cino int数组
- * @param reverse   :   是否逆序
- * @return  排序后的cino int数组
+ * @brief   Sort the cino-int-array.
+ * @param array     cino-int-array
+ * @param reverse   true for descending, false for ascending
+ * @return  Returns the modified cino-int-array.
  */
 array_int_t *array_int_sort(array_int_t *array, bool reverse);
-
-/****************************************
- *          cino int数组迭代器
- ****************************************/
-
-// /**
-//  * @brief cino数组结构
-//  */
-// typedef struct array_t array_t;
-
-// /****************************************
-//  *            cino数组创建
-//  ****************************************/
-
-// /**
-//  * @brief   创建cino数组
-//  * @param elem_size :   每个元素大小
-//  * @return  返回构造好的cino数组，失败返回NULL。
-//  */
-// array_t *array_create(int elem_size);
-
-// /****************************************
-//  *            cino数组销毁
-//  ****************************************/
-
-// /**
-//  * @brief   销毁cino数组
-//  * @param array    :   cino数组
-//  */
-// void array_destroy(array_t *array);
-
-// /****************************************
-//  *            cino数组操作
-//  ****************************************/
-
-// /**
-//  * @brief   获取cino数组元素个数
-//  * @param array :   cino数组
-//  * @return  cino数组元素个数
-//  */
-// int array_size(const array_t *array);
-
-// void *array_get(const array_t *array, int index);
-
-// void array_append(array_t *array, const void *data);
 
 #endif

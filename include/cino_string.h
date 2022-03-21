@@ -2,7 +2,7 @@
  * Module   :   cino_string
  * Function :   Operations on cino-string
  * Category :
- *              - cino-string Operation
+ *              - string_t
  **************************************************/
 
 #ifndef _CINO_STRING_H_

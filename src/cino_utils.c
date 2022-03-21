@@ -50,7 +50,7 @@ char str_to_char(const str_t str) {
 
 /**
  * @brief   Convert char to string.
- * @note    It is caller's responsibility to ensure the validity of the passing string 
+ * @note    It is caller's responsibility to ensure the validity of the passing string
  *          and its size.
  * @param c         char
  * @param str       string used to store the result after conversion
@@ -77,7 +77,7 @@ int str_to_int(const str_t str) {
 
 /**
  * @brief   Convert int to string.
- * @note    It is caller's responsibility to ensure the validity of the passing string 
+ * @note    It is caller's responsibility to ensure the validity of the passing string
  *          and its size.
  * @param val       int value
  * @param str       string used to store the result after conversion
@@ -103,7 +103,7 @@ double str_to_double(const str_t str) {
 
 /**
  * @brief   Convert double to string.
- * @note    It is caller's responsibility to ensure the validity of the passing string 
+ * @note    It is caller's responsibility to ensure the validity of the passing string
  *          and its size.
  * @param val           double value
  * @param precision     number of decimal places when rounding (default=2, max=16)
@@ -161,7 +161,7 @@ bool str_equal(const str_t s1, const str_t s2) {
  * @brief   Determine if two strings are equal, ignoring case considerations.
  * @param s1    string 1
  * @param s2    string 2
- * @return  Returns true if two strings are equal ignoring case considerations, otherwise 
+ * @return  Returns true if two strings are equal ignoring case considerations, otherwise
  *          returns false.
  */
 bool str_equal_ignore_case(const str_t s1, const str_t s2) {
@@ -219,7 +219,7 @@ str_t str_to_upper(str_t str) {
  * @brief   Tests if the string starts with the specified prefix.
  * @param str       string
  * @param prefix    prefix string
- * @return  Returns true if the string starts with the specified prefix, otherwise 
+ * @return  Returns true if the string starts with the specified prefix, otherwise
  *          returns false.
  */
 bool str_starts_with(const str_t str, const str_t prefix) {
@@ -252,7 +252,7 @@ bool str_ends_with(const str_t str, const str_t suffix) {
 
 /**
  * @brief   Reset string with '\0'.
- * @note    It is caller's responsibility to ensure the validity of the passing string 
+ * @note    It is caller's responsibility to ensure the validity of the passing string
  *          and its size.
  * @param str       string
  * @param str_size  sizeof(str)
@@ -421,7 +421,7 @@ str_t str_insert_string(str_t str, int index, const str_t substr) {
 
 /**
  * @brief   Returns a substring [start, end].
- * @note    It is caller's responsibility to ensure the validity of the passing string 
+ * @note    It is caller's responsibility to ensure the validity of the passing string
  *          and its size.
  * @param str           string
  * @param start         start index
@@ -474,7 +474,7 @@ int str_count_substring(const str_t str, const str_t substr) {
 /**
  * @brief   Replacing all occurrences of old char with new char.
  * @param str       string
- * @param old_char  old char 
+ * @param old_char  old char
  * @param new_char  new char
  * @return  Returns the modified string.
  */
@@ -493,7 +493,7 @@ str_t str_replace_char(str_t str, char old_char, char new_char) {
 /**
  * @brief   Replacing all occurrences of old string with new string.
  * @param str       string
- * @param old_str   old string 
+ * @param old_str   old string
  * @param new_str   new string
  * @return  Returns the modified string.
  */
@@ -533,8 +533,8 @@ str_t str_remove(str_t str, const str_t substr) {
  * @brief   Find the first occurrence of the specified character.
  * @param str   string
  * @param c     char
- * @return  Returns the index within the string of the first occurrence of the specified 
- *          character. Returns -1 if the character is not found.
+ * @return  Returns the index within the string of the first occurrence of the specified
+ *          character, or -1 if the character is not found.
  */
 int str_index_of_char(const str_t str, char c) {
     return_value_if_fail(str != NULL, -1);
@@ -556,13 +556,13 @@ int str_index_of_char(const str_t str, char c) {
 }
 
 /**
- * @brief   Find the first occurrence of the specified character, starting the 
+ * @brief   Find the first occurrence of the specified character, starting the
  *          search at the specified index.
  * @param str   string
  * @param c     char
  * @param from  start index for searching
- * @return  Returns the index within the string of the first occurrence of the specified 
- *          character, starting the search at the specified index. Returns -1 if the 
+ * @return  Returns the index within the string of the first occurrence of the specified
+ *          character, starting the search at the specified index, or -1 if the
  *          character is not found.
  */
 int str_index_of_char_from(const str_t str, char c, int from) {
@@ -590,8 +590,8 @@ int str_index_of_char_from(const str_t str, char c, int from) {
  * @brief   Find the first occurrence of the specified substring.
  * @param str       string
  * @param substr    substring
- * @return  Returns the index within the string of the first occurrence of the specified 
- *          substring. Returns -1 if the substring is not found.
+ * @return  Returns the index within the string of the first occurrence of the specified
+ *          substring, or -1 if the substring is not found.
  */
 int str_index_of_substring(const str_t str, const str_t substr) {
     return_value_if_fail(str != NULL && substr != NULL, -1);
@@ -609,13 +609,13 @@ int str_index_of_substring(const str_t str, const str_t substr) {
 }
 
 /**
- * @brief   Find the first occurrence of the specified substring, starting the 
+ * @brief   Find the first occurrence of the specified substring, starting the
  *          search at the specified index.
  * @param str       string
  * @param substr    substring
  * @param from      start index for searching
- * @return  Returns the index within the string of the first occurrence of the specified 
- *          substring, starting the search at the specified index. Returns -1 if the 
+ * @return  Returns the index within the string of the first occurrence of the specified
+ *          substring, starting the search at the specified index, or -1 if the
  *          substring is not found.
  */
 int str_index_of_substring_from(const str_t str, const str_t substr, int from) {
@@ -639,8 +639,8 @@ int str_index_of_substring_from(const str_t str, const str_t substr, int from) {
  * @brief   Find the last occurrence of the specified character.
  * @param str   string
  * @param c     char
- * @return  Returns the index within the string of the last occurrence of the specified 
- *          character. Returns -1 if the character is not found.
+ * @return  Returns the index within the string of the last occurrence of the specified
+ *          character, or -1 if the character is not found.
  */
 int str_last_index_of_char(const str_t str, char c) {
     return_value_if_fail(str != NULL, -1);
@@ -662,14 +662,14 @@ int str_last_index_of_char(const str_t str, char c) {
 }
 
 /**
- * @brief   Find the last occurrence of the specified character, searching backward 
+ * @brief   Find the last occurrence of the specified character, searching backward
  *          starting at the specified index.
  * @param str   string
  * @param c     char
  * @param from  start index for searching
- * @return  Returns the index within the string of the last occurrence of the specified 
- *          character, searching backward starting at the specified index. Returns -1 
- *          if the character is not found.
+ * @return  Returns the index within the string of the last occurrence of the specified
+ *          character, searching backward starting at the specified index, or -1 if the
+ *          character is not found.
  */
 int str_last_index_of_char_from(const str_t str, char c, int from) {
     return_value_if_fail(str != NULL, -1);
@@ -696,8 +696,8 @@ int str_last_index_of_char_from(const str_t str, char c, int from) {
  * @brief   Find the last occurrence of the specified substring.
  * @param str       string
  * @param substr    substring
- * @return  Returns the index within the string of the last occurrence of the specified 
- *          substring. Returns -1 if the substring is not found.
+ * @return  Returns the index within the string of the last occurrence of the specified
+ *          substring, or -1 if the substring is not found.
  */
 int str_last_index_of_substring(const str_t str, const str_t substr) {
     return_value_if_fail(str != NULL && substr != NULL, -1);
@@ -721,14 +721,14 @@ int str_last_index_of_substring(const str_t str, const str_t substr) {
 }
 
 /**
- * @brief   Find the last occurrence of the specified substring, searching backward 
+ * @brief   Find the last occurrence of the specified substring, searching backward
  *          starting at the specified index.
  * @param str       string
  * @param substr    substring
  * @param from  start index for searching
- * @return  Returns the index within the string of the last occurrence of the specified 
- *          substring, searching backward starting at the specified index. Returns -1 
- *          if the substring is not found.
+ * @return  Returns the index within the string of the last occurrence of the specified
+ *          substring, searching backward starting at the specified index, or -1 if the
+ *          substring is not found.
  */
 int str_last_index_of_substring_from(const str_t str, const str_t substr, int from) {
     return_value_if_fail(str != NULL && substr != NULL, -1);
@@ -754,7 +754,7 @@ int str_last_index_of_substring_from(const str_t str, const str_t substr, int fr
 
 /**
  * @brief   Splits the string around matches of the given delimiter.
- * @note    It is caller's responsibility to ensure the validity of the passing string 
+ * @note    It is caller's responsibility to ensure the validity of the passing string
  *          array of items
  * @param str           string
  * @param delimiter     delimiter
@@ -800,7 +800,7 @@ int str_split(const str_t str, const str_t delimiter, str_t *items) {
  * @brief   Dynamically allocate memory of the specified byte size.
  * @note    It is caller's responsibility to `free()` after using it.
  * @param size  requested memory size in bytes
- * @return  Returns a pointer to the beginning of the block. If the function failed 
+ * @return  Returns a pointer to the beginning of the block. If the function failed
  *          to allocate the requested block of memory, a null pointer is returned.
  */
 void *cino_alloc(size_t size) {
@@ -818,7 +818,7 @@ void *cino_alloc(size_t size) {
  * @param p         pointer to a memory block previously allocated
  * @param old_size  old size for the memory block in bytes
  * @param new_size  new size for the memory block in bytes
- * @return  Returns a pointer to the beginning of the block. If the function failed 
+ * @return  Returns a pointer to the beginning of the block. If the function failed
  *          to allocate the requested block of memory, a null pointer is returned.
  */
 void *cino_realloc(void *p, size_t old_size, size_t new_size) {

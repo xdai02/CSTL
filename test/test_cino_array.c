@@ -1,106 +1,100 @@
 #include "test_cino_array.h"
 
 void test_array_int_create() {
-
+    array_int_t *arr = array_int_create();
+    assert(arr);
+    assert(array_int_is_empty(arr));
+    assert(array_int_size(arr) == 0);
+    array_int_destroy(arr);
 }
 
 void test_array_int_destroy() {
-    
+    array_int_t *arr = array_int_create();
+    assert(arr);
+    assert(array_int_is_empty(arr));
+    assert(array_int_size(arr) == 0);
+    array_int_destroy(arr);
 }
 
 void test_array_int_is_empty() {
-
+    array_int_t *arr = array_int_create();
+    assert(array_int_is_empty(arr));
+    assert(array_int_size(arr) == 0);
+    array_int_append(arr, 1);
+    array_int_append(arr, 2);
+    array_int_append(arr, 3);
+    assert(!array_int_is_empty(arr));
+    assert(array_int_size(arr) == 3);
+    array_int_clear(arr);
+    assert(array_int_is_empty(arr));
+    assert(array_int_size(arr) == 0);
+    array_int_destroy(arr);
 }
 
 void test_array_int_size() {
-
+    array_int_t *arr = array_int_create();
+    assert(array_int_is_empty(arr));
+    assert(array_int_size(arr) == 0);
+    array_int_append(arr, 1);
+    array_int_append(arr, 2);
+    array_int_append(arr, 3);
+    assert(!array_int_is_empty(arr));
+    assert(array_int_size(arr) == 3);
+    array_int_clear(arr);
+    assert(array_int_is_empty(arr));
+    assert(array_int_size(arr) == 0);
+    array_int_destroy(arr);
 }
 
 void test_array_int_get() {
-    
+    array_int_t *arr = array_int_create();
+    array_int_append(arr, 1);
+    array_int_append(arr, 2);
+    array_int_append(arr, 3);
+    assert(array_int_get(arr, 0) == 1);
+    assert(array_int_get(arr, 1) == 2);
+    assert(array_int_get(arr, 2) == 3);
+    array_int_destroy(arr);
 }
 
-// void test_array_create() {
-    // array_t *arr1 = array_create(sizeof(int));
-    // assert(arr1);
-    // for (int i = 0; i < 100; i++) {
-    //     array_append(arr1, &i);
-    // }
-    // assert(array_size(arr1) == 100);
-    // for (int i = 0; i < 100; i++) {
-    //     printf("i = %d\n", *(int *)array_get(arr1, i));
-    //     assert(*(int *)array_get(arr1, i) == i);
-    // }
-    // array_destroy(arr1);
+void test_array_int_set() {
+    array_int_t *arr = array_int_create();
+    array_int_append(arr, 1);
+    array_int_append(arr, 2);
+    array_int_append(arr, 3);
+    assert(array_int_get(arr, 0) == 1);
+    assert(array_int_get(arr, 1) == 2);
+    assert(array_int_get(arr, 2) == 3);
+    array_int_set(arr, 0, 9);
+    array_int_set(arr, 2, 7);
+    assert(array_int_get(arr, 0) == 9);
+    assert(array_int_get(arr, 1) == 2);
+    assert(array_int_get(arr, 2) == 7);
+    array_int_destroy(arr);
+}
 
-    // array_t *arr2 = array_create(sizeof(char));
-    // assert(arr2);
-    // for (char i = 'A'; i <= 'Z'; i++) {
-    //     array_append(arr2, &i);
-    // }
-    // assert(array_size(arr2) == 26);
-    // for (char i = 'A'; i <= 'Z'; i++) {
-    //     assert(*(char *)array_get(arr2, i - 'A') == i);
-    // }
-    // array_destroy(arr2);
+void test_array_int_append() {
+    array_int_t *arr = array_int_create();
+    for (int i = 0; i < 10000; i++) {
+        array_int_append(arr, i);
+    }
+    for (int i = 0; i < 10000; i++) {
+        assert(array_int_get(arr, i) == i);
+    }
+    array_int_destroy(arr);
+}
 
-    // struct test_t {
-    //     int val;
-    // };
-
-    // array_t *arr3 = array_create(sizeof(struct test_t));
-    // struct test_t t1 = {123};
-    // struct test_t t2 = {987};
-    // array_append(arr3, &t1);
-    // array_append(arr3, &t2);
-    // assert(array_size(arr3) == 2);
-    // assert(((struct test_t *)array_get(arr3, 1))->val == 987);
-    // assert(((struct test_t *)array_get(arr3, 0))->val == 123);
-    // array_destroy(arr3);
-
-    // array_t *arr4 = array_create(sizeof(struct test_t));
-    // assert(arr4);
-    // struct test_t *t3 = (struct test_t *)malloc(sizeof(struct test_t));
-    // struct test_t *t4 = (struct test_t *)malloc(sizeof(struct test_t));
-    // struct test_t *t5 = (struct test_t *)malloc(sizeof(struct test_t));
-    // t3->val = 789;
-    // t4->val = 321;
-    // t5->val = 567;
-    // array_append(arr4, t3);
-    // array_append(arr4, t4);
-    // array_append(arr4, t5);
-    // assert(array_size(arr4) == 3);
-    // assert(((struct test_t *)array_get(arr4, 2))->val == 567);
-    // assert(((struct test_t *)array_get(arr4, 1))->val == 321);
-    // assert(((struct test_t *)array_get(arr4, 0))->val == 789);
-    // free(t3);
-    // free(t4);
-    // free(t5);
-    // array_destroy(arr4);
-
-    // struct student_t {
-    //     char *name;
-    //     int age;
-    // };
-
-    // array_t *arr5 = array_create(sizeof(struct student_t));
-    // assert(arr5);
-    // for (int i = 0; i < 1000; i++) {
-    //     struct student_t *s = (struct student_t *)malloc(sizeof(struct student_t));
-    //     s->name = (char *)malloc(sizeof(char) * 32);
-    //     snprintf(s->name, 32, "name-%d", i);
-    //     s->age = i;
-    //     array_append(arr5, s);
-    // }
-    // assert(array_size(arr5) == 1000);
-    // for (int i = 0; i < 1000; i++) {
-    //     char name[32] = {0};
-    //     snprintf(name, sizeof(name), "name-%d", i);
-    //     struct student_t *s = (struct student_t *)array_get(arr5, i);
-    //     assert(strncmp(s->name, name, sizeof(name)) == 0);
-    //     assert(s->age == i);
-    //     free(s->name);
-    //     free(s);
-    // }
-    // array_destroy(arr5);
-// }
+void test_array_int_expend() {
+    array_int_t *arr = array_int_create();
+    int a[5] = {0, 1, 2, 3, 4};
+    int len = array_len(a);
+    for (int i = 0; i < 10000; i++) {
+        array_int_expend(arr, a, len);
+    }
+    for (int i = 0; i < 10000; i += len) {
+        for (int j = 0; j < len; j++) {
+            assert(array_int_get(arr, i + j) == j);
+        }
+    }
+    array_int_destroy(arr);
+}
