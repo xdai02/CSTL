@@ -12,6 +12,16 @@ void test_array_int_size();
 void test_array_int_get();
 void test_array_int_set();
 void test_array_int_append();
-void test_array_int_expend();
+void test_array_int_extend();
+void test_array_int_insert();
+void test_array_int_remove();
+void test_array_int_min();
+void test_array_int_max();
+void test_array_int_index_of();
+void test_array_int_last_index_of();
+void test_array_int_count();
+void test_array_int_reverse();
+void test_array_int_swap();
+void test_array_int_sort();
 
 #endif

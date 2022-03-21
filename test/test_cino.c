@@ -95,7 +95,17 @@ void test_cino_array() {
     test_array_int_get();
     test_array_int_set();
     test_array_int_append();
-    test_array_int_expend();
+    test_array_int_extend();
+    test_array_int_insert();
+    test_array_int_remove();
+    test_array_int_min();
+    test_array_int_max();
+    test_array_int_index_of();
+    test_array_int_last_index_of();
+    test_array_int_count();
+    test_array_int_reverse();
+    test_array_int_swap();
+    test_array_int_sort();
 
     printf("[PASS] test_cino_array\n");
 }

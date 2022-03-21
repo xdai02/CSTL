@@ -137,14 +137,9 @@ static array_int_t *array_int_resize(array_int_t *array) {
         array->capacity *= EXPANSION;
     }
     // shrink
-    else if (array->size < array->capacity) {
-        int cnt = 0;
-        int capacity = array->capacity;
-        while (capacity > array->size) {
-            capacity /= EXPANSION;
-            cnt++;
-        }
-        if (cnt > 1) {
+    else if (array->size <= array->capacity / EXPANSION) {
+        int capacity = array->capacity / EXPANSION;
+        if (capacity > 0) {
             array->arr = (int *)cino_realloc(array->arr, sizeof(int) * array->capacity, sizeof(int) * capacity);
             array->capacity = capacity;
         }
@@ -173,7 +168,7 @@ array_int_t *array_int_append(array_int_t *array, int data) {
  * @param arr_len   number of elements in the int array
  * @return  Returns the modified cino-int-array.
  */
-array_int_t *array_int_expend(array_int_t *array, int *arr, int arr_len) {
+array_int_t *array_int_extend(array_int_t *array, int *arr, int arr_len) {
     return_value_if_fail(arr != NULL && arr_len > 0, array);
     for (int i = 0; i < arr_len; i++) {
         array_int_resize(array);
@@ -352,7 +347,7 @@ array_int_t *array_int_swap(array_int_t *array, int index1, int index2) {
  *              - positive if the first value is greater than the second value
  *              - negative if the first value is less than the second value
  */
-static int cmp_int(const void *a, const void *b) {
+static int cmp_int_less(const void *a, const void *b) {
     int *pa = (int *)a;
     int *pb = (int *)b;
     return *pa - *pb;
@@ -367,7 +362,7 @@ static int cmp_int(const void *a, const void *b) {
  *              - positive if the first value is less than the second value
  *              - negative if the first value is greater than the second value
  */
-static int cmp_int_reverse(const void *a, const void *b) {
+static int cmp_int_greater(const void *a, const void *b) {
     int *pa = (int *)a;
     int *pb = (int *)b;
     return *pb - *pa;
@@ -382,9 +377,9 @@ static int cmp_int_reverse(const void *a, const void *b) {
 array_int_t *array_int_sort(array_int_t *array, bool reverse) {
     return_value_if_fail(array != NULL, NULL);
     if (reverse) {
-        qsort(array->arr, array->size, sizeof(int), cmp_int_reverse);
+        qsort(array->arr, array->size, sizeof(int), cmp_int_greater);
     } else {
-        qsort(array->arr, array->size, sizeof(int), cmp_int);
+        qsort(array->arr, array->size, sizeof(int), cmp_int_less);
     }
     return array;
 }

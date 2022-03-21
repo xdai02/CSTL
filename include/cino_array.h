@@ -79,7 +79,7 @@ array_int_t *array_int_append(array_int_t *array, int data);
  * @param arr_len   number of elements in the int array
  * @return  Returns the modified cino-int-array.
  */
-array_int_t *array_int_expend(array_int_t *array, int *arr, int arr_len);
+array_int_t *array_int_extend(array_int_t *array, int *arr, int arr_len);
 
 /**
  * @brief   Inserts the specified element at the specified position in the cino-int-array.
