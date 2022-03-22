@@ -1,6 +1,9 @@
 ## cino_array
 
-- 模块功能：提供cino-array结构操作。
+- 模块功能：
+    - array_int_t：提供int类型动态数组操作。
+    - array_double_t：提供double类型动态数组操作。
+    - array_t：提供通用类型动态数组操作。
 - 类别：
 
 [TOC]

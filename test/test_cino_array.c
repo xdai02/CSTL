@@ -542,6 +542,54 @@ void test_array_double_max() {
     array_double_destroy(arr);
 }
 
+void test_array_double_index_of() {
+    array_double_t *arr = array_double_create();
+    array_double_append(arr, 1.1);
+    array_double_append(arr, -2.2);
+    array_double_append(arr, 2.2);
+    array_double_append(arr, 2.2);
+    array_double_append(arr, 5.5);
+    array_double_append(arr, 2.2);
+    array_double_append(arr, 2.2);
+    array_double_append(arr, 4.4);
+    assert(array_double_index_of(arr, 2.2) == 2);
+    assert(array_double_index_of(arr, 1.1) == 0);
+    assert(array_double_index_of(arr, 4.4) == 7);
+    array_double_destroy(arr);
+}
+
+void test_array_double_last_index_of() {
+    array_double_t *arr = array_double_create();
+    array_double_append(arr, 1.1);
+    array_double_append(arr, -2.2);
+    array_double_append(arr, 2.2);
+    array_double_append(arr, 2.2);
+    array_double_append(arr, 5.5);
+    array_double_append(arr, 2.2);
+    array_double_append(arr, 2.2);
+    array_double_append(arr, 4.4);
+    assert(array_double_last_index_of(arr, 2.2) == 6);
+    assert(array_double_last_index_of(arr, 1.1) == 0);
+    assert(array_double_last_index_of(arr, 4.4) == 7);
+    array_double_destroy(arr);
+}
+
+void test_array_double_count() {
+    array_double_t *arr = array_double_create();
+    array_double_append(arr, 1.1);
+    array_double_append(arr, -2.2);
+    array_double_append(arr, 2.2);
+    array_double_append(arr, 2.2);
+    array_double_append(arr, 5.5);
+    array_double_append(arr, 2.2);
+    array_double_append(arr, 2.2);
+    array_double_append(arr, 4.4);
+    assert(array_double_count(arr, 2.2) == 4);
+    assert(array_double_count(arr, 1.1) == 1);
+    assert(array_double_count(arr, 40.0) == 0);
+    array_double_destroy(arr);
+}
+
 void test_array_double_reverse() {
     array_double_t *arr = array_double_create();
     for (int i = 0; i < 100; i++) {

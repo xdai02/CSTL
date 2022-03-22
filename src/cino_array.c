@@ -1042,3 +1042,15 @@ array_t *array_remove(array_t *array, int index) {
     array_resize(array);
     return array;
 }
+
+typedef int (*compare_t)(const void *a, const void *b);
+
+/**
+ * @brief   Get the minimum value in the cino-array.
+ * @param array cino-array
+ * @param cmp cino-array
+ * @return  Returns the minimum value.
+ */
+// int array_min(const array_int_t *array, compare_t cmp) {
+    
+// }

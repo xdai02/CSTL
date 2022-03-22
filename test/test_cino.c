@@ -123,6 +123,9 @@ void test_cino_array() {
     test_array_double_remove();
     test_array_double_min();
     test_array_double_max();
+    test_array_double_index_of();
+    test_array_double_last_index_of();
+    test_array_double_count();
     test_array_double_reverse();
     test_array_double_swap();
     test_array_double_sort();
