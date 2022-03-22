@@ -217,6 +217,48 @@ array_len(arr)
 
 <div style="page-break-after: always;"></div>
 
+### 动态内存管理
+
+#### cino_alloc()
+
+- 函数原型：
+
+```c
+void *cino_alloc(size_t size);
+```
+
+- 功能：动态申请空间。
+- 参数：
+
+| 参数 | 说明                       |
+| ---- | -------------------------- |
+| size | 申请空间大小（单位：字节） |
+
+- 返回值：返回分配空间的首地址，分配失败返回`NULL`。
+
+---
+
+#### cino_realloc()
+
+- 函数原型：
+
+```c
+void *cino_realloc(void *p, size_t old_size, size_t new_size);
+```
+
+- 功能：改变申请空间大小。
+- 参数：
+
+| 参数     | 说明                     |
+| -------- | ------------------------ |
+| p        | 原申请空间               |
+| old_size | 原空间大小（单位：字节） |
+| new_size | 新空间大小（单位：字节） |
+
+- 返回值：返回分配空间的首地址，分配失败返回`NULL`。
+
+<div style="page-break-after: always;"></div>
+
 ### 类型转换
 
 #### str_to_bool()
@@ -1016,46 +1058,3 @@ int str_split(const str_t str, const str_t delimiter, str_t *items);
 - 返回值：分割次数。
 
 > 调用者需要确保`items`的有效性。
-
-<div style="page-break-after: always;"></div>
-
-### 动态内存管理
-
-#### cino_alloc()
-
-- 函数原型：
-
-```c
-void *cino_alloc(size_t size);
-```
-
-- 功能：动态申请空间。
-- 参数：
-
-| 参数 | 说明                       |
-| ---- | -------------------------- |
-| size | 申请空间大小（单位：字节） |
-
-- 返回值：返回分配空间的首地址，分配失败返回`NULL`。
-
----
-
-#### cino_realloc()
-
-- 函数原型：
-
-```c
-void *cino_realloc(void *p, size_t old_size, size_t new_size);
-```
-
-- 功能：改变申请空间大小。
-- 参数：
-
-| 参数     | 说明                     |
-| -------- | ------------------------ |
-| p        | 原申请空间               |
-| old_size | 原空间大小（单位：字节） |
-| new_size | 新空间大小（单位：字节） |
-
-- 返回值：返回分配空间的首地址，分配失败返回`NULL`。
-

@@ -23,5 +23,6 @@ void test_array_int_count();
 void test_array_int_reverse();
 void test_array_int_swap();
 void test_array_int_sort();
+void test_array_int_iter_begin();
 
 #endif

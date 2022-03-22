@@ -164,4 +164,10 @@ array_int_t *array_int_swap(array_int_t *array, int index1, int index2);
  */
 array_int_t *array_int_sort(array_int_t *array, bool reverse);
 
+void *array_int_iter_begin(array_int_t *array);
+
+void *array_int_iter_end(array_int_t *array);
+
+void *array_int_iter_next(array_int_t *array);
+
 #endif

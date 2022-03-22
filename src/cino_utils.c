@@ -1,6 +1,57 @@
 #include "cino_utils.h"
 
 /****************************************
+ *      Dynamic Memory Management
+ ****************************************/
+
+/**
+ * @brief   Dynamically allocate memory of the specified byte size.
+ * @note    It is caller's responsibility to `free()` after using it.
+ * @param size  requested memory size in bytes
+ * @return  Returns a pointer to the beginning of the block. If the function failed
+ *          to allocate the requested block of memory, a null pointer is returned.
+ */
+void *cino_alloc(size_t size) {
+    void *new_mem = NULL;
+    if (size <= 0 || !(new_mem = calloc(1, size))) {
+        LOGGER(ERROR, "Memory allocation failed.");
+        return NULL;
+    }
+    return new_mem;
+}
+
+/**
+ * @brief   Changes the size of the memory block pointed to by given pointer.
+ * @note    It is caller's responsibility to `free()` after using it.
+ * @param p         pointer to a memory block previously allocated
+ * @param old_size  old size for the memory block in bytes
+ * @param new_size  new size for the memory block in bytes
+ * @return  Returns a pointer to the beginning of the block. If the function failed
+ *          to allocate the requested block of memory, a null pointer is returned.
+ */
+void *cino_realloc(void *p, size_t old_size, size_t new_size) {
+    void *new_mem = NULL;
+
+    if (old_size < 0 || new_size <= 0 || !(new_mem = calloc(1, new_size))) {
+        LOGGER(ERROR, "Memory allocation failed.");
+        if (p) {
+            free(p);
+            p = NULL;
+        }
+        return NULL;
+    }
+
+    if (!p && old_size == 0) {
+        return new_mem;
+    }
+
+    memcpy(new_mem, p, min(old_size, new_size));
+    free(p);
+    p = new_mem;
+    return new_mem;
+}
+
+/****************************************
  *            Type Conversion
  ****************************************/
 
@@ -790,55 +841,4 @@ int str_split(const str_t str, const str_t delimiter, str_t *items) {
     }
 
     return cnt;
-}
-
-/****************************************
- *      Dynamic Memory Management
- ****************************************/
-
-/**
- * @brief   Dynamically allocate memory of the specified byte size.
- * @note    It is caller's responsibility to `free()` after using it.
- * @param size  requested memory size in bytes
- * @return  Returns a pointer to the beginning of the block. If the function failed
- *          to allocate the requested block of memory, a null pointer is returned.
- */
-void *cino_alloc(size_t size) {
-    void *new_mem = NULL;
-    if (size <= 0 || !(new_mem = calloc(1, size))) {
-        LOGGER(ERROR, "Memory allocation failed.");
-        return NULL;
-    }
-    return new_mem;
-}
-
-/**
- * @brief   Changes the size of the memory block pointed to by given pointer.
- * @note    It is caller's responsibility to `free()` after using it.
- * @param p         pointer to a memory block previously allocated
- * @param old_size  old size for the memory block in bytes
- * @param new_size  new size for the memory block in bytes
- * @return  Returns a pointer to the beginning of the block. If the function failed
- *          to allocate the requested block of memory, a null pointer is returned.
- */
-void *cino_realloc(void *p, size_t old_size, size_t new_size) {
-    void *new_mem = NULL;
-
-    if (old_size < 0 || new_size <= 0 || !(new_mem = calloc(1, new_size))) {
-        LOGGER(ERROR, "Memory allocation failed.");
-        if (p) {
-            free(p);
-            p = NULL;
-        }
-        return NULL;
-    }
-
-    if (!p && old_size == 0) {
-        return new_mem;
-    }
-
-    memcpy(new_mem, p, min(old_size, new_size));
-    free(p);
-    p = new_mem;
-    return new_mem;
 }

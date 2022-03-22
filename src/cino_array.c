@@ -1,6 +1,16 @@
 #include "cino_array.h"
 
 /****************************************
+ *              Iterator
+ ****************************************/
+
+typedef struct iterator_t {
+    void *begin;
+    void *end;
+    void *current;
+} iterator_t;
+
+/****************************************
  *             array_int_t
  ****************************************/
 
@@ -8,6 +18,7 @@ typedef struct array_int_t {
     int *arr;
     int size;
     int capacity;
+    iterator_t *iter;
 } array_int_t;
 
 /**
@@ -20,6 +31,11 @@ array_int_t *array_int_create() {
     array->arr = NULL;
     array->size = 0;
     array->capacity = 0;
+    array->iter = (iterator_t *)cino_alloc(sizeof(iterator_t));
+    call_and_return_value_if_fail(array->iter != NULL, array_int_destroy(array), NULL);
+    array->iter->begin = NULL;
+    array->iter->end = NULL;
+    array->iter->current = NULL;
     return array;
 }
 
@@ -36,6 +52,14 @@ void array_int_destroy(array_int_t *array) {
     if (array->arr) {
         free(array->arr);
         array->arr = NULL;
+    }
+
+    if (array->iter) {
+        array->iter->begin = NULL;
+        array->iter->end = NULL;
+        array->iter->current = NULL;
+        free(array->iter);
+        array->iter = NULL;
     }
 
     if (array) {
@@ -382,4 +406,29 @@ array_int_t *array_int_sort(array_int_t *array, bool reverse) {
         qsort(array->arr, array->size, sizeof(int), cmp_int_less);
     }
     return array;
+}
+
+static array_int_t *array_int_iter_create(array_int_t *array) {
+    return_value_if_fail(array != NULL, NULL);
+    array->iter->begin = array->arr;
+    array->iter->end = array->arr + array->size;
+    array->iter->current = array->arr;
+    return array;
+}
+
+void *array_int_iter_begin(array_int_t *array) {
+    return_value_if_fail(array != NULL, NULL);
+    array_int_iter_create(array);
+    return array->iter->begin;
+}
+
+void *array_int_iter_end(array_int_t *array) {
+    return_value_if_fail(array != NULL, NULL);
+    return array->iter->end;
+}
+
+void *array_int_iter_next(array_int_t *array) {
+    return_value_if_fail(array != NULL, NULL);
+    array->iter->current += sizeof(int);
+    return array->iter->current;
 }

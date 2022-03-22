@@ -106,6 +106,7 @@ void test_cino_array() {
     test_array_int_reverse();
     test_array_int_swap();
     test_array_int_sort();
+    test_array_int_iter_begin();
 
     printf("[PASS] test_cino_array\n");
 }

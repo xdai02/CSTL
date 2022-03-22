@@ -7,9 +7,9 @@
  *              - Numeric Operation
  *              - Validity Check
  *              - Array Operation
+ *              - Dynamic Memory Allocation
  *              - Type Conversion
  *              - String Operation
- *              - Dynamic Memory Allocation
  **************************************************/
 
 #ifndef _CINO_UTILS_H_
@@ -158,6 +158,30 @@ typedef enum logger_t {
  * @brief   Returns the number of elements in C array.
  */
 #define array_len(arr) ((int)(sizeof(arr) / sizeof((arr)[0])))
+
+/****************************************
+ *      Dynamic Memory Management
+ ****************************************/
+
+/**
+ * @brief   Dynamically allocate memory of the specified byte size.
+ * @note    It is caller's responsibility to `free()` after using it.
+ * @param size  requested memory size in bytes
+ * @return  Returns a pointer to the beginning of the block. If the function failed
+ *          to allocate the requested block of memory, a null pointer is returned.
+ */
+void *cino_alloc(size_t size);
+
+/**
+ * @brief   Changes the size of the memory block pointed to by given pointer.
+ * @note    It is caller's responsibility to `free()` after using it.
+ * @param p         pointer to a memory block previously allocated
+ * @param old_size  old size for the memory block in bytes
+ * @param new_size  new size for the memory block in bytes
+ * @return  Returns a pointer to the beginning of the block. If the function failed
+ *          to allocate the requested block of memory, a null pointer is returned.
+ */
+void *cino_realloc(void *p, size_t old_size, size_t new_size);
 
 /****************************************
  *            Type Conversion
@@ -520,29 +544,5 @@ int str_last_index_of_substring_from(const str_t str, const str_t substr, int fr
  * @return  Returns the number of splits.
  */
 int str_split(const str_t str, const str_t delimiter, str_t *items);
-
-/****************************************
- *      Dynamic Memory Management
- ****************************************/
-
-/**
- * @brief   Dynamically allocate memory of the specified byte size.
- * @note    It is caller's responsibility to `free()` after using it.
- * @param size  requested memory size in bytes
- * @return  Returns a pointer to the beginning of the block. If the function failed
- *          to allocate the requested block of memory, a null pointer is returned.
- */
-void *cino_alloc(size_t size);
-
-/**
- * @brief   Changes the size of the memory block pointed to by given pointer.
- * @note    It is caller's responsibility to `free()` after using it.
- * @param p         pointer to a memory block previously allocated
- * @param old_size  old size for the memory block in bytes
- * @param new_size  new size for the memory block in bytes
- * @return  Returns a pointer to the beginning of the block. If the function failed
- *          to allocate the requested block of memory, a null pointer is returned.
- */
-void *cino_realloc(void *p, size_t old_size, size_t new_size);
 
 #endif
