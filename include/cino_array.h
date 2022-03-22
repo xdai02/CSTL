@@ -3,6 +3,7 @@
  * Function :   Operations on cino_array
  * Category :
  *              - array_int_t
+ *              - array_double_t
  **************************************************/
 
 #ifndef _CINO_ARRAY_H_
@@ -31,7 +32,7 @@ void array_int_destroy(array_int_t *array);
 /**
  * @brief   Determine if the cino-int-array is empty.
  * @param array cino-int-array
- * @return  Returns true if the cino-int-array is empty, otherwise retuens false.
+ * @return  Returns true if the cino-int-array is empty, otherwise returns false.
  */
 bool array_int_is_empty(const array_int_t *array);
 
@@ -164,10 +165,172 @@ array_int_t *array_int_swap(array_int_t *array, int index1, int index2);
  */
 array_int_t *array_int_sort(array_int_t *array, bool reverse);
 
+/**
+ * @brief   Get the iterator to the first element.
+ * @param array cino-int-array
+ * @return  Returns the begin iterator.
+ */
 void *array_int_iter_begin(array_int_t *array);
 
+/**
+ * @brief   Get the iterator to the past-the-last-element.
+ * @param array cino-int-array
+ * @return  Returns the end iterator.
+ */
 void *array_int_iter_end(array_int_t *array);
 
-void *array_int_iter_next(array_int_t *array);
+/**
+ * @brief   Get the iterator to next element.
+ * @param iter  iterator
+ * @return  Returns the iterator to next element.
+ */
+void *array_int_iter_next(void *iter);
+
+/****************************************
+ *            array_double_t
+ ****************************************/
+
+typedef struct array_double_t array_double_t;
+
+/**
+ * @brief   Create cino-double-array.
+ * @return  Returns the pointer to cino-double-array. Returns NULL if the creation failed.
+ */
+array_double_t *array_double_create();
+
+/**
+ * @brief   Destroy cino-double-array.
+ * @param array cino-double-array
+ */
+void array_double_destroy(array_double_t *array);
+
+/**
+ * @brief   Determine if the cino-double-array is empty.
+ * @param array cino-double-array
+ * @return  Returns true if the cino-double-array is empty, otherwise returns false.
+ */
+bool array_double_is_empty(const array_double_t *array);
+
+/**
+ * @brief   Get the number of elements in the cino-double-array.
+ * @param array cino-double-array
+ * @return  Returns the number of elements in the cino-double-array.
+ */
+int array_double_size(const array_double_t *array);
+
+/**
+ * @brief   Clear all the elments in the cino-double-array.
+ * @param array cino-double-array
+ * @return  Returns the modified cino-double-array.
+ */
+array_double_t *array_double_clear(array_double_t *array);
+
+/**
+ * @brief   Get the value of the indexed component in the cino-double-array.
+ * @param array cino-double-array
+ * @return  Returns the value of the indexed component in the cino-double-array.
+ */
+double array_double_get(const array_double_t *array, int index);
+
+/**
+ * @brief   Update the value of the indexed component in the cino-double-array.
+ * @param array cino-double-array
+ * @param index index
+ * @param data  new element
+ */
+void array_double_set(array_double_t *array, int index, double data);
+
+/**
+ * @brief   Appends the specified element to the end of the cino-double-array.
+ * @param array cino-double-array
+ * @param data  new element
+ * @return  Returns the modified cino-double-array.
+ */
+array_double_t *array_double_append(array_double_t *array, double data);
+
+/**
+ * @brief   Appends an double array to the end of the cino-double-array.
+ * @param array     cino-double-array
+ * @param arr       new element
+ * @param arr_len   number of elements in the double array
+ * @return  Returns the modified cino-double-array.
+ */
+array_double_t *array_double_extend(array_double_t *array, double *arr, int arr_len);
+
+/**
+ * @brief   Inserts the specified element at the specified position in the cino-double-array.
+ * @param array cino-double-array
+ * @param index index
+ * @param data  new element
+ * @return  Returns the modified cino-double-array.
+ */
+array_double_t *array_double_insert(array_double_t *array, int index, double data);
+
+/**
+ * @brief   Removes the element at the specified position in the cino-double-array.
+ * @param array cino-double-array
+ * @param index index
+ * @return  Returns the modified cino-double-array.
+ */
+array_double_t *array_double_remove(array_double_t *array, int index);
+
+/**
+ * @brief   Get the minimum value in the cino-double-array.
+ * @param array cino-double-array
+ * @return  Returns the minimum value.
+ */
+double array_double_min(const array_double_t *array);
+
+/**
+ * @brief   Get the maximum value in the cino-double-array.
+ * @param array cino-double-array
+ * @return  Returns the maximum value.
+ */
+double array_double_max(const array_double_t *array);
+
+/**
+ * @brief   Reverses the order of all elements in the cino-double-array.
+ * @param array cino-double-array
+ * @return  Returns the modified cino-double-array.
+ */
+array_double_t *array_double_reverse(array_double_t *array);
+
+/**
+ * @brief   Swap two elements at specified indices in the cino-double-array.
+ * @param array     cino-double-array
+ * @param index1    index 1
+ * @param index2    index 2
+ * @return  Returns the modified cino-double-array.
+ */
+array_double_t *array_double_swap(array_double_t *array, int index1, int index2);
+
+/**
+ * @brief   Sort the cino-double-array.
+ * @param array     cino-double-array
+ * @param reverse   true for descending, false for ascending
+ * @return  Returns the modified cino-double-array.
+ */
+array_double_t *array_double_sort(array_double_t *array, bool reverse);
+
+/**
+ * @brief   Get the iterator to the first element.
+ * @param array cino-double-array
+ * @return  Returns the begin iterator.
+ */
+void *array_double_iter_begin(array_double_t *array);
+
+/**
+ * @brief   Get the iterator to the past-the-last-element.
+ * @param array cino-double-array
+ * @return  Returns the end iterator.
+ */
+void *array_double_iter_end(array_double_t *array);
+
+/**
+ * @brief   Get the iterator to next element.
+ * @param iter  iterator
+ * @return  Returns the iterator to next element.
+ */
+void *array_double_iter_next(void *iter);
 
 #endif

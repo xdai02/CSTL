@@ -20,6 +20,9 @@ void test_call_and_return_value_if_fail();
 
 void test_array_len();
 
+void test_cino_alloc();
+void test_cino_realloc();
+
 void test_str_to_bool();
 void test_bool_to_str();
 void test_str_to_char();
@@ -59,8 +62,5 @@ void test_str_last_index_of_char_from();
 void test_str_last_index_of_substring();
 void test_str_last_index_of_substring_from();
 void test_str_split();
-
-void test_cino_alloc();
-void test_cino_realloc();
 
 #endif

@@ -26,7 +26,7 @@ void test_max() {
 }
 
 void test_swap() {
-    const double EPS = 1e-6;  // 用于比较浮点数的精度
+    const double eps = 1e-6;  // 用于比较浮点数的精度
 
     int num1 = 1;
     int num2 = 2;
@@ -37,8 +37,8 @@ void test_swap() {
     double num3 = 3.14;
     double num4 = 2.71;
     swap(num3, num4, double);
-    assert(fabs(num3 - 2.71) <= EPS);
-    assert(fabs(num4 - 3.14) <= EPS);
+    assert(fabs(num3 - 2.71) <= eps);
+    assert(fabs(num4 - 3.14) <= eps);
 
     int num5 = 123;
     int num6 = 789;
@@ -129,6 +129,92 @@ void test_array_len() {
 
     const char *arr5[] = {"hello", "world", "C/C++", "Java", "Python", "JavaScript"};
     assert(array_len(arr5) == 6);
+}
+
+void test_cino_alloc() {
+    int *arr1 = (int *)cino_alloc(100 * sizeof(int));
+    for (int i = 0; i < 100; i++) {
+        arr1[i] = i;
+        assert(arr1[i] == i);
+    }
+    free(arr1);
+
+    char *p1 = (char *)cino_alloc(6 * sizeof(char));
+    memcpy(p1, "Hello", strlen("Hello"));
+    assert(strncmp(p1, "Hello", strlen(p1)) == 0);
+    free(p1);
+
+    char **p2 = (char **)cino_alloc(5 * sizeof(char *));
+    for (int i = 0; i < 5; i++) {
+        p2[i] = (char *)cino_alloc(10 * sizeof(char));
+        snprintf(p2[i], 10, "Test-%d", i);
+        char real[10] = {0};
+        snprintf(real, 10, "Test-%d", i);
+        assert(strncmp(p2[i], real, strlen(real)) == 0);
+    }
+    for (int i = 0; i < 5; i++) {
+        free(p2[i]);
+    }
+    free(p2);
+
+    struct test_t {
+        int a;
+        char *p;
+    };
+
+    struct test_t *test = (struct test_t *)cino_alloc(sizeof(struct test_t));
+    test->a = 123;
+    test->p = (char *)cino_alloc(16 * sizeof(char));
+    memcpy(test->p, "Hello World!", strlen("Hello World!"));
+    assert(test->a == 123);
+    assert(strncmp(test->p, "Hello World!", strlen(test->p)) == 0);
+    free(test->p);
+    free(test);
+}
+
+void test_cino_realloc() {
+    int *arr1 = (int *)cino_alloc(100 * sizeof(int));
+    for (int i = 0; i < 100; i++) {
+        arr1[i] = i;
+        assert(arr1[i] == i);
+    }
+    arr1 = (int *)cino_realloc(arr1, 100 * sizeof(int), 200 * sizeof(int));
+    for (int i = 0; i < 100; i++) {
+        assert(arr1[i] == i);
+    }
+    for (int i = 100; i < 200; i++) {
+        assert(arr1[i] == 0);
+    }
+    free(arr1);
+
+    float *arr2 = (float *)cino_realloc(NULL, 0, 10 * sizeof(float));
+    assert(arr2);
+    free(arr2);
+
+    char *p1 = (char *)cino_alloc(6 * sizeof(char));
+    memcpy(p1, "Hello", strlen("Hello"));
+    assert(strncmp(p1, "Hello", strlen(p1)) == 0);
+    p1 = (char *)cino_realloc(p1, 6, 12 * sizeof(char));
+    assert(strncmp(p1, "Hello", strlen(p1)) == 0);
+    free(p1);
+
+    struct test_t {
+        int a;
+        char *p;
+    };
+
+    struct test_t *test = (struct test_t *)cino_alloc(sizeof(struct test_t));
+    test->a = 123;
+    test->p = (char *)cino_alloc(16 * sizeof(char));
+    memcpy(test->p, "Hello World!", strlen("Hello World!"));
+    assert(test->a == 123);
+    assert(strncmp(test->p, "Hello World!", strlen(test->p)) == 0);
+    test->p = (char *)cino_realloc(test->p, 16, 8);
+    assert(test->a == 123);
+    test->p[7] = '\0';
+    assert(strncmp(test->p, "Hello W", strlen(test->p)) == 0);
+    free(test->p);
+    free(test);
 }
 
 void test_str_to_bool() {
@@ -260,22 +346,22 @@ void test_int_to_str() {
 }
 
 void test_str_to_double() {
-    const double EPS = 1e-6;  // 用于比较浮点数的精度
+    const double eps = 1e-6;
 
-    assert(fabs(str_to_double("123") - 123.0) <= EPS);
-    assert(fabs(str_to_double("-123") - (-123.0)) <= EPS);
-    assert(fabs(str_to_double("0") - 0.0) <= EPS);
-    assert(fabs(str_to_double("+0") - 0.0) <= EPS);
-    assert(fabs(str_to_double("-0") - 0.0) <= EPS);
-    assert(fabs(str_to_double("3.14") - 3.14) <= EPS);
-    assert(fabs(str_to_double("2.717") - 2.717) <= EPS);
-    assert(fabs(str_to_double("-3.14") - (-3.14)) <= EPS);
-    assert(fabs(str_to_double("2147483647") - 2147483647.0) <= EPS);
-    assert(fabs(str_to_double("-2147483648") - (-2147483648.0)) <= EPS);
-    assert(fabs(str_to_double("0.00") - 0.0) <= EPS);
-    assert(fabs(str_to_double("3.1415926") - 3.1415926) <= EPS);
-    assert(fabs(str_to_double("1e2") - 100.0) <= EPS);
-    assert(fabs(str_to_double("-2.3e4") - (-23000.0)) <= EPS);
+    assert(fabs(str_to_double("123") - 123.0) <= eps);
+    assert(fabs(str_to_double("-123") - (-123.0)) <= eps);
+    assert(fabs(str_to_double("0") - 0.0) <= eps);
+    assert(fabs(str_to_double("+0") - 0.0) <= eps);
+    assert(fabs(str_to_double("-0") - 0.0) <= eps);
+    assert(fabs(str_to_double("3.14") - 3.14) <= eps);
+    assert(fabs(str_to_double("2.717") - 2.717) <= eps);
+    assert(fabs(str_to_double("-3.14") - (-3.14)) <= eps);
+    assert(fabs(str_to_double("2147483647") - 2147483647.0) <= eps);
+    assert(fabs(str_to_double("-2147483648") - (-2147483648.0)) <= eps);
+    assert(fabs(str_to_double("0.00") - 0.0) <= eps);
+    assert(fabs(str_to_double("3.1415926") - 3.1415926) <= eps);
+    assert(fabs(str_to_double("1e2") - 100.0) <= eps);
+    assert(fabs(str_to_double("-2.3e4") - (-23000.0)) <= eps);
 }
 
 void test_double_to_str() {
@@ -1197,90 +1283,4 @@ void test_str_split() {
         free(items[i]);
     }
     free(items);
-}
-
-void test_cino_alloc() {
-    int *arr1 = (int *)cino_alloc(100 * sizeof(int));
-    for (int i = 0; i < 100; i++) {
-        arr1[i] = i;
-        assert(arr1[i] == i);
-    }
-    free(arr1);
-
-    char *p1 = (char *)cino_alloc(6 * sizeof(char));
-    memcpy(p1, "Hello", strlen("Hello"));
-    assert(strncmp(p1, "Hello", strlen(p1)) == 0);
-    free(p1);
-
-    char **p2 = (char **)cino_alloc(5 * sizeof(char *));
-    for (int i = 0; i < 5; i++) {
-        p2[i] = (char *)cino_alloc(10 * sizeof(char));
-        snprintf(p2[i], 10, "Test-%d", i);
-        char real[10] = {0};
-        snprintf(real, 10, "Test-%d", i);
-        assert(strncmp(p2[i], real, strlen(real)) == 0);
-    }
-    for (int i = 0; i < 5; i++) {
-        free(p2[i]);
-    }
-    free(p2);
-
-    struct test_t {
-        int a;
-        char *p;
-    };
-
-    struct test_t *test = (struct test_t *)cino_alloc(sizeof(struct test_t));
-    test->a = 123;
-    test->p = (char *)cino_alloc(16 * sizeof(char));
-    memcpy(test->p, "Hello World!", strlen("Hello World!"));
-    assert(test->a == 123);
-    assert(strncmp(test->p, "Hello World!", strlen(test->p)) == 0);
-    free(test->p);
-    free(test);
-}
-
-void test_cino_realloc() {
-    int *arr1 = (int *)cino_alloc(100 * sizeof(int));
-    for (int i = 0; i < 100; i++) {
-        arr1[i] = i;
-        assert(arr1[i] == i);
-    }
-    arr1 = (int *)cino_realloc(arr1, 100 * sizeof(int), 200 * sizeof(int));
-    for (int i = 0; i < 100; i++) {
-        assert(arr1[i] == i);
-    }
-    for (int i = 100; i < 200; i++) {
-        assert(arr1[i] == 0);
-    }
-    free(arr1);
-
-    float *arr2 = (float *)cino_realloc(NULL, 0, 10 * sizeof(float));
-    assert(arr2);
-    free(arr2);
-
-    char *p1 = (char *)cino_alloc(6 * sizeof(char));
-    memcpy(p1, "Hello", strlen("Hello"));
-    assert(strncmp(p1, "Hello", strlen(p1)) == 0);
-    p1 = (char *)cino_realloc(p1, 6, 12 * sizeof(char));
-    assert(strncmp(p1, "Hello", strlen(p1)) == 0);
-    free(p1);
-
-    struct test_t {
-        int a;
-        char *p;
-    };
-
-    struct test_t *test = (struct test_t *)cino_alloc(sizeof(struct test_t));
-    test->a = 123;
-    test->p = (char *)cino_alloc(16 * sizeof(char));
-    memcpy(test->p, "Hello World!", strlen("Hello World!"));
-    assert(test->a == 123);
-    assert(strncmp(test->p, "Hello World!", strlen(test->p)) == 0);
-    test->p = (char *)cino_realloc(test->p, 16, 8);
-    assert(test->a == 123);
-    test->p[7] = '\0';
-    assert(strncmp(test->p, "Hello W", strlen(test->p)) == 0);
-    free(test->p);
-    free(test);
 }
