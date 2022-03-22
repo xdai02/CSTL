@@ -6,6 +6,7 @@ void test_cino_utils() {
     test_min();
     test_max();
     test_swap();
+    test_equal_double();
 
     test_return_if_fail();
     test_return_value_if_fail();

@@ -120,6 +120,26 @@ swap(x, y, type)
 | y    | 变量     |
 | type | 数据类型 |
 
+---
+
+#### equal_double()
+
+- 函数原型：
+
+```c
+bool equal_double(double x, double y);
+```
+
+- 功能：判断两个浮点数是否相等。
+- 参数：
+
+| 参数 | 说明     |
+| ---- | -------- |
+| x    | 浮点数     |
+| y    | 浮点数     |
+
+- 返回值：相等返回`true`，不相等返回`false`。
+
 <div style="page-break-after: always;"></div>
 
 ### 合法性检查

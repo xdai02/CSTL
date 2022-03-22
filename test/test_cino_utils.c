@@ -26,7 +26,7 @@ void test_max() {
 }
 
 void test_swap() {
-    const double eps = 1e-6;  // 用于比较浮点数的精度
+    const double eps = 1e-6;
 
     int num1 = 1;
     int num2 = 2;
@@ -61,6 +61,17 @@ void test_swap() {
     assert(*p4 == 321);
     assert(p3 == &num8);
     assert(p4 == &num7);
+}
+
+void test_equal_double() {
+    assert(equal_double(0, 0));
+    assert(!equal_double(5, 4.9));
+    assert(!equal_double(0.001, 0));
+    assert(equal_double(3.141592, 3.141592));
+    assert(equal_double(-3.141592, -3.141592));
+    assert(equal_double(0, -0));
+    assert(!equal_double(5.00001, 4.99999));
+    assert(equal_double(12345.6789, 12345.67890));
 }
 
 void test_return_if_fail() {
@@ -346,22 +357,20 @@ void test_int_to_str() {
 }
 
 void test_str_to_double() {
-    const double eps = 1e-6;
-
-    assert(fabs(str_to_double("123") - 123.0) <= eps);
-    assert(fabs(str_to_double("-123") - (-123.0)) <= eps);
-    assert(fabs(str_to_double("0") - 0.0) <= eps);
-    assert(fabs(str_to_double("+0") - 0.0) <= eps);
-    assert(fabs(str_to_double("-0") - 0.0) <= eps);
-    assert(fabs(str_to_double("3.14") - 3.14) <= eps);
-    assert(fabs(str_to_double("2.717") - 2.717) <= eps);
-    assert(fabs(str_to_double("-3.14") - (-3.14)) <= eps);
-    assert(fabs(str_to_double("2147483647") - 2147483647.0) <= eps);
-    assert(fabs(str_to_double("-2147483648") - (-2147483648.0)) <= eps);
-    assert(fabs(str_to_double("0.00") - 0.0) <= eps);
-    assert(fabs(str_to_double("3.1415926") - 3.1415926) <= eps);
-    assert(fabs(str_to_double("1e2") - 100.0) <= eps);
-    assert(fabs(str_to_double("-2.3e4") - (-23000.0)) <= eps);
+    assert(equal_double(str_to_double("123"), 123.0));
+    assert(equal_double(str_to_double("-123"), -123.0));
+    assert(equal_double(str_to_double("0"), 0.0));
+    assert(equal_double(str_to_double("+0"), 0.0));
+    assert(equal_double(str_to_double("-0"), 0.0));
+    assert(equal_double(str_to_double("3.14"), 3.14));
+    assert(equal_double(str_to_double("2.717"), 2.717));
+    assert(equal_double(str_to_double("-3.14"), -3.14));
+    assert(equal_double(str_to_double("2147483647"), 2147483647.0));
+    assert(equal_double(str_to_double("-2147483648"), -2147483648.0));
+    assert(equal_double(str_to_double("0.00"), 0.0));
+    assert(equal_double(str_to_double("3.1415926"), 3.1415926));
+    assert(equal_double(str_to_double("1e2"), 100.0));
+    assert(equal_double(str_to_double("-2.3e4"), -23000.0));
 }
 
 void test_double_to_str() {

@@ -12,6 +12,7 @@
 void test_min();
 void test_max();
 void test_swap();
+void test_equal_double();
 
 void test_return_if_fail();
 void test_return_value_if_fail();

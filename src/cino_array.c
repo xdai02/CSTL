@@ -12,7 +12,7 @@ typedef struct array_int_t {
 
 /**
  * @brief   Create cino-int-array.
- * @return  Returns the pointer to cino-int-array. Returns NULL if the creation failed.
+ * @return  Returns the pointer to cino-int-array. Returns NULL if creation failed.
  */
 array_int_t *array_int_create() {
     array_int_t *array = (array_int_t *)cino_alloc(sizeof(array_int_t));
@@ -427,7 +427,7 @@ typedef struct array_double_t {
 
 /**
  * @brief   Create cino-double-array.
- * @return  Returns the pointer to cino-double-array. Returns NULL if the creation failed.
+ * @return  Returns the pointer to cino-double-array. Returns NULL if creation failed.
  */
 array_double_t *array_double_create() {
     array_double_t *array = (array_double_t *)cino_alloc(sizeof(array_double_t));
@@ -775,4 +775,217 @@ void *array_double_iter_next(void *iter) {
     return_value_if_fail(iter != NULL, NULL);
     iter += sizeof(double);
     return iter;
+}
+
+/****************************************
+ *               array_t
+ ****************************************/
+
+typedef struct array_t {
+    void **arr;
+    int size;
+    int capacity;
+} array_t;
+
+/**
+ * @brief   Create cino-array.
+ * @return  Returns the pointer to cino-array. Returns NULL if creation failed.
+ */
+array_t *array_create() {
+    array_t *array = (array_t *)cino_alloc(sizeof(array_t));
+    return_value_if_fail(array != NULL, NULL);
+    array->arr = NULL;
+    array->size = 0;
+    array->capacity = 0;
+    return array;
+}
+
+/**
+ * @brief   Destroy cino-array.
+ * @note    It is caller's responsibility to free all the elements before
+ *          calling this function.
+ * @param array cino-array
+ */
+void array_destroy(array_t *array) {
+    return_if_fail(array != NULL);
+
+    array->size = 0;
+    array->capacity = 0;
+
+    if (array->arr) {
+        free(array->arr);
+        array->arr = NULL;
+    }
+
+    if (array) {
+        free(array);
+        array = NULL;
+    }
+}
+
+/**
+ * @brief   Determine if the cino-array is empty.
+ * @param array cino-array
+ * @return  Returns true if the cino-array is empty, otherwise returns false.
+ */
+bool array_is_empty(const array_t *array) {
+    return !array || array->size == 0;
+}
+
+/**
+ * @brief   Get the number of elements in the cino-array.
+ * @param array cino-array
+ * @return  Returns the number of elements in the cino-array.
+ */
+int array_size(const array_t *array) {
+    return_value_if_fail(array != NULL, 0);
+    return array->size;
+}
+
+/**
+ * @brief   Clear all the elments in the cino-array.
+ * @note    This function just removes all the elements from the cino-array.It is
+ *          caller's responsibility to free the removed elements.
+ * @param array cino-array
+ * @return  Returns the modified cino-array.
+ */
+array_t *array_clear(array_t *array) {
+    return_value_if_fail(array != NULL, NULL);
+    if (array->arr) {
+        free(array->arr);
+        array->arr = NULL;
+    }
+    array->size = 0;
+    array->capacity = 0;
+    return array;
+}
+
+/**
+ * @brief   Get the element of the indexed component in the cino-array.
+ * @param array cino-array
+ * @return  Returns a pointer to the indexed component in the cino-array.
+ */
+void *array_get(const array_t *array, int index) {
+    if (!array || index < 0 || index >= array->size) {
+        LOGGER(ERROR, "Index out of bounds.");
+        return NULL;
+    }
+    return array->arr[index];
+}
+
+/**
+ * @brief   Update the element of the indexed component in the cino-array.
+ * @note    It is caller's responsibility to free the previous data before
+ *          overwriting it.
+ * @param array cino-array
+ * @param index index
+ * @param data  new element
+ */
+void array_set(array_t *array, int index, void *data) {
+    if (!array || index < 0 || index >= array->size) {
+        LOGGER(ERROR, "Index out of bounds.");
+        return;
+    }
+    array->arr[index] = data;
+}
+
+/**
+ * @brief   Expand and shrink the cino-array according to the size and capacity.
+ * @param array cino-array
+ * @return  Returns the modified cino-array.
+ */
+static array_t *array_resize(array_t *array) {
+    return_value_if_fail(array != NULL, NULL);
+
+    // first allocation
+    if (array->capacity == 0) {
+        array->capacity = 1;
+        array->arr = (void **)cino_alloc(sizeof(void *) * array->capacity);
+        if (!array->arr) {
+            array_destroy(array);
+            return NULL;
+        }
+        return array;
+    }
+
+    const int EXPANSION = 2;  // coefficient of expansion
+
+    // expand
+    if (array->size >= array->capacity) {
+        array->arr = (void **)cino_realloc(array->arr, sizeof(void *) * array->capacity, sizeof(void *) * array->capacity * 2);
+        if (!array->arr) {
+            array_destroy(array);
+            return NULL;
+        }
+        array->capacity *= EXPANSION;
+    }
+    // shrink
+    else if (array->size <= array->capacity / EXPANSION) {
+        int capacity = array->capacity / EXPANSION;
+        if (capacity > 0) {
+            array->arr = (void **)cino_realloc(array->arr, sizeof(void *) * array->capacity, sizeof(void *) * capacity);
+            array->capacity = capacity;
+        }
+    }
+
+    return array;
+}
+
+/**
+ * @brief   Appends the specified element to the end of the cino-array.
+ * @note    It is caller's responsibility to make sure that the inserted element
+ *          is on the heap.
+ * @param array cino-array
+ * @param data  new element
+ * @return  Returns the modified cino-array.
+ */
+array_t *array_append(array_t *array, void *data) {
+    array_resize(array);
+    return_value_if_fail(array != NULL, NULL);
+    array->arr[array->size++] = data;
+    return array;
+}
+
+/**
+ * @brief   Inserts the specified element at the specified position in the cino-array.
+ * @note    It is caller's responsibility to make sure that the inserted element
+ *          is on the heap.
+ * @param array cino-array
+ * @param index index
+ * @param data  new element
+ * @return  Returns the modified cino-array.
+ */
+array_t *array_insert(array_t *array, int index, void *data) {
+    return_value_if_fail(index >= 0 && index <= array->size, array);
+
+    array_resize(array);
+    return_value_if_fail(array != NULL, NULL);
+
+    for (int i = array->size - 1; i >= index; i--) {
+        array->arr[i + 1] = array->arr[i];
+    }
+    array->arr[index] = data;
+    array->size++;
+
+    return array;
+}
+
+/**
+ * @brief   Removes the element at the specified position in the cino-array.
+ * @note    This function just removes the element from the cino-array.It is
+ *          caller's responsibility to free the removed element.
+ * @param array cino-array
+ * @param index index
+ * @return  Returns the modified cino-array.
+ */
+array_t *array_remove(array_t *array, int index) {
+    return_value_if_fail(array != NULL && index >= 0 && index < array->size, array);
+
+    for (int i = index + 1; i < array->size; i++) {
+        array->arr[i - 1] = array->arr[i];
+    }
+    array->size--;
+
+    array_resize(array);
+    return array;
 }

@@ -4,6 +4,7 @@
  * Category :
  *              - array_int_t
  *              - array_double_t
+ *              - array_t
  **************************************************/
 
 #ifndef _CINO_ARRAY_H_
@@ -19,7 +20,7 @@ typedef struct array_int_t array_int_t;
 
 /**
  * @brief   Create cino-int-array.
- * @return  Returns the pointer to cino-int-array. Returns NULL if the creation failed.
+ * @return  Returns the pointer to cino-int-array. Returns NULL if creation failed.
  */
 array_int_t *array_int_create();
 
@@ -194,7 +195,7 @@ typedef struct array_double_t array_double_t;
 
 /**
  * @brief   Create cino-double-array.
- * @return  Returns the pointer to cino-double-array. Returns NULL if the creation failed.
+ * @return  Returns the pointer to cino-double-array. Returns NULL if creation failed.
  */
 array_double_t *array_double_create();
 
@@ -332,5 +333,94 @@ void *array_double_iter_end(array_double_t *array);
  * @return  Returns the iterator to next element.
  */
 void *array_double_iter_next(void *iter);
+
+/****************************************
+ *               array_t
+ ****************************************/
+
+typedef struct array_t array_t;
+
+/**
+ * @brief   Create cino-array.
+ * @return  Returns the pointer to cino-array. Returns NULL if creation failed.
+ */
+array_t *array_create();
+
+/**
+ * @brief   Destroy cino-array.
+ * @note    It is caller's responsibility to free all the elements before
+ *          calling this function.
+ * @param array cino-array
+ */
+void array_destroy(array_t *array);
+
+/**
+ * @brief   Determine if the cino-array is empty.
+ * @param array cino-array
+ * @return  Returns true if the cino-array is empty, otherwise returns false.
+ */
+bool array_is_empty(const array_t *array);
+
+/**
+ * @brief   Get the number of elements in the cino-array.
+ * @param array cino-array
+ * @return  Returns the number of elements in the cino-array.
+ */
+int array_size(const array_t *array);
+
+/**
+ * @brief   Clear all the elments in the cino-array.
+ * @note    This function just removes all the elements from the cino-array.It is
+ *          caller's responsibility to free the removed elements.
+ * @param array cino-array
+ * @return  Returns the modified cino-array.
+ */
+array_t *array_clear(array_t *array);
+
+/**
+ * @brief   Get the element of the indexed component in the cino-array.
+ * @param array cino-array
+ * @return  Returns a pointer to the indexed component in the cino-array.
+ */
+void *array_get(const array_t *array, int index);
+
+/**
+ * @brief   Update the element of the indexed component in the cino-array.
+ * @note    It is caller's responsibility to free the previous data before
+ *          overwriting it.
+ * @param array cino-array
+ * @param index index
+ * @param data  new element
+ */
+void array_set(array_t *array, int index, void *data);
+
+/**
+ * @brief   Appends the specified element to the end of the cino-array.
+ * @note    It is caller's responsibility to make sure that the inserted element
+ *          is on the heap.
+ * @param array cino-array
+ * @param data  new element
+ * @return  Returns the modified cino-array.
+ */
+array_t *array_append(array_t *array, void *data);
+
+/**
+ * @brief   Inserts the specified element at the specified position in the cino-array.
+ * @param array cino-array
+ * @param index index
+ * @param data  new element
+ * @return  Returns the modified cino-array.
+ */
+array_t *array_insert(array_t *array, int index, void *data);
+
+/**
+ * @brief   Removes the element at the specified position in the cino-array.
+ * @note    This function just removes the element from the cino-array.It is
+ *          caller's responsibility to free the removed element.
+ * @param array cino-array
+ * @param index index
+ * @return  Returns the modified cino-array.
+ */
+array_t *array_remove(array_t *array, int index);
 
 #endif

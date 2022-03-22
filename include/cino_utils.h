@@ -20,6 +20,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include <math.h>
 
 #define str_t char *  // str_t == char *
 
@@ -108,6 +109,14 @@ typedef enum logger_t {
         x = y;           \
         y = temp;        \
     } while (0)
+
+/**
+ * @brief   Determine if two double values are equal.
+ * @param x value 1
+ * @param y value 2
+ * @return  Returns true if two double values are equal, otherwise return false.
+ */
+bool equal_double(double x, double y);
 
 /****************************************
  *            Validity Check

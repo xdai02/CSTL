@@ -52,6 +52,20 @@ void *cino_realloc(void *p, size_t old_size, size_t new_size) {
 }
 
 /****************************************
+ *          Numeric Operation
+ ****************************************/
+
+/**
+ * @brief   Determine if two double values are equal.
+ * @param x value 1
+ * @param y value 2
+ * @return  Returns true if two double values are equal, otherwise return false.
+ */
+bool equal_double(double x, double y) {
+    return fabs(x - y) < 1e-6;
+}
+
+/****************************************
  *            Type Conversion
  ****************************************/
 

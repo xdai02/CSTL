@@ -409,33 +409,29 @@ void test_array_double_size() {
 }
 
 void test_array_double_get() {
-    const double eps = 1e-6;
-
     array_double_t *arr = array_double_create();
     array_double_append(arr, 1.1);
     array_double_append(arr, 2.2);
     array_double_append(arr, 3.3);
-    assert(fabs(array_double_get(arr, 0) - 1.1) <= eps);
-    assert(fabs(array_double_get(arr, 1) - 2.2) <= eps);
-    assert(fabs(array_double_get(arr, 2) - 3.3) <= eps);
+    assert(equal_double(array_double_get(arr, 0), 1.1));
+    assert(equal_double(array_double_get(arr, 1), 2.2));
+    assert(equal_double(array_double_get(arr, 2), 3.3));
     array_double_destroy(arr);
 }
 
 void test_array_double_set() {
-    const double eps = 1e-6;
-
     array_double_t *arr = array_double_create();
     array_double_append(arr, 1.1);
     array_double_append(arr, 2.2);
     array_double_append(arr, 3.3);
-    assert(fabs(array_double_get(arr, 0) - 1.1) <= eps);
-    assert(fabs(array_double_get(arr, 1) - 2.2) <= eps);
-    assert(fabs(array_double_get(arr, 2) - 3.3) <= eps);
+    assert(equal_double(array_double_get(arr, 0), 1.1));
+    assert(equal_double(array_double_get(arr, 1), 2.2));
+    assert(equal_double(array_double_get(arr, 2), 3.3));
     array_double_set(arr, 0, 9.9);
     array_double_set(arr, 2, 7.7);
-    assert(fabs(array_double_get(arr, 0) - 9.9) <= eps);
-    assert(fabs(array_double_get(arr, 1) - 2.2) <= eps);
-    assert(fabs(array_double_get(arr, 2) - 7.7) <= eps);
+    assert(equal_double(array_double_get(arr, 0), 9.9));
+    assert(equal_double(array_double_get(arr, 1), 2.2));
+    assert(equal_double(array_double_get(arr, 2), 7.7));
     array_double_destroy(arr);
 }
 
@@ -451,8 +447,6 @@ void test_array_double_append() {
 }
 
 void test_array_double_extend() {
-    const double eps = 1e-6;
-
     array_double_t *arr = array_double_create();
     double a[5] = {0, 1, 2, 3, 4};
     int len = array_len(a);
@@ -461,15 +455,13 @@ void test_array_double_extend() {
     }
     for (int i = 0; i < 100; i += len) {
         for (int j = 0; j < len; j++) {
-            assert(fabs(array_double_get(arr, i + j) - j) <= eps);
+            assert(equal_double(array_double_get(arr, i + j), j));
         }
     }
     array_double_destroy(arr);
 }
 
 void test_array_double_insert() {
-    const double eps = 1e-6;
-
     array_double_t *arr = array_double_create();
     array_double_insert(arr, 0, 1.1);
     array_double_insert(arr, 0, 2.2);
@@ -479,20 +471,18 @@ void test_array_double_insert() {
     array_double_insert(arr, 0, 6.6);
     array_double_insert(arr, 2, 7.7);
     array_double_insert(arr, 2, 8.8);
-    assert(fabs(array_double_get(arr, 0) - 6.6) <= eps);
-    assert(fabs(array_double_get(arr, 1) - 3.3) <= eps);
-    assert(fabs(array_double_get(arr, 2) - 8.8) <= eps);
-    assert(fabs(array_double_get(arr, 3) - 7.7) <= eps);
-    assert(fabs(array_double_get(arr, 4) - 4.4) <= eps);
-    assert(fabs(array_double_get(arr, 5) - 2.2) <= eps);
-    assert(fabs(array_double_get(arr, 6) - 1.1) <= eps);
-    assert(fabs(array_double_get(arr, 7) - 5.5) <= eps);
+    assert(equal_double(array_double_get(arr, 0), 6.6));
+    assert(equal_double(array_double_get(arr, 1), 3.3));
+    assert(equal_double(array_double_get(arr, 2), 8.8));
+    assert(equal_double(array_double_get(arr, 3), 7.7));
+    assert(equal_double(array_double_get(arr, 4), 4.4));
+    assert(equal_double(array_double_get(arr, 5), 2.2));
+    assert(equal_double(array_double_get(arr, 6), 1.1));
+    assert(equal_double(array_double_get(arr, 7), 5.5));
     array_double_destroy(arr);
 }
 
 void test_array_double_remove() {
-    const double eps = 1e-6;
-
     array_double_t *arr = array_double_create();
     for (int i = 0; i < 1000; i++) {
         array_double_append(arr, i);
@@ -507,10 +497,10 @@ void test_array_double_remove() {
         array_double_remove(arr, 500);
     }
     for (int i = 0; i < 500; i++) {
-        assert(fabs(array_double_get(arr, i) - (i + 100)) <= eps);
+        assert(equal_double(array_double_get(arr, i), i + 100));
     }
     for (int i = 500; i < 700; i++) {
-        assert(fabs(array_double_get(arr, i) - (i + 200)) <= eps);
+        assert(equal_double(array_double_get(arr, i), i + 200));
     }
     array_double_destroy(arr);
 
@@ -525,8 +515,6 @@ void test_array_double_remove() {
 }
 
 void test_array_double_min() {
-    const double eps = 1e-6;
-
     array_double_t *arr = array_double_create();
     array_double_insert(arr, 0, 1);
     array_double_insert(arr, 0, -2);
@@ -536,13 +524,11 @@ void test_array_double_min() {
     array_double_insert(arr, 0, -6);
     array_double_insert(arr, 2, -7);
     array_double_insert(arr, 2, 8);
-    assert(fabs(array_double_min(arr) - (-7)) <= eps);
+    assert(equal_double(array_double_min(arr), -7));
     array_double_destroy(arr);
 }
 
 void test_array_double_max() {
-    const double eps = 1e-6;
-
     array_double_t *arr = array_double_create();
     array_double_insert(arr, 0, 1);
     array_double_insert(arr, 0, -2);
@@ -552,27 +538,23 @@ void test_array_double_max() {
     array_double_insert(arr, 0, -6);
     array_double_insert(arr, 2, -7);
     array_double_insert(arr, 2, 8);
-    assert(fabs(array_double_max(arr) - 8) <= eps);
+    assert(equal_double(array_double_max(arr), 8));
     array_double_destroy(arr);
 }
 
 void test_array_double_reverse() {
-    const double eps = 1e-6;
-
     array_double_t *arr = array_double_create();
     for (int i = 0; i < 100; i++) {
         array_double_append(arr, i);
     }
     array_double_reverse(arr);
     for (int i = 0; i < 100; i++) {
-        assert(fabs(array_double_get(arr, i) - (100 - i - 1)) <= eps);
+        assert(equal_double(array_double_get(arr, i), 100 - i - 1));
     }
     array_double_destroy(arr);
 }
 
 void test_array_double_swap() {
-    const double eps = 1e-6;
-
     array_double_t *arr = array_double_create();
     for (int i = 0; i < 100; i++) {
         array_double_append(arr, i);
@@ -585,21 +567,19 @@ void test_array_double_swap() {
         j--;
     }
     for (int i = 0; i < 100; i++) {
-        assert(fabs(array_double_get(arr, i) - (100 - i - 1)) <= eps);
+        assert(equal_double(array_double_get(arr, i), 100 - i - 1));
     }
     array_double_destroy(arr);
 }
 
 void test_array_double_sort() {
-    const double eps = 1e-6;
-
     array_double_t *arr = array_double_create();
     for (int i = 0; i < 100; i++) {
         array_double_append(arr, i);
     }
     array_double_sort(arr, false);
     for (int i = 0; i < 100; i++) {
-        assert(fabs(array_double_get(arr, i) - i) <= eps);
+        assert(equal_double(array_double_get(arr, i), i));
     }
     array_double_destroy(arr);
 
@@ -609,7 +589,7 @@ void test_array_double_sort() {
     }
     array_double_sort(arr, false);
     for (int i = 0; i < 100; i++) {
-        assert(fabs(array_double_get(arr, i) - i) <= eps);
+        assert(equal_double(array_double_get(arr, i), i));
     }
     array_double_destroy(arr);
 
@@ -619,7 +599,7 @@ void test_array_double_sort() {
     }
     array_double_sort(arr, true);
     for (int i = 0; i < 100; i++) {
-        assert(fabs(array_double_get(arr, i) - (100 - i - 1)) <= eps);
+        assert(equal_double(array_double_get(arr, i), 100 - i - 1));
     }
     array_double_destroy(arr);
 
@@ -638,7 +618,7 @@ void test_array_double_sort() {
     array_double_append(arr, 6);
     array_double_sort(arr, false);
     for (int i = 0; i < result1_len; i++) {
-        assert(fabs(array_double_get(arr, i) - result1[i]) <= eps);
+        assert(equal_double(array_double_get(arr, i), result1[i]));
     }
     array_double_destroy(arr);
 
@@ -657,7 +637,7 @@ void test_array_double_sort() {
     array_double_append(arr, 6);
     array_double_sort(arr, true);
     for (int i = 0; i < result2_len; i++) {
-        assert(fabs(array_double_get(arr, i) - result2[i]) <= eps);
+        assert(equal_double(array_double_get(arr, i), result2[i]));
     }
     array_double_destroy(arr);
 }
@@ -681,8 +661,6 @@ void test_array_double_iter_end() {
 }
 
 void test_array_double_iter_next() {
-    const double eps = 1e-6;
-
     array_double_t *arr = array_double_create();
     for (int i = 0; i < 100; i++) {
         array_double_append(arr, i);
@@ -691,7 +669,7 @@ void test_array_double_iter_next() {
     void *end = array_double_iter_end(arr);
     int i = 0;
     while (iter != end) {
-        assert(fabs(*(double *)iter - i) <= eps);
+        assert(equal_double(*(double *)iter, i));
         iter = array_double_iter_next(iter);
         i++;
     }
