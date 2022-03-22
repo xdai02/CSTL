@@ -290,6 +290,34 @@ double array_double_min(const array_double_t *array);
 double array_double_max(const array_double_t *array);
 
 /**
+ * @brief   Find the index of the first occurrence of the specified element in the
+ *          cino-double-array.
+ * @param array cino-double-array
+ * @param data  element
+ * @return  Returns the index of the first occurrence of the specified element in the
+ *          cino-double-array, or -1 if it does not contain the element.
+ */
+int array_double_index_of(const array_double_t *array, double data);
+
+/**
+ * @brief   Find the index of the last occurrence of the specified element in the
+ *          cino-double-array.
+ * @param array cino-double-array
+ * @param data  element
+ * @return  Returns the index of the last occurrence of the specified element in the
+ *          cino-double-array, or -1 if it does not contain the element.
+ */
+int array_double_last_index_of(const array_double_t *array, double data);
+
+/**
+ * @brief   Count the occurrences of the specified element.
+ * @param array cino-double-array
+ * @param data  element
+ * @return  Returns the occurrences of the specified element.
+ */
+int array_double_count(const array_double_t *array, double data);
+
+/**
  * @brief   Reverses the order of all elements in the cino-double-array.
  * @param array cino-double-array
  * @return  Returns the modified cino-double-array.

@@ -671,6 +671,59 @@ double array_double_max(const array_double_t *array) {
 }
 
 /**
+ * @brief   Find the index of the first occurrence of the specified element in the
+ *          cino-double-array.
+ * @param array cino-double-array
+ * @param data  element
+ * @return  Returns the index of the first occurrence of the specified element in the
+ *          cino-double-array, or -1 if it does not contain the element.
+ */
+int array_double_index_of(const array_double_t *array, double data) {
+    return_value_if_fail(array != NULL, -1);
+    for (int i = 0; i < array->size; i++) {
+        if (equal_double(array->arr[i], data)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+/**
+ * @brief   Find the index of the last occurrence of the specified element in the
+ *          cino-double-array.
+ * @param array cino-double-array
+ * @param data  element
+ * @return  Returns the index of the last occurrence of the specified element in the
+ *          cino-double-array, or -1 if it does not contain the element.
+ */
+int array_double_last_index_of(const array_double_t *array, double data) {
+    return_value_if_fail(array != NULL, -1);
+    for (int i = array->size - 1; i >= 0; i--) {
+        if (equal_double(array->arr[i], data)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+/**
+ * @brief   Count the occurrences of the specified element.
+ * @param array cino-double-array
+ * @param data  element
+ * @return  Returns the occurrences of the specified element.
+ */
+int array_double_count(const array_double_t *array, double data) {
+    return_value_if_fail(array != NULL, 0);
+    int cnt = 0;
+    for (int i = 0; i < array->size; i++) {
+        if (equal_double(array->arr[i], data)) {
+            cnt++;
+        }
+    }
+    return cnt;
+}
+
+/**
  * @brief   Reverses the order of all elements in the cino-double-array.
  * @param array cino-double-array
  * @return  Returns the modified cino-double-array.

@@ -17,14 +17,14 @@
 string_t *string_create(const char *str);
 ```
 
-- 功能：创建string_t。
+- 功能：创建cino-string。
 - 参数：
 
 | 参数 | 说明   |
 | ---- | ------ |
 | str  | 字符串 |
 
-- 返回值：返回string_t指针，创建失败返回`NULL`。
+- 返回值：返回cino-string指针，创建失败返回`NULL`。
 
 ---
 
@@ -36,7 +36,7 @@ string_t *string_create(const char *str);
 void string_destroy(string_t *string);
 ```
 
-- 功能：销毁string_t。
+- 功能：销毁cino-string。
 - 参数：
 
 | 参数   | 说明        |
