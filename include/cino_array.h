@@ -167,25 +167,25 @@ array_int_t *array_int_swap(array_int_t *array, int index1, int index2);
 array_int_t *array_int_sort(array_int_t *array, bool reverse);
 
 /**
- * @brief   Get the iterator to the first element.
+ * @brief   Get the iterator.
  * @param array cino-int-array
- * @return  Returns the begin iterator.
+ * @return  Iterator.
  */
-void *array_int_iter_begin(array_int_t *array);
+void *array_int_iter(array_int_t *array);
 
 /**
- * @brief   Get the iterator to the past-the-last-element.
+ * @brief   Determine if the cino-int-array has the next iterator.
  * @param array cino-int-array
- * @return  Returns the end iterator.
+ * @return  Returns `true` if next iterator exists, otherwise returns `false`.
  */
-void *array_int_iter_end(array_int_t *array);
+bool array_int_iter_has_next(const array_int_t *array);
 
 /**
- * @brief   Get the iterator to next element.
- * @param iter  iterator
- * @return  Returns the iterator to next element.
+ * @brief   Get the next iterator.
+ * @param array cino-int-array
+ * @return  Returns the next iterator.
  */
-void *array_int_iter_next(void *iter);
+void *array_int_iter_next(array_int_t *array);
 
 /****************************************
  *            array_double_t

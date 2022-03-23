@@ -25,8 +25,8 @@ void test_array_int_count();
 void test_array_int_reverse();
 void test_array_int_swap();
 void test_array_int_sort();
-void test_array_int_iter_begin();
-void test_array_int_iter_end();
+void test_array_int_iter();
+void test_array_int_iter_has_next();
 void test_array_int_iter_next();
 
 void test_array_double_create();

@@ -343,35 +343,41 @@ void test_array_int_sort() {
     array_int_destroy(arr);
 }
 
-void test_array_int_iter_begin() {
+void test_array_int_iter() {
     array_int_t *arr = array_int_create();
     for (int i = 0; i < 10; i++) {
         array_int_append(arr, i);
     }
-    assert(array_int_iter_begin(arr));
+    assert(array_int_iter(arr));
     array_int_destroy(arr);
 }
 
-void test_array_int_iter_end() {
+void test_array_int_iter_has_next() {
     array_int_t *arr = array_int_create();
     for (int i = 0; i < 10; i++) {
         array_int_append(arr, i);
     }
-    assert(array_int_iter_end(arr));
+    void *iter = array_int_iter(arr);
+    assert(iter);
+    assert(array_int_iter_has_next(arr));
+    for (int i = 0; i < 10; i++) {
+        array_int_remove(arr, 0);
+    }
+    iter = array_int_iter(arr);
+    assert(!array_int_iter_has_next(arr));
     array_int_destroy(arr);
 }
 
 void test_array_int_iter_next() {
     array_int_t *arr = array_int_create();
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 10; i++) {
         array_int_append(arr, i);
     }
-    void *iter = array_int_iter_begin(arr);
-    void *end = array_int_iter_end(arr);
     int i = 0;
-    while (iter != end) {
+    void *iter = array_int_iter(arr);
+    while (iter) {
         assert(*(int *)iter == i);
-        iter = array_int_iter_next(iter);
+        iter = array_int_iter_next(arr);
         i++;
     }
     array_int_destroy(arr);
@@ -920,8 +926,8 @@ void test_array_append() {
         assert(s->id == i);
         assert(strncmp(s->name, name, strlen(name)) == 0);
     }
-    array_destroy(arr);
 
+    array_destroy(arr);
     free(stu);
 }
 
@@ -950,8 +956,8 @@ void test_array_insert() {
         snprintf(name, sizeof(name), "Name-%d", result[i]);
         assert(strncmp(s->name, name, strlen(name)) == 0);
     }
-    array_destroy(arr);
 
+    array_destroy(arr);
     free(stu);
 }
 
@@ -973,8 +979,8 @@ void test_array_remove() {
     assert(*(int *)array_get(arr, 2) == 5);
     assert(*(int *)array_get(arr, 3) == 6);
     assert(*(int *)array_get(arr, 4) == 8);
-    array_destroy(arr);
 
+    array_destroy(arr);
     free(nums);
 }
 
@@ -1009,7 +1015,6 @@ void test_array_min() {
     assert(strncmp(s->name, "Name-0", strlen("Name-0")) == 0);
 
     array_destroy(arr);
-
     free(stu);
 }
 
@@ -1032,7 +1037,6 @@ void test_array_max() {
     assert(strncmp(s->name, "Name-9", strlen("Name-9")) == 0);
 
     array_destroy(arr);
-
     free(stu);
 }
 
@@ -1057,7 +1061,6 @@ void test_array_find() {
     assert(strncmp(s->name, "Name-5", strlen("Name-5")) == 0);
 
     array_destroy(arr);
-
     free(stu);
 }
 
@@ -1072,8 +1075,8 @@ void test_array_count() {
         array_append(arr, &stu[i]);
     }
     assert(array_count(arr, match_by_id) == 4);
-    array_destroy(arr);
 
+    array_destroy(arr);
     free(stu);
 }
 
@@ -1089,8 +1092,8 @@ void test_array_reverse() {
     for (int i = 0; i < 10; i++) {
         assert(*(int *)array_get(arr, i) == 10 - i - 1);
     }
-    array_destroy(arr);
 
+    array_destroy(arr);
     free(nums);
 }
 
@@ -1112,8 +1115,8 @@ void test_array_swap() {
     for (int i = 0; i < 10; i++) {
         assert(*(int *)array_get(arr, i) == 10 - i - 1);
     }
-    array_destroy(arr);
 
+    array_destroy(arr);
     free(nums);
 }
 
@@ -1147,15 +1150,63 @@ void test_array_sort() {
     }
 
     array_destroy(arr);
-
     free(stu);
 }
 
 void test_array_iter_begin() {
+    student_t *stu = (student_t *)malloc(sizeof(student_t) * 10);
+
+    array_t *arr = array_create();
+    for (int i = 0; i < 10; i++) {
+        stu[i].id = i;
+        snprintf(stu[i].name, sizeof(stu[i].name), "Name-%d", i);
+        array_append(arr, &stu[i]);
+    }
+    assert(array_iter_begin(arr));
+
+    array_destroy(arr);
+    free(stu);
 }
 
 void test_array_iter_end() {
+    student_t *stu = (student_t *)malloc(sizeof(student_t) * 10);
+
+    array_t *arr = array_create();
+    for (int i = 0; i < 10; i++) {
+        stu[i].id = i;
+        snprintf(stu[i].name, sizeof(stu[i].name), "Name-%d", i);
+        array_append(arr, &stu[i]);
+    }
+    assert(array_iter_end(arr));
+
+    array_destroy(arr);
+    free(stu);
 }
 
 void test_array_iter_next() {
+    student_t *stu = (student_t *)malloc(sizeof(student_t) * 10);
+
+    array_t *arr = array_create();
+    for (int i = 0; i < 10; i++) {
+        stu[i].id = i;
+        snprintf(stu[i].name, sizeof(stu[i].name), "Name-%d", i);
+        array_append(arr, &stu[i]);
+    }
+
+    // void *iter = array_iter_begin(arr);
+    // void *end = array_iter_end(arr);
+    // int i = 0;
+    // while (iter != end) {
+    //     student_t *s = (student_t *)iter;
+    //     char name[32] = {0};
+    //     snprintf(name, sizeof(name), "Name-%d", i);
+    //     LOGGER(DEBUG, "%d: sid = %d, name = %s\n", i, s->id, s->name);
+    //     // assert(s->id == i);
+    //     // assert(strncmp(s->name, name, strlen(name)) == 0);
+    //     iter = array_iter_next(iter);
+    //     i++;
+    // }
+
+    array_destroy(arr);
+    free(stu);
 }

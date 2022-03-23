@@ -108,8 +108,8 @@ void test_cino_array() {
     test_array_int_reverse();
     test_array_int_swap();
     test_array_int_sort();
-    test_array_int_iter_begin();
-    test_array_int_iter_end();
+    test_array_int_iter();
+    test_array_int_iter_has_next();
     test_array_int_iter_next();
 
     test_array_double_create();

@@ -8,6 +8,7 @@ typedef struct array_int_t {
     int *arr;
     int size;
     int capacity;
+    void *iter;
 } array_int_t;
 
 /**
@@ -20,6 +21,7 @@ array_int_t *array_int_create() {
     array->arr = NULL;
     array->size = 0;
     array->capacity = 0;
+    array->iter = NULL;
     return array;
 }
 
@@ -32,6 +34,7 @@ void array_int_destroy(array_int_t *array) {
 
     array->size = 0;
     array->capacity = 0;
+    array->iter = NULL;
 
     if (array->arr) {
         free(array->arr);
@@ -393,34 +396,41 @@ array_int_t *array_int_sort(array_int_t *array, bool reverse) {
 }
 
 /**
- * @brief   Get the iterator to the first element.
+ * @brief   Get the iterator.
  * @param array cino-int-array
- * @return  Returns the begin iterator.
+ * @return  Iterator.
  */
-void *array_int_iter_begin(array_int_t *array) {
+void *array_int_iter(array_int_t *array) {
     return_value_if_fail(array != NULL, NULL);
-    return array->arr;
+    array->iter = array->arr;
+    return array->iter;
 }
 
 /**
- * @brief   Get the iterator to the past-the-last-element.
+ * @brief   Determine if the cino-int-array has the next iterator.
  * @param array cino-int-array
- * @return  Returns the end iterator.
+ * @return  Returns `true` if next iterator exists, otherwise returns `false`.
  */
-void *array_int_iter_end(array_int_t *array) {
-    return_value_if_fail(array != NULL, NULL);
-    return array->arr + array->size;
+bool array_int_iter_has_next(const array_int_t *array) {
+    return_value_if_fail(array != NULL, false);
+    return (void *)((byte_t *)array->iter + sizeof(int)) < (void *)(array->arr + array->size);
 }
 
 /**
- * @brief   Get the iterator to next element.
- * @param iter  iterator
- * @return  Returns the iterator to next element.
+ * @brief   Get the next iterator.
+ * @param array cino-int-array
+ * @return  Returns the next iterator.
  */
-void *array_int_iter_next(void *iter) {
-    return_value_if_fail(iter != NULL, NULL);
-    iter += sizeof(int);
-    return iter;
+void *array_int_iter_next(array_int_t *array) {
+    return_value_if_fail(array != NULL, NULL);
+    if (array_int_iter_has_next(array)) {
+        byte_t *iter = (byte_t *)array->iter;
+        iter += sizeof(int);
+        array->iter = (void *)iter;
+    } else {
+        array->iter = NULL;
+    }
+    return array->iter;
 }
 
 /****************************************
@@ -1165,6 +1175,14 @@ array_t *array_swap(array_t *array, int index1, int index2) {
     return array;
 }
 
+/**
+ * @brief   Parition function for quick sort.
+ * @param arr   an array of pointers
+ * @param start start index of partition
+ * @param end   end index of partition
+ * @param cmp   user-defined callback function for comparison
+ * @return  Returns the index of the pivot.
+ */
 static int quick_sort_partition(void **arr, int start, int end, compare_t cmp) {
     int i = start - 1;
     void *pivot = arr[end];
@@ -1180,9 +1198,15 @@ static int quick_sort_partition(void **arr, int start, int end, compare_t cmp) {
     return i + 1;
 }
 
-static void quick_sort(void **arr, size_t size, size_t unit, compare_t cmp) {
+/**
+ * @brief   Stack-based quick sort for cino-array.
+ * @param arr   an array of pointers
+ * @param size  number of elements in the array
+ * @param cmp   user-defined callback function for comparison
+ */
+static void quick_sort(void **arr, size_t size, compare_t cmp) {
     int stack[size];
-    memset(stack, 0x00, size);
+    memset(stack, 0x00, size * sizeof(int));
 
     int n = 0;
     stack[n++] = 0;
@@ -1212,7 +1236,7 @@ static void quick_sort(void **arr, size_t size, size_t unit, compare_t cmp) {
  */
 array_t *array_sort(array_t *array, compare_t cmp) {
     return_value_if_fail(array != NULL, NULL);
-    quick_sort(array->arr, array->size, sizeof(void *), cmp);
+    quick_sort(array->arr, array->size, cmp);
     return array;
 }
 
@@ -1223,7 +1247,7 @@ array_t *array_sort(array_t *array, compare_t cmp) {
  */
 void *array_iter_begin(array_t *array) {
     return_value_if_fail(array != NULL, NULL);
-    return array->arr;
+    return array->arr[0];
 }
 
 /**
@@ -1233,7 +1257,7 @@ void *array_iter_begin(array_t *array) {
  */
 void *array_iter_end(array_t *array) {
     return_value_if_fail(array != NULL, NULL);
-    return array->arr + array->size;
+    return array->arr[array->size - 1];
 }
 
 /**
@@ -1243,6 +1267,6 @@ void *array_iter_end(array_t *array) {
  */
 void *array_iter_next(void *iter) {
     return_value_if_fail(iter != NULL, NULL);
-    iter += sizeof(void *);
+    iter++;
     return iter;
 }
