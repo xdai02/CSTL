@@ -93,6 +93,7 @@ void test_cino_array() {
     test_array_int_destroy();
     test_array_int_is_empty();
     test_array_int_size();
+    test_array_int_clear();
     test_array_int_get();
     test_array_int_set();
     test_array_int_append();
@@ -115,6 +116,7 @@ void test_cino_array() {
     test_array_double_destroy();
     test_array_double_is_empty();
     test_array_double_size();
+    test_array_double_clear();
     test_array_double_get();
     test_array_double_set();
     test_array_double_append();
@@ -132,6 +134,27 @@ void test_cino_array() {
     test_array_double_iter_begin();
     test_array_double_iter_end();
     test_array_double_iter_next();
+
+    // test_array_create();
+    // test_array_destroy();
+    // test_array_is_empty();
+    // test_array_size();
+    // test_array_clear();
+    // test_array_get();
+    // test_array_set();
+    // test_array_append();
+    // test_array_insert();
+    // test_array_remove();
+    // test_array_min();
+    // test_array_max();
+    // test_array_find();
+    // test_array_count();
+    // test_array_reverse();
+    // test_array_swap();
+    test_array_sort();
+    test_array_iter_begin();
+    test_array_iter_end();
+    test_array_iter_next();
 
     printf("[PASS] test_cino_array\n");
 }

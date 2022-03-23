@@ -223,9 +223,13 @@ array_int_t *array_int_remove(array_int_t *array, int index) {
  * @return  Returns the minimum value.
  */
 int array_int_min(const array_int_t *array) {
-    if (!array || !array->arr) {
+    if (!array) {
         LOGGER(ERROR, "Access to null object.");
         return STATUS_BAD_PARAMETERS;
+    }
+    if (array->size == 0) {
+        LOGGER(INFO, "Array is empty.");
+        return STATUS_NOT_FOUND;
     }
     int min = array->arr[0];
     for (int i = 1; i < array->size; i++) {
@@ -242,9 +246,13 @@ int array_int_min(const array_int_t *array) {
  * @return  Returns the maximum value.
  */
 int array_int_max(const array_int_t *array) {
-    if (!array || !array->arr) {
+    if (!array) {
         LOGGER(ERROR, "Access to null object.");
         return STATUS_BAD_PARAMETERS;
+    }
+    if (array->size == 0) {
+        LOGGER(INFO, "Array is empty.");
+        return STATUS_NOT_FOUND;
     }
     int max = array->arr[0];
     for (int i = 1; i < array->size; i++) {
@@ -638,9 +646,13 @@ array_double_t *array_double_remove(array_double_t *array, int index) {
  * @return  Returns the minimum value.
  */
 double array_double_min(const array_double_t *array) {
-    if (!array || !array->arr) {
+    if (!array) {
         LOGGER(ERROR, "Access to null object.");
         return STATUS_BAD_PARAMETERS;
+    }
+    if (array->size == 0) {
+        LOGGER(INFO, "Array is empty.");
+        return STATUS_NOT_FOUND;
     }
     double min = array->arr[0];
     for (int i = 1; i < array->size; i++) {
@@ -657,9 +669,13 @@ double array_double_min(const array_double_t *array) {
  * @return  Returns the maximum value.
  */
 double array_double_max(const array_double_t *array) {
-    if (!array || !array->arr) {
+    if (!array) {
         LOGGER(ERROR, "Access to null object.");
         return STATUS_BAD_PARAMETERS;
+    }
+    if (array->size == 0) {
+        LOGGER(INFO, "Array is empty.");
+        return STATUS_NOT_FOUND;
     }
     double max = array->arr[0];
     for (int i = 1; i < array->size; i++) {
@@ -919,10 +935,7 @@ array_t *array_clear(array_t *array) {
  * @return  Returns a pointer to the indexed component in the cino-array.
  */
 void *array_get(const array_t *array, int index) {
-    if (!array || index < 0 || index >= array->size) {
-        LOGGER(ERROR, "Index out of bounds.");
-        return NULL;
-    }
+    return_value_if_fail(array != NULL && index >= 0 && index < array->size, NULL);
     return array->arr[index];
 }
 
@@ -1052,18 +1065,18 @@ array_t *array_remove(array_t *array, int index) {
 void *array_min(const array_t *array, compare_t cmp) {
     return_value_if_fail(array != NULL && cmp != NULL, NULL);
 
-    if (array->size == 1) {
-        return array->arr[0];
+    if (array->size == 0) {
+        return NULL;
     }
 
-    int min_index = 0;
-    for (int i = 0; i < array->size - 1; i++) {
-        if (cmp(array->arr[i], array->arr[i + 1]) < 0) {
-            min_index = i;
+    void *min = array->arr[0];
+    for (int i = 1; i < array->size; i++) {
+        if (cmp(array->arr[i], min) < 0) {
+            min = array->arr[i];
         }
     }
 
-    return array->arr[min_index];
+    return min;
 }
 
 /**
@@ -1075,18 +1088,18 @@ void *array_min(const array_t *array, compare_t cmp) {
 void *array_max(const array_t *array, compare_t cmp) {
     return_value_if_fail(array != NULL && cmp != NULL, NULL);
 
-    if (array->size == 1) {
-        return array->arr[0];
+    if (array->size == 0) {
+        return NULL;
     }
 
-    int max_index = 0;
-    for (int i = 0; i < array->size - 1; i++) {
-        if (cmp(array->arr[i], array->arr[i + 1]) > 0) {
-            max_index = i;
+    void *max = array->arr[0];
+    for (int i = 1; i < array->size; i++) {
+        if (cmp(array->arr[i], max) > 0) {
+            max = array->arr[i];
         }
     }
 
-    return array->arr[max_index];
+    return max;
 }
 
 /**
@@ -1152,6 +1165,45 @@ array_t *array_swap(array_t *array, int index1, int index2) {
     return array;
 }
 
+static int quick_sort_partition(void **arr, int start, int end, compare_t cmp) {
+    int i = start - 1;
+    void *pivot = arr[end];
+
+    for (int j = start; j < end; j++) {
+        if (cmp(arr[j], pivot) < 0) {
+            i++;
+            swap(arr[i], arr[j], void *);
+        }
+    }
+
+    swap(arr[i + 1], arr[end], void *);
+    return i + 1;
+}
+
+static void quick_sort(void **arr, size_t size, size_t unit, compare_t cmp) {
+    int stack[size];
+    memset(stack, 0x00, size);
+
+    int n = 0;
+    stack[n++] = 0;
+    stack[n++] = size - 1;
+
+    while (n > 0) {
+        int right = stack[--n];
+        int left = stack[--n];
+
+        int index = quick_sort_partition(arr, left, right, cmp);
+        if (index - 1 > left) {
+            stack[n++] = left;
+            stack[n++] = index - 1;
+        }
+        if (index + 1 < right) {
+            stack[n++] = index + 1;
+            stack[n++] = right;
+        }
+    }
+}
+
 /**
  * @brief   Sort the cino-array.
  * @param array cino-array
@@ -1160,7 +1212,7 @@ array_t *array_swap(array_t *array, int index1, int index2) {
  */
 array_t *array_sort(array_t *array, compare_t cmp) {
     return_value_if_fail(array != NULL, NULL);
-    qsort(array->arr, array->size, sizeof(void *), cmp);
+    quick_sort(array->arr, array->size, sizeof(void *), cmp);
     return array;
 }
 
