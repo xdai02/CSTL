@@ -26,20 +26,39 @@
 
 typedef char byte_t;  // byte_t == char
 
+/**
+ * @brief   User-defined comparison function interface.
+ * @param data1 pointer to the first data
+ * @param data1 pointer to the second data
+ * @return  Returns
+ *              - 0 if two values are equal
+ *              - positive if the first value is greater than the second value
+ *              - negative if the first value is less than the second value
+ */
+typedef int (*compare_t)(const void *data1, const void *data2);
+
+/**
+ * @brief   User-defined matching function interface.
+ * @param data  pointer to the data for matching
+ * @return  Returns `true` if the data matches the condition, otherwise returns
+ *          `false`.
+ */
+typedef bool (*match_t)(const void *data);
+
 /****************************************
  *              status_t
  ****************************************/
 
 typedef enum status_t {
-    STATUS_OK,              // Success
-    STATUS_FAIL,            // Fail
-    STATUS_OUT_OF_MEMORY,   // Out of Memory
-    STATUS_FOUND,           // Found
-    STATUS_NOT_FOUND,       // Not Found
-    STATUS_BAD_PARAMETERS,  // Bad Parameters
-    STATUS_IO_ERROR,        // I/O Error
-    STATUS_OUT_OF_BOUNDS,   // Out of Bounds
-    STATUS_UNDEFINED,       // Undefined
+    STATUS_OK,
+    STATUS_FAIL,
+    STATUS_OUT_OF_MEMORY,
+    STATUS_FOUND,
+    STATUS_NOT_FOUND,
+    STATUS_BAD_PARAMETERS,
+    STATUS_IO_ERROR,
+    STATUS_OUT_OF_BOUNDS,
+    STATUS_UNDEFINED,
 } status_t;
 
 /****************************************

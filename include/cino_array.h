@@ -451,4 +451,81 @@ array_t *array_insert(array_t *array, int index, void *data);
  */
 array_t *array_remove(array_t *array, int index);
 
+/**
+ * @brief   Get the minimum value in the cino-array.
+ * @param array cino-array
+ * @param cmp   user-defined callback function for comparison
+ * @return  Returns the minimum value.
+ */
+void *array_min(const array_t *array, compare_t cmp);
+
+/**
+ * @brief   Get the maximum value in the cino-array.
+ * @param array cino-array
+ * @param cmp   user-defined callback function for comparison
+ * @return  Returns the maximum value.
+ */
+void *array_max(const array_t *array, compare_t cmp);
+
+/**
+ * @brief   Find the first element that satisfies the comparison strategy.
+ * @param array cino-array
+ * @param match user-defined callback function for matching
+ * @return  Returns the found element, or NULL if not found.
+ */
+void *array_find(const array_t *array, match_t match);
+
+/**
+ * @brief   Count the occurrences of the element matched.
+ * @param array cino-array
+ * @param match user-defined callback function for matching
+ * @return  Returns occurrences of the element matched.
+ */
+int array_count(const array_t *array, match_t match);
+
+/**
+ * @brief   Reverses the order of all elements in the cino-array.
+ * @param array cino-array
+ * @return  Returns the modified cino-array.
+ */
+array_t *array_reverse(array_t *array);
+
+/**
+ * @brief   Swap two elements at specified indices in the cino-array.
+ * @param array     cino-array
+ * @param index1    index 1
+ * @param index2    index 2
+ * @return  Returns the modified cino-array.
+ */
+array_t *array_swap(array_t *array, int index1, int index2);
+
+/**
+ * @brief   Sort the cino-array.
+ * @param array cino-array
+ * @param cmp   user-defined callback function for comparison
+ * @return  Returns the modified cino-array.
+ */
+array_t *array_sort(array_t *array, compare_t cmp);
+
+/**
+ * @brief   Get the iterator to the first element.
+ * @param array cino-array
+ * @return  Returns the begin iterator.
+ */
+void *array_iter_begin(array_t *array);
+
+/**
+ * @brief   Get the iterator to the past-the-last-element.
+ * @param array cino-array
+ * @return  Returns the end iterator.
+ */
+void *array_iter_end(array_t *array);
+
+/**
+ * @brief   Get the iterator to next element.
+ * @param iter  iterator
+ * @return  Returns the iterator to next element.
+ */
+void *array_iter_next(void *iter);
+
 #endif

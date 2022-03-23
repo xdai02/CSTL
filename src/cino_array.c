@@ -340,32 +340,32 @@ array_int_t *array_int_swap(array_int_t *array, int index1, int index2) {
 
 /**
  * @brief   Specify the rules for comparing two int values in ascending order.
- * @param a pointer to the first value
- * @param b pointer to the second value
+ * @param data1 pointer to the first value
+ * @param data2 pointer to the second value
  * @return  Returns
  *              - 0 if two values are equal
  *              - positive if the first value is greater than the second value
  *              - negative if the first value is less than the second value
  */
-static int cmp_int_less(const void *a, const void *b) {
-    int *pa = (int *)a;
-    int *pb = (int *)b;
-    return *pa - *pb;
+static int cmp_int_less(const void *data1, const void *data2) {
+    int *p1 = (int *)data1;
+    int *p2 = (int *)data2;
+    return *p1 - *p2;
 }
 
 /**
  * @brief   Specify the rules for comparing two int values in descending order.
- * @param a pointer to the first value
- * @param b pointer to the second value
+ * @param data1 pointer to the first value
+ * @param data2 pointer to the second value
  * @return  Returns
  *              - 0 if two values are equal
  *              - positive if the first value is less than the second value
  *              - negative if the first value is greater than the second value
  */
-static int cmp_int_greater(const void *a, const void *b) {
-    int *pa = (int *)a;
-    int *pb = (int *)b;
-    return *pb - *pa;
+static int cmp_int_greater(const void *data1, const void *data2) {
+    int *p1 = (int *)data1;
+    int *p2 = (int *)data2;
+    return *p2 - *p1;
 }
 
 /**
@@ -755,32 +755,32 @@ array_double_t *array_double_swap(array_double_t *array, int index1, int index2)
 
 /**
  * @brief   Specify the rules for comparing two double values in ascending order.
- * @param a pointer to the first value
- * @param b pointer to the second value
+ * @param data1 pointer to the first value
+ * @param data2 pointer to the second value
  * @return  Returns
  *              - 0 if two values are equal
  *              - positive if the first value is greater than the second value
  *              - negative if the first value is less than the second value
  */
-static int cmp_double_less(const void *a, const void *b) {
-    double *pa = (double *)a;
-    double *pb = (double *)b;
-    return *pa > *pb ? 1 : -1;
+static int cmp_double_less(const void *data1, const void *data2) {
+    double *p1 = (double *)data1;
+    double *p2 = (double *)data2;
+    return *p1 > *p2 ? 1 : -1;
 }
 
 /**
  * @brief   Specify the rules for comparing two double values in descending order.
- * @param a pointer to the first value
- * @param b pointer to the second value
+ * @param data1 pointer to the first value
+ * @param data2 pointer to the second value
  * @return  Returns
  *              - 0 if two values are equal
  *              - positive if the first value is less than the second value
  *              - negative if the first value is greater than the second value
  */
-static int cmp_double_greater(const void *a, const void *b) {
-    double *pa = (double *)a;
-    double *pb = (double *)b;
-    return *pb > *pa ? 1 : -1;
+static int cmp_double_greater(const void *data1, const void *data2) {
+    double *p1 = (double *)data1;
+    double *p2 = (double *)data2;
+    return *p2 > *p1 ? 1 : -1;
 }
 
 /**
@@ -1043,14 +1043,154 @@ array_t *array_remove(array_t *array, int index) {
     return array;
 }
 
-typedef int (*compare_t)(const void *a, const void *b);
-
 /**
  * @brief   Get the minimum value in the cino-array.
  * @param array cino-array
- * @param cmp cino-array
+ * @param cmp   user-defined callback function for comparison
  * @return  Returns the minimum value.
  */
-// int array_min(const array_int_t *array, compare_t cmp) {
-    
-// }
+void *array_min(const array_t *array, compare_t cmp) {
+    return_value_if_fail(array != NULL && cmp != NULL, NULL);
+
+    if (array->size == 1) {
+        return array->arr[0];
+    }
+
+    int min_index = 0;
+    for (int i = 0; i < array->size - 1; i++) {
+        if (cmp(array->arr[i], array->arr[i + 1]) < 0) {
+            min_index = i;
+        }
+    }
+
+    return array->arr[min_index];
+}
+
+/**
+ * @brief   Get the maximum value in the cino-array.
+ * @param array cino-array
+ * @param cmp   user-defined callback function for comparison
+ * @return  Returns the maximum value.
+ */
+void *array_max(const array_t *array, compare_t cmp) {
+    return_value_if_fail(array != NULL && cmp != NULL, NULL);
+
+    if (array->size == 1) {
+        return array->arr[0];
+    }
+
+    int max_index = 0;
+    for (int i = 0; i < array->size - 1; i++) {
+        if (cmp(array->arr[i], array->arr[i + 1]) > 0) {
+            max_index = i;
+        }
+    }
+
+    return array->arr[max_index];
+}
+
+/**
+ * @brief   Find the first element that satisfies the comparison strategy.
+ * @param array cino-array
+ * @param match user-defined callback function for matching
+ * @return  Returns the found element, or NULL if not found.
+ */
+void *array_find(const array_t *array, match_t match) {
+    return_value_if_fail(array != NULL && match != NULL, NULL);
+    for (int i = 0; i < array->size; i++) {
+        if (match(array->arr[i])) {
+            return array->arr[i];
+        }
+    }
+    return NULL;
+}
+
+/**
+ * @brief   Count the occurrences of the element matched.
+ * @param array cino-array
+ * @param match user-defined callback function for matching
+ * @return  Returns occurrences of the element matched.
+ */
+int array_count(const array_t *array, match_t match) {
+    return_value_if_fail(array != NULL && match != NULL, 0);
+    int cnt = 0;
+    for (int i = 0; i < array->size; i++) {
+        if (match(array->arr[i])) {
+            cnt++;
+        }
+    }
+    return cnt;
+}
+
+/**
+ * @brief   Reverses the order of all elements in the cino-array.
+ * @param array cino-array
+ * @return  Returns the modified cino-array.
+ */
+array_t *array_reverse(array_t *array) {
+    return_value_if_fail(array != NULL, NULL);
+    int i = 0;
+    int j = array->size - 1;
+    while (i < j) {
+        swap(array->arr[i], array->arr[j], void *);
+        i++;
+        j--;
+    }
+    return array;
+}
+
+/**
+ * @brief   Swap two elements at specified indices in the cino-array.
+ * @param array     cino-array
+ * @param index1    index 1
+ * @param index2    index 2
+ * @return  Returns the modified cino-array.
+ */
+array_t *array_swap(array_t *array, int index1, int index2) {
+    return_value_if_fail(array != NULL && index1 >= 0 && index1 < array->size && index2 >= 0 && index2 < array->size && index1 != index2, array);
+    swap(array->arr[index1], array->arr[index2], void *);
+    return array;
+}
+
+/**
+ * @brief   Sort the cino-array.
+ * @param array cino-array
+ * @param cmp   user-defined callback function for comparison
+ * @return  Returns the modified cino-array.
+ */
+array_t *array_sort(array_t *array, compare_t cmp) {
+    return_value_if_fail(array != NULL, NULL);
+    qsort(array->arr, array->size, sizeof(void *), cmp);
+    return array;
+}
+
+/**
+ * @brief   Get the iterator to the first element.
+ * @param array cino-array
+ * @return  Returns the begin iterator.
+ */
+void *array_iter_begin(array_t *array) {
+    return_value_if_fail(array != NULL, NULL);
+    return array->arr;
+}
+
+/**
+ * @brief   Get the iterator to the past-the-last-element.
+ * @param array cino-array
+ * @return  Returns the end iterator.
+ */
+void *array_iter_end(array_t *array) {
+    return_value_if_fail(array != NULL, NULL);
+    return array->arr + array->size;
+}
+
+/**
+ * @brief   Get the iterator to next element.
+ * @param iter  iterator
+ * @return  Returns the iterator to next element.
+ */
+void *array_iter_next(void *iter) {
+    return_value_if_fail(iter != NULL, NULL);
+    iter += sizeof(void *);
+    return iter;
+}
