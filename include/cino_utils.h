@@ -26,6 +26,8 @@
 
 typedef char byte_t;  // byte_t == char
 
+#define iter_t void *  // iter_t == void *
+
 /**
  * @brief   User-defined comparison function interface.
  * @param data1 pointer to the first data
@@ -250,7 +252,7 @@ char str_to_char(const str_t str);
  * @param str_size  sizeof(str)
  * @return  Returns the string after conversion.
  */
-str_t char_to_str(char c, str_t str, int str_size);
+str_t char_to_str(char c, str_t str, size_t str_size);
 
 /**
  * @brief   Convert string to int.
@@ -268,7 +270,7 @@ int str_to_int(const str_t str);
  * @param str_size  sizeof(str)
  * @return   Returns the string after conversion.
  */
-str_t int_to_str(int val, str_t str, int str_size);
+str_t int_to_str(int val, str_t str, size_t str_size);
 
 /**
  * @brief   Convert string to double.
@@ -287,7 +289,7 @@ double str_to_double(const str_t str);
  * @param str_size      sizeof(str)
  * @return  Returns the string after conversion.
  */
-str_t double_to_str(double val, int precision, str_t str, int str_size);
+str_t double_to_str(double val, int precision, str_t str, size_t str_size);
 
 /****************************************
  *          String Operation
@@ -349,14 +351,14 @@ bool str_ends_with(const str_t str, const str_t suffix);
  * @param str       string
  * @param str_size  sizeof(str)
  */
-void str_clear(str_t str, int str_size);
+void str_clear(str_t str, size_t str_size);
 
 /**
  * @brief   Returns the length of the string.
  * @param str   string
  * @return  Returns the length of the string. Returns 0 if stirng is NULL.
  */
-int str_length(const str_t str);
+size_t str_length(const str_t str);
 
 /**
  * @brief   String copy.
@@ -442,7 +444,7 @@ str_t str_insert_string(str_t str, int index, const str_t substr);
  * @param substr_size   sizeof(substr)
  * @return  Returns a substring [start, end].
  */
-str_t str_substring(str_t str, int start, int end, str_t substr, int substr_size);
+str_t str_substring(str_t str, int start, int end, str_t substr, size_t substr_size);
 
 /**
  * @brief   Count the number of substring occurrences.

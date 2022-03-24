@@ -48,8 +48,8 @@ void test_array_double_count();
 void test_array_double_reverse();
 void test_array_double_swap();
 void test_array_double_sort();
-void test_array_double_iter_begin();
-void test_array_double_iter_end();
+void test_array_double_iter();
+void test_array_double_iter_has_next();
 void test_array_double_iter_next();
 
 void test_array_create();
@@ -69,8 +69,8 @@ void test_array_count();
 void test_array_reverse();
 void test_array_swap();
 void test_array_sort();
-void test_array_iter_begin();
-void test_array_iter_end();
+void test_array_iter();
+void test_array_iter_has_next();
 void test_array_iter_next();
 
 #endif

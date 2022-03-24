@@ -122,7 +122,7 @@ char str_to_char(const str_t str) {
  * @param str_size  sizeof(str)
  * @return  Returns the string after conversion.
  */
-str_t char_to_str(char c, str_t str, int str_size) {
+str_t char_to_str(char c, str_t str, size_t str_size) {
     return_value_if_fail(str != NULL && str_size > 0, NULL);
     memset(str, '\0', str_size);
     str[0] = c;
@@ -149,7 +149,7 @@ int str_to_int(const str_t str) {
  * @param str_size  sizeof(str)
  * @return   Returns the string after conversion.
  */
-str_t int_to_str(int val, str_t str, int str_size) {
+str_t int_to_str(int val, str_t str, size_t str_size) {
     return_value_if_fail(str != NULL && str_size > 0, NULL);
     memset(str, '\0', str_size);
     snprintf(str, str_size, "%d", val);
@@ -176,7 +176,7 @@ double str_to_double(const str_t str) {
  * @param str_size      sizeof(str)
  * @return  Returns the string after conversion.
  */
-str_t double_to_str(double val, int precision, str_t str, int str_size) {
+str_t double_to_str(double val, int precision, str_t str, size_t str_size) {
     return_value_if_fail(str != NULL && str_size > 0, NULL);
 
     const int MIN_PRECISION = 0;
@@ -308,8 +308,8 @@ bool str_ends_with(const str_t str, const str_t suffix) {
         return true;
     }
     return_value_if_fail(str != NULL && suffix != NULL, false);
-    int str_len = strlen(str);
-    int suffix_len = strlen(suffix);
+    size_t str_len = strlen(str);
+    size_t suffix_len = strlen(suffix);
     int offset = str_len - suffix_len;
     return_value_if_fail(offset >= 0, false);
     return strncmp(str + offset, suffix, strlen(suffix)) == 0;
@@ -322,7 +322,7 @@ bool str_ends_with(const str_t str, const str_t suffix) {
  * @param str       string
  * @param str_size  sizeof(str)
  */
-void str_clear(str_t str, int str_size) {
+void str_clear(str_t str, size_t str_size) {
     return_if_fail(str != NULL && str_size > 0);
     memset(str, '\0', str_size);
 }
@@ -332,7 +332,7 @@ void str_clear(str_t str, int str_size) {
  * @param str   string
  * @return  Returns the length of the string. Returns 0 if stirng is NULL.
  */
-int str_length(const str_t str) {
+size_t str_length(const str_t str) {
     return_value_if_fail(str != NULL, 0);
     return strlen(str);
 }
@@ -360,8 +360,8 @@ str_t str_copy(str_t destination, const str_t source) {
  */
 str_t str_concat(str_t destination, const str_t source) {
     return_value_if_fail(destination != NULL && source != NULL, destination);
-    int dest_len = strlen(destination);
-    int src_len = strlen(source);
+    size_t dest_len = strlen(destination);
+    size_t src_len = strlen(source);
     strncat(destination, source, src_len);
     destination[dest_len + src_len] = '\0';
     return destination;
@@ -411,7 +411,7 @@ str_t str_trim(str_t str) {
  */
 str_t str_append_char(str_t str, char c) {
     return_value_if_fail(str != NULL, NULL);
-    int len = strlen(str);
+    size_t len = strlen(str);
     str[len] = c;
     str[len + 1] = '\0';
     return str;
@@ -474,8 +474,8 @@ str_t str_insert_char(str_t str, int index, char c) {
 str_t str_insert_string(str_t str, int index, const str_t substr) {
     return_value_if_fail(str != NULL && index >= 0 && index <= strlen(str) && substr != NULL, str);
 
-    int str_len = strlen(str);
-    int substr_len = strlen(substr);
+    size_t str_len = strlen(str);
+    size_t substr_len = strlen(substr);
 
     memmove(str + index + substr_len, str + index, strlen(str + index));
     memcpy(str + index, substr, substr_len);
@@ -495,12 +495,12 @@ str_t str_insert_string(str_t str, int index, const str_t substr) {
  * @param substr_size   sizeof(substr)
  * @return  Returns a substring [start, end].
  */
-str_t str_substring(str_t str, int start, int end, str_t substr, int substr_size) {
+str_t str_substring(str_t str, int start, int end, str_t substr, size_t substr_size) {
     return_value_if_fail(str != NULL && substr != NULL && substr_size > 0, NULL);
 
     memset(substr, '\0', substr_size);
 
-    int str_len = strlen(str);
+    size_t str_len = strlen(str);
     start = start >= 0 ? start : 0;
     start = start < str_len ? start : str_len - 1;
     end = end < str_len ? end : str_len - 1;
@@ -520,8 +520,8 @@ str_t str_substring(str_t str, int start, int end, str_t substr, int substr_size
  */
 int str_count_substring(const str_t str, const str_t substr) {
     return_value_if_fail(str != NULL && substr != NULL, 0);
-    int str_len = strlen(str);
-    int substr_len = strlen(substr);
+    size_t str_len = strlen(str);
+    size_t substr_len = strlen(substr);
     if (str_len == 0 && substr_len == 0) {
         return 1;
     }
@@ -581,10 +581,10 @@ str_t str_replace(str_t str, const str_t old_str, const str_t new_str) {
 str_t str_remove(str_t str, const str_t substr) {
     return_value_if_fail(str != NULL && substr != NULL, str);
 
-    int substr_len = strlen(substr);
+    size_t substr_len = strlen(substr);
     if (substr_len > 0) {
         str_t p = str;
-        int size = 0;
+        size_t size = 0;
         while ((p = strstr(p, substr))) {
             size = (size == 0) ? p - str + strlen(p + substr_len) + 1 : size - substr_len;
             memmove(p, p + substr_len, size - (p - str));
@@ -604,7 +604,7 @@ str_t str_remove(str_t str, const str_t substr) {
 int str_index_of_char(const str_t str, char c) {
     return_value_if_fail(str != NULL, -1);
 
-    int str_len = strlen(str);
+    size_t str_len = strlen(str);
     if (str_len == 0 && c == '\0') {
         return 0;
     }
@@ -633,7 +633,7 @@ int str_index_of_char(const str_t str, char c) {
 int str_index_of_char_from(const str_t str, char c, int from) {
     return_value_if_fail(str != NULL, -1);
 
-    int str_len = strlen(str);
+    size_t str_len = strlen(str);
     if (str_len == 0 && c == '\0' && from == 0) {
         return 0;
     }
@@ -661,8 +661,8 @@ int str_index_of_char_from(const str_t str, char c, int from) {
 int str_index_of_substring(const str_t str, const str_t substr) {
     return_value_if_fail(str != NULL && substr != NULL, -1);
 
-    int str_len = strlen(str);
-    int substr_len = strlen(substr);
+    size_t str_len = strlen(str);
+    size_t substr_len = strlen(substr);
     if (str_len == 0 && substr_len == 0) {
         return 0;
     } else if (substr_len == 0) {
@@ -686,8 +686,8 @@ int str_index_of_substring(const str_t str, const str_t substr) {
 int str_index_of_substring_from(const str_t str, const str_t substr, int from) {
     return_value_if_fail(str != NULL && substr != NULL, -1);
 
-    int str_len = strlen(str);
-    int substr_len = strlen(substr);
+    size_t str_len = strlen(str);
+    size_t substr_len = strlen(substr);
     if (str_len == 0 && substr_len == 0 && from == 0) {
         return 0;
     } else if (substr_len == 0) {
@@ -710,7 +710,7 @@ int str_index_of_substring_from(const str_t str, const str_t substr, int from) {
 int str_last_index_of_char(const str_t str, char c) {
     return_value_if_fail(str != NULL, -1);
 
-    int str_len = strlen(str);
+    size_t str_len = strlen(str);
     if (str_len == 0 && c == '\0') {
         return 0;
     }
@@ -739,7 +739,7 @@ int str_last_index_of_char(const str_t str, char c) {
 int str_last_index_of_char_from(const str_t str, char c, int from) {
     return_value_if_fail(str != NULL, -1);
 
-    int str_len = strlen(str);
+    size_t str_len = strlen(str);
     if (str_len == 0 && c == '\0' && from == 0) {
         return 0;
     }
@@ -767,8 +767,8 @@ int str_last_index_of_char_from(const str_t str, char c, int from) {
 int str_last_index_of_substring(const str_t str, const str_t substr) {
     return_value_if_fail(str != NULL && substr != NULL, -1);
 
-    int str_len = strlen(str);
-    int substr_len = strlen(substr);
+    size_t str_len = strlen(str);
+    size_t substr_len = strlen(substr);
 
     if (str_len == 0 && substr_len == 0) {
         return 0;
@@ -798,8 +798,8 @@ int str_last_index_of_substring(const str_t str, const str_t substr) {
 int str_last_index_of_substring_from(const str_t str, const str_t substr, int from) {
     return_value_if_fail(str != NULL && substr != NULL, -1);
 
-    int str_len = strlen(str);
-    int substr_len = strlen(substr);
+    size_t str_len = strlen(str);
+    size_t substr_len = strlen(substr);
     if (str_len == 0 && substr_len == 0 && from == 0) {
         return 0;
     } else if (substr_len == 0) {
@@ -808,7 +808,7 @@ int str_last_index_of_substring_from(const str_t str, const str_t substr, int fr
 
     return_value_if_fail(from >= 0 && from < str_len, -1);
 
-    for (const str_t p = str + from - substr_len + 1; p >= str; p--) {
+    for (str_t p = (str_t)str + from - substr_len + 1; p >= str; p--) {
         if (strncmp(p, substr, substr_len) == 0) {
             return p - str;
         }
@@ -829,8 +829,8 @@ int str_last_index_of_substring_from(const str_t str, const str_t substr, int fr
 int str_split(const str_t str, const str_t delimiter, str_t *items) {
     return_value_if_fail(str != NULL && delimiter != NULL && items != NULL, 0);
 
-    int str_len = strlen(str);
-    int delimiter_len = strlen(delimiter);
+    size_t str_len = strlen(str);
+    size_t delimiter_len = strlen(delimiter);
 
     int cnt = 0;
 

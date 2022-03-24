@@ -726,35 +726,41 @@ void test_array_double_sort() {
     array_double_destroy(arr);
 }
 
-void test_array_double_iter_begin() {
+void test_array_double_iter() {
     array_double_t *arr = array_double_create();
     for (int i = 0; i < 10; i++) {
         array_double_append(arr, i);
     }
-    assert(array_double_iter_begin(arr));
+    assert(array_double_iter(arr));
     array_double_destroy(arr);
 }
 
-void test_array_double_iter_end() {
+void test_array_double_iter_has_next() {
     array_double_t *arr = array_double_create();
     for (int i = 0; i < 10; i++) {
         array_double_append(arr, i);
     }
-    assert(array_double_iter_end(arr));
+    void *iter = array_double_iter(arr);
+    assert(iter);
+    assert(array_double_iter_has_next(arr));
+    for (int i = 0; i < 10; i++) {
+        array_double_remove(arr, 0);
+    }
+    iter = array_double_iter(arr);
+    assert(!array_double_iter_has_next(arr));
     array_double_destroy(arr);
 }
 
 void test_array_double_iter_next() {
     array_double_t *arr = array_double_create();
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < 10; i++) {
         array_double_append(arr, i);
     }
-    void *iter = array_double_iter_begin(arr);
-    void *end = array_double_iter_end(arr);
     int i = 0;
-    while (iter != end) {
+    void *iter = array_double_iter(arr);
+    while (iter) {
         assert(equal_double(*(double *)iter, i));
-        iter = array_double_iter_next(iter);
+        iter = array_double_iter_next(arr);
         i++;
     }
     array_double_destroy(arr);
@@ -1153,7 +1159,7 @@ void test_array_sort() {
     free(stu);
 }
 
-void test_array_iter_begin() {
+void test_array_iter() {
     student_t *stu = (student_t *)malloc(sizeof(student_t) * 10);
 
     array_t *arr = array_create();
@@ -1162,13 +1168,13 @@ void test_array_iter_begin() {
         snprintf(stu[i].name, sizeof(stu[i].name), "Name-%d", i);
         array_append(arr, &stu[i]);
     }
-    assert(array_iter_begin(arr));
+    assert(array_iter(arr));
 
     array_destroy(arr);
     free(stu);
 }
 
-void test_array_iter_end() {
+void test_array_iter_has_next() {
     student_t *stu = (student_t *)malloc(sizeof(student_t) * 10);
 
     array_t *arr = array_create();
@@ -1177,7 +1183,14 @@ void test_array_iter_end() {
         snprintf(stu[i].name, sizeof(stu[i].name), "Name-%d", i);
         array_append(arr, &stu[i]);
     }
-    assert(array_iter_end(arr));
+    void *iter = array_iter(arr);
+    assert(iter);
+    assert(array_iter_has_next(arr));
+    for (int i = 0; i < 10; i++) {
+        array_remove(arr, 0);
+    }
+    iter = array_iter(arr);
+    assert(!array_iter_has_next(arr));
 
     array_destroy(arr);
     free(stu);
@@ -1193,19 +1206,17 @@ void test_array_iter_next() {
         array_append(arr, &stu[i]);
     }
 
-    // void *iter = array_iter_begin(arr);
-    // void *end = array_iter_end(arr);
-    // int i = 0;
-    // while (iter != end) {
-    //     student_t *s = (student_t *)iter;
-    //     char name[32] = {0};
-    //     snprintf(name, sizeof(name), "Name-%d", i);
-    //     LOGGER(DEBUG, "%d: sid = %d, name = %s\n", i, s->id, s->name);
-    //     // assert(s->id == i);
-    //     // assert(strncmp(s->name, name, strlen(name)) == 0);
-    //     iter = array_iter_next(iter);
-    //     i++;
-    // }
+    int i = 0;
+    void *iter = array_iter(arr);
+    while (iter) {
+        student_t *s = (student_t *)iter;
+        char name[32] = {0};
+        snprintf(name, sizeof(name), "Name-%d", i);
+        assert(s->id == i);
+        assert(strncmp(s->name, name, strlen(name)) == 0);
+        iter = array_iter_next(arr);
+        i++;
+    }
 
     array_destroy(arr);
     free(stu);

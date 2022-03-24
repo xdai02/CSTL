@@ -67,7 +67,7 @@ bool array_int_is_empty(const array_int_t *array);
 - 函数原型：
 
 ```c
-int array_int_size(const array_int_t *array);
+size_t array_int_size(const array_int_t *array);
 ```
 
 - 功能：获取cino-int-array元素个数。
@@ -379,41 +379,41 @@ array_int_t *array_int_sort(array_int_t *array, bool reverse);
 
 ---
 
-#### array_int_iter_begin()
+#### array_int_iter()
 
 - 函数原型：
 
 ```c
-void *array_int_iter_begin(array_int_t *array);
+iter_t array_int_iter(array_int_t *array);
 ```
 
-- 功能：获取cino-int-array首元素迭代器。
+- 功能：获取cino-int-array的迭代器。
 - 参数：
 
 | 参数    | 说明           |
 | ------- | -------------- |
 | array   | cino-int-array |
 
-- 返回值：首元素迭代器。
+- 返回值：迭代器。
 
 ---
 
-#### array_int_iter_end()
+#### array_int_iter_has_next()
 
 - 函数原型：
 
 ```c
-void *array_int_iter_end(array_int_t *array);
+bool array_int_iter_has_next(const array_int_t *array);
 ```
 
-- 功能：获取cino-int-array尾后元素迭代器。
+- 功能：判断是否存在下一个迭代器。
 - 参数：
 
 | 参数  | 说明           |
 | ----- | -------------- |
 | array | cino-int-array |
 
-- 返回值：尾后元素迭代器。
+- 返回值：如果存在下一个迭代器返回`true`，不存在返回`false`。
 
 ---
 
@@ -422,17 +422,17 @@ void *array_int_iter_end(array_int_t *array);
 - 函数原型：
 
 ```c
-void *array_int_iter_next(void *iter);
+iter_t array_int_iter_next(array_int_t *array);
 ```
 
-- 功能：获取下一个元素的迭代器。
+- 功能：获取下一个迭代器。
 - 参数：
 
-| 参数 | 说明   |
-| ---- | ------ |
-| iter | 迭代器 |
+| 参数  | 说明           |
+| ----- | -------------- |
+| array | cino-int-array |
 
-- 返回值：下一个元素的迭代器。
+- 返回值：下一个迭代器。
 
 <div style="page-break-after: always;"></div>
 
@@ -493,7 +493,7 @@ bool array_double_is_empty(const array_double_t *array);
 - 函数原型：
 
 ```c
-int array_double_size(const array_double_t *array);
+size_t array_double_size(const array_double_t *array);
 ```
 
 - 功能：获取cino-double-array元素个数。
@@ -805,41 +805,41 @@ array_double_t *array_double_sort(array_double_t *array, bool reverse);
 
 ---
 
-#### array_double_iter_begin()
+#### array_double_iter()
 
 - 函数原型：
 
 ```c
-void *array_double_iter_begin(array_double_t *array);
+iter_t array_double_iter(array_double_t *array);
 ```
 
-- 功能：获取cino-double-array首元素迭代器。
+- 功能：获取cino-double-array的迭代器。
 - 参数：
 
-| 参数  | 说明              |
-| ----- | ----------------- |
-| array | cino-double-array |
+| 参数    | 说明           |
+| ------- | -------------- |
+| array   | cino-double-array |
 
-- 返回值：首元素迭代器。
+- 返回值：迭代器。
 
 ---
 
-#### array_double_iter_end()
+#### array_double_iter_has_next()
 
 - 函数原型：
 
 ```c
-void *array_double_iter_end(array_double_t *array);
+bool array_double_iter_has_next(const array_double_t *array);
 ```
 
-- 功能：获取cino-double-array尾后元素迭代器。
+- 功能：判断是否存在下一个迭代器。
 - 参数：
 
-| 参数  | 说明              |
-| ----- | ----------------- |
+| 参数  | 说明           |
+| ----- | -------------- |
 | array | cino-double-array |
 
-- 返回值：尾后元素迭代器。
+- 返回值：如果存在下一个迭代器返回`true`，不存在返回`false`。
 
 ---
 
@@ -848,17 +848,17 @@ void *array_double_iter_end(array_double_t *array);
 - 函数原型：
 
 ```c
-void *array_double_iter_next(void *iter);
+iter_t array_double_iter_next(array_double_t *array);
 ```
 
-- 功能：获取下一个元素的迭代器。
+- 功能：获取下一个迭代器。
 - 参数：
 
-| 参数 | 说明   |
-| ---- | ------ |
-| iter | 迭代器 |
+| 参数  | 说明           |
+| ----- | -------------- |
+| array | cino-double-array |
 
-- 返回值：下一个元素的迭代器。
+- 返回值：下一个迭代器。
 
 <div style="page-break-after: always;"></div>
 

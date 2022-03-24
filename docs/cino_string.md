@@ -89,7 +89,7 @@ string_t *string_set(string_t *string, const char *str);
 - 函数原型：
 
 ```c
-int string_length(const string_t *string);
+size_t string_length(const string_t *string);
 ```
 
 - 功能：获取cino-string长度。

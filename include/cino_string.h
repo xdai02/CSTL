@@ -45,7 +45,7 @@ string_t *string_set(string_t *string, const char *str);
  * @param str   cino-string
  * @return  Returns the length of the cino-string. Returns 0 if cino-string is NULL.
  */
-int string_length(const string_t *string);
+size_t string_length(const string_t *string);
 
 /**
  * @brief   Reset cino-string with '\0'.

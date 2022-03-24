@@ -2,7 +2,7 @@
 
 typedef struct string_t {
     char *string;
-    int length;
+    size_t length;
 } string_t;
 
 /**
@@ -62,7 +62,7 @@ string_t *string_set(string_t *string, const char *str) {
     return_value_if_fail(string != NULL, NULL);
     call_and_return_value_if_fail(str != NULL, string_clear(string), string);
 
-    int str_len = str_length(str);
+    size_t str_len = str_length(str);
     if (string->length != str_len) {
         string->string = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (str_len + 1));
         if (!string->string) {
@@ -81,7 +81,7 @@ string_t *string_set(string_t *string, const char *str) {
  * @param str   cino-string
  * @return  Returns the length of the cino-string. Returns 0 if cino-string is NULL.
  */
-int string_length(const string_t *string) {
+size_t string_length(const string_t *string) {
     return_value_if_fail(string != NULL, 0);
     return string->length;
 }
@@ -122,7 +122,7 @@ bool string_equal(const string_t *s1, const string_t *s2) {
  * @brief   Determine if two cino-strings are equal, ignoring case considerations.
  * @param s1    cino-string 1
  * @param s2    cino-string 2
- * @return  Returns true if two cino-strings are equal ignoring case considerations, otherwise 
+ * @return  Returns true if two cino-strings are equal ignoring case considerations, otherwise
  *          returns false.
  */
 bool string_equal_ignore_case(const string_t *s1, const string_t *s2) {
@@ -164,7 +164,7 @@ string_t *string_to_upper(string_t *string) {
  * @brief   Tests if the cino-string starts with the specified prefix.
  * @param string    cino-string
  * @param prefix    prefix string
- * @return  Returns true if the cino-string starts with the specified prefix, otherwise 
+ * @return  Returns true if the cino-string starts with the specified prefix, otherwise
  *          returns false.
  */
 bool string_starts_with(const string_t *string, const str_t prefix) {
@@ -178,7 +178,7 @@ bool string_starts_with(const string_t *string, const str_t prefix) {
  * @brief   Tests if the cino-string ends with the specified suffix.
  * @param string    cino-string
  * @param suffix    suffix string
- * @return  Returns true if the cino-string ends with the specified suffix, otherwise 
+ * @return  Returns true if the cino-string ends with the specified suffix, otherwise
  *          returns false.
  */
 bool string_ends_with(const string_t *string, const str_t postfix) {
@@ -264,7 +264,7 @@ string_t *string_append_char(string_t *string, char c) {
 string_t *string_insert_char(string_t *string, int index, char c) {
     return_value_if_fail(string != NULL && index >= 0 && index <= string->length, string);
 
-    int new_len = string->length + 1;
+    size_t new_len = string->length + 1;
     string->string = (char *)cino_realloc(string->string, sizeof(char) * new_len, sizeof(char) * (new_len + 1));
     if (!string->string) {
         string_destroy(string);
@@ -291,8 +291,8 @@ string_t *string_insert_char(string_t *string, int index, char c) {
 string_t *string_insert_string(string_t *string, int index, const str_t substr) {
     return_value_if_fail(string != NULL && index >= 0 && index <= string_length(string) && substr != NULL, string);
 
-    int string_len = string->length;
-    int substr_len = str_length(substr);
+    size_t string_len = string->length;
+    size_t substr_len = str_length(substr);
     string->string = (char *)cino_realloc(string->string, sizeof(char) * (string_len + 1), sizeof(char) * (string_len + substr_len + 1));
     if (!string->string) {
         string_destroy(string);
@@ -323,14 +323,14 @@ int string_count_substring(const string_t *string, const str_t substr) {
 /**
  * @brief   Replacing all occurrences of old char with new char.
  * @param string    cino-string
- * @param old_char  old char 
+ * @param old_char  old char
  * @param new_char  new char
  * @return  Returns the modified cino-string.
  */
 string_t *string_replace_char(string_t *string, char old_char, char new_char) {
     return_value_if_fail(string != NULL, NULL);
 
-    int string_len = string->length;
+    size_t string_len = string->length;
     str_replace_char(string->string, old_char, new_char);
 
     string->length = str_length(string->string);
@@ -344,17 +344,17 @@ string_t *string_replace_char(string_t *string, char old_char, char new_char) {
 /**
  * @brief   Replacing all occurrences of old string with new string.
  * @param string    cino-string
- * @param old_str   old string 
+ * @param old_str   old string
  * @param new_str   new string
  * @return  Returns the modified cino-string.
  */
 string_t *string_replace(string_t *string, const str_t old_str, const str_t new_str) {
     return_value_if_fail(string != NULL && old_str != NULL && new_str != NULL, string);
 
-    int old_str_len = str_length(old_str);
-    int new_str_len = str_length(new_str);
+    size_t old_str_len = str_length(old_str);
+    size_t new_str_len = str_length(new_str);
     int replace_cnt = string_count_substring(string, old_str);
-    int new_len = string->length + replace_cnt * (new_str_len - old_str_len);
+    size_t new_len = string->length + replace_cnt * (new_str_len - old_str_len);
     new_len = new_len < string->length ? string->length : new_len;
 
     string->string = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (new_len + 1));
@@ -382,7 +382,7 @@ string_t *string_replace(string_t *string, const str_t old_str, const str_t new_
 string_t *string_remove(string_t *string, const str_t substr) {
     return_value_if_fail(string != NULL && substr != NULL, string);
 
-    int string_len = string->length;
+    size_t string_len = string->length;
     str_remove(string->string, substr);
     string->length = str_length(string->string);
 

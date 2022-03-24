@@ -1,14 +1,19 @@
 #include "cino_array.h"
 
+typedef struct iterator_t {
+    void *iter;
+    int iter_index;  // for generic array only
+} iterator_t;
+
 /****************************************
  *             array_int_t
  ****************************************/
 
 typedef struct array_int_t {
     int *arr;
-    int size;
-    int capacity;
-    void *iter;
+    size_t size;
+    size_t capacity;
+    iterator_t *iterator;
 } array_int_t;
 
 /**
@@ -18,10 +23,13 @@ typedef struct array_int_t {
 array_int_t *array_int_create() {
     array_int_t *array = (array_int_t *)cino_alloc(sizeof(array_int_t));
     return_value_if_fail(array != NULL, NULL);
+    array->iterator = (iterator_t *)cino_alloc(sizeof(iterator_t));
+    call_and_return_value_if_fail(array->iterator != NULL, array_int_destroy(array), NULL);
     array->arr = NULL;
     array->size = 0;
     array->capacity = 0;
-    array->iter = NULL;
+    array->iterator->iter = NULL;
+    array->iterator->iter_index = -1;  // not used in cino-int-array
     return array;
 }
 
@@ -34,11 +42,17 @@ void array_int_destroy(array_int_t *array) {
 
     array->size = 0;
     array->capacity = 0;
-    array->iter = NULL;
 
     if (array->arr) {
         free(array->arr);
         array->arr = NULL;
+    }
+
+    if (array->iterator) {
+        array->iterator->iter = NULL;
+        array->iterator->iter_index = -1;
+        free(array->iterator);
+        array->iterator = NULL;
     }
 
     if (array) {
@@ -61,7 +75,7 @@ bool array_int_is_empty(const array_int_t *array) {
  * @param array cino-int-array
  * @return  Returns the number of elements in the cino-int-array.
  */
-int array_int_size(const array_int_t *array) {
+size_t array_int_size(const array_int_t *array) {
     return_value_if_fail(array != NULL, 0);
     return array->size;
 }
@@ -79,6 +93,8 @@ array_int_t *array_int_clear(array_int_t *array) {
     }
     array->size = 0;
     array->capacity = 0;
+    array->iterator->iter = NULL;
+    array->iterator->iter_index = -1;
     return array;
 }
 
@@ -121,10 +137,7 @@ static array_int_t *array_int_resize(array_int_t *array) {
     if (array->capacity == 0) {
         array->capacity = 1;
         array->arr = (int *)cino_alloc(sizeof(int) * array->capacity);
-        if (!array->arr) {
-            array_int_destroy(array);
-            return NULL;
-        }
+        call_and_return_value_if_fail(array->arr != NULL, array_int_destroy(array), NULL);
         return array;
     }
 
@@ -133,15 +146,12 @@ static array_int_t *array_int_resize(array_int_t *array) {
     // expand
     if (array->size >= array->capacity) {
         array->arr = (int *)cino_realloc(array->arr, sizeof(int) * array->capacity, sizeof(int) * array->capacity * 2);
-        if (!array->arr) {
-            array_int_destroy(array);
-            return NULL;
-        }
+        call_and_return_value_if_fail(array->arr != NULL, array_int_destroy(array), NULL);
         array->capacity *= EXPANSION;
     }
     // shrink
     else if (array->size <= array->capacity / EXPANSION) {
-        int capacity = array->capacity / EXPANSION;
+        size_t capacity = array->capacity / EXPANSION;
         if (capacity > 0) {
             array->arr = (int *)cino_realloc(array->arr, sizeof(int) * array->capacity, sizeof(int) * capacity);
             array->capacity = capacity;
@@ -398,12 +408,16 @@ array_int_t *array_int_sort(array_int_t *array, bool reverse) {
 /**
  * @brief   Get the iterator.
  * @param array cino-int-array
- * @return  Iterator.
+ * @return  Returns the iterator.
  */
-void *array_int_iter(array_int_t *array) {
+iter_t array_int_iter(array_int_t *array) {
     return_value_if_fail(array != NULL, NULL);
-    array->iter = array->arr;
-    return array->iter;
+    if (array->size > 0) {
+        array->iterator->iter = array->arr;
+    } else {
+        array->iterator->iter = NULL;
+    }
+    return array->iterator->iter;
 }
 
 /**
@@ -412,8 +426,8 @@ void *array_int_iter(array_int_t *array) {
  * @return  Returns `true` if next iterator exists, otherwise returns `false`.
  */
 bool array_int_iter_has_next(const array_int_t *array) {
-    return_value_if_fail(array != NULL, false);
-    return (void *)((byte_t *)array->iter + sizeof(int)) < (void *)(array->arr + array->size);
+    return_value_if_fail(array != NULL && array->iterator->iter != NULL, false);
+    return (void *)((byte_t *)array->iterator->iter + sizeof(int)) < (void *)(array->arr + array->size);
 }
 
 /**
@@ -421,16 +435,16 @@ bool array_int_iter_has_next(const array_int_t *array) {
  * @param array cino-int-array
  * @return  Returns the next iterator.
  */
-void *array_int_iter_next(array_int_t *array) {
+iter_t array_int_iter_next(array_int_t *array) {
     return_value_if_fail(array != NULL, NULL);
     if (array_int_iter_has_next(array)) {
-        byte_t *iter = (byte_t *)array->iter;
+        byte_t *iter = (byte_t *)array->iterator->iter;
         iter += sizeof(int);
-        array->iter = (void *)iter;
+        array->iterator->iter = (void *)iter;
     } else {
-        array->iter = NULL;
+        array->iterator->iter = NULL;
     }
-    return array->iter;
+    return array->iterator->iter;
 }
 
 /****************************************
@@ -439,8 +453,9 @@ void *array_int_iter_next(array_int_t *array) {
 
 typedef struct array_double_t {
     double *arr;
-    int size;
-    int capacity;
+    size_t size;
+    size_t capacity;
+    iterator_t *iterator;
 } array_double_t;
 
 /**
@@ -450,9 +465,13 @@ typedef struct array_double_t {
 array_double_t *array_double_create() {
     array_double_t *array = (array_double_t *)cino_alloc(sizeof(array_double_t));
     return_value_if_fail(array != NULL, NULL);
+    array->iterator = (iterator_t *)cino_alloc(sizeof(iterator_t));
+    call_and_return_value_if_fail(array->iterator != NULL, array_double_destroy(array), NULL);
     array->arr = NULL;
     array->size = 0;
     array->capacity = 0;
+    array->iterator->iter = NULL;
+    array->iterator->iter_index = -1;  // not used in cino-double-array
     return array;
 }
 
@@ -469,6 +488,13 @@ void array_double_destroy(array_double_t *array) {
     if (array->arr) {
         free(array->arr);
         array->arr = NULL;
+    }
+
+    if (array->iterator) {
+        array->iterator->iter = NULL;
+        array->iterator->iter_index = -1;
+        free(array->iterator);
+        array->iterator = NULL;
     }
 
     if (array) {
@@ -491,7 +517,7 @@ bool array_double_is_empty(const array_double_t *array) {
  * @param array cino-double-array
  * @return  Returns the number of elements in the cino-double-array.
  */
-int array_double_size(const array_double_t *array) {
+size_t array_double_size(const array_double_t *array) {
     return_value_if_fail(array != NULL, 0);
     return array->size;
 }
@@ -509,6 +535,7 @@ array_double_t *array_double_clear(array_double_t *array) {
     }
     array->size = 0;
     array->capacity = 0;
+    array->iterator->iter = NULL;
     return array;
 }
 
@@ -551,10 +578,7 @@ static array_double_t *array_double_resize(array_double_t *array) {
     if (array->capacity == 0) {
         array->capacity = 1;
         array->arr = (double *)cino_alloc(sizeof(double) * array->capacity);
-        if (!array->arr) {
-            array_double_destroy(array);
-            return NULL;
-        }
+        call_and_return_value_if_fail(array->arr != NULL, array_double_destroy(array), NULL);
         return array;
     }
 
@@ -563,15 +587,12 @@ static array_double_t *array_double_resize(array_double_t *array) {
     // expand
     if (array->size >= array->capacity) {
         array->arr = (double *)cino_realloc(array->arr, sizeof(double) * array->capacity, sizeof(double) * array->capacity * 2);
-        if (!array->arr) {
-            array_double_destroy(array);
-            return NULL;
-        }
+        call_and_return_value_if_fail(array->arr != NULL, array_double_destroy(array), NULL);
         array->capacity *= EXPANSION;
     }
     // shrink
     else if (array->size <= array->capacity / EXPANSION) {
-        int capacity = array->capacity / EXPANSION;
+        size_t capacity = array->capacity / EXPANSION;
         if (capacity > 0) {
             array->arr = (double *)cino_realloc(array->arr, sizeof(double) * array->capacity, sizeof(double) * capacity);
             array->capacity = capacity;
@@ -826,34 +847,45 @@ array_double_t *array_double_sort(array_double_t *array, bool reverse) {
 }
 
 /**
- * @brief   Get the iterator to the first element.
+ * @brief   Get the iterator.
  * @param array cino-double-array
- * @return  Returns the begin iterator.
+ * @return  Returns the iterator.
  */
-void *array_double_iter_begin(array_double_t *array) {
+iter_t array_double_iter(array_double_t *array) {
     return_value_if_fail(array != NULL, NULL);
-    return array->arr;
+    if (array->size > 0) {
+        array->iterator->iter = array->arr;
+    } else {
+        array->iterator->iter = NULL;
+    }
+    return array->iterator->iter;
 }
 
 /**
- * @brief   Get the iterator to the past-the-last-element.
+ * @brief   Determine if the cino-double-array has the next iterator.
  * @param array cino-double-array
- * @return  Returns the end iterator.
+ * @return  Returns `true` if next iterator exists, otherwise returns `false`.
  */
-void *array_double_iter_end(array_double_t *array) {
-    return_value_if_fail(array != NULL, NULL);
-    return array->arr + array->size;
+bool array_double_iter_has_next(const array_double_t *array) {
+    return_value_if_fail(array != NULL && array->iterator->iter != NULL, false);
+    return (void *)((byte_t *)array->iterator->iter + sizeof(double)) < (void *)(array->arr + array->size);
 }
 
 /**
- * @brief   Get the iterator to next element.
- * @param iter  iterator
- * @return  Returns the iterator to next element.
+ * @brief   Get the next iterator.
+ * @param array cino-double-array
+ * @return  Returns the next iterator.
  */
-void *array_double_iter_next(void *iter) {
-    return_value_if_fail(iter != NULL, NULL);
-    iter += sizeof(double);
-    return iter;
+iter_t array_double_iter_next(array_double_t *array) {
+    return_value_if_fail(array != NULL, NULL);
+    if (array_double_iter_has_next(array)) {
+        byte_t *iter = (byte_t *)array->iterator->iter;
+        iter += sizeof(double);
+        array->iterator->iter = (void *)iter;
+    } else {
+        array->iterator->iter = NULL;
+    }
+    return array->iterator->iter;
 }
 
 /****************************************
@@ -862,8 +894,9 @@ void *array_double_iter_next(void *iter) {
 
 typedef struct array_t {
     void **arr;
-    int size;
-    int capacity;
+    size_t size;
+    size_t capacity;
+    iterator_t *iterator;
 } array_t;
 
 /**
@@ -873,9 +906,13 @@ typedef struct array_t {
 array_t *array_create() {
     array_t *array = (array_t *)cino_alloc(sizeof(array_t));
     return_value_if_fail(array != NULL, NULL);
+    array->iterator = (iterator_t *)cino_alloc(sizeof(iterator_t));
+    call_and_return_value_if_fail(array->iterator != NULL, array_destroy(array), NULL);
     array->arr = NULL;
     array->size = 0;
     array->capacity = 0;
+    array->iterator->iter = NULL;
+    array->iterator->iter_index = -1;
     return array;
 }
 
@@ -894,6 +931,13 @@ void array_destroy(array_t *array) {
     if (array->arr) {
         free(array->arr);
         array->arr = NULL;
+    }
+
+    if (array->iterator) {
+        array->iterator->iter = NULL;
+        array->iterator->iter_index = -1;
+        free(array->iterator);
+        array->iterator = NULL;
     }
 
     if (array) {
@@ -916,7 +960,7 @@ bool array_is_empty(const array_t *array) {
  * @param array cino-array
  * @return  Returns the number of elements in the cino-array.
  */
-int array_size(const array_t *array) {
+size_t array_size(const array_t *array) {
     return_value_if_fail(array != NULL, 0);
     return array->size;
 }
@@ -936,6 +980,8 @@ array_t *array_clear(array_t *array) {
     }
     array->size = 0;
     array->capacity = 0;
+    array->iterator->iter = NULL;
+    array->iterator->iter_index = -1;
     return array;
 }
 
@@ -977,10 +1023,7 @@ static array_t *array_resize(array_t *array) {
     if (array->capacity == 0) {
         array->capacity = 1;
         array->arr = (void **)cino_alloc(sizeof(void *) * array->capacity);
-        if (!array->arr) {
-            array_destroy(array);
-            return NULL;
-        }
+        call_and_return_value_if_fail(array->arr != NULL, array_destroy(array), NULL);
         return array;
     }
 
@@ -989,15 +1032,12 @@ static array_t *array_resize(array_t *array) {
     // expand
     if (array->size >= array->capacity) {
         array->arr = (void **)cino_realloc(array->arr, sizeof(void *) * array->capacity, sizeof(void *) * array->capacity * 2);
-        if (!array->arr) {
-            array_destroy(array);
-            return NULL;
-        }
+        call_and_return_value_if_fail(array->arr != NULL, array_destroy(array), NULL);
         array->capacity *= EXPANSION;
     }
     // shrink
     else if (array->size <= array->capacity / EXPANSION) {
-        int capacity = array->capacity / EXPANSION;
+        size_t capacity = array->capacity / EXPANSION;
         if (capacity > 0) {
             array->arr = (void **)cino_realloc(array->arr, sizeof(void *) * array->capacity, sizeof(void *) * capacity);
             array->capacity = capacity;
@@ -1241,32 +1281,45 @@ array_t *array_sort(array_t *array, compare_t cmp) {
 }
 
 /**
- * @brief   Get the iterator to the first element.
+ * @brief   Get the iterator.
  * @param array cino-array
- * @return  Returns the begin iterator.
+ * @return  Returns the iterator.
  */
-void *array_iter_begin(array_t *array) {
+iter_t array_iter(array_t *array) {
     return_value_if_fail(array != NULL, NULL);
-    return array->arr[0];
+    if (array->size > 0) {
+        array->iterator->iter = array->arr[0];
+        array->iterator->iter_index = 0;
+    } else {
+        array->iterator->iter = NULL;
+        array->iterator->iter_index = -1;
+    }
+    return array->iterator->iter;
 }
 
 /**
- * @brief   Get the iterator to the past-the-last-element.
+ * @brief   Determine if the cino-array has the next iterator.
  * @param array cino-array
- * @return  Returns the end iterator.
+ * @return  Returns `true` if next iterator exists, otherwise returns `false`.
  */
-void *array_iter_end(array_t *array) {
-    return_value_if_fail(array != NULL, NULL);
-    return array->arr[array->size - 1];
+bool array_iter_has_next(const array_t *array) {
+    return_value_if_fail(array != NULL && array->iterator->iter != NULL && array->iterator->iter_index >= 0, false);
+    return array->iterator->iter_index + 1 < array->size;
 }
 
 /**
- * @brief   Get the iterator to next element.
- * @param iter  iterator
- * @return  Returns the iterator to next element.
+ * @brief   Get the next iterator.
+ * @param array cino-array
+ * @return  Returns the next iterator.
  */
-void *array_iter_next(void *iter) {
-    return_value_if_fail(iter != NULL, NULL);
-    iter++;
-    return iter;
+iter_t array_iter_next(array_t *array) {
+    return_value_if_fail(array != NULL, NULL);
+    if (array_iter_has_next(array)) {
+        array->iterator->iter_index++;
+        array->iterator->iter = array->arr[array->iterator->iter_index];
+    } else {
+        array->iterator->iter = NULL;
+        array->iterator->iter_index = -1;
+    }
+    return array->iterator->iter;
 }

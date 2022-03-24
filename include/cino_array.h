@@ -42,7 +42,7 @@ bool array_int_is_empty(const array_int_t *array);
  * @param array cino-int-array
  * @return  Returns the number of elements in the cino-int-array.
  */
-int array_int_size(const array_int_t *array);
+size_t array_int_size(const array_int_t *array);
 
 /**
  * @brief   Clear all the elments in the cino-int-array.
@@ -169,9 +169,9 @@ array_int_t *array_int_sort(array_int_t *array, bool reverse);
 /**
  * @brief   Get the iterator.
  * @param array cino-int-array
- * @return  Iterator.
+ * @return  Returns the iterator.
  */
-void *array_int_iter(array_int_t *array);
+iter_t array_int_iter(array_int_t *array);
 
 /**
  * @brief   Determine if the cino-int-array has the next iterator.
@@ -185,7 +185,7 @@ bool array_int_iter_has_next(const array_int_t *array);
  * @param array cino-int-array
  * @return  Returns the next iterator.
  */
-void *array_int_iter_next(array_int_t *array);
+iter_t array_int_iter_next(array_int_t *array);
 
 /****************************************
  *            array_double_t
@@ -217,7 +217,7 @@ bool array_double_is_empty(const array_double_t *array);
  * @param array cino-double-array
  * @return  Returns the number of elements in the cino-double-array.
  */
-int array_double_size(const array_double_t *array);
+size_t array_double_size(const array_double_t *array);
 
 /**
  * @brief   Clear all the elments in the cino-double-array.
@@ -342,25 +342,25 @@ array_double_t *array_double_swap(array_double_t *array, int index1, int index2)
 array_double_t *array_double_sort(array_double_t *array, bool reverse);
 
 /**
- * @brief   Get the iterator to the first element.
+ * @brief   Get the iterator.
  * @param array cino-double-array
- * @return  Returns the begin iterator.
+ * @return  Returns the iterator.
  */
-void *array_double_iter_begin(array_double_t *array);
+iter_t array_double_iter(array_double_t *array);
 
 /**
- * @brief   Get the iterator to the past-the-last-element.
+ * @brief   Determine if the cino-double-array has the next iterator.
  * @param array cino-double-array
- * @return  Returns the end iterator.
+ * @return  Returns `true` if next iterator exists, otherwise returns `false`.
  */
-void *array_double_iter_end(array_double_t *array);
+bool array_double_iter_has_next(const array_double_t *array);
 
 /**
- * @brief   Get the iterator to next element.
- * @param iter  iterator
- * @return  Returns the iterator to next element.
+ * @brief   Get the next iterator.
+ * @param array cino-double-array
+ * @return  Returns the next iterator.
  */
-void *array_double_iter_next(void *iter);
+iter_t array_double_iter_next(array_double_t *array);
 
 /****************************************
  *               array_t
@@ -394,7 +394,7 @@ bool array_is_empty(const array_t *array);
  * @param array cino-array
  * @return  Returns the number of elements in the cino-array.
  */
-int array_size(const array_t *array);
+size_t array_size(const array_t *array);
 
 /**
  * @brief   Clear all the elments in the cino-array.
@@ -508,24 +508,24 @@ array_t *array_swap(array_t *array, int index1, int index2);
 array_t *array_sort(array_t *array, compare_t cmp);
 
 /**
- * @brief   Get the iterator to the first element.
+ * @brief   Get the iterator.
  * @param array cino-array
- * @return  Returns the begin iterator.
+ * @return  Returns the iterator.
  */
-void *array_iter_begin(array_t *array);
+iter_t array_iter(array_t *array);
 
 /**
- * @brief   Get the iterator to the past-the-last-element.
+ * @brief   Determine if the cino-array has the next iterator.
  * @param array cino-array
- * @return  Returns the end iterator.
+ * @return  Returns `true` if next iterator exists, otherwise returns `false`.
  */
-void *array_iter_end(array_t *array);
+bool array_iter_has_next(const array_t *array);
 
 /**
- * @brief   Get the iterator to next element.
- * @param iter  iterator
- * @return  Returns the iterator to next element.
+ * @brief   Get the next iterator.
+ * @param array cino-array
+ * @return  Returns the next iterator.
  */
-void *array_iter_next(void *iter);
+iter_t array_iter_next(array_t *array);
 
 #endif

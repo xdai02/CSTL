@@ -21,6 +21,12 @@
 
 ---
 
+#### iter_t
+
+- 功能：等价于void *。
+
+---
+
 #### compare_t
 
 - 函数原型：
@@ -395,7 +401,7 @@ char str_to_char(const str_t str);
 - 函数原型：
 
 ```c
-str_t char_to_str(char c, str_t str, int str_size);
+str_t char_to_str(char c, str_t str, size_t str_size);
 ```
 
 - 功能：字符转字符串。
@@ -437,7 +443,7 @@ int str_to_int(const str_t str);
 - 函数原型：
 
 ```c
-str_t int_to_str(int val, str_t str, int str_size);
+str_t int_to_str(int val, str_t str, size_t str_size);
 ```
 
 - 功能：int转字符串。
@@ -479,7 +485,7 @@ double str_to_double(const str_t str);
 - 函数原型：
 
 ```c
-str_t double_to_str(double val, int precision, str_t str, int str_size);
+str_t double_to_str(double val, int precision, str_t str, size_t str_size);
 ```
 
 - 功能：double转字符串。
@@ -623,7 +629,7 @@ bool str_ends_with(const str_t str, const str_t postfix);
 - 函数原型：
 
 ```c
-void str_clear(str_t str, int str_size);
+void str_clear(str_t str, size_t str_size);
 ```
 
 - 功能：清空字符串。
@@ -643,7 +649,7 @@ void str_clear(str_t str, int str_size);
 - 函数原型：
 
 ```c
-int str_length(const str_t str);
+size_t str_length(const str_t str);
 ```
 
 - 功能：获取字符串长度。
@@ -838,7 +844,7 @@ str_t str_insert_string(str_t str, int index, const str_t substr);
 - 函数原型：
 
 ```c
-str_t str_substring(str_t str, int start, int end, str_t substr, int substr_size);
+str_t str_substring(str_t str, int start, int end, str_t substr, size_t substr_size);
 ```
 
 - 功能：截取指定范围子串。
