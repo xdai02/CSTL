@@ -1108,12 +1108,12 @@ array_t *array_remove(array_t *array, int index) {
 
 /**
  * @brief   Get the minimum value in the cino-array.
- * @param array cino-array
- * @param cmp   user-defined callback function for comparison
+ * @param array     cino-array
+ * @param compare   user-defined callback function for comparison
  * @return  Returns the minimum value.
  */
-void *array_min(const array_t *array, compare_t cmp) {
-    return_value_if_fail(array != NULL && cmp != NULL, NULL);
+void *array_min(const array_t *array, compare_t compare) {
+    return_value_if_fail(array != NULL && compare != NULL, NULL);
 
     if (array->size == 0) {
         return NULL;
@@ -1121,7 +1121,7 @@ void *array_min(const array_t *array, compare_t cmp) {
 
     void *min = array->arr[0];
     for (int i = 1; i < array->size; i++) {
-        if (cmp(array->arr[i], min) < 0) {
+        if (compare(array->arr[i], min) < 0) {
             min = array->arr[i];
         }
     }
@@ -1131,12 +1131,12 @@ void *array_min(const array_t *array, compare_t cmp) {
 
 /**
  * @brief   Get the maximum value in the cino-array.
- * @param array cino-array
- * @param cmp   user-defined callback function for comparison
+ * @param array     cino-array
+ * @param compare   user-defined callback function for comparison
  * @return  Returns the maximum value.
  */
-void *array_max(const array_t *array, compare_t cmp) {
-    return_value_if_fail(array != NULL && cmp != NULL, NULL);
+void *array_max(const array_t *array, compare_t compare) {
+    return_value_if_fail(array != NULL && compare != NULL, NULL);
 
     if (array->size == 0) {
         return NULL;
@@ -1144,7 +1144,7 @@ void *array_max(const array_t *array, compare_t cmp) {
 
     void *max = array->arr[0];
     for (int i = 1; i < array->size; i++) {
-        if (cmp(array->arr[i], max) > 0) {
+        if (compare(array->arr[i], max) > 0) {
             max = array->arr[i];
         }
     }
@@ -1217,18 +1217,18 @@ array_t *array_swap(array_t *array, int index1, int index2) {
 
 /**
  * @brief   Parition function for quick sort.
- * @param arr   an array of pointers
- * @param start start index of partition
- * @param end   end index of partition
- * @param cmp   user-defined callback function for comparison
+ * @param arr       an array of pointers
+ * @param start     start index of partition
+ * @param end       end index of partition
+ * @param compare   user-defined callback function for comparison
  * @return  Returns the index of the pivot.
  */
-static int quick_sort_partition(void **arr, int start, int end, compare_t cmp) {
+static int quick_sort_partition(void **arr, int start, int end, compare_t compare) {
     int i = start - 1;
     void *pivot = arr[end];
 
     for (int j = start; j < end; j++) {
-        if (cmp(arr[j], pivot) < 0) {
+        if (compare(arr[j], pivot) < 0) {
             i++;
             swap(arr[i], arr[j], void *);
         }
@@ -1240,11 +1240,11 @@ static int quick_sort_partition(void **arr, int start, int end, compare_t cmp) {
 
 /**
  * @brief   Stack-based quick sort for cino-array.
- * @param arr   an array of pointers
- * @param size  number of elements in the array
- * @param cmp   user-defined callback function for comparison
+ * @param arr       an array of pointers
+ * @param size      number of elements in the array
+ * @param compare   user-defined callback function for comparison
  */
-static void quick_sort(void **arr, size_t size, compare_t cmp) {
+static void quick_sort(void **arr, size_t size, compare_t compare) {
     int stack[size];
     memset(stack, 0x00, size * sizeof(int));
 
@@ -1256,7 +1256,7 @@ static void quick_sort(void **arr, size_t size, compare_t cmp) {
         int right = stack[--n];
         int left = stack[--n];
 
-        int index = quick_sort_partition(arr, left, right, cmp);
+        int index = quick_sort_partition(arr, left, right, compare);
         if (index - 1 > left) {
             stack[n++] = left;
             stack[n++] = index - 1;
@@ -1270,13 +1270,13 @@ static void quick_sort(void **arr, size_t size, compare_t cmp) {
 
 /**
  * @brief   Sort the cino-array.
- * @param array cino-array
- * @param cmp   user-defined callback function for comparison
+ * @param array     cino-array
+ * @param compare   user-defined callback function for comparison
  * @return  Returns the modified cino-array.
  */
-array_t *array_sort(array_t *array, compare_t cmp) {
+array_t *array_sort(array_t *array, compare_t compare) {
     return_value_if_fail(array != NULL, NULL);
-    quick_sort(array->arr, array->size, cmp);
+    quick_sort(array->arr, array->size, compare);
     return array;
 }
 

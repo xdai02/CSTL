@@ -864,3 +864,385 @@ iter_t array_double_iter_next(array_double_t *array);
 
 ### array_t
 
+#### array_create()
+
+- 函数原型：
+
+```c
+array_t *array_create();
+```
+
+- 功能：创建cino-array。
+
+- 返回值：返回cino-array指针，创建失败返回`NULL`。
+
+---
+
+#### array_destroy()
+
+- 函数原型：
+
+```c
+void array_destroy(array_t *array);
+```
+
+- 功能：销毁cino-array。
+- 参数：
+
+| 参数  | 说明       |
+| ----- | ---------- |
+| array | cino-array |
+
+---
+
+#### array_is_empty()
+
+- 函数原型：
+
+```c
+bool array_is_empty(const array_t *array);
+```
+
+- 功能：判断cino-array是否为空。
+- 参数：
+
+| 参数  | 说明       |
+| ----- | ---------- |
+| array | cino-array |
+
+- 返回值：cino-array为空返回`true`，不为空返回`false`。
+
+---
+
+#### array_size()
+
+- 函数原型：
+
+```c
+size_t array_size(const array_t *array);
+```
+
+- 功能：获取cino-array元素个数。
+- 参数：
+
+| 参数  | 说明       |
+| ----- | ---------- |
+| array | cino-array |
+
+- 返回值：cino-array元素个数。
+
+---
+
+#### array_clear()
+
+- 函数原型：
+
+```c
+array_t *array_clear(array_t *array);
+```
+
+- 功能：清空cino-array。
+- 参数：
+
+| 参数  | 说明       |
+| ----- | ---------- |
+| array | cino-array |
+
+- 返回值：修改后的cino-array。
+
+---
+
+#### array_get()
+
+- 函数原型：
+
+```c
+void *array_get(const array_t *array, int index);
+```
+
+- 功能：获取cino-array指定下标元素。
+- 参数：
+
+| 参数  | 说明       |
+| ----- | ---------- |
+| array | cino-array |
+| index | 下标       |
+
+- 返回值：返回cino-array指定下标元素。
+
+---
+
+#### array_set()
+
+- 函数原型：
+
+```c
+void array_set(array_t *array, int index, void *data);
+```
+
+- 功能：设置cino-array指定下标元素。
+- 参数：
+
+| 参数  | 说明       |
+| ----- | ---------- |
+| array | cino-array |
+| index | 下标       |
+| data  | 新元素     |
+
+---
+
+#### array_append()
+
+- 函数原型：
+
+```c
+array_t *array_append(array_t *array, void *data);
+```
+
+- 功能：cino-array追加元素。
+- 参数：
+
+| 参数  | 说明       |
+| ----- | ---------- |
+| array | cino-array |
+| data  | 新元素     |
+
+- 返回值：修改后的cino-array。
+
+---
+
+#### array_insert()
+
+- 函数原型：
+
+```c
+array_t *array_insert(array_t *array, int index, void *data);
+```
+
+- 功能：cino-array插入元素。
+- 参数：
+
+| 参数  | 说明       |
+| ----- | ---------- |
+| array | cino-array |
+| index | 插入位置   |
+| data  | 新元素     |
+
+- 返回值：修改后的cino-array。
+
+---
+
+#### array_remove()
+
+- 函数原型：
+
+```c
+array_t *array_remove(array_t *array, int index);
+```
+
+- 功能：删除cino-array中指定下标元素。
+- 参数：
+
+| 参数  | 说明       |
+| ----- | ---------- |
+| array | cino-array |
+| index | 删除位置   |
+
+- 返回值：修改后的cino-array。
+
+---
+
+#### array_min()
+
+- 函数原型：
+
+```c
+void *array_min(const array_t *array, compare_t compare);
+```
+
+- 功能：获取cino-array最小值。
+- 参数：
+
+| 参数    | 说明         |
+| ------- | ------------ |
+| array   | cino-array   |
+| compare | 比较函数接口 |
+
+- 返回值：cino-array最小值。
+
+---
+
+#### array_max()
+
+- 函数原型：
+
+```c
+void *array_max(const array_t *array, compare_t compare);
+```
+
+- 功能：获取cino-array最大值。
+- 参数：
+
+| 参数    | 说明         |
+| ------- | ------------ |
+| array   | cino-array   |
+| compare | 比较函数接口 |
+
+- 返回值：cino-array最大值。
+
+---
+
+#### array_find()
+
+- 函数原型：
+
+```c
+void *array_find(const array_t *array, match_t match);
+```
+
+- 功能：在cino-array查询首个满足条件的元素。
+- 参数：
+
+| 参数  | 说明                 |
+| ----- | -------------------- |
+| array | cino-array           |
+| match | 判断条件满足函数接口 |
+
+- 返回值：返回首个满足条件的元素，未找到返回`NULL`。
+
+---
+
+#### array_count()
+
+- 函数原型：
+
+```c
+int array_count(const array_t *array, match_t match);
+```
+
+- 功能：统计cino-array满足条件元素个数。
+- 参数：
+
+| 参数  | 说明                 |
+| ----- | -------------------- |
+| array | cino-array           |
+| match | 判断条件满足函数接口 |
+
+- 返回值：满足条件元素个数。
+
+---
+
+#### array_reverse()
+
+- 函数原型：
+
+```c
+array_t *array_reverse(array_t *array);
+```
+
+- 功能：反转cino-array。
+- 参数：
+
+| 参数  | 说明       |
+| ----- | ---------- |
+| array | cino-array |
+
+- 返回值：修改后的cino-array。
+
+---
+
+#### array_swap()
+
+- 函数原型：
+
+```c
+array_t *array_swap(array_t *array, int index1, int index2);
+```
+
+- 功能：交换cino-array指定下标元素。
+- 参数：
+
+| 参数   | 说明       |
+| ------ | ---------- |
+| array  | cino-array |
+| index1 | 下标1      |
+| index2 | 下标2      |
+
+- 返回值：修改后的cino-array。
+
+---
+
+#### array_sort()
+
+- 函数原型：
+
+```c
+array_t *array_sort(array_t *array, compare_t compare);
+```
+
+- 功能：cino-int-array排序。
+- 参数：
+
+| 参数    | 说明         |
+| ------- | ------------ |
+| array   | cino-array   |
+| compare | 比较函数接口 |
+
+- 返回值：修改后的cino-array。
+
+---
+
+#### array_iter()
+
+- 函数原型：
+
+```c
+iter_t array_iter(array_t *array);
+```
+
+- 功能：获取cino-array的迭代器。
+- 参数：
+
+| 参数  | 说明       |
+| ----- | ---------- |
+| array | cino-array |
+
+- 返回值：迭代器。
+
+---
+
+#### array_iter_has_next()
+
+- 函数原型：
+
+```c
+bool array_iter_has_next(const array_t *array);
+```
+
+- 功能：判断是否存在下一个迭代器。
+- 参数：
+
+| 参数  | 说明       |
+| ----- | ---------- |
+| array | cino-array |
+
+- 返回值：如果存在下一个迭代器返回`true`，不存在返回`false`。
+
+---
+
+#### array_iter_next()
+
+- 函数原型：
+
+```c
+iter_t array_iter_next(array_t *array);
+```
+
+- 功能：获取下一个迭代器。
+- 参数：
+
+| 参数  | 说明       |
+| ----- | ---------- |
+| array | cino-array |
+
+- 返回值：下一个迭代器。

@@ -453,19 +453,19 @@ array_t *array_remove(array_t *array, int index);
 
 /**
  * @brief   Get the minimum value in the cino-array.
- * @param array cino-array
- * @param cmp   user-defined callback function for comparison
+ * @param array     cino-array
+ * @param compare   user-defined callback function for comparison
  * @return  Returns the minimum value.
  */
-void *array_min(const array_t *array, compare_t cmp);
+void *array_min(const array_t *array, compare_t compare);
 
 /**
  * @brief   Get the maximum value in the cino-array.
- * @param array cino-array
- * @param cmp   user-defined callback function for comparison
+ * @param array     cino-array
+ * @param compare   user-defined callback function for comparison
  * @return  Returns the maximum value.
  */
-void *array_max(const array_t *array, compare_t cmp);
+void *array_max(const array_t *array, compare_t compare);
 
 /**
  * @brief   Find the first element that satisfies the comparison strategy.
@@ -501,11 +501,11 @@ array_t *array_swap(array_t *array, int index1, int index2);
 
 /**
  * @brief   Sort the cino-array.
- * @param array cino-array
- * @param cmp   user-defined callback function for comparison
+ * @param array     cino-array
+ * @param compare   user-defined callback function for comparison
  * @return  Returns the modified cino-array.
  */
-array_t *array_sort(array_t *array, compare_t cmp);
+array_t *array_sort(array_t *array, compare_t compare);
 
 /**
  * @brief   Get the iterator.
