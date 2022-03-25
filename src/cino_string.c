@@ -1,7 +1,7 @@
 #include "cino_string.h"
 
 typedef struct string_t {
-    char *string;
+    str_t string;
     size_t length;
 } string_t;
 
@@ -10,12 +10,12 @@ typedef struct string_t {
  * @param str   string
  * @return  Returns the pointer to cino-string. Returns NULL if the creation failed.
  */
-string_t *string_create(const char *str) {
+string_t *string_create(const str_t str) {
     string_t *string = (string_t *)cino_alloc(sizeof(string_t));
     return_value_if_fail(string != NULL, NULL);
 
     string->length = str ? str_length(str) : 0;
-    string->string = (char *)cino_alloc((string->length + 1) * sizeof(char));
+    string->string = (str_t)cino_alloc((string->length + 1) * sizeof(char));
     call_and_return_value_if_fail(string->string != NULL, string_destroy(string), NULL);
 
     str_copy(string->string, str);
@@ -47,7 +47,7 @@ void string_destroy(string_t *string) {
  * @param string    cino-string
  * @return  String literal.
  */
-const char *string_get(const string_t *string) {
+const str_t string_get(const string_t *string) {
     return_value_if_fail(string != NULL, NULL);
     return string->string;
 }
@@ -58,13 +58,13 @@ const char *string_get(const string_t *string) {
  * @param str       string literal
  * @return  Returns the modified cino-string.
  */
-string_t *string_set(string_t *string, const char *str) {
+string_t *string_set(string_t *string, const str_t str) {
     return_value_if_fail(string != NULL, NULL);
     call_and_return_value_if_fail(str != NULL, string_clear(string), string);
 
     size_t str_len = str_length(str);
     if (string->length != str_len) {
-        string->string = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (str_len + 1));
+        string->string = (str_t)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (str_len + 1));
         if (!string->string) {
             string_destroy(string);
             return NULL;
@@ -94,7 +94,7 @@ size_t string_length(const string_t *string) {
 string_t *string_clear(string_t *string) {
     return_value_if_fail(string != NULL, NULL);
     string->length = 0;
-    string->string = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (string->length + 1));
+    string->string = (str_t)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (string->length + 1));
     str_clear(string->string, string->length + 1);
     return string;
 }
@@ -209,11 +209,13 @@ string_t *string_copy(string_t *destination, const string_t *source) {
  */
 string_t *string_concat(string_t *destination, const string_t *source) {
     return_value_if_fail(destination != NULL && source != NULL, destination);
-    destination->string = (char *)cino_realloc(destination->string, sizeof(char) * (destination->length + 1), sizeof(char) * (destination->length + source->length + 1));
+
+    destination->string = (str_t)cino_realloc(destination->string, sizeof(char) * (destination->length + 1), sizeof(char) * (destination->length + source->length + 1));
     if (!destination->string) {
         string_destroy(destination);
         return NULL;
     }
+
     str_concat(destination->string, source->string);
     destination->length += source->length;
     return destination;
@@ -226,9 +228,11 @@ string_t *string_concat(string_t *destination, const string_t *source) {
  */
 string_t *string_trim(string_t *string) {
     return_value_if_fail(string != NULL, NULL);
+
     str_trim(string->string);
-    string->string = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (str_length(string->string) + 1));
+    string->string = (str_t)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (str_length(string->string) + 1));
     string->length = str_length(string->string);
+
     return string;
 }
 
@@ -242,7 +246,7 @@ string_t *string_append_char(string_t *string, char c) {
     return_value_if_fail(string != NULL, NULL);
 
     if (c != '\0') {
-        string->string = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (string->length + 2));
+        string->string = (str_t)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (string->length + 2));
         if (!string->string) {
             string_destroy(string);
             return NULL;
@@ -265,7 +269,8 @@ string_t *string_insert_char(string_t *string, int index, char c) {
     return_value_if_fail(string != NULL && index >= 0 && index <= string->length, string);
 
     size_t new_len = string->length + 1;
-    string->string = (char *)cino_realloc(string->string, sizeof(char) * new_len, sizeof(char) * (new_len + 1));
+
+    string->string = (str_t)cino_realloc(string->string, sizeof(char) * new_len, sizeof(char) * (new_len + 1));
     if (!string->string) {
         string_destroy(string);
         return NULL;
@@ -275,7 +280,7 @@ string_t *string_insert_char(string_t *string, int index, char c) {
 
     string->length = str_length(string->string);
     if (string->length < new_len) {
-        string->string = (char *)cino_realloc(string->string, sizeof(char) * (new_len + 1), sizeof(char) * (string->length + 1));
+        string->string = (str_t)cino_realloc(string->string, sizeof(char) * (new_len + 1), sizeof(char) * (string->length + 1));
     }
 
     return string;
@@ -293,7 +298,8 @@ string_t *string_insert_string(string_t *string, int index, const str_t substr) 
 
     size_t string_len = string->length;
     size_t substr_len = str_length(substr);
-    string->string = (char *)cino_realloc(string->string, sizeof(char) * (string_len + 1), sizeof(char) * (string_len + substr_len + 1));
+
+    string->string = (str_t)cino_realloc(string->string, sizeof(char) * (string_len + 1), sizeof(char) * (string_len + substr_len + 1));
     if (!string->string) {
         string_destroy(string);
         return NULL;
@@ -303,7 +309,7 @@ string_t *string_insert_string(string_t *string, int index, const str_t substr) 
 
     string->length = str_length(string->string);
     if (string->length < string_len) {
-        string->string = (char *)cino_realloc(string->string, sizeof(char) * (string_len + substr_len + 1), sizeof(char) * (string->length + 1));
+        string->string = (str_t)cino_realloc(string->string, sizeof(char) * (string_len + substr_len + 1), sizeof(char) * (string->length + 1));
     }
 
     return string;
@@ -335,7 +341,7 @@ string_t *string_replace_char(string_t *string, char old_char, char new_char) {
 
     string->length = str_length(string->string);
     if (string->length < string_len) {
-        string->string = (char *)cino_realloc(string->string, sizeof(char) * (string_len + 1), sizeof(char) * (string->length + 1));
+        string->string = (str_t)cino_realloc(string->string, sizeof(char) * (string_len + 1), sizeof(char) * (string->length + 1));
     }
 
     return string;
@@ -353,11 +359,13 @@ string_t *string_replace(string_t *string, const str_t old_str, const str_t new_
 
     size_t old_str_len = str_length(old_str);
     size_t new_str_len = str_length(new_str);
+
     int replace_cnt = string_count_substring(string, old_str);
+
     size_t new_len = string->length + replace_cnt * (new_str_len - old_str_len);
     new_len = new_len < string->length ? string->length : new_len;
 
-    string->string = (char *)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (new_len + 1));
+    string->string = (str_t)cino_realloc(string->string, sizeof(char) * (string->length + 1), sizeof(char) * (new_len + 1));
     if (!string->string) {
         string_destroy(string);
         return NULL;
@@ -367,7 +375,7 @@ string_t *string_replace(string_t *string, const str_t old_str, const str_t new_
 
     string->length = str_length(string->string);
     if (string->length < new_len) {
-        string->string = (char *)cino_realloc(string->string, sizeof(char) * (new_len + 1), sizeof(char) * (string->length + 1));
+        string->string = (str_t)cino_realloc(string->string, sizeof(char) * (new_len + 1), sizeof(char) * (string->length + 1));
     }
 
     return string;
@@ -387,7 +395,7 @@ string_t *string_remove(string_t *string, const str_t substr) {
     string->length = str_length(string->string);
 
     if (string->length < string_len) {
-        string->string = (char *)cino_realloc(string->string, sizeof(char) * (string_len + 1), sizeof(char) * (string->length + 1));
+        string->string = (str_t)cino_realloc(string->string, sizeof(char) * (string_len + 1), sizeof(char) * (string->length + 1));
     }
 
     return string;

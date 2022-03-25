@@ -33,6 +33,11 @@ void test_int_to_str();
 void test_str_to_double();
 void test_double_to_str();
 
+void test_wrap_int();
+void test_unwrap_int();
+void test_wrap_double();
+void test_unwrap_double();
+
 void test_str_equal();
 void test_str_equal_ignore_case();
 void test_str_to_lower();

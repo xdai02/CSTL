@@ -9,6 +9,7 @@
  *              - Array Operation
  *              - Dynamic Memory Allocation
  *              - Type Conversion
+ *              - Wrapper
  *              - String Operation
  **************************************************/
 
@@ -27,6 +28,8 @@
 typedef char byte_t;  // byte_t == char
 
 #define iter_t void *  // iter_t == void *
+
+#define T void *  // T == void *
 
 /**
  * @brief   User-defined comparison function interface.
@@ -290,6 +293,52 @@ double str_to_double(const str_t str);
  * @return  Returns the string after conversion.
  */
 str_t double_to_str(double val, int precision, str_t str, size_t str_size);
+
+/****************************************
+ *               Wrapper
+ ****************************************/
+
+/**
+ * @brief   Wrapper type for int.
+ */
+typedef struct wrapper_int_t {
+    int data;
+} wrapper_int_t;
+
+/**
+ * @brief   Wrapper type for double.
+ */
+typedef struct wrapper_double_t {
+    double data;
+} wrapper_double_t;
+
+/**
+ * @brief   Get the wrapper type for int
+ * @param data  int value
+ * @return  Returns the wrapper type for int, or `NULL` if fails.
+ */
+wrapper_int_t *wrap_int(int data);
+
+/**
+ * @brief   Unwrap and free wrapper_int_t.
+ * @param wrapper   wrapper_int_t
+ * @return  Returns the primitive int data.
+ */
+int unwrap_int(wrapper_int_t *wrapper);
+
+/**
+ * @brief   Get the wrapper type for double
+ * @param data  double value
+ * @return  Returns the wrapper type for double, or `NULL` if fails.
+ */
+wrapper_double_t *wrap_double(double data);
+
+/**
+ * @brief   Unwrap and free wrapper_double_t.
+ * @param wrapper   wrapper_double_t
+ * @return  Returns the primitive double data.
+ */
+double unwrap_double(wrapper_double_t *wrapper);
 
 /****************************************
  *          String Operation

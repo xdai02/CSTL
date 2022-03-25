@@ -14,7 +14,7 @@
 - 函数原型：
 
 ```c
-string_t *string_create(const char *str);
+string_t *string_create(const str_t str);
 ```
 
 - 功能：创建cino-string。
@@ -50,7 +50,7 @@ void string_destroy(string_t *string);
 - 函数原型：
 
 ```c
-const char *string_get(const string_t *string);
+const str_t string_get(const string_t *string);
 ```
 
 - 功能：获取cino-string的字符串值。
@@ -69,7 +69,7 @@ const char *string_get(const string_t *string);
 - 函数原型：
 
 ```c
-string_t *string_set(string_t *string, const char *str);
+string_t *string_set(string_t *string, const str_t str);
 ```
 
 - 功能：设置cino-string的字符串值。

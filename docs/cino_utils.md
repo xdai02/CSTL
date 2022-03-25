@@ -11,19 +11,25 @@
 
 #### str_t
 
-- 功能：等价于char *。
+- 功能：字符串，等价于char *。
 
 ---
 
 #### byte_t
 
-- 功能：等价于char。
+- 功能：字节，等价于char。
 
 ---
 
 #### iter_t
 
-- 功能：等价于void *。
+- 功能：迭代器，等价于void *。
+
+---
+
+#### T
+
+- 功能：泛型，等价于void *。
 
 ---
 
@@ -501,6 +507,108 @@ str_t double_to_str(double val, int precision, str_t str, size_t str_size);
 - 返回值：返回转换后的字符串。
 
 > 调用者需要确保`str`和`str_size`的有效性。
+
+<div style="page-break-after: always;"></div>
+
+### 包装类型
+
+#### wrapper_int_t
+
+```c
+typedef struct wrapper_int_t {
+    int data;
+} wrapper_int_t;
+```
+
+- 功能：包装int类型。
+
+---
+
+#### wrapper_double_t
+
+```c
+typedef struct wrapper_double_t {
+    double data;
+} wrapper_double_t;
+```
+
+- 功能：包装double类型。
+
+---
+
+#### wrap_int()
+
+- 函数原型：
+
+```c
+wrapper_int_t *wrap_int(int data);
+```
+
+- 功能：包装int类型。
+- 参数：
+
+| 参数 | 说明  |
+| ---- | ----- |
+| data | int值 |
+
+- 返回值：wrapper_int_t。
+
+---
+
+#### unwrap_int()
+
+- 函数原型：
+
+```c
+int unwrap_int(wrapper_int_t *wrapper);
+```
+
+- 功能：拆箱int类型。
+- 参数：
+
+| 参数    | 说明          |
+| ------- | ------------- |
+| wrapper | wrapper_int_t |
+
+- 返回值：原始int值。
+
+---
+
+#### wrap_double()
+
+- 函数原型：
+
+```c
+wrapper_double_t *wrap_double(double data);
+```
+
+- 功能：包装double类型。
+- 参数：
+
+| 参数 | 说明     |
+| ---- | -------- |
+| data | double值 |
+
+- 返回值：wrapper_double_t。
+
+---
+
+#### unwrap_double()
+
+- 函数原型：
+
+```c
+double unwrap_double(wrapper_double_t *wrapper);
+```
+
+- 功能：拆箱double类型。
+- 参数：
+
+| 参数    | 说明             |
+| ------- | ---------------- |
+| wrapper | wrapper_double_t |
+
+- 返回值：原始double值。
 
 <div style="page-break-after: always;"></div>
 

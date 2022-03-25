@@ -1,51 +1,118 @@
 #include "cino_array.h"
 
+/****************************************
+ *               Iterator
+ ****************************************/
+
 typedef struct iterator_t {
-    void *iter;
-    int iter_index;  // for generic array only
+    void *iter;      // points to the current element
+    int iter_index;  // generic array use only
 } iterator_t;
 
 /****************************************
- *             array_int_t
+ *               array_t
  ****************************************/
 
-typedef struct array_int_t {
-    int *arr;
+typedef struct array_t {
+    int *i_arr;     // cino-int-array
+    double *d_arr;  // cino-double-array
+    T *p_arr;       // cino-array
+    str_t data_type;
     size_t size;
     size_t capacity;
     iterator_t *iterator;
-} array_int_t;
+} array_t;
 
 /**
- * @brief   Create cino-int-array.
- * @return  Returns the pointer to cino-int-array. Returns NULL if creation failed.
+ * @brief   Validate data type
+ * @param data_type data type
+ *                  valid data type includes:
+ *                      1. int
+ *                      2. double
+ *                      3. T (for generic)
+ * @return  Returns `true` if the data type is supported, otherwise returns `false`.
  */
-array_int_t *array_int_create() {
-    array_int_t *array = (array_int_t *)cino_alloc(sizeof(array_int_t));
+static bool is_valid_data_type(const str_t data_type) {
+    return_value_if_fail(data_type != NULL, false);
+
+    const str_t data_types[] = {
+        "int",
+        "double",
+        "T",  // generic
+    };
+
+    int data_types_len = array_len(data_types);
+    for (int i = 0; i < data_types_len; i++) {
+        if (str_equal(data_types[i], data_type)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * @brief   Create cino-array.
+ * @param data_type data type of each element
+ *                  valid data type includes:
+ *                      1. int
+ *                      2. double
+ *                      3. T (for generic)
+ * @return  Returns the pointer to cino-array. Returns NULL if creation failed.
+ */
+array_t *array_create(const str_t data_type) {
+    return_value_if_fail(is_valid_data_type(data_type), NULL);
+
+    array_t *array = (array_t *)cino_alloc(sizeof(array_t));
     return_value_if_fail(array != NULL, NULL);
+
     array->iterator = (iterator_t *)cino_alloc(sizeof(iterator_t));
-    call_and_return_value_if_fail(array->iterator != NULL, array_int_destroy(array), NULL);
-    array->arr = NULL;
+    call_and_return_value_if_fail(array->iterator != NULL, array_destroy(array), NULL);
+
+    array->data_type = (str_t)cino_alloc(sizeof(char) * (str_length(data_type) + 1));
+    call_and_return_value_if_fail(array->data_type != NULL, array_destroy(array), NULL);
+    str_copy(array->data_type, data_type);
+
+    array->i_arr = NULL;
+    array->d_arr = NULL;
+    array->p_arr = NULL;
     array->size = 0;
     array->capacity = 0;
     array->iterator->iter = NULL;
-    array->iterator->iter_index = -1;  // not used in cino-int-array
+    array->iterator->iter_index = -1;
+
     return array;
 }
 
 /**
- * @brief   Destroy cino-int-array.
- * @param array cino-int-array
+ * @brief   Destroy cino-array.
+ * @note    It is caller's responsibility to free all the elements before
+ *          calling this function, if it is a generic cino-array.
+ * @param array cino-array
  */
-void array_int_destroy(array_int_t *array) {
+void array_destroy(array_t *array) {
     return_if_fail(array != NULL);
 
     array->size = 0;
     array->capacity = 0;
 
-    if (array->arr) {
-        free(array->arr);
-        array->arr = NULL;
+    if (array->data_type) {
+        free(array->data_type);
+        array->data_type = NULL;
+    }
+
+    if (array->i_arr) {
+        free(array->i_arr);
+        array->i_arr = NULL;
+    }
+
+    if (array->d_arr) {
+        free(array->d_arr);
+        array->d_arr = NULL;
+    }
+
+    if (array->p_arr) {
+        free(array->p_arr);
+        array->p_arr = NULL;
     }
 
     if (array->iterator) {
@@ -62,39 +129,54 @@ void array_int_destroy(array_int_t *array) {
 }
 
 /**
- * @brief   Determine if the cino-int-array is empty.
- * @param array cino-int-array
- * @return  Returns true if the cino-int-array is empty, otherwise returns false.
+ * @brief   Determine if the cino-array is empty.
+ * @param array cino-array
+ * @return  Returns true if the cino-array is empty, otherwise returns false.
  */
-bool array_int_is_empty(const array_int_t *array) {
+bool array_is_empty(const array_t *array) {
     return !array || array->size == 0;
 }
 
 /**
- * @brief   Get the number of elements in the cino-int-array.
- * @param array cino-int-array
- * @return  Returns the number of elements in the cino-int-array.
+ * @brief   Get the number of elements in the cino-array.
+ * @param array cino-array
+ * @return  Returns the number of elements in the cino-array.
  */
-size_t array_int_size(const array_int_t *array) {
+size_t array_size(const array_t *array) {
     return_value_if_fail(array != NULL, 0);
     return array->size;
 }
 
 /**
- * @brief   Clear all the elments in the cino-int-array.
- * @param array cino-int-array
- * @return  Returns the modified cino-int-array.
+ * @brief   Clear all the elments in the cino-array.
+ * @note    It is caller's responsibility to free all the elements before
+ *          calling this function, if it is a generic cino-array.
+ * @param array cino-array
+ * @return  Returns the modified cino-array.
  */
-array_int_t *array_int_clear(array_int_t *array) {
+array_t *array_clear(array_t *array) {
     return_value_if_fail(array != NULL, NULL);
-    if (array->arr) {
-        free(array->arr);
-        array->arr = NULL;
+
+    if (array->i_arr) {
+        free(array->i_arr);
+        array->i_arr = NULL;
     }
+
+    if (array->d_arr) {
+        free(array->d_arr);
+        array->d_arr = NULL;
+    }
+
+    if (array->p_arr) {
+        free(array->p_arr);
+        array->p_arr = NULL;
+    }
+
     array->size = 0;
     array->capacity = 0;
     array->iterator->iter = NULL;
     array->iterator->iter_index = -1;
+
     return array;
 }
 
@@ -103,12 +185,35 @@ array_int_t *array_int_clear(array_int_t *array) {
  * @param array cino-int-array
  * @return  Returns the value of the indexed component in the cino-int-array.
  */
-int array_int_get(const array_int_t *array, int index) {
+int array_get_int(const array_t *array, int index) {
     if (!array || index < 0 || index >= array->size) {
         LOGGER(ERROR, "Index out of bounds.");
         return STATUS_OUT_OF_BOUNDS;
     }
-    return array->arr[index];
+    return array->i_arr[index];
+}
+
+/**
+ * @brief   Get the value of the indexed component in the cino-double-array.
+ * @param array cino-double-array
+ * @return  Returns the value of the indexed component in the cino-double-array.
+ */
+int array_get_double(const array_t *array, int index) {
+    if (!array || index < 0 || index >= array->size) {
+        LOGGER(ERROR, "Index out of bounds.");
+        return STATUS_OUT_OF_BOUNDS;
+    }
+    return array->d_arr[index];
+}
+
+/**
+ * @brief   Get the element of the indexed component in the cino-array.
+ * @param array cino-array
+ * @return  Returns a pointer to the indexed component in the cino-array.
+ */
+T array_get(const array_t *array, int index) {
+    return_value_if_fail(array != NULL && index >= 0 && index < array->size, NULL);
+    return array->p_arr[index];
 }
 
 /**
@@ -117,27 +222,70 @@ int array_int_get(const array_int_t *array, int index) {
  * @param index index
  * @param data  new element
  */
-void array_int_set(array_int_t *array, int index, int data) {
+void array_set_int(array_t *array, int index, int data) {
     if (!array || index < 0 || index >= array->size) {
         LOGGER(ERROR, "Index out of bounds.");
         return;
     }
-    array->arr[index] = data;
+    array->i_arr[index] = data;
 }
 
 /**
- * @brief   Expand and shrink the cino-int-array according to the size and capacity.
- * @param array cino-int-array
- * @return  Returns the modified cino-int-array.
+ * @brief   Update the value of the indexed component in the cino-double-array.
+ * @param array cino-double-array
+ * @param index index
+ * @param data  new element
  */
-static array_int_t *array_int_resize(array_int_t *array) {
+void array_set_double(array_t *array, int index, double data) {
+    if (!array || index < 0 || index >= array->size) {
+        LOGGER(ERROR, "Index out of bounds.");
+        return;
+    }
+    array->d_arr[index] = data;
+}
+
+/**
+ * @brief   Update the element of the indexed component in the cino-array.
+ * @note    It is caller's responsibility to free the previous data before
+ *          overwriting it.
+ * @param array cino-array
+ * @param index index
+ * @param data  new element
+ */
+void array_set(array_t *array, int index, T data) {
+    if (!array || index < 0 || index >= array->size) {
+        LOGGER(ERROR, "Index out of bounds.");
+        return;
+    }
+    array->p_arr[index] = data;
+}
+
+/**
+ * @brief   Expand or shrink the cino-array according to the size and capacity.
+ * @param array cino-array
+ * @return  Returns the modified cino-array.
+ */
+static array_t *array_resize(array_t *array) {
     return_value_if_fail(array != NULL, NULL);
+
+    void *p = NULL;
 
     // first allocation
     if (array->capacity == 0) {
         array->capacity = 1;
-        array->arr = (int *)cino_alloc(sizeof(int) * array->capacity);
-        call_and_return_value_if_fail(array->arr != NULL, array_int_destroy(array), NULL);
+
+        if (str_equal(array->data_type, "int")) {
+            array->i_arr = (int *)cino_alloc(sizeof(int) * array->capacity);
+            p = array->i_arr;
+        } else if (str_equal(array->data_type, "double")) {
+            array->d_arr = (double *)cino_alloc(sizeof(double) * array->capacity);
+            p = array->d_arr;
+        } else if (str_equal(array->data_type, "T")) {
+            array->p_arr = (T *)cino_alloc(sizeof(T) * array->capacity);
+            p = array->p_arr;
+        }
+        call_and_return_value_if_fail(p != NULL, array_destroy(array), NULL);
+
         return array;
     }
 
@@ -145,15 +293,30 @@ static array_int_t *array_int_resize(array_int_t *array) {
 
     // expand
     if (array->size >= array->capacity) {
-        array->arr = (int *)cino_realloc(array->arr, sizeof(int) * array->capacity, sizeof(int) * array->capacity * 2);
-        call_and_return_value_if_fail(array->arr != NULL, array_int_destroy(array), NULL);
+        if (str_equal(array->data_type, "int")) {
+            array->i_arr = (int *)cino_realloc(array->i_arr, sizeof(int) * array->capacity, sizeof(int) * array->capacity * 2);
+            p = array->i_arr;
+        } else if (str_equal(array->data_type, "double")) {
+            array->d_arr = (double *)cino_realloc(array->d_arr, sizeof(double) * array->capacity, sizeof(double) * array->capacity * 2);
+            p = array->d_arr;
+        } else if (str_equal(array->data_type, "T")) {
+            array->p_arr = (T *)cino_realloc(array->p_arr, sizeof(T) * array->capacity, sizeof(T) * array->capacity * 2);
+            p = array->p_arr;
+        }
+        call_and_return_value_if_fail(p != NULL, array_destroy(array), NULL);
         array->capacity *= EXPANSION;
     }
     // shrink
     else if (array->size <= array->capacity / EXPANSION) {
         size_t capacity = array->capacity / EXPANSION;
         if (capacity > 0) {
-            array->arr = (int *)cino_realloc(array->arr, sizeof(int) * array->capacity, sizeof(int) * capacity);
+            if (str_equal(array->data_type, "int")) {
+                array->i_arr = (int *)cino_realloc(array->i_arr, sizeof(int) * array->capacity, sizeof(int) * capacity);
+            } else if (str_equal(array->data_type, "double")) {
+                array->d_arr = (double *)cino_realloc(array->d_arr, sizeof(double) * array->capacity, sizeof(double) * capacity);
+            } else if (str_equal(array->data_type, "T")) {
+                array->p_arr = (T *)cino_realloc(array->p_arr, sizeof(T) * array->capacity, sizeof(T) * capacity);
+            }
             array->capacity = capacity;
         }
     }
@@ -167,26 +330,38 @@ static array_int_t *array_int_resize(array_int_t *array) {
  * @param data  new element
  * @return  Returns the modified cino-int-array.
  */
-array_int_t *array_int_append(array_int_t *array, int data) {
-    array_int_resize(array);
+array_t *array_append_int(array_t *array, int data) {
+    array_resize(array);
     return_value_if_fail(array != NULL, NULL);
-    array->arr[array->size++] = data;
+    array->i_arr[array->size++] = data;
     return array;
 }
 
 /**
- * @brief   Appends an int array to the end of the cino-int-array.
- * @param array     cino-int-array
- * @param arr       new element
- * @param arr_len   number of elements in the int array
- * @return  Returns the modified cino-int-array.
+ * @brief   Appends the specified element to the end of the cino-double-array.
+ * @param array cino-double-array
+ * @param data  new element
+ * @return  Returns the modified cino-double-array.
  */
-array_int_t *array_int_extend(array_int_t *array, int *arr, int arr_len) {
-    return_value_if_fail(arr != NULL && arr_len > 0, array);
-    for (int i = 0; i < arr_len; i++) {
-        array_int_resize(array);
-        array->arr[array->size++] = arr[i];
-    }
+array_t *array_append_double(array_t *array, double data) {
+    array_resize(array);
+    return_value_if_fail(array != NULL, NULL);
+    array->d_arr[array->size++] = data;
+    return array;
+}
+
+/**
+ * @brief   Appends the specified element to the end of the cino-array.
+ * @note    It is caller's responsibility to make sure that the inserted element
+ *          is on the heap.
+ * @param array cino-array
+ * @param data  new element
+ * @return  Returns the modified cino-array.
+ */
+array_t *array_append(array_t *array, T data) {
+    array_resize(array);
+    return_value_if_fail(array != NULL, NULL);
+    array->p_arr[array->size++] = data;
     return array;
 }
 
@@ -197,36 +372,91 @@ array_int_t *array_int_extend(array_int_t *array, int *arr, int arr_len) {
  * @param data  new element
  * @return  Returns the modified cino-int-array.
  */
-array_int_t *array_int_insert(array_int_t *array, int index, int data) {
+array_t *array_insert_int(array_t *array, int index, int data) {
     return_value_if_fail(index >= 0 && index <= array->size, array);
 
-    array_int_resize(array);
+    array_resize(array);
     return_value_if_fail(array != NULL, NULL);
 
     for (int i = array->size - 1; i >= index; i--) {
-        array->arr[i + 1] = array->arr[i];
+        array->i_arr[i + 1] = array->i_arr[i];
     }
-    array->arr[index] = data;
+    array->i_arr[index] = data;
     array->size++;
 
     return array;
 }
 
 /**
- * @brief   Removes the element at the specified position in the cino-int-array.
- * @param array cino-int-array
+ * @brief   Inserts the specified element at the specified position in the cino-double-array.
+ * @param array cino-double-array
  * @param index index
- * @return  Returns the modified cino-int-array.
+ * @param data  new element
+ * @return  Returns the modified cino-double-array.
  */
-array_int_t *array_int_remove(array_int_t *array, int index) {
+array_t *array_insert_double(array_t *array, int index, double data) {
+    return_value_if_fail(index >= 0 && index <= array->size, array);
+
+    array_resize(array);
+    return_value_if_fail(array != NULL, NULL);
+
+    for (int i = array->size - 1; i >= index; i--) {
+        array->d_arr[i + 1] = array->d_arr[i];
+    }
+    array->d_arr[index] = data;
+    array->size++;
+
+    return array;
+}
+
+/**
+ * @brief   Inserts the specified element at the specified position in the cino-array.
+ * @note    It is caller's responsibility to make sure that the inserted element
+ *          is on the heap.
+ * @param array cino-array
+ * @param index index
+ * @param data  new element
+ * @return  Returns the modified cino-array.
+ */
+array_t *array_insert(array_t *array, int index, T data) {
+    return_value_if_fail(index >= 0 && index <= array->size, array);
+
+    array_resize(array);
+    return_value_if_fail(array != NULL, NULL);
+
+    for (int i = array->size - 1; i >= index; i--) {
+        array->p_arr[i + 1] = array->p_arr[i];
+    }
+    array->p_arr[index] = data;
+    array->size++;
+
+    return array;
+}
+
+/**
+ * @brief   Removes the element at the specified position in the cino-array.
+ * @note    This function just removes the element from the cino-array. It is
+ *          caller's responsibility to free the removed element, if it is a
+ *          generic cino-array.
+ * @param array cino-array
+ * @param index index
+ * @return  Returns the modified cino-array.
+ */
+array_t *array_remove(array_t *array, int index) {
     return_value_if_fail(array != NULL && index >= 0 && index < array->size, array);
 
     for (int i = index + 1; i < array->size; i++) {
-        array->arr[i - 1] = array->arr[i];
+        if (str_equal(array->data_type, "int")) {
+            array->i_arr[i - 1] = array->i_arr[i];
+        } else if (str_equal(array->data_type, "double")) {
+            array->d_arr[i - 1] = array->d_arr[i];
+        } else if (str_equal(array->data_type, "T")) {
+            array->p_arr[i - 1] = array->p_arr[i];
+        }
     }
     array->size--;
 
-    array_int_resize(array);
+    array_resize(array);
     return array;
 }
 
@@ -235,7 +465,7 @@ array_int_t *array_int_remove(array_int_t *array, int index) {
  * @param array cino-int-array
  * @return  Returns the minimum value.
  */
-int array_int_min(const array_int_t *array) {
+int array_min_int(const array_t *array) {
     if (!array) {
         LOGGER(ERROR, "Access to null object.");
         return STATUS_BAD_PARAMETERS;
@@ -244,10 +474,53 @@ int array_int_min(const array_int_t *array) {
         LOGGER(INFO, "Array is empty.");
         return STATUS_NOT_FOUND;
     }
-    int min = array->arr[0];
+
+    int min = array->i_arr[0];
     for (int i = 1; i < array->size; i++) {
-        if (array->arr[i] < min) {
-            min = array->arr[i];
+        if (array->i_arr[i] < min) {
+            min = array->i_arr[i];
+        }
+    }
+    return min;
+}
+
+/**
+ * @brief   Get the minimum value in the cino-double-array.
+ * @param array cino-double-array
+ * @return  Returns the minimum value.
+ */
+double array_min_double(const array_t *array) {
+    if (!array) {
+        LOGGER(ERROR, "Access to null object.");
+        return STATUS_BAD_PARAMETERS;
+    }
+    if (array->size == 0) {
+        LOGGER(INFO, "Array is empty.");
+        return STATUS_NOT_FOUND;
+    }
+
+    double min = array->d_arr[0];
+    for (int i = 1; i < array->size; i++) {
+        if (array->d_arr[i] < min) {
+            min = array->d_arr[i];
+        }
+    }
+    return min;
+}
+
+/**
+ * @brief   Get the minimum value in the cino-array.
+ * @param array     cino-array
+ * @param compare   user-defined callback function for comparison
+ * @return  Returns the minimum value.
+ */
+T array_min(const array_t *array, compare_t compare) {
+    return_value_if_fail(array != NULL && compare != NULL && array->size > 0, NULL);
+
+    T min = array->p_arr[0];
+    for (int i = 1; i < array->size; i++) {
+        if (compare(array->p_arr[i], min) < 0) {
+            min = array->p_arr[i];
         }
     }
     return min;
@@ -258,7 +531,7 @@ int array_int_min(const array_int_t *array) {
  * @param array cino-int-array
  * @return  Returns the maximum value.
  */
-int array_int_max(const array_int_t *array) {
+int array_max_int(const array_t *array) {
     if (!array) {
         LOGGER(ERROR, "Access to null object.");
         return STATUS_BAD_PARAMETERS;
@@ -267,10 +540,53 @@ int array_int_max(const array_int_t *array) {
         LOGGER(INFO, "Array is empty.");
         return STATUS_NOT_FOUND;
     }
-    int max = array->arr[0];
+
+    int max = array->i_arr[0];
     for (int i = 1; i < array->size; i++) {
-        if (array->arr[i] > max) {
-            max = array->arr[i];
+        if (array->i_arr[i] > max) {
+            max = array->i_arr[i];
+        }
+    }
+    return max;
+}
+
+/**
+ * @brief   Get the maximum value in the cino-double-array.
+ * @param array cino-double-array
+ * @return  Returns the maximum value.
+ */
+double array_max_double(const array_t *array) {
+    if (!array) {
+        LOGGER(ERROR, "Access to null object.");
+        return STATUS_BAD_PARAMETERS;
+    }
+    if (array->size == 0) {
+        LOGGER(INFO, "Array is empty.");
+        return STATUS_NOT_FOUND;
+    }
+
+    double max = array->d_arr[0];
+    for (int i = 1; i < array->size; i++) {
+        if (array->d_arr[i] > max) {
+            max = array->d_arr[i];
+        }
+    }
+    return max;
+}
+
+/**
+ * @brief   Get the maximum value in the cino-array.
+ * @param array     cino-array
+ * @param compare   user-defined callback function for comparison
+ * @return  Returns the maximum value.
+ */
+T array_max(const array_t *array, compare_t compare) {
+    return_value_if_fail(array != NULL && compare != NULL && array->size > 0, NULL);
+
+    T max = array->p_arr[0];
+    for (int i = 1; i < array->size; i++) {
+        if (compare(array->p_arr[i], max) > 0) {
+            max = array->p_arr[i];
         }
     }
     return max;
@@ -284,10 +600,10 @@ int array_int_max(const array_int_t *array) {
  * @return  Returns the index of the first occurrence of the specified element in the
  *          cino-int-array, or -1 if it does not contain the element.
  */
-int array_int_index_of(const array_int_t *array, int data) {
+int array_int_index_of(const array_t *array, int data) {
     return_value_if_fail(array != NULL, -1);
     for (int i = 0; i < array->size; i++) {
-        if (array->arr[i] == data) {
+        if (array->i_arr[i] == data) {
             return i;
         }
     }
@@ -302,10 +618,10 @@ int array_int_index_of(const array_int_t *array, int data) {
  * @return  Returns the index of the last occurrence of the specified element in the
  *          cino-int-array, or -1 if it does not contain the element.
  */
-int array_int_last_index_of(const array_int_t *array, int data) {
+int array_int_last_index_of(const array_t *array, int data) {
     return_value_if_fail(array != NULL, -1);
     for (int i = array->size - 1; i >= 0; i--) {
-        if (array->arr[i] == data) {
+        if (array->i_arr[i] == data) {
             return i;
         }
     }
@@ -318,11 +634,11 @@ int array_int_last_index_of(const array_int_t *array, int data) {
  * @param data  element
  * @return  Returns the occurrences of the specified element.
  */
-int array_int_count(const array_int_t *array, int data) {
+int array_int_count(const array_t *array, int data) {
     return_value_if_fail(array != NULL, 0);
     int cnt = 0;
     for (int i = 0; i < array->size; i++) {
-        if (array->arr[i] == data) {
+        if (array->i_arr[i] == data) {
             cnt++;
         }
     }
@@ -334,12 +650,12 @@ int array_int_count(const array_int_t *array, int data) {
  * @param array cino-int-array
  * @return  Returns the modified cino-int-array.
  */
-array_int_t *array_int_reverse(array_int_t *array) {
+array_t *array_int_reverse(array_t *array) {
     return_value_if_fail(array != NULL, NULL);
     int i = 0;
     int j = array->size - 1;
     while (i < j) {
-        swap(array->arr[i], array->arr[j], int);
+        swap(array->i_arr[i], array->i_arr[j], int);
         i++;
         j--;
     }
@@ -353,9 +669,9 @@ array_int_t *array_int_reverse(array_int_t *array) {
  * @param index2    index 2
  * @return  Returns the modified cino-int-array.
  */
-array_int_t *array_int_swap(array_int_t *array, int index1, int index2) {
+array_t *array_int_swap(array_t *array, int index1, int index2) {
     return_value_if_fail(array != NULL && index1 >= 0 && index1 < array->size && index2 >= 0 && index2 < array->size && index1 != index2, array);
-    swap(array->arr[index1], array->arr[index2], int);
+    swap(array->i_arr[index1], array->i_arr[index2], int);
     return array;
 }
 
@@ -395,12 +711,12 @@ static int cmp_int_greater(const void *data1, const void *data2) {
  * @param reverse   true for descending, false for ascending
  * @return  Returns the modified cino-int-array.
  */
-array_int_t *array_int_sort(array_int_t *array, bool reverse) {
+array_t *array_int_sort(array_t *array, bool reverse) {
     return_value_if_fail(array != NULL, NULL);
     if (reverse) {
-        qsort(array->arr, array->size, sizeof(int), cmp_int_greater);
+        qsort(array->i_arr, array->size, sizeof(int), cmp_int_greater);
     } else {
-        qsort(array->arr, array->size, sizeof(int), cmp_int_less);
+        qsort(array->i_arr, array->size, sizeof(int), cmp_int_less);
     }
     return array;
 }
@@ -410,10 +726,10 @@ array_int_t *array_int_sort(array_int_t *array, bool reverse) {
  * @param array cino-int-array
  * @return  Returns the iterator.
  */
-iter_t array_int_iter(array_int_t *array) {
+iter_t array_int_iter(array_t *array) {
     return_value_if_fail(array != NULL, NULL);
     if (array->size > 0) {
-        array->iterator->iter = array->arr;
+        array->iterator->iter = array->i_arr;
     } else {
         array->iterator->iter = NULL;
     }
@@ -425,9 +741,9 @@ iter_t array_int_iter(array_int_t *array) {
  * @param array cino-int-array
  * @return  Returns `true` if next iterator exists, otherwise returns `false`.
  */
-bool array_int_iter_has_next(const array_int_t *array) {
+bool array_int_iter_has_next(const array_t *array) {
     return_value_if_fail(array != NULL && array->iterator->iter != NULL, false);
-    return (void *)((byte_t *)array->iterator->iter + sizeof(int)) < (void *)(array->arr + array->size);
+    return (void *)((byte_t *)array->iterator->iter + sizeof(int)) < (void *)(array->i_arr + array->size);
 }
 
 /**
@@ -435,7 +751,7 @@ bool array_int_iter_has_next(const array_int_t *array) {
  * @param array cino-int-array
  * @return  Returns the next iterator.
  */
-iter_t array_int_iter_next(array_int_t *array) {
+iter_t array_int_iter_next(array_t *array) {
     return_value_if_fail(array != NULL, NULL);
     if (array_int_iter_has_next(array)) {
         byte_t *iter = (byte_t *)array->iterator->iter;
@@ -448,274 +764,8 @@ iter_t array_int_iter_next(array_int_t *array) {
 }
 
 /****************************************
- *            array_double_t
+ *            array_t
  ****************************************/
-
-typedef struct array_double_t {
-    double *arr;
-    size_t size;
-    size_t capacity;
-    iterator_t *iterator;
-} array_double_t;
-
-/**
- * @brief   Create cino-double-array.
- * @return  Returns the pointer to cino-double-array. Returns NULL if creation failed.
- */
-array_double_t *array_double_create() {
-    array_double_t *array = (array_double_t *)cino_alloc(sizeof(array_double_t));
-    return_value_if_fail(array != NULL, NULL);
-    array->iterator = (iterator_t *)cino_alloc(sizeof(iterator_t));
-    call_and_return_value_if_fail(array->iterator != NULL, array_double_destroy(array), NULL);
-    array->arr = NULL;
-    array->size = 0;
-    array->capacity = 0;
-    array->iterator->iter = NULL;
-    array->iterator->iter_index = -1;  // not used in cino-double-array
-    return array;
-}
-
-/**
- * @brief   Destroy cino-double-array.
- * @param array cino-double-array
- */
-void array_double_destroy(array_double_t *array) {
-    return_if_fail(array != NULL);
-
-    array->size = 0;
-    array->capacity = 0;
-
-    if (array->arr) {
-        free(array->arr);
-        array->arr = NULL;
-    }
-
-    if (array->iterator) {
-        array->iterator->iter = NULL;
-        array->iterator->iter_index = -1;
-        free(array->iterator);
-        array->iterator = NULL;
-    }
-
-    if (array) {
-        free(array);
-        array = NULL;
-    }
-}
-
-/**
- * @brief   Determine if the cino-double-array is empty.
- * @param array cino-double-array
- * @return  Returns true if the cino-double-array is empty, otherwise returns false.
- */
-bool array_double_is_empty(const array_double_t *array) {
-    return !array || array->size == 0;
-}
-
-/**
- * @brief   Get the number of elements in the cino-double-array.
- * @param array cino-double-array
- * @return  Returns the number of elements in the cino-double-array.
- */
-size_t array_double_size(const array_double_t *array) {
-    return_value_if_fail(array != NULL, 0);
-    return array->size;
-}
-
-/**
- * @brief   Clear all the elments in the cino-double-array.
- * @param array cino-double-array
- * @return  Returns the modified cino-double-array.
- */
-array_double_t *array_double_clear(array_double_t *array) {
-    return_value_if_fail(array != NULL, NULL);
-    if (array->arr) {
-        free(array->arr);
-        array->arr = NULL;
-    }
-    array->size = 0;
-    array->capacity = 0;
-    array->iterator->iter = NULL;
-    return array;
-}
-
-/**
- * @brief   Get the value of the indexed component in the cino-double-array.
- * @param array cino-double-array
- * @return  Returns the value of the indexed component in the cino-double-array.
- */
-double array_double_get(const array_double_t *array, int index) {
-    if (!array || index < 0 || index >= array->size) {
-        LOGGER(ERROR, "Index out of bounds.");
-        return STATUS_OUT_OF_BOUNDS;
-    }
-    return array->arr[index];
-}
-
-/**
- * @brief   Update the value of the indexed component in the cino-double-array.
- * @param array cino-double-array
- * @param index index
- * @param data  new element
- */
-void array_double_set(array_double_t *array, int index, double data) {
-    if (!array || index < 0 || index >= array->size) {
-        LOGGER(ERROR, "Index out of bounds.");
-        return;
-    }
-    array->arr[index] = data;
-}
-
-/**
- * @brief   Expand and shrink the cino-double-array according to the size and capacity.
- * @param array cino-double-array
- * @return  Returns the modified cino-double-array.
- */
-static array_double_t *array_double_resize(array_double_t *array) {
-    return_value_if_fail(array != NULL, NULL);
-
-    // first allocation
-    if (array->capacity == 0) {
-        array->capacity = 1;
-        array->arr = (double *)cino_alloc(sizeof(double) * array->capacity);
-        call_and_return_value_if_fail(array->arr != NULL, array_double_destroy(array), NULL);
-        return array;
-    }
-
-    const int EXPANSION = 2;  // coefficient of expansion
-
-    // expand
-    if (array->size >= array->capacity) {
-        array->arr = (double *)cino_realloc(array->arr, sizeof(double) * array->capacity, sizeof(double) * array->capacity * 2);
-        call_and_return_value_if_fail(array->arr != NULL, array_double_destroy(array), NULL);
-        array->capacity *= EXPANSION;
-    }
-    // shrink
-    else if (array->size <= array->capacity / EXPANSION) {
-        size_t capacity = array->capacity / EXPANSION;
-        if (capacity > 0) {
-            array->arr = (double *)cino_realloc(array->arr, sizeof(double) * array->capacity, sizeof(double) * capacity);
-            array->capacity = capacity;
-        }
-    }
-
-    return array;
-}
-
-/**
- * @brief   Appends the specified element to the end of the cino-double-array.
- * @param array cino-double-array
- * @param data  new element
- * @return  Returns the modified cino-double-array.
- */
-array_double_t *array_double_append(array_double_t *array, double data) {
-    array_double_resize(array);
-    return_value_if_fail(array != NULL, NULL);
-    array->arr[array->size++] = data;
-    return array;
-}
-
-/**
- * @brief   Appends an double array to the end of the cino-double-array.
- * @param array     cino-double-array
- * @param arr       new element
- * @param arr_len   number of elements in the double array
- * @return  Returns the modified cino-double-array.
- */
-array_double_t *array_double_extend(array_double_t *array, double *arr, int arr_len) {
-    return_value_if_fail(arr != NULL && arr_len > 0, array);
-    for (int i = 0; i < arr_len; i++) {
-        array_double_resize(array);
-        array->arr[array->size++] = arr[i];
-    }
-    return array;
-}
-
-/**
- * @brief   Inserts the specified element at the specified position in the cino-double-array.
- * @param array cino-double-array
- * @param index index
- * @param data  new element
- * @return  Returns the modified cino-double-array.
- */
-array_double_t *array_double_insert(array_double_t *array, int index, double data) {
-    return_value_if_fail(index >= 0 && index <= array->size, array);
-
-    array_double_resize(array);
-    return_value_if_fail(array != NULL, NULL);
-
-    for (int i = array->size - 1; i >= index; i--) {
-        array->arr[i + 1] = array->arr[i];
-    }
-    array->arr[index] = data;
-    array->size++;
-
-    return array;
-}
-
-/**
- * @brief   Removes the element at the specified position in the cino-double-array.
- * @param array cino-double-array
- * @param index index
- * @return  Returns the modified cino-double-array.
- */
-array_double_t *array_double_remove(array_double_t *array, int index) {
-    return_value_if_fail(array != NULL && index >= 0 && index < array->size, array);
-
-    for (int i = index + 1; i < array->size; i++) {
-        array->arr[i - 1] = array->arr[i];
-    }
-    array->size--;
-
-    array_double_resize(array);
-    return array;
-}
-
-/**
- * @brief   Get the minimum value in the cino-double-array.
- * @param array cino-double-array
- * @return  Returns the minimum value.
- */
-double array_double_min(const array_double_t *array) {
-    if (!array) {
-        LOGGER(ERROR, "Access to null object.");
-        return STATUS_BAD_PARAMETERS;
-    }
-    if (array->size == 0) {
-        LOGGER(INFO, "Array is empty.");
-        return STATUS_NOT_FOUND;
-    }
-    double min = array->arr[0];
-    for (int i = 1; i < array->size; i++) {
-        if (array->arr[i] < min) {
-            min = array->arr[i];
-        }
-    }
-    return min;
-}
-
-/**
- * @brief   Get the maximum value in the cino-double-array.
- * @param array cino-double-array
- * @return  Returns the maximum value.
- */
-double array_double_max(const array_double_t *array) {
-    if (!array) {
-        LOGGER(ERROR, "Access to null object.");
-        return STATUS_BAD_PARAMETERS;
-    }
-    if (array->size == 0) {
-        LOGGER(INFO, "Array is empty.");
-        return STATUS_NOT_FOUND;
-    }
-    double max = array->arr[0];
-    for (int i = 1; i < array->size; i++) {
-        if (array->arr[i] > max) {
-            max = array->arr[i];
-        }
-    }
-    return max;
-}
 
 /**
  * @brief   Find the index of the first occurrence of the specified element in the
@@ -725,10 +775,10 @@ double array_double_max(const array_double_t *array) {
  * @return  Returns the index of the first occurrence of the specified element in the
  *          cino-double-array, or -1 if it does not contain the element.
  */
-int array_double_index_of(const array_double_t *array, double data) {
+int array_double_index_of(const array_t *array, double data) {
     return_value_if_fail(array != NULL, -1);
     for (int i = 0; i < array->size; i++) {
-        if (equal_double(array->arr[i], data)) {
+        if (equal_double(array->d_arr[i], data)) {
             return i;
         }
     }
@@ -743,10 +793,10 @@ int array_double_index_of(const array_double_t *array, double data) {
  * @return  Returns the index of the last occurrence of the specified element in the
  *          cino-double-array, or -1 if it does not contain the element.
  */
-int array_double_last_index_of(const array_double_t *array, double data) {
+int array_double_last_index_of(const array_t *array, double data) {
     return_value_if_fail(array != NULL, -1);
     for (int i = array->size - 1; i >= 0; i--) {
-        if (equal_double(array->arr[i], data)) {
+        if (equal_double(array->d_arr[i], data)) {
             return i;
         }
     }
@@ -759,11 +809,11 @@ int array_double_last_index_of(const array_double_t *array, double data) {
  * @param data  element
  * @return  Returns the occurrences of the specified element.
  */
-int array_double_count(const array_double_t *array, double data) {
+int array_double_count(const array_t *array, double data) {
     return_value_if_fail(array != NULL, 0);
     int cnt = 0;
     for (int i = 0; i < array->size; i++) {
-        if (equal_double(array->arr[i], data)) {
+        if (equal_double(array->d_arr[i], data)) {
             cnt++;
         }
     }
@@ -775,12 +825,12 @@ int array_double_count(const array_double_t *array, double data) {
  * @param array cino-double-array
  * @return  Returns the modified cino-double-array.
  */
-array_double_t *array_double_reverse(array_double_t *array) {
+array_t *array_double_reverse(array_t *array) {
     return_value_if_fail(array != NULL, NULL);
     int i = 0;
     int j = array->size - 1;
     while (i < j) {
-        swap(array->arr[i], array->arr[j], double);
+        swap(array->d_arr[i], array->d_arr[j], double);
         i++;
         j--;
     }
@@ -794,9 +844,9 @@ array_double_t *array_double_reverse(array_double_t *array) {
  * @param index2    index 2
  * @return  Returns the modified cino-double-array.
  */
-array_double_t *array_double_swap(array_double_t *array, int index1, int index2) {
+array_t *array_double_swap(array_t *array, int index1, int index2) {
     return_value_if_fail(array != NULL && index1 >= 0 && index1 < array->size && index2 >= 0 && index2 < array->size && index1 != index2, array);
-    swap(array->arr[index1], array->arr[index2], double);
+    swap(array->d_arr[index1], array->d_arr[index2], double);
     return array;
 }
 
@@ -836,12 +886,12 @@ static int cmp_double_greater(const void *data1, const void *data2) {
  * @param reverse   true for descending, false for ascending
  * @return  Returns the modified cino-double-array.
  */
-array_double_t *array_double_sort(array_double_t *array, bool reverse) {
+array_t *array_double_sort(array_t *array, bool reverse) {
     return_value_if_fail(array != NULL, NULL);
     if (reverse) {
-        qsort(array->arr, array->size, sizeof(double), cmp_double_greater);
+        qsort(array->d_arr, array->size, sizeof(double), cmp_double_greater);
     } else {
-        qsort(array->arr, array->size, sizeof(double), cmp_double_less);
+        qsort(array->d_arr, array->size, sizeof(double), cmp_double_less);
     }
     return array;
 }
@@ -851,10 +901,10 @@ array_double_t *array_double_sort(array_double_t *array, bool reverse) {
  * @param array cino-double-array
  * @return  Returns the iterator.
  */
-iter_t array_double_iter(array_double_t *array) {
+iter_t array_double_iter(array_t *array) {
     return_value_if_fail(array != NULL, NULL);
     if (array->size > 0) {
-        array->iterator->iter = array->arr;
+        array->iterator->iter = array->d_arr;
     } else {
         array->iterator->iter = NULL;
     }
@@ -866,9 +916,9 @@ iter_t array_double_iter(array_double_t *array) {
  * @param array cino-double-array
  * @return  Returns `true` if next iterator exists, otherwise returns `false`.
  */
-bool array_double_iter_has_next(const array_double_t *array) {
+bool array_double_iter_has_next(const array_t *array) {
     return_value_if_fail(array != NULL && array->iterator->iter != NULL, false);
-    return (void *)((byte_t *)array->iterator->iter + sizeof(double)) < (void *)(array->arr + array->size);
+    return (void *)((byte_t *)array->iterator->iter + sizeof(double)) < (void *)(array->d_arr + array->size);
 }
 
 /**
@@ -876,7 +926,7 @@ bool array_double_iter_has_next(const array_double_t *array) {
  * @param array cino-double-array
  * @return  Returns the next iterator.
  */
-iter_t array_double_iter_next(array_double_t *array) {
+iter_t array_double_iter_next(array_t *array) {
     return_value_if_fail(array != NULL, NULL);
     if (array_double_iter_has_next(array)) {
         byte_t *iter = (byte_t *)array->iterator->iter;
@@ -892,266 +942,6 @@ iter_t array_double_iter_next(array_double_t *array) {
  *               array_t
  ****************************************/
 
-typedef struct array_t {
-    void **arr;
-    size_t size;
-    size_t capacity;
-    iterator_t *iterator;
-} array_t;
-
-/**
- * @brief   Create cino-array.
- * @return  Returns the pointer to cino-array. Returns NULL if creation failed.
- */
-array_t *array_create() {
-    array_t *array = (array_t *)cino_alloc(sizeof(array_t));
-    return_value_if_fail(array != NULL, NULL);
-    array->iterator = (iterator_t *)cino_alloc(sizeof(iterator_t));
-    call_and_return_value_if_fail(array->iterator != NULL, array_destroy(array), NULL);
-    array->arr = NULL;
-    array->size = 0;
-    array->capacity = 0;
-    array->iterator->iter = NULL;
-    array->iterator->iter_index = -1;
-    return array;
-}
-
-/**
- * @brief   Destroy cino-array.
- * @note    It is caller's responsibility to free all the elements before
- *          calling this function.
- * @param array cino-array
- */
-void array_destroy(array_t *array) {
-    return_if_fail(array != NULL);
-
-    array->size = 0;
-    array->capacity = 0;
-
-    if (array->arr) {
-        free(array->arr);
-        array->arr = NULL;
-    }
-
-    if (array->iterator) {
-        array->iterator->iter = NULL;
-        array->iterator->iter_index = -1;
-        free(array->iterator);
-        array->iterator = NULL;
-    }
-
-    if (array) {
-        free(array);
-        array = NULL;
-    }
-}
-
-/**
- * @brief   Determine if the cino-array is empty.
- * @param array cino-array
- * @return  Returns true if the cino-array is empty, otherwise returns false.
- */
-bool array_is_empty(const array_t *array) {
-    return !array || array->size == 0;
-}
-
-/**
- * @brief   Get the number of elements in the cino-array.
- * @param array cino-array
- * @return  Returns the number of elements in the cino-array.
- */
-size_t array_size(const array_t *array) {
-    return_value_if_fail(array != NULL, 0);
-    return array->size;
-}
-
-/**
- * @brief   Clear all the elments in the cino-array.
- * @note    This function just removes all the elements from the cino-array.It is
- *          caller's responsibility to free the removed elements.
- * @param array cino-array
- * @return  Returns the modified cino-array.
- */
-array_t *array_clear(array_t *array) {
-    return_value_if_fail(array != NULL, NULL);
-    if (array->arr) {
-        free(array->arr);
-        array->arr = NULL;
-    }
-    array->size = 0;
-    array->capacity = 0;
-    array->iterator->iter = NULL;
-    array->iterator->iter_index = -1;
-    return array;
-}
-
-/**
- * @brief   Get the element of the indexed component in the cino-array.
- * @param array cino-array
- * @return  Returns a pointer to the indexed component in the cino-array.
- */
-void *array_get(const array_t *array, int index) {
-    return_value_if_fail(array != NULL && index >= 0 && index < array->size, NULL);
-    return array->arr[index];
-}
-
-/**
- * @brief   Update the element of the indexed component in the cino-array.
- * @note    It is caller's responsibility to free the previous data before
- *          overwriting it.
- * @param array cino-array
- * @param index index
- * @param data  new element
- */
-void array_set(array_t *array, int index, void *data) {
-    if (!array || index < 0 || index >= array->size) {
-        LOGGER(ERROR, "Index out of bounds.");
-        return;
-    }
-    array->arr[index] = data;
-}
-
-/**
- * @brief   Expand and shrink the cino-array according to the size and capacity.
- * @param array cino-array
- * @return  Returns the modified cino-array.
- */
-static array_t *array_resize(array_t *array) {
-    return_value_if_fail(array != NULL, NULL);
-
-    // first allocation
-    if (array->capacity == 0) {
-        array->capacity = 1;
-        array->arr = (void **)cino_alloc(sizeof(void *) * array->capacity);
-        call_and_return_value_if_fail(array->arr != NULL, array_destroy(array), NULL);
-        return array;
-    }
-
-    const int EXPANSION = 2;  // coefficient of expansion
-
-    // expand
-    if (array->size >= array->capacity) {
-        array->arr = (void **)cino_realloc(array->arr, sizeof(void *) * array->capacity, sizeof(void *) * array->capacity * 2);
-        call_and_return_value_if_fail(array->arr != NULL, array_destroy(array), NULL);
-        array->capacity *= EXPANSION;
-    }
-    // shrink
-    else if (array->size <= array->capacity / EXPANSION) {
-        size_t capacity = array->capacity / EXPANSION;
-        if (capacity > 0) {
-            array->arr = (void **)cino_realloc(array->arr, sizeof(void *) * array->capacity, sizeof(void *) * capacity);
-            array->capacity = capacity;
-        }
-    }
-
-    return array;
-}
-
-/**
- * @brief   Appends the specified element to the end of the cino-array.
- * @note    It is caller's responsibility to make sure that the inserted element
- *          is on the heap.
- * @param array cino-array
- * @param data  new element
- * @return  Returns the modified cino-array.
- */
-array_t *array_append(array_t *array, void *data) {
-    array_resize(array);
-    return_value_if_fail(array != NULL, NULL);
-    array->arr[array->size++] = data;
-    return array;
-}
-
-/**
- * @brief   Inserts the specified element at the specified position in the cino-array.
- * @note    It is caller's responsibility to make sure that the inserted element
- *          is on the heap.
- * @param array cino-array
- * @param index index
- * @param data  new element
- * @return  Returns the modified cino-array.
- */
-array_t *array_insert(array_t *array, int index, void *data) {
-    return_value_if_fail(index >= 0 && index <= array->size, array);
-
-    array_resize(array);
-    return_value_if_fail(array != NULL, NULL);
-
-    for (int i = array->size - 1; i >= index; i--) {
-        array->arr[i + 1] = array->arr[i];
-    }
-    array->arr[index] = data;
-    array->size++;
-
-    return array;
-}
-
-/**
- * @brief   Removes the element at the specified position in the cino-array.
- * @note    This function just removes the element from the cino-array.It is
- *          caller's responsibility to free the removed element.
- * @param array cino-array
- * @param index index
- * @return  Returns the modified cino-array.
- */
-array_t *array_remove(array_t *array, int index) {
-    return_value_if_fail(array != NULL && index >= 0 && index < array->size, array);
-
-    for (int i = index + 1; i < array->size; i++) {
-        array->arr[i - 1] = array->arr[i];
-    }
-    array->size--;
-
-    array_resize(array);
-    return array;
-}
-
-/**
- * @brief   Get the minimum value in the cino-array.
- * @param array     cino-array
- * @param compare   user-defined callback function for comparison
- * @return  Returns the minimum value.
- */
-void *array_min(const array_t *array, compare_t compare) {
-    return_value_if_fail(array != NULL && compare != NULL, NULL);
-
-    if (array->size == 0) {
-        return NULL;
-    }
-
-    void *min = array->arr[0];
-    for (int i = 1; i < array->size; i++) {
-        if (compare(array->arr[i], min) < 0) {
-            min = array->arr[i];
-        }
-    }
-
-    return min;
-}
-
-/**
- * @brief   Get the maximum value in the cino-array.
- * @param array     cino-array
- * @param compare   user-defined callback function for comparison
- * @return  Returns the maximum value.
- */
-void *array_max(const array_t *array, compare_t compare) {
-    return_value_if_fail(array != NULL && compare != NULL, NULL);
-
-    if (array->size == 0) {
-        return NULL;
-    }
-
-    void *max = array->arr[0];
-    for (int i = 1; i < array->size; i++) {
-        if (compare(array->arr[i], max) > 0) {
-            max = array->arr[i];
-        }
-    }
-
-    return max;
-}
-
 /**
  * @brief   Find the first element that satisfies the comparison strategy.
  * @param array cino-array
@@ -1161,8 +951,8 @@ void *array_max(const array_t *array, compare_t compare) {
 void *array_find(const array_t *array, match_t match) {
     return_value_if_fail(array != NULL && match != NULL, NULL);
     for (int i = 0; i < array->size; i++) {
-        if (match(array->arr[i])) {
-            return array->arr[i];
+        if (match(array->p_arr[i])) {
+            return array->p_arr[i];
         }
     }
     return NULL;
@@ -1178,7 +968,7 @@ int array_count(const array_t *array, match_t match) {
     return_value_if_fail(array != NULL && match != NULL, 0);
     int cnt = 0;
     for (int i = 0; i < array->size; i++) {
-        if (match(array->arr[i])) {
+        if (match(array->p_arr[i])) {
             cnt++;
         }
     }
@@ -1195,7 +985,7 @@ array_t *array_reverse(array_t *array) {
     int i = 0;
     int j = array->size - 1;
     while (i < j) {
-        swap(array->arr[i], array->arr[j], void *);
+        swap(array->p_arr[i], array->p_arr[j], void *);
         i++;
         j--;
     }
@@ -1211,7 +1001,7 @@ array_t *array_reverse(array_t *array) {
  */
 array_t *array_swap(array_t *array, int index1, int index2) {
     return_value_if_fail(array != NULL && index1 >= 0 && index1 < array->size && index2 >= 0 && index2 < array->size && index1 != index2, array);
-    swap(array->arr[index1], array->arr[index2], void *);
+    swap(array->p_arr[index1], array->p_arr[index2], void *);
     return array;
 }
 
@@ -1276,7 +1066,7 @@ static void quick_sort(void **arr, size_t size, compare_t compare) {
  */
 array_t *array_sort(array_t *array, compare_t compare) {
     return_value_if_fail(array != NULL, NULL);
-    quick_sort(array->arr, array->size, compare);
+    quick_sort(array->p_arr, array->size, compare);
     return array;
 }
 
@@ -1288,7 +1078,7 @@ array_t *array_sort(array_t *array, compare_t compare) {
 iter_t array_iter(array_t *array) {
     return_value_if_fail(array != NULL, NULL);
     if (array->size > 0) {
-        array->iterator->iter = array->arr[0];
+        array->iterator->iter = array->p_arr[0];
         array->iterator->iter_index = 0;
     } else {
         array->iterator->iter = NULL;
@@ -1316,7 +1106,7 @@ iter_t array_iter_next(array_t *array) {
     return_value_if_fail(array != NULL, NULL);
     if (array_iter_has_next(array)) {
         array->iterator->iter_index++;
-        array->iterator->iter = array->arr[array->iterator->iter_index];
+        array->iterator->iter = array->p_arr[array->iterator->iter_index];
     } else {
         array->iterator->iter = NULL;
         array->iterator->iter_index = -1;

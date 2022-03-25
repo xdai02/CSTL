@@ -424,6 +424,30 @@ void test_double_to_str() {
     assert(!p);
 }
 
+void test_wrap_int() {
+    wrapper_int_t *wrapper = wrap_int(123);
+    assert(wrapper->data == 123);
+    assert(unwrap_int(wrapper) == 123);
+}
+
+void test_unwrap_int() {
+    wrapper_int_t *wrapper = wrap_int(123);
+    assert(wrapper->data == 123);
+    assert(unwrap_int(wrapper) == 123);
+}
+
+void test_wrap_double() {
+    wrapper_double_t *wrapper = wrap_double(3.14);
+    assert(equal_double(wrapper->data, 3.14));
+    assert(equal_double(unwrap_double(wrapper), 3.14));
+}
+
+void test_unwrap_double() {
+    wrapper_double_t *wrapper = wrap_double(3.14);
+    assert(equal_double(wrapper->data, 3.14));
+    assert(equal_double(unwrap_double(wrapper), 3.14));
+}
+
 void test_str_equal() {
     assert(str_equal("hello", "hello"));
     assert(str_equal("Hello", "Hello"));

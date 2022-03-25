@@ -17,7 +17,7 @@ typedef struct string_t string_t;
  * @param str   string
  * @return  Returns the pointer to cino-string. Returns NULL if the creation failed.
  */
-string_t *string_create(const char *str);
+string_t *string_create(const str_t str);
 
 /**
  * @brief   Destroy cino-string.
@@ -30,7 +30,7 @@ void string_destroy(string_t *string);
  * @param string    cino-string
  * @return  String literal.
  */
-const char *string_get(const string_t *string);
+const str_t string_get(const string_t *string);
 
 /**
  * @brief   Set the string value.
@@ -38,7 +38,7 @@ const char *string_get(const string_t *string);
  * @param str       string literal
  * @return  Returns the modified cino-string.
  */
-string_t *string_set(string_t *string, const char *str);
+string_t *string_set(string_t *string, const str_t str);
 
 /**
  * @brief   Returns the length of the cino-string.
@@ -66,7 +66,7 @@ bool string_equal(const string_t *s1, const string_t *s2);
  * @brief   Determine if two cino-strings are equal, ignoring case considerations.
  * @param s1    cino-string 1
  * @param s2    cino-string 2
- * @return  Returns true if two cino-strings are equal ignoring case considerations, otherwise 
+ * @return  Returns true if two cino-strings are equal ignoring case considerations, otherwise
  *          returns false.
  */
 bool string_equal_ignore_case(const string_t *s1, const string_t *s2);
@@ -89,7 +89,7 @@ string_t *string_to_upper(string_t *string);
  * @brief   Tests if the cino-string starts with the specified prefix.
  * @param string    cino-string
  * @param prefix    prefix string
- * @return  Returns true if the cino-string starts with the specified prefix, otherwise 
+ * @return  Returns true if the cino-string starts with the specified prefix, otherwise
  *          returns false.
  */
 bool string_starts_with(const string_t *string, const str_t prefix);
@@ -98,7 +98,7 @@ bool string_starts_with(const string_t *string, const str_t prefix);
  * @brief   Tests if the cino-string ends with the specified suffix.
  * @param string    cino-string
  * @param suffix    suffix string
- * @return  Returns true if the cino-string ends with the specified suffix, otherwise 
+ * @return  Returns true if the cino-string ends with the specified suffix, otherwise
  *          returns false.
  */
 bool string_ends_with(const string_t *string, const str_t postfix);
@@ -163,7 +163,7 @@ int string_count_substring(const string_t *string, const str_t substr);
 /**
  * @brief   Replacing all occurrences of old char with new char.
  * @param string    cino-string
- * @param old_char  old char 
+ * @param old_char  old char
  * @param new_char  new char
  * @return  Returns the modified cino-string.
  */
@@ -172,7 +172,7 @@ string_t *string_replace_char(string_t *string, char old_char, char new_char);
 /**
  * @brief   Replacing all occurrences of old string with new string.
  * @param string    cino-string
- * @param old_str   old string 
+ * @param old_str   old string
  * @param new_str   new string
  * @return  Returns the modified cino-string.
  */

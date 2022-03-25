@@ -196,6 +196,66 @@ str_t double_to_str(double val, int precision, str_t str, size_t str_size) {
 }
 
 /****************************************
+ *               Wrapper
+ ****************************************/
+
+/**
+ * @brief   Get the wrapper type for int
+ * @param data  int value
+ * @return  Returns the wrapper type for int, or `NULL` if fails.
+ */
+wrapper_int_t *wrap_int(int data) {
+    wrapper_int_t *wrapper = (wrapper_int_t *)cino_alloc(sizeof(wrapper_int_t));
+    return_value_if_fail(wrapper != NULL, NULL);
+    wrapper->data = data;
+    return wrapper;
+}
+
+/**
+ * @brief   Unwrap and free wrapper_int_t.
+ * @param wrapper   wrapper_int_t
+ * @return  Returns the primitive int data.
+ */
+int unwrap_int(wrapper_int_t *wrapper) {
+    if (!wrapper) {
+        LOGGER(ERROR, "Access to null object");
+        return STATUS_BAD_PARAMETERS;
+    }
+    int data = wrapper->data;
+    free(wrapper);
+    wrapper = NULL;
+    return data;
+}
+
+/**
+ * @brief   Get the wrapper type for double
+ * @param data  double value
+ * @return  Returns the wrapper type for double, or `NULL` if fails.
+ */
+wrapper_double_t *wrap_double(double data) {
+    wrapper_double_t *wrapper = (wrapper_double_t *)cino_alloc(sizeof(wrapper_double_t));
+    return_value_if_fail(wrapper != NULL, NULL);
+    wrapper->data = data;
+    return wrapper;
+}
+
+/**
+ * @brief   Unwrap and free wrapper_double_t.
+ * @param wrapper   wrapper_double_t
+ * @return  Returns the primitive double data.
+ */
+double unwrap_double(wrapper_double_t *wrapper) {
+    if (!wrapper) {
+        LOGGER(ERROR, "Access to null object");
+        return STATUS_BAD_PARAMETERS;
+    }
+    double data = wrapper->data;
+    free(wrapper);
+    wrapper = NULL;
+    return data;
+}
+
+/****************************************
  *          String Operation
  ****************************************/
 
@@ -257,11 +317,13 @@ bool str_equal_ignore_case(const str_t s1, const str_t s2) {
  */
 str_t str_to_lower(str_t str) {
     return_value_if_fail(str != NULL, NULL);
+
     int i = 0;
     while (str[i] != '\0') {
         str[i] = tolower(str[i]);
         i++;
     }
+
     return str;
 }
 
@@ -272,11 +334,13 @@ str_t str_to_lower(str_t str) {
  */
 str_t str_to_upper(str_t str) {
     return_value_if_fail(str != NULL, NULL);
+
     int i = 0;
     while (str[i] != '\0') {
         str[i] = toupper(str[i]);
         i++;
     }
+
     return str;
 }
 
@@ -307,11 +371,14 @@ bool str_ends_with(const str_t str, const str_t suffix) {
         LOGGER(WARNING, "Comparison between null strings is undefined.");
         return true;
     }
+
     return_value_if_fail(str != NULL && suffix != NULL, false);
+
     size_t str_len = strlen(str);
     size_t suffix_len = strlen(suffix);
     int offset = str_len - suffix_len;
     return_value_if_fail(offset >= 0, false);
+
     return strncmp(str + offset, suffix, strlen(suffix)) == 0;
 }
 
@@ -346,6 +413,7 @@ size_t str_length(const str_t str) {
  */
 str_t str_copy(str_t destination, const str_t source) {
     return_value_if_fail(destination != NULL && source != NULL, destination);
+
     strncpy(destination, source, strlen(source));
     destination[strlen(source)] = '\0';
     return destination;
@@ -360,6 +428,7 @@ str_t str_copy(str_t destination, const str_t source) {
  */
 str_t str_concat(str_t destination, const str_t source) {
     return_value_if_fail(destination != NULL && source != NULL, destination);
+
     size_t dest_len = strlen(destination);
     size_t src_len = strlen(source);
     strncat(destination, source, src_len);
@@ -382,7 +451,7 @@ str_t str_trim(str_t str) {
         cur++;
     }
 
-    // All whitespaces
+    // all whitespaces
     if (*cur == '\0') {
         memset(str, '\0', end - str + 1);
         return str;
@@ -520,6 +589,7 @@ str_t str_substring(str_t str, int start, int end, str_t substr, size_t substr_s
  */
 int str_count_substring(const str_t str, const str_t substr) {
     return_value_if_fail(str != NULL && substr != NULL, 0);
+
     size_t str_len = strlen(str);
     size_t substr_len = strlen(substr);
     if (str_len == 0 && substr_len == 0) {
@@ -528,7 +598,7 @@ int str_count_substring(const str_t str, const str_t substr) {
     return_value_if_fail(substr_len > 0, 0);
 
     int cnt = 0;
-    const char *p = str;
+    const str_t p = str;
     while ((p = strstr(p, substr))) {
         cnt++;
         p += substr_len;
@@ -545,6 +615,7 @@ int str_count_substring(const str_t str, const str_t substr) {
  */
 str_t str_replace_char(str_t str, char old_char, char new_char) {
     return_value_if_fail(str != NULL, NULL);
+
     int i = 0;
     while (str[i] != '\0') {
         if (str[i] == old_char) {
@@ -552,6 +623,7 @@ str_t str_replace_char(str_t str, char old_char, char new_char) {
         }
         i++;
     }
+
     return str;
 }
 
@@ -564,11 +636,13 @@ str_t str_replace_char(str_t str, char old_char, char new_char) {
  */
 str_t str_replace(str_t str, const str_t old_str, const str_t new_str) {
     return_value_if_fail(str != NULL && old_str != NULL && new_str != NULL, str);
+
     str_t p = NULL;
     while ((p = strstr(str, old_str))) {
         memmove(p + strlen(new_str), p + strlen(old_str), strlen(p) - strlen(old_str) + 1);
         memcpy(p, new_str, strlen(new_str));
     }
+
     return str;
 }
 
