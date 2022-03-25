@@ -16,7 +16,7 @@ typedef struct iterator_t {
 typedef struct array_t {
     int *i_arr;     // cino-int-array
     double *d_arr;  // cino-double-array
-    T *p_arr;       // cino-array
+    T *t_arr;       // cino-array
     str_t data_type;
     size_t size;
     size_t capacity;
@@ -29,7 +29,7 @@ typedef struct array_t {
  *                  valid data type includes:
  *                      1. int
  *                      2. double
- *                      3. T (for generic)
+ *                      3. T (generic)
  * @return  Returns `true` if the data type is supported, otherwise returns `false`.
  */
 static bool is_valid_data_type(const str_t data_type) {
@@ -74,7 +74,7 @@ array_t *array_create(const str_t data_type) {
 
     array->i_arr = NULL;
     array->d_arr = NULL;
-    array->p_arr = NULL;
+    array->t_arr = NULL;
     array->size = 0;
     array->capacity = 0;
     array->iterator->iter = NULL;
@@ -110,9 +110,9 @@ void array_destroy(array_t *array) {
         array->d_arr = NULL;
     }
 
-    if (array->p_arr) {
-        free(array->p_arr);
-        array->p_arr = NULL;
+    if (array->t_arr) {
+        free(array->t_arr);
+        array->t_arr = NULL;
     }
 
     if (array->iterator) {
@@ -167,9 +167,9 @@ array_t *array_clear(array_t *array) {
         array->d_arr = NULL;
     }
 
-    if (array->p_arr) {
-        free(array->p_arr);
-        array->p_arr = NULL;
+    if (array->t_arr) {
+        free(array->t_arr);
+        array->t_arr = NULL;
     }
 
     array->size = 0;
@@ -181,73 +181,35 @@ array_t *array_clear(array_t *array) {
 }
 
 /**
- * @brief   Get the value of the indexed component in the cino-int-array.
- * @param array cino-int-array
- * @return  Returns the value of the indexed component in the cino-int-array.
- */
-int array_get_int(const array_t *array, int index) {
-    if (!array || index < 0 || index >= array->size) {
-        LOGGER(ERROR, "Index out of bounds.");
-        return STATUS_OUT_OF_BOUNDS;
-    }
-    return array->i_arr[index];
-}
-
-/**
- * @brief   Get the value of the indexed component in the cino-double-array.
- * @param array cino-double-array
- * @return  Returns the value of the indexed component in the cino-double-array.
- */
-int array_get_double(const array_t *array, int index) {
-    if (!array || index < 0 || index >= array->size) {
-        LOGGER(ERROR, "Index out of bounds.");
-        return STATUS_OUT_OF_BOUNDS;
-    }
-    return array->d_arr[index];
-}
-
-/**
  * @brief   Get the element of the indexed component in the cino-array.
+ * @note    For non-generic type cino-array, this function returns a wrapper
+ *          type of the primitive. It is caller's responsibility to unwrap
+ *          to get the primitive.
  * @param array cino-array
+ * @param index index
  * @return  Returns a pointer to the indexed component in the cino-array.
  */
 T array_get(const array_t *array, int index) {
     return_value_if_fail(array != NULL && index >= 0 && index < array->size, NULL);
-    return array->p_arr[index];
-}
 
-/**
- * @brief   Update the value of the indexed component in the cino-int-array.
- * @param array cino-int-array
- * @param index index
- * @param data  new element
- */
-void array_set_int(array_t *array, int index, int data) {
-    if (!array || index < 0 || index >= array->size) {
-        LOGGER(ERROR, "Index out of bounds.");
-        return;
+    if (str_equal(array->data_type, "int")) {
+        return (T)wrap_int(array->i_arr[index]);
+    } else if (str_equal(array->data_type, "double")) {
+        return (T)wrap_double(array->d_arr[index]);
+    } else if (str_equal(array->data_type, "T")) {
+        return array->t_arr[index];
     }
-    array->i_arr[index] = data;
-}
 
-/**
- * @brief   Update the value of the indexed component in the cino-double-array.
- * @param array cino-double-array
- * @param index index
- * @param data  new element
- */
-void array_set_double(array_t *array, int index, double data) {
-    if (!array || index < 0 || index >= array->size) {
-        LOGGER(ERROR, "Index out of bounds.");
-        return;
-    }
-    array->d_arr[index] = data;
+    return NULL;
 }
 
 /**
  * @brief   Update the element of the indexed component in the cino-array.
- * @note    It is caller's responsibility to free the previous data before
- *          overwriting it.
+ * @note    1. For non-generic type data, a wrapper type of that primitive is
+ *          needed. This function will not unwrap or free the wrapper. It is
+ *          caller's responsibility to unwrap.
+ *          2. For generic type cino-array, it is caller's responsibility to free
+ *          the previous data before overwriting it.
  * @param array cino-array
  * @param index index
  * @param data  new element
@@ -257,7 +219,20 @@ void array_set(array_t *array, int index, T data) {
         LOGGER(ERROR, "Index out of bounds.");
         return;
     }
-    array->p_arr[index] = data;
+    if (!data) {
+        LOGGER(ERROR, "Bad parameters.");
+        return;
+    }
+
+    if (str_equal(array->data_type, "int")) {
+        wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
+        array->i_arr[index] = wrapper_int->data;
+    } else if (str_equal(array->data_type, "double")) {
+        wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
+        array->d_arr[index] = wrapper_double->data;
+    } else if (str_equal(array->data_type, "T")) {
+        array->t_arr[index] = data;
+    }
 }
 
 /**
@@ -281,8 +256,8 @@ static array_t *array_resize(array_t *array) {
             array->d_arr = (double *)cino_alloc(sizeof(double) * array->capacity);
             p = array->d_arr;
         } else if (str_equal(array->data_type, "T")) {
-            array->p_arr = (T *)cino_alloc(sizeof(T) * array->capacity);
-            p = array->p_arr;
+            array->t_arr = (T *)cino_alloc(sizeof(T) * array->capacity);
+            p = array->t_arr;
         }
         call_and_return_value_if_fail(p != NULL, array_destroy(array), NULL);
 
@@ -300,8 +275,8 @@ static array_t *array_resize(array_t *array) {
             array->d_arr = (double *)cino_realloc(array->d_arr, sizeof(double) * array->capacity, sizeof(double) * array->capacity * 2);
             p = array->d_arr;
         } else if (str_equal(array->data_type, "T")) {
-            array->p_arr = (T *)cino_realloc(array->p_arr, sizeof(T) * array->capacity, sizeof(T) * array->capacity * 2);
-            p = array->p_arr;
+            array->t_arr = (T *)cino_realloc(array->t_arr, sizeof(T) * array->capacity, sizeof(T) * array->capacity * 2);
+            p = array->t_arr;
         }
         call_and_return_value_if_fail(p != NULL, array_destroy(array), NULL);
         array->capacity *= EXPANSION;
@@ -315,7 +290,7 @@ static array_t *array_resize(array_t *array) {
             } else if (str_equal(array->data_type, "double")) {
                 array->d_arr = (double *)cino_realloc(array->d_arr, sizeof(double) * array->capacity, sizeof(double) * capacity);
             } else if (str_equal(array->data_type, "T")) {
-                array->p_arr = (T *)cino_realloc(array->p_arr, sizeof(T) * array->capacity, sizeof(T) * capacity);
+                array->t_arr = (T *)cino_realloc(array->t_arr, sizeof(T) * array->capacity, sizeof(T) * capacity);
             }
             array->capacity = capacity;
         }
@@ -325,35 +300,12 @@ static array_t *array_resize(array_t *array) {
 }
 
 /**
- * @brief   Appends the specified element to the end of the cino-int-array.
- * @param array cino-int-array
- * @param data  new element
- * @return  Returns the modified cino-int-array.
- */
-array_t *array_append_int(array_t *array, int data) {
-    array_resize(array);
-    return_value_if_fail(array != NULL, NULL);
-    array->i_arr[array->size++] = data;
-    return array;
-}
-
-/**
- * @brief   Appends the specified element to the end of the cino-double-array.
- * @param array cino-double-array
- * @param data  new element
- * @return  Returns the modified cino-double-array.
- */
-array_t *array_append_double(array_t *array, double data) {
-    array_resize(array);
-    return_value_if_fail(array != NULL, NULL);
-    array->d_arr[array->size++] = data;
-    return array;
-}
-
-/**
  * @brief   Appends the specified element to the end of the cino-array.
- * @note    It is caller's responsibility to make sure that the inserted element
- *          is on the heap.
+ * @note    1. For non-generic type data, a wrapper type of that primitive is
+ *          needed. This function will not unwrap or free the wrapper. It is
+ *          caller's responsibility to unwrap.
+ *          2. For generic type cino-array, it is caller's responsibility to
+ *          make sure that the inserted element is on the heap.
  * @param array cino-array
  * @param data  new element
  * @return  Returns the modified cino-array.
@@ -361,7 +313,17 @@ array_t *array_append_double(array_t *array, double data) {
 array_t *array_append(array_t *array, T data) {
     array_resize(array);
     return_value_if_fail(array != NULL, NULL);
-    array->p_arr[array->size++] = data;
+
+    if (str_equal(array->data_type, "int")) {
+        wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
+        array->i_arr[array->size++] = wrapper_int->data;
+    } else if (str_equal(array->data_type, "double")) {
+        wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
+        array->d_arr[array->size++] = wrapper_double->data;
+    } else if (str_equal(array->data_type, "T")) {
+        array->t_arr[array->size++] = data;
+    }
+
     return array;
 }
 
@@ -425,9 +387,9 @@ array_t *array_insert(array_t *array, int index, T data) {
     return_value_if_fail(array != NULL, NULL);
 
     for (int i = array->size - 1; i >= index; i--) {
-        array->p_arr[i + 1] = array->p_arr[i];
+        array->t_arr[i + 1] = array->t_arr[i];
     }
-    array->p_arr[index] = data;
+    array->t_arr[index] = data;
     array->size++;
 
     return array;
@@ -451,7 +413,7 @@ array_t *array_remove(array_t *array, int index) {
         } else if (str_equal(array->data_type, "double")) {
             array->d_arr[i - 1] = array->d_arr[i];
         } else if (str_equal(array->data_type, "T")) {
-            array->p_arr[i - 1] = array->p_arr[i];
+            array->t_arr[i - 1] = array->t_arr[i];
         }
     }
     array->size--;
@@ -517,10 +479,10 @@ double array_min_double(const array_t *array) {
 T array_min(const array_t *array, compare_t compare) {
     return_value_if_fail(array != NULL && compare != NULL && array->size > 0, NULL);
 
-    T min = array->p_arr[0];
+    T min = array->t_arr[0];
     for (int i = 1; i < array->size; i++) {
-        if (compare(array->p_arr[i], min) < 0) {
-            min = array->p_arr[i];
+        if (compare(array->t_arr[i], min) < 0) {
+            min = array->t_arr[i];
         }
     }
     return min;
@@ -583,10 +545,10 @@ double array_max_double(const array_t *array) {
 T array_max(const array_t *array, compare_t compare) {
     return_value_if_fail(array != NULL && compare != NULL && array->size > 0, NULL);
 
-    T max = array->p_arr[0];
+    T max = array->t_arr[0];
     for (int i = 1; i < array->size; i++) {
-        if (compare(array->p_arr[i], max) > 0) {
-            max = array->p_arr[i];
+        if (compare(array->t_arr[i], max) > 0) {
+            max = array->t_arr[i];
         }
     }
     return max;
@@ -951,8 +913,8 @@ iter_t array_double_iter_next(array_t *array) {
 void *array_find(const array_t *array, match_t match) {
     return_value_if_fail(array != NULL && match != NULL, NULL);
     for (int i = 0; i < array->size; i++) {
-        if (match(array->p_arr[i])) {
-            return array->p_arr[i];
+        if (match(array->t_arr[i])) {
+            return array->t_arr[i];
         }
     }
     return NULL;
@@ -968,7 +930,7 @@ int array_count(const array_t *array, match_t match) {
     return_value_if_fail(array != NULL && match != NULL, 0);
     int cnt = 0;
     for (int i = 0; i < array->size; i++) {
-        if (match(array->p_arr[i])) {
+        if (match(array->t_arr[i])) {
             cnt++;
         }
     }
@@ -985,7 +947,7 @@ array_t *array_reverse(array_t *array) {
     int i = 0;
     int j = array->size - 1;
     while (i < j) {
-        swap(array->p_arr[i], array->p_arr[j], void *);
+        swap(array->t_arr[i], array->t_arr[j], void *);
         i++;
         j--;
     }
@@ -1001,7 +963,7 @@ array_t *array_reverse(array_t *array) {
  */
 array_t *array_swap(array_t *array, int index1, int index2) {
     return_value_if_fail(array != NULL && index1 >= 0 && index1 < array->size && index2 >= 0 && index2 < array->size && index1 != index2, array);
-    swap(array->p_arr[index1], array->p_arr[index2], void *);
+    swap(array->t_arr[index1], array->t_arr[index2], void *);
     return array;
 }
 
@@ -1066,7 +1028,7 @@ static void quick_sort(void **arr, size_t size, compare_t compare) {
  */
 array_t *array_sort(array_t *array, compare_t compare) {
     return_value_if_fail(array != NULL, NULL);
-    quick_sort(array->p_arr, array->size, compare);
+    quick_sort(array->t_arr, array->size, compare);
     return array;
 }
 
@@ -1078,7 +1040,7 @@ array_t *array_sort(array_t *array, compare_t compare) {
 iter_t array_iter(array_t *array) {
     return_value_if_fail(array != NULL, NULL);
     if (array->size > 0) {
-        array->iterator->iter = array->p_arr[0];
+        array->iterator->iter = array->t_arr[0];
         array->iterator->iter_index = 0;
     } else {
         array->iterator->iter = NULL;
@@ -1106,7 +1068,7 @@ iter_t array_iter_next(array_t *array) {
     return_value_if_fail(array != NULL, NULL);
     if (array_iter_has_next(array)) {
         array->iterator->iter_index++;
-        array->iterator->iter = array->p_arr[array->iterator->iter_index];
+        array->iterator->iter = array->t_arr[array->iterator->iter_index];
     } else {
         array->iterator->iter = NULL;
         array->iterator->iter_index = -1;

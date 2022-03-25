@@ -61,46 +61,23 @@ size_t array_size(const array_t *array);
 array_t *array_clear(array_t *array);
 
 /**
- * @brief   Get the value of the indexed component in the cino-int-array.
- * @param array cino-int-array
- * @return  Returns the value of the indexed component in the cino-int-array.
- */
-int array_get_int(const array_t *array, int index);
-
-/**
- * @brief   Get the value of the indexed component in the cino-double-array.
- * @param array cino-double-array
- * @return  Returns the value of the indexed component in the cino-double-array.
- */
-int array_get_double(const array_t *array, int index);
-
-/**
  * @brief   Get the element of the indexed component in the cino-array.
+ * @note    For non-generic type cino-array, this function returns a wrapper
+ *          type of the primitive. It is caller's responsibility to unwrap
+ *          to get the primitive.
  * @param array cino-array
+ * @param index index
  * @return  Returns a pointer to the indexed component in the cino-array.
  */
 T array_get(const array_t *array, int index);
 
 /**
- * @brief   Update the value of the indexed component in the cino-int-array.
- * @param array cino-int-array
- * @param index index
- * @param data  new element
- */
-void array_set_int(array_t *array, int index, int data);
-
-/**
- * @brief   Update the value of the indexed component in the cino-double-array.
- * @param array cino-double-array
- * @param index index
- * @param data  new element
- */
-void array_set_double(array_t *array, int index, double data);
-
-/**
  * @brief   Update the element of the indexed component in the cino-array.
- * @note    It is caller's responsibility to free the previous data before
- *          overwriting it.
+ * @note    1. For non-generic type data, a wrapper type of that primitive is
+ *          needed. This function will not unwrap or free the wrapper. It is
+ *          caller's responsibility to unwrap.
+ *          2. For generic type cino-array, it is caller's responsibility to free
+ *          the previous data before overwriting it.
  * @param array cino-array
  * @param index index
  * @param data  new element
@@ -108,25 +85,12 @@ void array_set_double(array_t *array, int index, double data);
 void array_set(array_t *array, int index, T data);
 
 /**
- * @brief   Appends the specified element to the end of the cino-int-array.
- * @param array cino-int-array
- * @param data  new element
- * @return  Returns the modified cino-int-array.
- */
-array_t *array_append_int(array_t *array, int data);
-
-/**
- * @brief   Appends the specified element to the end of the cino-double-array.
- * @param array cino-double-array
- * @param data  new element
- * @return  Returns the modified cino-double-array.
- */
-array_t *array_append_double(array_t *array, double data);
-
-/**
  * @brief   Appends the specified element to the end of the cino-array.
- * @note    It is caller's responsibility to make sure that the inserted element
- *          is on the heap.
+ * @note    1. For non-generic type data, a wrapper type of that primitive is
+ *          needed. This function will not unwrap or free the wrapper. It is
+ *          caller's responsibility to unwrap.
+ *          2. For generic type cino-array, it is caller's responsibility to
+ *          make sure that the inserted element is on the heap.
  * @param array cino-array
  * @param data  new element
  * @return  Returns the modified cino-array.
