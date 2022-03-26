@@ -100,7 +100,7 @@ void test_cino_array() {
     test_array_size();
     test_array_clear();
     test_array_get();
-    // test_array_int_set();
+    test_array_set();
     // test_array_int_append();
     // test_array_int_extend();
     // test_array_int_insert();
@@ -117,13 +117,6 @@ void test_cino_array() {
     // test_array_int_iter_has_next();
     // test_array_int_iter_next();
 
-    // test_array_double_create();
-    // test_array_double_destroy();
-    // test_array_double_is_empty();
-    // test_array_double_size();
-    // test_array_double_clear();
-    // test_array_double_get();
-    // test_array_double_set();
     // test_array_double_append();
     // test_array_double_extend();
     // test_array_double_insert();
@@ -140,13 +133,6 @@ void test_cino_array() {
     // test_array_double_iter_has_next();
     // test_array_double_iter_next();
 
-    // test_array_create();
-    // test_array_destroy();
-    // test_array_is_empty();
-    // test_array_size();
-    // test_array_clear();
-    // test_array_get();
-    // test_array_set();
     // test_array_append();
     // test_array_insert();
     // test_array_remove();

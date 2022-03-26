@@ -1,9 +1,9 @@
 #include "test_cino_array.h"
 
-typedef struct student_t {
-    int id;
-    char name[16];
-} student_t;
+typedef struct test_t {
+    int a;
+    char p[16];
+} test_t;
 
 void test_array_create() {
     array_t *arr = array_create("int");
@@ -119,26 +119,26 @@ void test_array_clear() {
     arr = array_create("T");
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
-    student_t *stu = (student_t *)malloc(sizeof(student_t) * 5);
+    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * 5);
     for (int i = 0; i < 5; i++) {
-        stu[i].id = i;
-        stu[i].name[0] = i - '0';
-        stu[i].name[1] = '\0';
-        array_append(arr, &stu[i]);
+        test[i].a = i;
+        char str[8] = {0};
+        int_to_str(i, str, sizeof(str));
+        str_copy(test[i].p, str);
+        array_append(arr, &test[i]);
     }
     assert(!array_is_empty(arr));
     assert(array_size(arr) == 5);
     array_clear(arr);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
-    free(stu);
+    free(test);
+    test = NULL;
     array_destroy(arr);
 }
 
 void test_array_get() {
     array_t *arr = array_create("int");
-    assert(array_is_empty(arr));
-    assert(array_size(arr) == 0);
     for (int i = 0; i < 5; i++) {
         wrapper_int_t *wrapper = wrap_int(i);
         array_append(arr, wrapper);
@@ -151,8 +151,6 @@ void test_array_get() {
     array_destroy(arr);
 
     arr = array_create("double");
-    assert(array_is_empty(arr));
-    assert(array_size(arr) == 0);
     for (int i = 0; i < 5; i++) {
         wrapper_double_t *wrapper = wrap_double(i);
         array_append(arr, wrapper);
@@ -165,39 +163,102 @@ void test_array_get() {
     array_destroy(arr);
 
     arr = array_create("T");
-    student_t *stu = (student_t *)malloc(sizeof(student_t) * 5);
+    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * 5);
     for (int i = 0; i < 5; i++) {
-        stu[i].id = i;
-        stu[i].name[0] = i - '0';
-        stu[i].name[1] = '\0';
-        array_append(arr, &stu[i]);
+        test[i].a = i;
+        char str[8] = {0};
+        int_to_str(i, str, sizeof(str));
+        str_copy(test[i].p, str);
+        array_append(arr, &test[i]);
     }
     for (int i = 0; i < 5; i++) {
-        student_t *s = (student_t *)array_get(arr, i);
-        assert(s->id == i);
-        char name[16] = {0};
-        name[0] = i - '0';
-        assert(str_equal(s->name, name));
+        test_t *t = (test_t *)array_get(arr, i);
+        assert(t->a == i);
+        char p[8] = {0};
+        int_to_str(i, p, sizeof(p));
+        assert(str_equal(t->p, p));
     }
-    free(stu);
+    free(test);
+    test = NULL;
     array_destroy(arr);
 }
 
-// void test_array_int_set() {
-//     array_t *arr = array_create();
-//     array_int_append(arr, 1);
-//     array_int_append(arr, 2);
-//     array_int_append(arr, 3);
-//     assert(array_int_get(arr, 0) == 1);
-//     assert(array_int_get(arr, 1) == 2);
-//     assert(array_int_get(arr, 2) == 3);
-//     array_int_set(arr, 0, 9);
-//     array_int_set(arr, 2, 7);
-//     assert(array_int_get(arr, 0) == 9);
-//     assert(array_int_get(arr, 1) == 2);
-//     assert(array_int_get(arr, 2) == 7);
-//     array_destroy(arr);
-// }
+void test_array_set() {
+    array_t *arr = array_create("int");
+    for (int i = 0; i < 3; i++) {
+        wrapper_int_t *wrapper = wrap_int(i);
+        array_append(arr, wrapper);
+        unwrap_int(wrapper);
+    }
+
+    wrapper_int_t *wrapper_int = wrap_int(9);
+    array_set(arr, 0, wrapper_int);
+    unwrap_int(wrapper_int);
+    wrapper_int = wrap_int(7);
+    array_set(arr, 2, wrapper_int);
+    unwrap_int(wrapper_int);
+
+    wrapper_int = array_get(arr, 0);
+    assert(unwrap_int(wrapper_int) == 9);
+    wrapper_int = array_get(arr, 1);
+    assert(unwrap_int(wrapper_int) == 1);
+    wrapper_int = array_get(arr, 2);
+    assert(unwrap_int(wrapper_int) == 7);
+    array_destroy(arr);
+
+    arr = array_create("double");
+    for (int i = 0; i < 3; i++) {
+        wrapper_double_t *wrapper = wrap_double((double)i);
+        array_append(arr, wrapper);
+        unwrap_double(wrapper);
+    }
+
+    wrapper_double_t *wrapper_double = wrap_double(9.9);
+    array_set(arr, 0, wrapper_double);
+    unwrap_double(wrapper_double);
+    wrapper_double = wrap_double(7.7);
+    array_set(arr, 2, wrapper_double);
+    unwrap_double(wrapper_double);
+
+    wrapper_double = array_get(arr, 0);
+    assert(equal_double(unwrap_double(wrapper_double), 9.9));
+    wrapper_double = array_get(arr, 1);
+    assert(equal_double(unwrap_double(wrapper_double), 1.0));
+    wrapper_double = array_get(arr, 2);
+    assert(equal_double(unwrap_double(wrapper_double), 7.7));
+    array_destroy(arr);
+
+    arr = array_create("T");
+    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * 3);
+    for (int i = 0; i < 3; i++) {
+        test[i].a = i;
+        char str[8] = {0};
+        int_to_str(i, str, sizeof(str));
+        str_copy(test[i].p, str);
+        array_append(arr, &test[i]);
+    }
+
+    test[0].a = 9;
+    str_copy(test[0].p, "9");
+    array_set(arr, 0, &test[0]);
+    test[2].a = 7;
+    str_copy(test[2].p, "7");
+    array_set(arr, 2, &test[2]);
+
+    test_t *t = (test_t *)array_get(arr, 0);
+    assert(t->a == 9);
+    assert(str_equal(t->p, "9"));
+    t = (test_t *)array_get(arr, 1);
+    assert(t->a == 1);
+    assert(str_equal(t->p, "1"));
+    t = (test_t *)array_get(arr, 2);
+    assert(t->a == 7);
+    assert(str_equal(t->p, "7"));
+
+    free(test);
+    test = NULL;
+    array_destroy(arr);
+}
 
 // void test_array_int_append() {
 //     array_t *arr = array_create();
@@ -494,94 +555,6 @@ void test_array_get() {
 //     array_destroy(arr);
 // }
 
-// void test_array_double_create() {
-//     array_t *arr = array_double_create();
-//     assert(arr);
-//     assert(array_double_is_empty(arr));
-//     assert(array_double_size(arr) == 0);
-//     array_double_destroy(arr);
-// }
-
-// void test_array_double_destroy() {
-//     array_t *arr = array_double_create();
-//     assert(arr);
-//     assert(array_double_is_empty(arr));
-//     assert(array_double_size(arr) == 0);
-//     array_double_destroy(arr);
-// }
-
-// void test_array_double_is_empty() {
-//     array_t *arr = array_double_create();
-//     assert(array_double_is_empty(arr));
-//     assert(array_double_size(arr) == 0);
-//     array_double_append(arr, 1.1);
-//     array_double_append(arr, 2.2);
-//     array_double_append(arr, 3.3);
-//     assert(!array_double_is_empty(arr));
-//     assert(array_double_size(arr) == 3);
-//     array_double_clear(arr);
-//     assert(array_double_is_empty(arr));
-//     assert(array_double_size(arr) == 0);
-//     array_double_destroy(arr);
-// }
-
-// void test_array_double_size() {
-//     array_t *arr = array_double_create();
-//     assert(array_double_is_empty(arr));
-//     assert(array_double_size(arr) == 0);
-//     array_double_append(arr, 1.1);
-//     array_double_append(arr, 2.2);
-//     array_double_append(arr, 3.3);
-//     assert(!array_double_is_empty(arr));
-//     assert(array_double_size(arr) == 3);
-//     array_double_clear(arr);
-//     assert(array_double_is_empty(arr));
-//     assert(array_double_size(arr) == 0);
-//     array_double_destroy(arr);
-// }
-
-// void test_array_double_clear() {
-//     array_t *arr = array_double_create();
-//     assert(array_double_is_empty(arr));
-//     assert(array_double_size(arr) == 0);
-//     array_double_append(arr, 1.1);
-//     array_double_append(arr, 2.2);
-//     array_double_append(arr, 3.3);
-//     assert(!array_double_is_empty(arr));
-//     assert(array_double_size(arr) == 3);
-//     array_double_clear(arr);
-//     assert(array_double_is_empty(arr));
-//     assert(array_double_size(arr) == 0);
-//     array_double_destroy(arr);
-// }
-
-// void test_array_double_get() {
-//     array_t *arr = array_double_create();
-//     array_double_append(arr, 1.1);
-//     array_double_append(arr, 2.2);
-//     array_double_append(arr, 3.3);
-//     assert(equal_double(array_double_get(arr, 0), 1.1));
-//     assert(equal_double(array_double_get(arr, 1), 2.2));
-//     assert(equal_double(array_double_get(arr, 2), 3.3));
-//     array_double_destroy(arr);
-// }
-
-// void test_array_double_set() {
-//     array_t *arr = array_double_create();
-//     array_double_append(arr, 1.1);
-//     array_double_append(arr, 2.2);
-//     array_double_append(arr, 3.3);
-//     assert(equal_double(array_double_get(arr, 0), 1.1));
-//     assert(equal_double(array_double_get(arr, 1), 2.2));
-//     assert(equal_double(array_double_get(arr, 2), 3.3));
-//     array_double_set(arr, 0, 9.9);
-//     array_double_set(arr, 2, 7.7);
-//     assert(equal_double(array_double_get(arr, 0), 9.9));
-//     assert(equal_double(array_double_get(arr, 1), 2.2));
-//     assert(equal_double(array_double_get(arr, 2), 7.7));
-//     array_double_destroy(arr);
-// }
-
 // void test_array_double_append() {
 //     array_t *arr = array_double_create();
 //     for (int i = 0; i < 100; i++) {
@@ -875,127 +848,6 @@ void test_array_get() {
 //         i++;
 //     }
 //     array_double_destroy(arr);
-// }
-
-// typedef struct student_t {
-//     int id;
-//     char name[32];
-// } student_t;
-
-// void test_array_create() {
-//     array_t *arr = array_create();
-//     assert(arr);
-//     assert(array_is_empty(arr));
-//     assert(array_size(arr) == 0);
-//     array_destroy(arr);
-// }
-
-// void test_array_destroy() {
-//     array_t *arr = array_create();
-//     assert(arr);
-//     assert(array_is_empty(arr));
-//     assert(array_size(arr) == 0);
-//     array_destroy(arr);
-// }
-
-// void test_array_is_empty() {
-//     int *num1 = (int *)malloc(sizeof(int));
-//     *num1 = 1;
-//     int *num2 = (int *)malloc(sizeof(int));
-//     *num2 = 2;
-//     int *num3 = (int *)malloc(sizeof(int));
-//     *num3 = 3;
-
-//     array_t *arr = array_create();
-//     assert(array_is_empty(arr));
-//     assert(array_size(arr) == 0);
-//     array_append(arr, num1);
-//     array_append(arr, num2);
-//     array_append(arr, num3);
-//     assert(!array_is_empty(arr));
-//     assert(array_size(arr) == 3);
-//     array_clear(arr);
-//     assert(array_is_empty(arr));
-//     assert(array_size(arr) == 0);
-//     array_destroy(arr);
-
-//     free(num1);
-//     free(num2);
-//     free(num3);
-// }
-
-// void test_array_size() {
-//     int *num1 = (int *)malloc(sizeof(int));
-//     *num1 = 1;
-//     int *num2 = (int *)malloc(sizeof(int));
-//     *num2 = 2;
-//     int *num3 = (int *)malloc(sizeof(int));
-//     *num3 = 3;
-
-//     array_t *arr = array_create();
-//     assert(array_is_empty(arr));
-//     assert(array_size(arr) == 0);
-//     array_append(arr, num1);
-//     array_append(arr, num2);
-//     array_append(arr, num3);
-//     assert(!array_is_empty(arr));
-//     assert(array_size(arr) == 3);
-//     array_clear(arr);
-//     assert(array_is_empty(arr));
-//     assert(array_size(arr) == 0);
-//     array_destroy(arr);
-
-//     free(num1);
-//     free(num2);
-//     free(num3);
-// }
-
-// void test_array_clear() {
-//     int *num1 = (int *)malloc(sizeof(int));
-//     *num1 = 1;
-//     int *num2 = (int *)malloc(sizeof(int));
-//     *num2 = 2;
-//     int *num3 = (int *)malloc(sizeof(int));
-//     *num3 = 3;
-
-//     array_t *arr = array_create();
-//     assert(array_is_empty(arr));
-//     assert(array_size(arr) == 0);
-//     array_append(arr, num1);
-//     array_append(arr, num2);
-//     array_append(arr, num3);
-//     assert(!array_is_empty(arr));
-//     assert(array_size(arr) == 3);
-//     array_clear(arr);
-//     assert(array_is_empty(arr));
-//     assert(array_size(arr) == 0);
-//     array_destroy(arr);
-
-//     free(num1);
-//     free(num2);
-//     free(num3);
-// }
-
-// void test_array_get() {
-//     int *num1 = (int *)malloc(sizeof(int));
-//     *num1 = 1;
-//     int *num2 = (int *)malloc(sizeof(int));
-//     *num2 = 2;
-//     int *num3 = (int *)malloc(sizeof(int));
-//     *num3 = 3;
-
-//     array_t *arr = array_create();
-//     array_append(arr, num1);
-//     array_append(arr, num2);
-//     array_append(arr, num3);
-//     assert(*(int *)array_get(arr, 0) == 1);
-//     assert(*(int *)array_get(arr, 1) == 2);
-//     assert(*(int *)array_get(arr, 2) == 3);
-//     array_destroy(arr);
-
-//     free(num1);
-//     free(num2);
-//     free(num3);
 // }
 
 // void test_array_set() {

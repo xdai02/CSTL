@@ -4,7 +4,7 @@ void test_string_create() {
     string_t *s1 = string_create("Hello World");
     assert(s1);
     assert(string_length(s1) == strlen("Hello World"));
-    assert(strncmp(string_get(s1), "Hello World", strlen("Hello World")) == 0);
+    assert(str_equal(string_get(s1), "Hello World"));
     string_destroy(s1);
 
     string_t *s2 = string_create("");
@@ -34,7 +34,7 @@ void test_string_destroy() {
 
 void test_string_get() {
     string_t *s1 = string_create("Hello World");
-    assert(strncmp(string_get(s1), "Hello World", strlen("Hello World")) == 0);
+    assert(str_equal(string_get(s1), "Hello World"));
     string_destroy(s1);
 
     string_t *s2 = string_create("");
@@ -42,7 +42,7 @@ void test_string_get() {
     string_destroy(s2);
 
     string_t *s3 = string_create("A");
-    assert(strncmp(string_get(s3), "A", strlen("A")) == 0);
+    assert(str_equal(string_get(s3), "A"));
     string_destroy(s3);
 }
 
@@ -51,22 +51,15 @@ void test_string_set() {
     assert(string_length(s1) == strlen("Hello World"));
     s1 = string_set(s1, "World Hello");
     assert(string_length(s1) == strlen("World Hello"));
-    assert(strncmp(string_get(s1), "World Hello", strlen("World Hello")) == 0);
+    assert(str_equal(string_get(s1), "World Hello"));
     string_destroy(s1);
 
     string_t *s2 = string_create("");
     assert(string_length(s2) == 0);
     s2 = string_set(s2, "World Hello");
     assert(string_length(s2) == strlen("World Hello"));
-    assert(strncmp(string_get(s2), "World Hello", strlen("World Hello")) == 0);
+    assert(str_equal(string_get(s2), "World Hello"));
     string_destroy(s2);
-
-    string_t *s3 = string_create("This is a test. Hello World!");
-    assert(string_length(s3) == strlen("This is a test. Hello World!"));
-    s3 = string_set(s3, "test");
-    assert(string_length(s3) == strlen("test"));
-    assert(strncmp(string_get(s3), "test", strlen("test")) == 0);
-    string_destroy(s3);
 }
 
 void test_string_length() {
@@ -148,17 +141,17 @@ void test_string_to_lower() {
     s = string_create("Hello World");
     string_to_lower(s);
     assert(string_length(s) == strlen("hello world"));
-    assert(strncmp(string_get(s), "hello world", strlen("hello world")) == 0);
+    assert(str_equal(string_get(s), "hello world"));
 
     string_set(s, "hello world");
     s = string_to_lower(s);
     assert(string_length(s) == strlen("hello world"));
-    assert(strncmp(string_get(s), "hello world", strlen("hello world")) == 0);
+    assert(str_equal(string_get(s), "hello world"));
 
     string_set(s, "1234abcdABCD");
     s = string_to_lower(s);
     assert(string_length(s) == strlen("1234abcdabcd"));
-    assert(strncmp(string_get(s), "1234abcdabcd", strlen("1234abcdabcd")) == 0);
+    assert(str_equal(string_get(s), "1234abcdabcd"));
 
     string_destroy(s);
 }
@@ -169,17 +162,17 @@ void test_string_to_upper() {
     s = string_create("Hello World");
     s = string_to_upper(s);
     assert(string_length(s) == strlen("HELLO WORLD"));
-    assert(strncmp(string_get(s), "HELLO WORLD", strlen("HELLO WORLD")) == 0);
+    assert(str_equal(string_get(s), "HELLO WORLD"));
 
     string_set(s, "HELLO WORLD");
     string_to_upper(s);
     assert(string_length(s) == strlen("HELLO WORLD"));
-    assert(strncmp(string_get(s), "HELLO WORLD", strlen("HELLO WORLD")) == 0);
+    assert(str_equal(string_get(s), "HELLO WORLD"));
 
     string_set(s, "1234abcdABCD");
     string_to_upper(s);
     assert(string_length(s) == strlen("1234ABCDABCD"));
-    assert(strncmp(string_get(s), "1234ABCDABCD", strlen("1234ABCDABCD")) == 0);
+    assert(str_equal(string_get(s), "1234ABCDABCD"));
 
     string_destroy(s);
 }
@@ -281,25 +274,25 @@ void test_string_copy() {
     s1 = string_create("hello");
     s2 = string_create("world");
     s1 = string_copy(s1, s2);
-    assert(strncmp(string_get(s1), string_get(s2), string_length(s2)) == 0);
+    assert(str_equal(string_get(s1), string_get(s2)));
     assert(string_length(s1) == string_length(s2));
 
     string_set(s1, NULL);
     string_set(s2, "This is a test.");
     s1 = string_copy(s1, s2);
-    assert(strncmp(string_get(s1), string_get(s2), string_length(s2)) == 0);
+    assert(str_equal(string_get(s1), string_get(s2)));
     assert(string_length(s1) == string_length(s2));
 
     string_set(s1, "Lorem ipsum");
     string_set(s2, "test");
     s1 = string_copy(s1, s2);
-    assert(strncmp(string_get(s1), string_get(s2), string_length(s2)) == 0);
+    assert(str_equal(string_get(s1), string_get(s2)));
     assert(string_length(s1) == string_length(s2));
 
     string_set(s1, "Lorem ipsum");
     string_set(s2, NULL);
     s1 = string_copy(s1, s2);
-    assert(strncmp(string_get(s1), string_get(s2), string_length(s2)) == 0);
+    assert(str_equal(string_get(s1), string_get(s2)));
     assert(string_length(s1) == string_length(s2));
 
     string_destroy(s1);
@@ -313,31 +306,31 @@ void test_string_concat() {
     s1 = string_create("hello");
     s2 = string_create("world");
     s1 = string_concat(s1, s2);
-    assert(strncmp(string_get(s1), "helloworld", string_length(s1)) == 0);
+    assert(str_equal(string_get(s1), "helloworld"));
     assert(string_length(s1) == strlen("helloworld"));
 
     string_set(s1, "");
     string_set(s2, "This is a test.");
     s1 = string_concat(s1, s2);
-    assert(strncmp(string_get(s1), "This is a test.", string_length(s1)) == 0);
+    assert(str_equal(string_get(s1), "This is a test."));
     assert(string_length(s1) == strlen("This is a test."));
 
     string_set(s1, "Lorem ipsum");
     string_set(s2, "test");
     s1 = string_concat(s1, s2);
-    assert(strncmp(string_get(s1), "Lorem ipsumtest", string_length(s1)) == 0);
+    assert(str_equal(string_get(s1), "Lorem ipsumtest"));
     assert(string_length(s1) == strlen("Lorem ipsumtest"));
 
     string_set(s1, NULL);
     string_set(s2, "test");
     s1 = string_concat(s1, s2);
-    assert(strncmp(string_get(s1), "test", string_length(s1)) == 0);
+    assert(str_equal(string_get(s1), "test"));
     assert(string_length(s1) == strlen("test"));
 
     string_set(s1, "Lorem ipsum");
     string_set(s2, NULL);
     s1 = string_concat(s1, s2);
-    assert(strncmp(string_get(s1), "Lorem ipsum", string_length(s1)) == 0);
+    assert(str_equal(string_get(s1), "Lorem ipsum"));
 
     string_destroy(s1);
     string_destroy(s2);
@@ -348,39 +341,39 @@ void test_string_trim() {
 
     s = string_create("hello");
     s = string_trim(s);
-    assert(strncmp(string_get(s), "hello", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "hello"));
 
     string_set(s, "hello ");
     s = string_trim(s);
-    assert(strncmp(string_get(s), "hello", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "hello"));
 
     string_set(s, " hello ");
     s = string_trim(s);
-    assert(strncmp(string_get(s), "hello", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "hello"));
 
     string_set(s, "   hello        ");
     s = string_trim(s);
-    assert(strncmp(string_get(s), "hello", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "hello"));
 
     string_set(s, "\nhello        ");
     s = string_trim(s);
-    assert(strncmp(string_get(s), "hello", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "hello"));
 
     string_set(s, "\t  hello  \n   \t \n      ");
     s = string_trim(s);
-    assert(strncmp(string_get(s), "hello", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "hello"));
 
     string_set(s, "        ");
     s = string_trim(s);
-    assert(strncmp(string_get(s), "", string_length(s)) == 0);
+    assert(str_equal(string_get(s), ""));
 
     string_set(s, "\n\t\r\n\r\n\r\t");
     s = string_trim(s);
-    assert(strncmp(string_get(s), "", string_length(s)) == 0);
+    assert(str_equal(string_get(s), ""));
 
     string_set(s, NULL);
     s = string_trim(s);
-    assert(strncmp(string_get(s), "", string_length(s)) == 0);
+    assert(str_equal(string_get(s), ""));
 
     string_destroy(s);
 }
@@ -390,23 +383,23 @@ void test_string_append_char() {
 
     s = string_create("hello");
     s = string_append_char(s, 'X');
-    assert(strncmp(string_get(s), "helloX", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "helloX"));
 
     string_set(s, "");
     s = string_append_char(s, ' ');
-    assert(strncmp(string_get(s), " ", string_length(s)) == 0);
+    assert(str_equal(string_get(s), " "));
 
     string_set(s, "Lorem ipsum");
     s = string_append_char(s, '\t');
-    assert(strncmp(string_get(s), "Lorem ipsum\t", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "Lorem ipsum\t"));
 
     string_set(s, NULL);
     s = string_append_char(s, '!');
-    assert(strncmp(string_get(s), "!", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "!"));
 
     string_set(s, "Lorem ipsum");
     s = string_append_char(s, '.');
-    assert(strncmp(string_get(s), "Lorem ipsum.", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "Lorem ipsum."));
 
     string_destroy(s);
 }
@@ -416,43 +409,43 @@ void test_string_insert_char() {
 
     s = string_create("ello");
     s = string_insert_char(s, 0, 'H');
-    assert(strncmp(string_get(s), "Hello", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "Hello"));
     string_destroy(s);
 
     s = string_create("Hello");
     s = string_insert_char(s, string_length(s), 'o');
-    assert(strncmp(string_get(s), "Helloo", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "Helloo"));
     string_destroy(s);
 
     s = string_create("Hello");
     s = string_insert_char(s, 3, 'l');
-    assert(strncmp(string_get(s), "Helllo", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "Helllo"));
     string_destroy(s);
 
     s = string_create("Hello");
     s = string_insert_char(s, 1, '\n');
-    assert(strncmp(string_get(s), "H\nello", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "H\nello"));
     string_destroy(s);
 
     s = string_create("Hello");
     s = string_insert_char(s, 0, '\0');
-    assert(strncmp(string_get(s), "", string_length(s)) == 0);
+    assert(str_equal(string_get(s), ""));
     assert(string_length(s) == 0);
     string_destroy(s);
 
     s = string_create("Hello");
     s = string_insert_char(s, string_length(s) - 1, '\0');
-    assert(strncmp(string_get(s), "Hell", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "Hell"));
     string_destroy(s);
 
     s = string_create("");
     s = string_insert_char(s, 0, 'A');
-    assert(strncmp(string_get(s), "A", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "A"));
     string_destroy(s);
 
     s = string_create("Test");
     s = string_insert_char(s, 5, 's');
-    assert(strncmp(string_get(s), "Test", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "Test"));
     string_destroy(s);
 
     s = NULL;
@@ -465,39 +458,39 @@ void test_string_insert_string() {
 
     s = string_create("World");
     s = string_insert_string(s, 0, "Hello");
-    assert(strncmp(string_get(s), "HelloWorld", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "HelloWorld"));
 
     string_set(s, "Hello");
     s = string_insert_string(s, string_length(s), "World");
-    assert(strncmp(string_get(s), "HelloWorld", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "HelloWorld"));
 
     string_set(s, "Hello");
     s = string_insert_string(s, string_length(s), "!");
-    assert(strncmp(string_get(s), "Hello!", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "Hello!"));
 
     string_set(s, "Hello");
     s = string_insert_string(s, 1, "He");
-    assert(strncmp(string_get(s), "HHeello", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "HHeello"));
 
     string_set(s, "Hello");
     s = string_insert_string(s, 2, "This is a test.");
-    assert(strncmp(string_get(s), "HeThis is a test.llo", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "HeThis is a test.llo"));
 
     string_set(s, "Hello");
     s = string_insert_string(s, string_length(s) - 1, "\n\t");
-    assert(strncmp(string_get(s), "Hell\n\to", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "Hell\n\to"));
 
     string_set(s, "");
     s = string_insert_string(s, 0, "A");
-    assert(strncmp(string_get(s), "A", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "A"));
 
     string_set(s, "Test");
     s = string_insert_string(s, 5, "s");
-    assert(strncmp(string_get(s), "Test", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "Test"));
 
     string_set(s, NULL);
     s = string_insert_string(s, 0, "s");
-    assert(strncmp(string_get(s), "s", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "s"));
 
     string_destroy(s);
 }
@@ -558,28 +551,28 @@ void test_string_replace_char() {
 
     s = string_create("Hello World!");
     s = string_replace_char(s, 'l', 'L');
-    assert(strncmp(string_get(s), "HeLLo WorLd!", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "HeLLo WorLd!"));
 
     string_set(s, "Hello World!");
     s = string_replace_char(s, 'e', 'a');
-    assert(strncmp(string_get(s), "Hallo World!", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "Hallo World!"));
 
     string_set(s, "Hello World!");
     s = string_replace_char(s, ' ', '#');
-    assert(strncmp(string_get(s), "Hello#World!", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "Hello#World!"));
 
     string_set(s, "Hello World!");
     s = string_replace_char(s, 'X', ' ');
-    assert(strncmp(string_get(s), "Hello World!", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "Hello World!"));
 
     string_set(s, "Hello World!");
     s = string_replace_char(s, 'l', '\0');
-    assert(strncmp(string_get(s), "He", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "He"));
     assert(string_length(s) == strlen("He"));
 
     string_set(s, NULL);
     s = string_replace_char(s, 'a', 'b');
-    assert(strncmp(string_get(s), "", string_length(s)) == 0);
+    assert(str_equal(string_get(s), ""));
     assert(string_length(s) == 0);
 
     string_destroy(s);
@@ -590,39 +583,38 @@ void test_string_replace() {
 
     s = string_create("This is a test.");
     s = string_replace(s, "is", "IS");
-    assert(strncmp(string_get(s), "ThIS IS a test.", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "ThIS IS a test."));
 
     string_set(s, "This is a test.");
     s = string_replace(s, "a", "A");
-    assert(strncmp(string_get(s), "This is A test.", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "This is A test."));
 
     string_set(s, "foobar foobar foobar");
     s = string_replace(s, "foobar", "func");
-    assert(strncmp(string_get(s), "func func func", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "func func func"));
 
     string_set(s, "CCCCCCCCCCCCCCC");
     s = string_replace(s, "C", "U");
-    assert(strncmp(string_get(s), "UUUUUUUUUUUUUUU", string_length(s)) == 0);
-
+    assert(str_equal(string_get(s), "UUUUUUUUUUUUUUU"));
     string_set(s, "CCCCCCCCCCCCCCC");
     s = string_replace(s, "A", "I");
-    assert(strncmp(string_get(s), "CCCCCCCCCCCCCCC", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "CCCCCCCCCCCCCCC"));
 
     string_set(s, "foobar foobar foobar");
     s = string_replace(s, "foobar", "");
-    assert(strncmp(string_get(s), "  ", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "  "));
 
     string_set(s, "foobarfoobaoobar");
     s = string_replace(s, "foobar", "Replace");
-    assert(strncmp(string_get(s), "Replacefoobaoobar", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "Replacefoobaoobar"));
 
     string_set(s, "");
     s = string_replace(s, "foobar", "Replace");
-    assert(strncmp(string_get(s), "", string_length(s)) == 0);
+    assert(str_equal(string_get(s), ""));
 
     string_set(s, "This is a test");
     s = string_replace(s, "is", "THISIS");
-    assert(strncmp(string_get(s), "ThTHISIS THISIS a test", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "ThTHISIS THISIS a test"));
 
     string_destroy(s);
 }
@@ -632,31 +624,31 @@ void test_string_remove() {
 
     s = string_create("Hello World");
     s = string_remove(s, "llo");
-    assert(strncmp(string_get(s), "He World", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "He World"));
 
     string_set(s, "Hello World");
     s = string_remove(s, " ");
-    assert(strncmp(string_get(s), "HelloWorld", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "HelloWorld"));
 
     string_set(s, "Hello World");
     s = string_remove(s, "Hello");
-    assert(strncmp(string_get(s), " World", string_length(s)) == 0);
+    assert(str_equal(string_get(s), " World"));
 
     string_set(s, "Hello World");
     s = string_remove(s, "World");
-    assert(strncmp(string_get(s), "Hello ", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "Hello "));
 
     string_set(s, "Hello World");
     s = string_remove(s, "Hello World");
-    assert(strncmp(string_get(s), "", string_length(s)) == 0);
+    assert(str_equal(string_get(s), ""));
 
     string_set(s, "This is a test");
     s = string_remove(s, "is");
-    assert(strncmp(string_get(s), "Th  a test", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "Th  a test"));
 
     string_set(s, "This is a test");
     s = string_remove(s, "hello");
-    assert(strncmp(string_get(s), "This is a test", string_length(s)) == 0);
+    assert(str_equal(string_get(s), "This is a test"));
 
     string_destroy(s);
 }

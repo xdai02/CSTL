@@ -14,9 +14,8 @@ typedef struct iterator_t {
  ****************************************/
 
 typedef struct array_t {
-    int *i_arr;     // cino-int-array
-    double *d_arr;  // cino-double-array
-    T *t_arr;       // cino-array
+    void *arr;  // primitive array
+    T *t_arr;   // cino-array
     str_t data_type;
     size_t size;
     size_t capacity;
@@ -75,8 +74,7 @@ array_t *array_create(const str_t data_type) {
     call_and_return_value_if_fail(array->data_type != NULL, array_destroy(array), NULL);
     str_copy(array->data_type, data_type);
 
-    array->i_arr = NULL;
-    array->d_arr = NULL;
+    array->arr = NULL;
     array->t_arr = NULL;
     array->size = 0;
     array->capacity = 0;
@@ -88,7 +86,7 @@ array_t *array_create(const str_t data_type) {
 
 /**
  * @brief   Destroy cino-array.
- * @note    It is caller's responsibility to free all the elements before calling 
+ * @note    It is caller's responsibility to free all the elements before calling
  *          this function, if it is a generic cino-array.
  * @param array cino-array
  */
@@ -103,14 +101,9 @@ void array_destroy(array_t *array) {
         array->data_type = NULL;
     }
 
-    if (array->i_arr) {
-        free(array->i_arr);
-        array->i_arr = NULL;
-    }
-
-    if (array->d_arr) {
-        free(array->d_arr);
-        array->d_arr = NULL;
+    if (array->arr) {
+        free(array->arr);
+        array->arr = NULL;
     }
 
     if (array->t_arr) {
@@ -152,7 +145,7 @@ size_t array_size(const array_t *array) {
 
 /**
  * @brief   Clear all the elments in the cino-array.
- * @note    It is caller's responsibility to free all the elements before calling 
+ * @note    It is caller's responsibility to free all the elements before calling
  *          this function, if it is a generic cino-array.
  * @param array cino-array
  * @return  Returns the modified cino-array.
@@ -160,14 +153,9 @@ size_t array_size(const array_t *array) {
 array_t *array_clear(array_t *array) {
     return_value_if_fail(array != NULL, NULL);
 
-    if (array->i_arr) {
-        free(array->i_arr);
-        array->i_arr = NULL;
-    }
-
-    if (array->d_arr) {
-        free(array->d_arr);
-        array->d_arr = NULL;
+    if (array->arr) {
+        free(array->arr);
+        array->arr = NULL;
     }
 
     if (array->t_arr) {
@@ -187,16 +175,18 @@ array_t *array_clear(array_t *array) {
  * @brief   Get the element of the indexed component in the cino-array.
  * @param array cino-array
  * @param index index
- * @return  For primitive type cino-array, this function returns a wrapper type of 
+ * @return  For primitive type cino-array, this function returns a wrapper type of
  *          the primitive. It is caller's responsibility to unwrap to get the primitive.
  */
 T array_get(const array_t *array, int index) {
     return_value_if_fail(array != NULL && index >= 0 && index < array->size, NULL);
 
     if (str_equal(array->data_type, "int")) {
-        return (T)wrap_int(array->i_arr[index]);
+        int *arr = (int *)array->arr;
+        return (T)wrap_int(arr[index]);
     } else if (str_equal(array->data_type, "double")) {
-        return (T)wrap_double(array->d_arr[index]);
+        double *arr = (double *)array->arr;
+        return (T)wrap_double(arr[index]);
     } else if (str_equal(array->data_type, "T")) {
         return array->t_arr[index];
     }
@@ -206,8 +196,8 @@ T array_get(const array_t *array, int index) {
 
 /**
  * @brief   Update the element of the indexed component in the cino-array.
- * @note    1. For primitive type data, a wrapper type of that primitive is needed. 
- *          This function will not unwrap or free the wrapper. It is caller's 
+ * @note    1. For primitive type data, a wrapper type of that primitive is needed.
+ *          This function will not unwrap or free the wrapper. It is caller's
  *          responsibility to unwrap.
  *          2. For generic type cino-array, it is caller's responsibility to free
  *          the previous data before overwriting it.
@@ -227,10 +217,12 @@ void array_set(array_t *array, int index, T data) {
 
     if (str_equal(array->data_type, "int")) {
         wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
-        array->i_arr[index] = wrapper_int->data;
+        int *arr = (int *)array->arr;
+        arr[index] = wrapper_int->data;
     } else if (str_equal(array->data_type, "double")) {
         wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
-        array->d_arr[index] = wrapper_double->data;
+        double *arr = (double *)array->arr;
+        arr[index] = wrapper_double->data;
     } else if (str_equal(array->data_type, "T")) {
         array->t_arr[index] = data;
     }
@@ -251,11 +243,11 @@ static array_t *array_resize(array_t *array) {
         array->capacity = 1;
 
         if (str_equal(array->data_type, "int")) {
-            array->i_arr = (int *)cino_alloc(sizeof(int) * array->capacity);
-            p = array->i_arr;
+            array->arr = cino_alloc(sizeof(int) * array->capacity);
+            p = array->arr;
         } else if (str_equal(array->data_type, "double")) {
-            array->d_arr = (double *)cino_alloc(sizeof(double) * array->capacity);
-            p = array->d_arr;
+            array->arr = cino_alloc(sizeof(double) * array->capacity);
+            p = array->arr;
         } else if (str_equal(array->data_type, "T")) {
             array->t_arr = (T *)cino_alloc(sizeof(T) * array->capacity);
             p = array->t_arr;
@@ -270,11 +262,11 @@ static array_t *array_resize(array_t *array) {
     // expand
     if (array->size >= array->capacity) {
         if (str_equal(array->data_type, "int")) {
-            array->i_arr = (int *)cino_realloc(array->i_arr, sizeof(int) * array->capacity, sizeof(int) * array->capacity * 2);
-            p = array->i_arr;
+            array->arr = cino_realloc(array->arr, sizeof(int) * array->capacity, sizeof(int) * array->capacity * 2);
+            p = array->arr;
         } else if (str_equal(array->data_type, "double")) {
-            array->d_arr = (double *)cino_realloc(array->d_arr, sizeof(double) * array->capacity, sizeof(double) * array->capacity * 2);
-            p = array->d_arr;
+            array->arr = cino_realloc(array->arr, sizeof(double) * array->capacity, sizeof(double) * array->capacity * 2);
+            p = array->arr;
         } else if (str_equal(array->data_type, "T")) {
             array->t_arr = (T *)cino_realloc(array->t_arr, sizeof(T) * array->capacity, sizeof(T) * array->capacity * 2);
             p = array->t_arr;
@@ -287,9 +279,9 @@ static array_t *array_resize(array_t *array) {
         size_t capacity = array->capacity / EXPANSION;
         if (capacity > 0) {
             if (str_equal(array->data_type, "int")) {
-                array->i_arr = (int *)cino_realloc(array->i_arr, sizeof(int) * array->capacity, sizeof(int) * capacity);
+                array->arr = cino_realloc(array->arr, sizeof(int) * array->capacity, sizeof(int) * capacity);
             } else if (str_equal(array->data_type, "double")) {
-                array->d_arr = (double *)cino_realloc(array->d_arr, sizeof(double) * array->capacity, sizeof(double) * capacity);
+                array->arr = cino_realloc(array->arr, sizeof(double) * array->capacity, sizeof(double) * capacity);
             } else if (str_equal(array->data_type, "T")) {
                 array->t_arr = (T *)cino_realloc(array->t_arr, sizeof(T) * array->capacity, sizeof(T) * capacity);
             }
@@ -302,10 +294,10 @@ static array_t *array_resize(array_t *array) {
 
 /**
  * @brief   Appends the specified element to the end of the cino-array.
- * @note    1. For primitive type data, a wrapper type of that primitive is needed. 
- *          This function will not unwrap or free the wrapper. It is caller's 
+ * @note    1. For primitive type data, a wrapper type of that primitive is needed.
+ *          This function will not unwrap or free the wrapper. It is caller's
  *          responsibility to unwrap.
- *          2. For generic type cino-array, it is caller's responsibility to make 
+ *          2. For generic type cino-array, it is caller's responsibility to make
  *          sure that the inserted element is on the heap.
  * @param array cino-array
  * @param data  new element in wrapper
@@ -317,10 +309,12 @@ array_t *array_append(array_t *array, T data) {
 
     if (str_equal(array->data_type, "int")) {
         wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
-        array->i_arr[array->size++] = wrapper_int->data;
+        int *arr = (int *)array->arr;
+        arr[array->size++] = wrapper_int->data;
     } else if (str_equal(array->data_type, "double")) {
         wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
-        array->d_arr[array->size++] = wrapper_double->data;
+        double *arr = (double *)array->arr;
+        arr[array->size++] = wrapper_double->data;
     } else if (str_equal(array->data_type, "T")) {
         array->t_arr[array->size++] = data;
     }
@@ -330,10 +324,10 @@ array_t *array_append(array_t *array, T data) {
 
 /**
  * @brief   Inserts the specified element at the specified position in the cino-array.
- * @note    1. For primitive type data, a wrapper type of that primitive is needed. 
- *          This function will not unwrap or free the wrapper. It is caller's 
+ * @note    1. For primitive type data, a wrapper type of that primitive is needed.
+ *          This function will not unwrap or free the wrapper. It is caller's
  *          responsibility to unwrap.
- *          2. For generic type cino-array, it is caller's responsibility to make 
+ *          2. For generic type cino-array, it is caller's responsibility to make
  *          sure that the inserted element is on the heap.
  * @param array cino-array
  * @param index index
@@ -348,9 +342,11 @@ array_t *array_insert(array_t *array, int index, T data) {
 
     for (int i = array->size - 1; i >= index; i--) {
         if (str_equal(array->data_type, "int")) {
-            array->i_arr[i + 1] = array->i_arr[i];
+            int *arr = (int *)array->arr;
+            arr[i + 1] = arr[i];
         } else if (str_equal(array->data_type, "double")) {
-            array->d_arr[i + 1] = array->d_arr[i];
+            double *arr = (double *)array->arr;
+            arr[i + 1] = arr[i];
         } else if (str_equal(array->data_type, "T")) {
             array->t_arr[i + 1] = array->t_arr[i];
         }
@@ -358,10 +354,12 @@ array_t *array_insert(array_t *array, int index, T data) {
 
     if (str_equal(array->data_type, "int")) {
         wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
-        array->i_arr[index] = wrapper_int->data;
+        int *arr = (int *)array->arr;
+        arr[index] = wrapper_int->data;
     } else if (str_equal(array->data_type, "double")) {
         wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
-        array->d_arr[index] = wrapper_double->data;
+        double *arr = (double *)array->arr;
+        arr[index] = wrapper_double->data;
     } else if (str_equal(array->data_type, "T")) {
         array->t_arr[index] = data;
     }
@@ -372,7 +370,7 @@ array_t *array_insert(array_t *array, int index, T data) {
 
 /**
  * @brief   Removes the element at the specified position in the cino-array.
- * @note    This function just removes the element from the cino-array. It is caller's 
+ * @note    This function just removes the element from the cino-array. It is caller's
  *          responsibility to free the removed element, if it is a generic cino-array.
  * @param array cino-array
  * @param index index
@@ -383,9 +381,11 @@ array_t *array_remove(array_t *array, int index) {
 
     for (int i = index + 1; i < array->size; i++) {
         if (str_equal(array->data_type, "int")) {
-            array->i_arr[i - 1] = array->i_arr[i];
+            int *arr = (int *)array->arr;
+            arr[i - 1] = arr[i];
         } else if (str_equal(array->data_type, "double")) {
-            array->d_arr[i - 1] = array->d_arr[i];
+            double *arr = (double *)array->arr;
+            arr[i - 1] = arr[i];
         } else if (str_equal(array->data_type, "T")) {
             array->t_arr[i - 1] = array->t_arr[i];
         }
@@ -399,11 +399,11 @@ array_t *array_remove(array_t *array, int index) {
 /**
  * @brief   Get the minimum value in the cino-array.
  * @param array     cino-array
- * @param compare   User-defined callback function for comparison, only for T (generic) 
- *                  cino-array. Set to `NULL` if the elements in the cino-array are 
+ * @param compare   User-defined callback function for comparison, only for T (generic)
+ *                  cino-array. Set to `NULL` if the elements in the cino-array are
  *                  primitive.
- * @return  Returns the minimum value in the cino-array, or `NULL` if conditions failed. 
- *          For primitive data, a wrapper type of that primitive is returned. It is 
+ * @return  Returns the minimum value in the cino-array, or `NULL` if conditions failed.
+ *          For primitive data, a wrapper type of that primitive is returned. It is
  *          caller's responsibility to unwrap.
  */
 T array_min(const array_t *array, compare_t compare) {
@@ -417,18 +417,20 @@ T array_min(const array_t *array, compare_t compare) {
     }
 
     if (str_equal(array->data_type, "int")) {
-        int min = array->i_arr[0];
+        int *arr = (int *)array->arr;
+        int min = arr[0];
         for (int i = 1; i < array->size; i++) {
-            if (array->i_arr[i] < min) {
-                min = array->i_arr[i];
+            if (arr[i] < min) {
+                min = arr[i];
             }
         }
         return wrap_int(min);
     } else if (str_equal(array->data_type, "double")) {
-        double min = array->d_arr[0];
+        double *arr = (double *)array->arr;
+        double min = arr[0];
         for (int i = 1; i < array->size; i++) {
-            if (array->d_arr[i] < min) {
-                min = array->d_arr[i];
+            if (arr[i] < min) {
+                min = arr[i];
             }
         }
         return wrap_double(min);
@@ -452,11 +454,11 @@ T array_min(const array_t *array, compare_t compare) {
 /**
  * @brief   Get the maximum value in the cino-array.
  * @param array     cino-array
- * @param compare   User-defined callback function for comparison, only for T (generic) 
- *                  cino-array. Set to `NULL` if the elements in the cino-array are 
+ * @param compare   User-defined callback function for comparison, only for T (generic)
+ *                  cino-array. Set to `NULL` if the elements in the cino-array are
  *                  primitive.
- * @return  Returns the maximum value in the cino-array, or `NULL` if conditions failed. 
- *          For primitive data, a wrapper type of that primitive is returned. It is 
+ * @return  Returns the maximum value in the cino-array, or `NULL` if conditions failed.
+ *          For primitive data, a wrapper type of that primitive is returned. It is
  *          caller's responsibility to unwrap.
  */
 T array_max(const array_t *array, compare_t compare) {
@@ -470,18 +472,20 @@ T array_max(const array_t *array, compare_t compare) {
     }
 
     if (str_equal(array->data_type, "int")) {
-        int max = array->i_arr[0];
+        int *arr = (int *)array->arr;
+        int max = arr[0];
         for (int i = 1; i < array->size; i++) {
-            if (array->i_arr[i] > max) {
-                max = array->i_arr[i];
+            if (arr[i] > max) {
+                max = arr[i];
             }
         }
         return wrap_int(max);
     } else if (str_equal(array->data_type, "double")) {
-        double max = array->d_arr[0];
+        double *arr = (double *)array->arr;
+        double max = arr[0];
         for (int i = 1; i < array->size; i++) {
-            if (array->d_arr[i] > max) {
-                max = array->d_arr[i];
+            if (arr[i] > max) {
+                max = arr[i];
             }
         }
         return wrap_double(max);
@@ -518,12 +522,14 @@ int array_index_of(const array_t *array, T data) {
     for (int i = 0; i < array->size; i++) {
         if (str_equal(array->data_type, "int")) {
             wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
-            if (array->i_arr[i] == wrapper_int->data) {
+            int *arr = (int *)array->arr;
+            if (arr[i] == wrapper_int->data) {
                 return i;
             }
         } else if (str_equal(array->data_type, "double")) {
             wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
-            if (equal_double(array->d_arr[i], wrapper_double->data)) {
+            double *arr = (double *)array->arr;
+            if (equal_double(arr[i], wrapper_double->data)) {
                 return i;
             }
         }
@@ -548,12 +554,14 @@ int array_last_index_of(const array_t *array, T data) {
     for (int i = array->size - 1; i >= 0; i--) {
         if (str_equal(array->data_type, "int")) {
             wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
-            if (array->i_arr[i] == wrapper_int->data) {
+            int *arr = (int *)array->arr;
+            if (arr[i] == wrapper_int->data) {
                 return i;
             }
         } else if (str_equal(array->data_type, "double")) {
             wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
-            if (equal_double(array->d_arr[i], wrapper_double->data)) {
+            double *arr = (double *)array->arr;
+            if (equal_double(arr[i], wrapper_double->data)) {
                 return i;
             }
         }
@@ -565,7 +573,7 @@ int array_last_index_of(const array_t *array, T data) {
 /**
  * @brief   Find the first element that satisfies the matching rule.
  * @note    This function is for T (generic) cino-array ONLY.
- *          For primitive type cino-array, please refer to `array_index_of()` and 
+ *          For primitive type cino-array, please refer to `array_index_of()` and
  *          `array_last_last_of()`.
  * @param array cino-array
  * @param match user-defined callback function for matching
@@ -573,7 +581,7 @@ int array_last_index_of(const array_t *array, T data) {
  */
 T array_find(const array_t *array, match_t match) {
     return_value_if_fail(array != NULL && match != NULL, NULL);
-    
+
     for (int i = 0; i < array->size; i++) {
         if (match(array->t_arr[i])) {
             return array->t_arr[i];
@@ -599,7 +607,6 @@ T array_find(const array_t *array, match_t match) {
 //     }
 //     return cnt;
 // }
-
 
 // /**
 //  * @brief   Count the occurrences of the specified element.
@@ -753,7 +760,6 @@ T array_find(const array_t *array, match_t match) {
 //     return array->iterator->iter;
 // }
 
-
 // /**
 //  * @brief   Reverses the order of all elements in the cino-double-array.
 //  * @param array cino-double-array
@@ -871,10 +877,6 @@ T array_find(const array_t *array, match_t match) {
 //     }
 //     return array->iterator->iter;
 // }
-
-
-
-
 
 // /**
 //  * @brief   Reverses the order of all elements in the cino-array.
