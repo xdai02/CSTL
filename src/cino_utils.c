@@ -183,7 +183,7 @@ str_t double_to_str(double val, int precision, str_t str, size_t str_size) {
     const int MAX_PRECISION = 16;
     const int DEFAULT_PRECISION = 2;
     if (precision < MIN_PRECISION || precision > MAX_PRECISION) {
-        LOGGER(WARNING, "Invalid parameter `precision`.");
+        LOGGER(WARNING, "'precision' out of range.");
         precision = DEFAULT_PRECISION;
     }
 
@@ -218,7 +218,7 @@ wrapper_int_t *wrap_int(int data) {
  */
 int unwrap_int(wrapper_int_t *wrapper) {
     if (!wrapper) {
-        LOGGER(ERROR, "Access to null object");
+        LOGGER(ERROR, "Null pointer exception.");
         return STATUS_BAD_PARAMETERS;
     }
     int data = wrapper->data;
@@ -246,7 +246,7 @@ wrapper_double_t *wrap_double(double data) {
  */
 double unwrap_double(wrapper_double_t *wrapper) {
     if (!wrapper) {
-        LOGGER(ERROR, "Access to null object");
+        LOGGER(ERROR, "Null pointer exception.");
         return STATUS_BAD_PARAMETERS;
     }
     double data = wrapper->data;
@@ -267,7 +267,7 @@ double unwrap_double(wrapper_double_t *wrapper) {
  */
 bool str_equal(const str_t s1, const str_t s2) {
     if (!s1 && !s2) {
-        LOGGER(WARNING, "Comparison between null strings is undefined.");
+        LOGGER(WARNING, "Comparison between null pointers is undefined.");
         return true;
     }
 
@@ -291,7 +291,7 @@ bool str_equal(const str_t s1, const str_t s2) {
  */
 bool str_equal_ignore_case(const str_t s1, const str_t s2) {
     if (!s1 && !s2) {
-        LOGGER(WARNING, "Comparison between null strings is undefined.");
+        LOGGER(WARNING, "Comparison between null pointers is undefined.");
         return true;
     }
 
@@ -353,7 +353,7 @@ str_t str_to_upper(str_t str) {
  */
 bool str_starts_with(const str_t str, const str_t prefix) {
     if (!str && !prefix) {
-        LOGGER(WARNING, "Comparison between null strings is undefined.");
+        LOGGER(WARNING, "Comparison between null pointers is undefined.");
         return true;
     }
     return_value_if_fail(str != NULL && prefix != NULL, false);
@@ -368,7 +368,7 @@ bool str_starts_with(const str_t str, const str_t prefix) {
  */
 bool str_ends_with(const str_t str, const str_t suffix) {
     if (!str && !suffix) {
-        LOGGER(WARNING, "Comparison between null strings is undefined.");
+        LOGGER(WARNING, "Comparison between null pointers is undefined.");
         return true;
     }
 

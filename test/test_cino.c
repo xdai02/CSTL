@@ -94,12 +94,12 @@ void test_cino_string() {
 }
 
 void test_cino_array() {
-    // test_array_int_create();
-    // test_array_int_destroy();
-    // test_array_int_is_empty();
-    // test_array_int_size();
-    // test_array_int_clear();
-    // test_array_int_get();
+    test_array_create();
+    test_array_destroy();
+    test_array_is_empty();
+    test_array_size();
+    test_array_clear();
+    test_array_get();
     // test_array_int_set();
     // test_array_int_append();
     // test_array_int_extend();

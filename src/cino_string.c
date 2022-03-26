@@ -107,7 +107,7 @@ string_t *string_clear(string_t *string) {
  */
 bool string_equal(const string_t *s1, const string_t *s2) {
     if (!s1 && !s2) {
-        LOGGER(WARNING, "Comparison between null string_t is undefined.");
+        LOGGER(WARNING, "Comparison between null pointers is undefined.");
         return true;
     }
 
@@ -127,7 +127,7 @@ bool string_equal(const string_t *s1, const string_t *s2) {
  */
 bool string_equal_ignore_case(const string_t *s1, const string_t *s2) {
     if (!s1 && !s2) {
-        LOGGER(WARNING, "Comparison between null string_t is undefined.");
+        LOGGER(WARNING, "Comparison between null pointers is undefined.");
         return true;
     }
 
