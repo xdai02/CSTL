@@ -31,7 +31,7 @@ array_t *array_create(const str_t data_type);
 
 /**
  * @brief   Destroy cino-array.
- * @note    It is caller's responsibility to free all the elements before calling 
+ * @note    It is caller's responsibility to free all the elements before calling
  *          this function, if it is a generic cino-array.
  * @param array cino-array
  */
@@ -53,7 +53,7 @@ size_t array_size(const array_t *array);
 
 /**
  * @brief   Clear all the elments in the cino-array.
- * @note    It is caller's responsibility to free all the elements before calling 
+ * @note    It is caller's responsibility to free all the elements before calling
  *          this function, if it is a generic cino-array.
  * @param array cino-array
  * @return  Returns the modified cino-array.
@@ -64,15 +64,15 @@ array_t *array_clear(array_t *array);
  * @brief   Get the element of the indexed component in the cino-array.
  * @param array cino-array
  * @param index index
- * @return  For primitive type cino-array, this function returns a wrapper type of 
+ * @return  For primitive type cino-array, this function returns a wrapper type of
  *          the primitive. It is caller's responsibility to unwrap to get the primitive.
  */
 T array_get(const array_t *array, int index);
 
 /**
  * @brief   Update the element of the indexed component in the cino-array.
- * @note    1. For primitive type data, a wrapper type of that primitive is needed. 
- *          This function will not unwrap or free the wrapper. It is caller's 
+ * @note    1. For primitive type data, a wrapper type of that primitive is needed.
+ *          This function will not unwrap or free the wrapper. It is caller's
  *          responsibility to unwrap.
  *          2. For generic type cino-array, it is caller's responsibility to free
  *          the previous data before overwriting it.
@@ -84,10 +84,10 @@ void array_set(array_t *array, int index, T data);
 
 /**
  * @brief   Appends the specified element to the end of the cino-array.
- * @note    1. For primitive type data, a wrapper type of that primitive is needed. 
- *          This function will not unwrap or free the wrapper. It is caller's 
+ * @note    1. For primitive type data, a wrapper type of that primitive is needed.
+ *          This function will not unwrap or free the wrapper. It is caller's
  *          responsibility to unwrap.
- *          2. For generic type cino-array, it is caller's responsibility to make 
+ *          2. For generic type cino-array, it is caller's responsibility to make
  *          sure that the inserted element is on the heap.
  * @param array cino-array
  * @param data  new element in wrapper
@@ -97,10 +97,10 @@ array_t *array_append(array_t *array, T data);
 
 /**
  * @brief   Inserts the specified element at the specified position in the cino-array.
- * @note    1. For primitive type data, a wrapper type of that primitive is needed. 
- *          This function will not unwrap or free the wrapper. It is caller's 
+ * @note    1. For primitive type data, a wrapper type of that primitive is needed.
+ *          This function will not unwrap or free the wrapper. It is caller's
  *          responsibility to unwrap.
- *          2. For generic type cino-array, it is caller's responsibility to make 
+ *          2. For generic type cino-array, it is caller's responsibility to make
  *          sure that the inserted element is on the heap.
  * @param array cino-array
  * @param index index
@@ -111,7 +111,7 @@ array_t *array_insert(array_t *array, int index, T data);
 
 /**
  * @brief   Removes the element at the specified position in the cino-array.
- * @note    This function just removes the element from the cino-array. It is caller's 
+ * @note    This function just removes the element from the cino-array. It is caller's
  *          responsibility to free the removed element, if it is a generic cino-array.
  * @param array cino-array
  * @param index index
@@ -122,11 +122,11 @@ array_t *array_remove(array_t *array, int index);
 /**
  * @brief   Get the minimum value in the cino-array.
  * @param array     cino-array
- * @param compare   User-defined callback function for comparison, only for T (generic) 
- *                  cino-array. Set to `NULL` if the elements in the cino-array are 
+ * @param compare   User-defined callback function for comparison, only for T (generic)
+ *                  cino-array. Set to `NULL` if the elements in the cino-array are
  *                  primitive.
- * @return  Returns the minimum value in the cino-array, or `NULL` if conditions failed. 
- *          For primitive data, a wrapper type of that primitive is returned. It is 
+ * @return  Returns the minimum value in the cino-array, or `NULL` if conditions failed.
+ *          For primitive data, a wrapper type of that primitive is returned. It is
  *          caller's responsibility to unwrap.
  */
 T array_min(const array_t *array, compare_t compare);
@@ -134,11 +134,11 @@ T array_min(const array_t *array, compare_t compare);
 /**
  * @brief   Get the maximum value in the cino-array.
  * @param array     cino-array
- * @param compare   User-defined callback function for comparison, only for T (generic) 
- *                  cino-array. Set to `NULL` if the elements in the cino-array are 
+ * @param compare   User-defined callback function for comparison, only for T (generic)
+ *                  cino-array. Set to `NULL` if the elements in the cino-array are
  *                  primitive.
- * @return  Returns the maximum value in the cino-array, or `NULL` if conditions failed. 
- *          For primitive data, a wrapper type of that primitive is returned. It is 
+ * @return  Returns the maximum value in the cino-array, or `NULL` if conditions failed.
+ *          For primitive data, a wrapper type of that primitive is returned. It is
  *          caller's responsibility to unwrap.
  */
 T array_max(const array_t *array, compare_t compare);
@@ -146,61 +146,55 @@ T array_max(const array_t *array, compare_t compare);
 /**
  * @brief   Find the index of the first occurrence of the specified element in the
  *          cino-array.
- * @note    This function is for primitive type cino-array ONLY.
- *          For T (generic) cino-array, please refer to `array_find()`.
- * @param array cino-array
- * @param data  element in wrapper
+ * @param array     cino-array
+ * @param context   - For primitive type cino-array, a wrapper type of the searching data
+ *                    should be passed. It is caller's responsibility to unwrap.
+ *                  - For T (generic) cino-array, a match_t callback function should be passed
+ *                    as the matching rule.
  * @return  Returns the index of the first occurrence of the specified element in the
  *          cino-array, or `-1` if not found.
  */
-int array_index_of(const array_t *array, T data);
+int array_index_of(const array_t *array, void *context);
 
 /**
  * @brief   Find the index of the last occurrence of the specified element in the
  *          cino-array.
- * @note    This function is for primitive type cino-array ONLY.
- *          For T (generic) cino-array, please refer to `array_find()`.
- * @param array cino-array
- * @param data  element in wrapper
+ * @param array     cino-array
+ * @param context   - For primitive type cino-array, a wrapper type of the searching data
+ *                    should be passed. It is caller's responsibility to unwrap.
+ *                  - For T (generic) cino-array, a match_t callback function should be passed
+ *                    as the matching rule.
  * @return  Returns the index of the last occurrence of the specified element in the
  *          cino-array, or `-1` if not found.
  */
-int array_last_index_of(const array_t *array, T data);
+int array_last_index_of(const array_t *array, void *context);
 
-// /**
-//  * @brief   Count the occurrences of the specified element.
-//  * @param array cino-int-array
-//  * @param data  element
-//  * @return  Returns the occurrences of the specified element.
-//  */
-// int array_int_count(const array_t *array, int data);
+/**
+ * @brief   Count the occurrences of the element matched.
+ * @param array     cino-array
+ * @param context   - For primitive type cino-array, a wrapper type of the counting data
+ *                    should be passed. It is caller's responsibility to unwrap.
+ *                  - For T (generic) cino-array, a match_t callback function should be passed
+ *                    as the matching rule.
+ * @return  Returns occurrences of the element matched.
+ */
+int array_count(const array_t *array, void *context);
 
-// /**
-//  * @brief   Find the first element that satisfies the matching rule.
-//  * @note    This function is for T (generic) cino-array ONLY.
-//  *          For primitive type cino-array, please refer to `array_index_of()` and 
-//  *          `array_last_last_of()`.
-//  * @param array cino-array
-//  * @param match user-defined callback function for matching
-//  * @return  Returns the found element, or NULL if not found.
-//  */
-// T array_find(const array_t *array, match_t match);
+/**
+ * @brief   Reverses the order of all elements in the cino-array.
+ * @param array cino-array
+ * @return  Returns the modified cino-array.
+ */
+array_t *array_reverse(array_t *array);
 
-// /**
-//  * @brief   Reverses the order of all elements in the cino-int-array.
-//  * @param array cino-int-array
-//  * @return  Returns the modified cino-int-array.
-//  */
-// array_t *array_int_reverse(array_t *array);
-
-// /**
-//  * @brief   Swap two elements at specified indices in the cino-int-array.
-//  * @param array     cino-int-array
-//  * @param index1    index 1
-//  * @param index2    index 2
-//  * @return  Returns the modified cino-int-array.
-//  */
-// array_t *array_int_swap(array_t *array, int index1, int index2);
+/**
+ * @brief   Swap two elements at specified indices in the cino-array.
+ * @param array     cino-array
+ * @param index1    index 1
+ * @param index2    index 2
+ * @return  Returns the modified cino-array.
+ */
+array_t *array_swap(array_t *array, int index1, int index2);
 
 // /**
 //  * @brief   Sort the cino-int-array.
@@ -230,21 +224,6 @@ int array_last_index_of(const array_t *array, T data);
 //  * @return  Returns the next iterator.
 //  */
 // iter_t array_int_iter_next(array_t *array);
-
-// /**
-//  * @brief   Count the occurrences of the specified element.
-//  * @param array cino-double-array
-//  * @param data  element
-//  * @return  Returns the occurrences of the specified element.
-//  */
-// int array_double_count(const array_t *array, double data);
-
-// /**
-//  * @brief   Reverses the order of all elements in the cino-double-array.
-//  * @param array cino-double-array
-//  * @return  Returns the modified cino-double-array.
-//  */
-// array_t *array_double_reverse(array_t *array);
 
 // /**
 //  * @brief   Swap two elements at specified indices in the cino-double-array.
@@ -283,21 +262,6 @@ int array_last_index_of(const array_t *array, T data);
 //  * @return  Returns the next iterator.
 //  */
 // iter_t array_double_iter_next(array_t *array);
-
-// /**
-//  * @brief   Count the occurrences of the element matched.
-//  * @param array cino-array
-//  * @param match user-defined callback function for matching
-//  * @return  Returns occurrences of the element matched.
-//  */
-// int array_count(const array_t *array, match_t match);
-
-// /**
-//  * @brief   Reverses the order of all elements in the cino-array.
-//  * @param array cino-array
-//  * @return  Returns the modified cino-array.
-//  */
-// array_t *array_reverse(array_t *array);
 
 // /**
 //  * @brief   Swap two elements at specified indices in the cino-array.

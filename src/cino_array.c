@@ -59,10 +59,7 @@ static bool is_valid_data_type(const str_t data_type) {
  * @return  Returns the pointer to cino-array. Returns NULL if creation failed.
  */
 array_t *array_create(const str_t data_type) {
-    if (!is_valid_data_type(data_type)) {
-        LOGGER(ERROR, "Data type '%s' not defined.", data_type);
-        return NULL;
-    }
+    return_value_if_fail(is_valid_data_type(data_type), NULL);
 
     array_t *array = (array_t *)cino_alloc(sizeof(array_t));
     return_value_if_fail(array != NULL, NULL);
@@ -206,14 +203,7 @@ T array_get(const array_t *array, int index) {
  * @param data  new element in wrapper
  */
 void array_set(array_t *array, int index, T data) {
-    if (!array || index < 0 || index >= array->size) {
-        LOGGER(ERROR, "Index out of bounds.");
-        return;
-    }
-    if (!data) {
-        LOGGER(ERROR, "Null pointer exception.");
-        return;
-    }
+    return_if_fail(array != NULL && index >= 0 && index < array->size && data != NULL);
 
     if (str_equal(array->data_type, "int")) {
         wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
@@ -304,6 +294,8 @@ static array_t *array_resize(array_t *array) {
  * @return  Returns the modified cino-array.
  */
 array_t *array_append(array_t *array, T data) {
+    return_value_if_fail(data != NULL, array);
+
     array_resize(array);
     return_value_if_fail(array != NULL, NULL);
 
@@ -335,7 +327,7 @@ array_t *array_append(array_t *array, T data) {
  * @return  Returns the modified cino-array.
  */
 array_t *array_insert(array_t *array, int index, T data) {
-    return_value_if_fail(index >= 0 && index <= array->size, array);
+    return_value_if_fail(index >= 0 && index <= array->size && data != NULL, array);
 
     array_resize(array);
     return_value_if_fail(array != NULL, NULL);
@@ -407,14 +399,7 @@ array_t *array_remove(array_t *array, int index) {
  *          caller's responsibility to unwrap.
  */
 T array_min(const array_t *array, compare_t compare) {
-    if (!array) {
-        LOGGER(ERROR, "Null pointer exception.");
-        return NULL;
-    }
-    if (array->size == 0) {
-        LOGGER(ERROR, "Empty object.");
-        return NULL;
-    }
+    return_value_if_fail(array != NULL && array->size > 0, NULL);
 
     if (str_equal(array->data_type, "int")) {
         int *arr = (int *)array->arr;
@@ -435,10 +420,7 @@ T array_min(const array_t *array, compare_t compare) {
         }
         return wrap_double(min);
     } else if (str_equal(array->data_type, "T")) {
-        if (!compare) {
-            LOGGER(WARNING, "Compare rule is not defined.");
-            return NULL;
-        }
+        return_value_if_fail(compare != NULL, NULL);
         T min = array->t_arr[0];
         for (int i = 1; i < array->size; i++) {
             if (compare(array->t_arr[i], min) < 0) {
@@ -462,14 +444,7 @@ T array_min(const array_t *array, compare_t compare) {
  *          caller's responsibility to unwrap.
  */
 T array_max(const array_t *array, compare_t compare) {
-    if (!array) {
-        LOGGER(ERROR, "Null pointer exception.");
-        return NULL;
-    }
-    if (array->size == 0) {
-        LOGGER(ERROR, "Empty object.");
-        return NULL;
-    }
+    return_value_if_fail(array != NULL && array->size > 0, NULL);
 
     if (str_equal(array->data_type, "int")) {
         int *arr = (int *)array->arr;
@@ -490,10 +465,7 @@ T array_max(const array_t *array, compare_t compare) {
         }
         return wrap_double(max);
     } else if (str_equal(array->data_type, "T")) {
-        if (!compare) {
-            LOGGER(WARNING, "Compare rule is not defined.");
-            return NULL;
-        }
+        return_value_if_fail(compare != NULL, NULL);
         T max = array->t_arr[0];
         for (int i = 1; i < array->size; i++) {
             if (compare(array->t_arr[i], max) > 0) {
@@ -509,27 +481,33 @@ T array_max(const array_t *array, compare_t compare) {
 /**
  * @brief   Find the index of the first occurrence of the specified element in the
  *          cino-array.
- * @note    This function is for primitive type cino-array ONLY.
- *          For T (generic) cino-array, please refer to `array_find()`.
- * @param array cino-array
- * @param data  element in wrapper
+ * @param array     cino-array
+ * @param context   - For primitive type cino-array, a wrapper type of the searching data
+ *                    should be passed. It is caller's responsibility to unwrap.
+ *                  - For T (generic) cino-array, a match_t callback function should be passed
+ *                    as the matching rule.
  * @return  Returns the index of the first occurrence of the specified element in the
  *          cino-array, or `-1` if not found.
  */
-int array_index_of(const array_t *array, T data) {
-    return_value_if_fail(array != NULL, -1);
+int array_index_of(const array_t *array, void *context) {
+    return_value_if_fail(array != NULL && context != NULL, -1);
 
     for (int i = 0; i < array->size; i++) {
         if (str_equal(array->data_type, "int")) {
-            wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
+            wrapper_int_t *wrapper_int = (wrapper_int_t *)context;
             int *arr = (int *)array->arr;
             if (arr[i] == wrapper_int->data) {
                 return i;
             }
         } else if (str_equal(array->data_type, "double")) {
-            wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
+            wrapper_double_t *wrapper_double = (wrapper_double_t *)context;
             double *arr = (double *)array->arr;
             if (equal_double(arr[i], wrapper_double->data)) {
+                return i;
+            }
+        } else if (str_equal(array->data_type, "T")) {
+            match_t match = (match_t)context;
+            if (match(array->t_arr[i])) {
                 return i;
             }
         }
@@ -541,27 +519,33 @@ int array_index_of(const array_t *array, T data) {
 /**
  * @brief   Find the index of the last occurrence of the specified element in the
  *          cino-array.
- * @note    This function is for primitive type cino-array ONLY.
- *          For T (generic) cino-array, please refer to `array_find()`.
- * @param array cino-array
- * @param data  element in wrapper
+ * @param array     cino-array
+ * @param context   - For primitive type cino-array, a wrapper type of the searching data
+ *                    should be passed. It is caller's responsibility to unwrap.
+ *                  - For T (generic) cino-array, a match_t callback function should be passed
+ *                    as the matching rule.
  * @return  Returns the index of the last occurrence of the specified element in the
  *          cino-array, or `-1` if not found.
  */
-int array_last_index_of(const array_t *array, T data) {
-    return_value_if_fail(array != NULL, -1);
+int array_last_index_of(const array_t *array, void *context) {
+    return_value_if_fail(array != NULL && context != NULL, -1);
 
     for (int i = array->size - 1; i >= 0; i--) {
         if (str_equal(array->data_type, "int")) {
-            wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
+            wrapper_int_t *wrapper_int = (wrapper_int_t *)context;
             int *arr = (int *)array->arr;
             if (arr[i] == wrapper_int->data) {
                 return i;
             }
         } else if (str_equal(array->data_type, "double")) {
-            wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
+            wrapper_double_t *wrapper_double = (wrapper_double_t *)context;
             double *arr = (double *)array->arr;
             if (equal_double(arr[i], wrapper_double->data)) {
+                return i;
+            }
+        } else if (str_equal(array->data_type, "T")) {
+            match_t match = (match_t)context;
+            if (match(array->t_arr[i])) {
                 return i;
             }
         }
@@ -571,106 +555,92 @@ int array_last_index_of(const array_t *array, T data) {
 }
 
 /**
- * @brief   Find the first element that satisfies the matching rule.
- * @note    This function is for T (generic) cino-array ONLY.
- *          For primitive type cino-array, please refer to `array_index_of()` and
- *          `array_last_last_of()`.
- * @param array cino-array
- * @param match user-defined callback function for matching
- * @return  Returns the found element, or NULL if not found.
+ * @brief   Count the occurrences of the element matched.
+ * @param array     cino-array
+ * @param context   - For primitive type cino-array, a wrapper type of the counting data
+ *                    should be passed. It is caller's responsibility to unwrap.
+ *                  - For T (generic) cino-array, a match_t callback function should be passed
+ *                    as the matching rule.
+ * @return  Returns occurrences of the element matched.
  */
-T array_find(const array_t *array, match_t match) {
-    return_value_if_fail(array != NULL && match != NULL, NULL);
+int array_count(const array_t *array, void *context) {
+    return_value_if_fail(array != NULL && context != NULL, 0);
 
+    int cnt = 0;
     for (int i = 0; i < array->size; i++) {
-        if (match(array->t_arr[i])) {
-            return array->t_arr[i];
+        if (str_equal(array->data_type, "int")) {
+            wrapper_int_t *wrapper_int = (wrapper_int_t *)context;
+            int *arr = (int *)array->arr;
+            if (arr[i] == wrapper_int->data) {
+                cnt++;
+            }
+        } else if (str_equal(array->data_type, "double")) {
+            wrapper_double_t *wrapper_double = (wrapper_double_t *)context;
+            double *arr = (double *)array->arr;
+            if (equal_double(arr[i], wrapper_double->data)) {
+                cnt++;
+            }
+        } else if (str_equal(array->data_type, "T")) {
+            match_t match = (match_t)context;
+            if (match(array->t_arr[i])) {
+                cnt++;
+            }
         }
     }
 
-    return NULL;
+    return cnt;
 }
 
-// /**
-//  * @brief   Count the occurrences of the specified element.
-//  * @param array cino-int-array
-//  * @param data  element
-//  * @return  Returns the occurrences of the specified element.
-//  */
-// int array_int_count(const array_t *array, int data) {
-//     return_value_if_fail(array != NULL, 0);
-//     int cnt = 0;
-//     for (int i = 0; i < array->size; i++) {
-//         if (array->i_arr[i] == data) {
-//             cnt++;
-//         }
-//     }
-//     return cnt;
-// }
+/**
+ * @brief   Reverses the order of all elements in the cino-array.
+ * @param array cino-array
+ * @return  Returns the modified cino-array.
+ */
+array_t *array_reverse(array_t *array) {
+    return_value_if_fail(array != NULL, NULL);
 
-// /**
-//  * @brief   Count the occurrences of the specified element.
-//  * @param array cino-double-array
-//  * @param data  element
-//  * @return  Returns the occurrences of the specified element.
-//  */
-// int array_double_count(const array_t *array, double data) {
-//     return_value_if_fail(array != NULL, 0);
-//     int cnt = 0;
-//     for (int i = 0; i < array->size; i++) {
-//         if (equal_double(array->d_arr[i], data)) {
-//             cnt++;
-//         }
-//     }
-//     return cnt;
-// }
+    int i = 0;
+    int j = array->size - 1;
 
-// /**
-//  * @brief   Count the occurrences of the element matched.
-//  * @param array cino-array
-//  * @param match user-defined callback function for matching
-//  * @return  Returns occurrences of the element matched.
-//  */
-// int array_count(const array_t *array, match_t match) {
-//     return_value_if_fail(array != NULL && match != NULL, 0);
-//     int cnt = 0;
-//     for (int i = 0; i < array->size; i++) {
-//         if (match(array->t_arr[i])) {
-//             cnt++;
-//         }
-//     }
-//     return cnt;
-// }
+    while (i < j) {
+        if (str_equal(array->data_type, "int")) {
+            int *arr = (int *)array->arr;
+            swap(arr[i], arr[j], int);
+        } else if (str_equal(array->data_type, "double")) {
+            double *arr = (double *)array->arr;
+            swap(arr[i], arr[j], double);
+        } else if (str_equal(array->data_type, "T")) {
+            swap(array->t_arr[i], array->t_arr[j], T);
+        }
+        i++;
+        j--;
+    }
 
-// /**
-//  * @brief   Reverses the order of all elements in the cino-int-array.
-//  * @param array cino-int-array
-//  * @return  Returns the modified cino-int-array.
-//  */
-// array_t *array_int_reverse(array_t *array) {
-//     return_value_if_fail(array != NULL, NULL);
-//     int i = 0;
-//     int j = array->size - 1;
-//     while (i < j) {
-//         swap(array->i_arr[i], array->i_arr[j], int);
-//         i++;
-//         j--;
-//     }
-//     return array;
-// }
+    return array;
+}
 
-// /**
-//  * @brief   Swap two elements at specified indices in the cino-int-array.
-//  * @param array     cino-int-array
-//  * @param index1    index 1
-//  * @param index2    index 2
-//  * @return  Returns the modified cino-int-array.
-//  */
-// array_t *array_int_swap(array_t *array, int index1, int index2) {
-//     return_value_if_fail(array != NULL && index1 >= 0 && index1 < array->size && index2 >= 0 && index2 < array->size && index1 != index2, array);
-//     swap(array->i_arr[index1], array->i_arr[index2], int);
-//     return array;
-// }
+/**
+ * @brief   Swap two elements at specified indices in the cino-array.
+ * @param array     cino-array
+ * @param index1    index 1
+ * @param index2    index 2
+ * @return  Returns the modified cino-array.
+ */
+array_t *array_swap(array_t *array, int index1, int index2) {
+    return_value_if_fail(array != NULL && index1 >= 0 && index1 < array->size && index2 >= 0 && index2 < array->size && index1 != index2, array);
+
+    if (str_equal(array->data_type, "int")) {
+        int *arr = (int *)array->arr;
+        swap(arr[index1], arr[index2], int);
+    } else if (str_equal(array->data_type, "double")) {
+        double *arr = (double *)array->arr;
+        swap(arr[index1], arr[index2], double);
+    } else if (str_equal(array->data_type, "T")) {
+        swap(array->t_arr[index1], array->t_arr[index2], T);
+    }
+
+    return array;
+}
 
 // /**
 //  * @brief   Specify the rules for comparing two int values in ascending order.
@@ -761,36 +731,6 @@ T array_find(const array_t *array, match_t match) {
 // }
 
 // /**
-//  * @brief   Reverses the order of all elements in the cino-double-array.
-//  * @param array cino-double-array
-//  * @return  Returns the modified cino-double-array.
-//  */
-// array_t *array_double_reverse(array_t *array) {
-//     return_value_if_fail(array != NULL, NULL);
-//     int i = 0;
-//     int j = array->size - 1;
-//     while (i < j) {
-//         swap(array->d_arr[i], array->d_arr[j], double);
-//         i++;
-//         j--;
-//     }
-//     return array;
-// }
-
-// /**
-//  * @brief   Swap two elements at specified indices in the cino-double-array.
-//  * @param array     cino-double-array
-//  * @param index1    index 1
-//  * @param index2    index 2
-//  * @return  Returns the modified cino-double-array.
-//  */
-// array_t *array_double_swap(array_t *array, int index1, int index2) {
-//     return_value_if_fail(array != NULL && index1 >= 0 && index1 < array->size && index2 >= 0 && index2 < array->size && index1 != index2, array);
-//     swap(array->d_arr[index1], array->d_arr[index2], double);
-//     return array;
-// }
-
-// /**
 //  * @brief   Specify the rules for comparing two double values in ascending order.
 //  * @param data1 pointer to the first value
 //  * @param data2 pointer to the second value
@@ -876,36 +816,6 @@ T array_find(const array_t *array, match_t match) {
 //         array->iterator->iter = NULL;
 //     }
 //     return array->iterator->iter;
-// }
-
-// /**
-//  * @brief   Reverses the order of all elements in the cino-array.
-//  * @param array cino-array
-//  * @return  Returns the modified cino-array.
-//  */
-// array_t *array_reverse(array_t *array) {
-//     return_value_if_fail(array != NULL, NULL);
-//     int i = 0;
-//     int j = array->size - 1;
-//     while (i < j) {
-//         swap(array->t_arr[i], array->t_arr[j], void *);
-//         i++;
-//         j--;
-//     }
-//     return array;
-// }
-
-// /**
-//  * @brief   Swap two elements at specified indices in the cino-array.
-//  * @param array     cino-array
-//  * @param index1    index 1
-//  * @param index2    index 2
-//  * @return  Returns the modified cino-array.
-//  */
-// array_t *array_swap(array_t *array, int index1, int index2) {
-//     return_value_if_fail(array != NULL && index1 >= 0 && index1 < array->size && index2 >= 0 && index2 < array->size && index1 != index2, array);
-//     swap(array->t_arr[index1], array->t_arr[index2], void *);
-//     return array;
 // }
 
 // /**

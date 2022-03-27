@@ -14,7 +14,6 @@
 void *cino_alloc(size_t size) {
     void *new_mem = NULL;
     if (size <= 0 || !(new_mem = calloc(1, size))) {
-        LOGGER(ERROR, "Memory allocation failed.");
         return NULL;
     }
     return new_mem;
@@ -33,7 +32,6 @@ void *cino_realloc(void *p, size_t old_size, size_t new_size) {
     void *new_mem = NULL;
 
     if (old_size < 0 || new_size <= 0 || !(new_mem = calloc(1, new_size))) {
-        LOGGER(ERROR, "Memory allocation failed.");
         if (p) {
             free(p);
             p = NULL;
@@ -183,7 +181,6 @@ str_t double_to_str(double val, int precision, str_t str, size_t str_size) {
     const int MAX_PRECISION = 16;
     const int DEFAULT_PRECISION = 2;
     if (precision < MIN_PRECISION || precision > MAX_PRECISION) {
-        LOGGER(WARNING, "'precision' out of range.");
         precision = DEFAULT_PRECISION;
     }
 
@@ -266,19 +263,10 @@ double unwrap_double(wrapper_double_t *wrapper) {
  * @return  Returns true if two strings are equal, otherwise returns false.
  */
 bool str_equal(const str_t s1, const str_t s2) {
-    if (!s1 && !s2) {
-        LOGGER(WARNING, "Comparison between null pointers is undefined.");
-        return true;
-    }
-
-    if (!s1 || !s2) {
-        return false;
-    }
-
+    return_value_if_fail(s1 != NULL && s2 != NULL, false);
     if (strlen(s1) != strlen(s2)) {
         return false;
     }
-
     return strncmp(s1, s2, strlen(s1)) == 0;
 }
 
@@ -290,14 +278,7 @@ bool str_equal(const str_t s1, const str_t s2) {
  *          returns false.
  */
 bool str_equal_ignore_case(const str_t s1, const str_t s2) {
-    if (!s1 && !s2) {
-        LOGGER(WARNING, "Comparison between null pointers is undefined.");
-        return true;
-    }
-
-    if (!s1 || !s2) {
-        return false;
-    }
+    return_value_if_fail(s1 != NULL && s2 != NULL, false);
 
     while (*s1) {
         if (tolower(*s1) != tolower(*s2)) {
@@ -352,10 +333,6 @@ str_t str_to_upper(str_t str) {
  *          returns false.
  */
 bool str_starts_with(const str_t str, const str_t prefix) {
-    if (!str && !prefix) {
-        LOGGER(WARNING, "Comparison between null pointers is undefined.");
-        return true;
-    }
     return_value_if_fail(str != NULL && prefix != NULL, false);
     return strncmp(str, prefix, strlen(prefix)) == 0;
 }
@@ -367,11 +344,6 @@ bool str_starts_with(const str_t str, const str_t prefix) {
  * @return  Returns true if `str` ends with `postfix`, otherwise returns false.
  */
 bool str_ends_with(const str_t str, const str_t suffix) {
-    if (!str && !suffix) {
-        LOGGER(WARNING, "Comparison between null pointers is undefined.");
-        return true;
-    }
-
     return_value_if_fail(str != NULL && suffix != NULL, false);
 
     size_t str_len = strlen(str);

@@ -106,15 +106,7 @@ string_t *string_clear(string_t *string) {
  * @return  Returns true if two cino-strings are equal, otherwise returns false.
  */
 bool string_equal(const string_t *s1, const string_t *s2) {
-    if (!s1 && !s2) {
-        LOGGER(WARNING, "Comparison between null pointers is undefined.");
-        return true;
-    }
-
-    if (!s1 || !s2) {
-        return false;
-    }
-
+    return_value_if_fail(s1 != NULL && s2 != NULL, false);
     return str_equal(s1->string, s2->string);
 }
 
@@ -126,15 +118,7 @@ bool string_equal(const string_t *s1, const string_t *s2) {
  *          returns false.
  */
 bool string_equal_ignore_case(const string_t *s1, const string_t *s2) {
-    if (!s1 && !s2) {
-        LOGGER(WARNING, "Comparison between null pointers is undefined.");
-        return true;
-    }
-
-    if (!s1 || !s2) {
-        return false;
-    }
-
+    return_value_if_fail(s1 != NULL && s2 != NULL, false);
     return str_equal_ignore_case(s1->string, s2->string);
 }
 

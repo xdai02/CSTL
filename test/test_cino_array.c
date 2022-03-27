@@ -145,7 +145,7 @@ void test_array_get() {
         unwrap_int(wrapper);
     }
     for (int i = 0; i < 5; i++) {
-        wrapper_int_t *wrapper = array_get(arr, i);
+        wrapper_int_t *wrapper = (wrapper_int_t *)array_get(arr, i);
         assert(unwrap_int(wrapper) == i);
     }
     array_destroy(arr);
@@ -157,7 +157,7 @@ void test_array_get() {
         unwrap_double(wrapper);
     }
     for (int i = 0; i < 5; i++) {
-        wrapper_double_t *wrapper = array_get(arr, i);
+        wrapper_double_t *wrapper = (wrapper_double_t *)array_get(arr, i);
         assert(unwrap_double(wrapper) == i);
     }
     array_destroy(arr);
@@ -198,11 +198,11 @@ void test_array_set() {
     array_set(arr, 2, wrapper_int);
     unwrap_int(wrapper_int);
 
-    wrapper_int = array_get(arr, 0);
+    wrapper_int = (wrapper_int_t *)array_get(arr, 0);
     assert(unwrap_int(wrapper_int) == 9);
-    wrapper_int = array_get(arr, 1);
+    wrapper_int = (wrapper_int_t *)array_get(arr, 1);
     assert(unwrap_int(wrapper_int) == 1);
-    wrapper_int = array_get(arr, 2);
+    wrapper_int = (wrapper_int_t *)array_get(arr, 2);
     assert(unwrap_int(wrapper_int) == 7);
     array_destroy(arr);
 
@@ -220,11 +220,11 @@ void test_array_set() {
     array_set(arr, 2, wrapper_double);
     unwrap_double(wrapper_double);
 
-    wrapper_double = array_get(arr, 0);
+    wrapper_double = (wrapper_double_t *)array_get(arr, 0);
     assert(equal_double(unwrap_double(wrapper_double), 9.9));
-    wrapper_double = array_get(arr, 1);
+    wrapper_double = (wrapper_double_t *)array_get(arr, 1);
     assert(equal_double(unwrap_double(wrapper_double), 1.0));
-    wrapper_double = array_get(arr, 2);
+    wrapper_double = (wrapper_double_t *)array_get(arr, 2);
     assert(equal_double(unwrap_double(wrapper_double), 7.7));
     array_destroy(arr);
 
@@ -260,190 +260,408 @@ void test_array_set() {
     array_destroy(arr);
 }
 
-// void test_array_int_append() {
-//     array_t *arr = array_create();
-//     for (int i = 0; i < 100; i++) {
-//         array_int_append(arr, i);
-//     }
-//     for (int i = 0; i < 100; i++) {
-//         assert(array_int_get(arr, i) == i);
-//     }
-//     array_destroy(arr);
-// }
+void test_array_append() {
+    array_t *arr = array_create("int");
+    for (int i = 0; i < 5; i++) {
+        wrapper_int_t *wrapper = wrap_int(i);
+        array_append(arr, wrapper);
+        unwrap_int(wrapper);
+    }
+    for (int i = 0; i < 5; i++) {
+        wrapper_int_t *wrapper = (wrapper_int_t *)array_get(arr, i);
+        assert(unwrap_int(wrapper) == i);
+    }
+    array_destroy(arr);
 
-// void test_array_int_extend() {
-//     array_t *arr = array_create();
-//     int a[5] = {0, 1, 2, 3, 4};
-//     int len = array_len(a);
-//     for (int i = 0; i < 100; i++) {
-//         array_int_extend(arr, a, len);
-//     }
-//     for (int i = 0; i < 100; i += len) {
-//         for (int j = 0; j < len; j++) {
-//             assert(array_int_get(arr, i + j) == j);
-//         }
-//     }
-//     array_destroy(arr);
-// }
+    arr = array_create("double");
+    for (int i = 0; i < 5; i++) {
+        wrapper_double_t *wrapper = wrap_double((double)i);
+        array_append(arr, wrapper);
+        unwrap_double(wrapper);
+    }
+    for (int i = 0; i < 5; i++) {
+        wrapper_double_t *wrapper = (wrapper_double_t *)array_get(arr, i);
+        assert(equal_double(unwrap_double(wrapper), (double)i));
+    }
+    array_destroy(arr);
 
-// void test_array_int_insert() {
-//     array_t *arr = array_create();
-//     array_int_insert(arr, 0, 1);
-//     array_int_insert(arr, 0, 2);
-//     array_int_insert(arr, 0, 3);
-//     array_int_insert(arr, 1, 4);
-//     array_int_insert(arr, 4, 5);
-//     array_int_insert(arr, 0, 6);
-//     array_int_insert(arr, 2, 7);
-//     array_int_insert(arr, 2, 8);
-//     assert(array_int_get(arr, 0) == 6);
-//     assert(array_int_get(arr, 1) == 3);
-//     assert(array_int_get(arr, 2) == 8);
-//     assert(array_int_get(arr, 3) == 7);
-//     assert(array_int_get(arr, 4) == 4);
-//     assert(array_int_get(arr, 5) == 2);
-//     assert(array_int_get(arr, 6) == 1);
-//     assert(array_int_get(arr, 7) == 5);
-//     array_destroy(arr);
-// }
+    arr = array_create("T");
+    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * 5);
+    for (int i = 0; i < 5; i++) {
+        test[i].a = i;
+        char str[8] = {0};
+        int_to_str(i, str, sizeof(str));
+        str_copy(test[i].p, str);
+        array_append(arr, &test[i]);
+    }
 
-// void test_array_int_remove() {
-//     array_t *arr = array_create();
-//     for (int i = 0; i < 100; i++) {
-//         array_int_append(arr, i);
-//     }
-//     for (int i = 0; i < 10; i++) {
-//         array_int_remove(arr, 0);
-//     }
-//     for (int i = 0; i < 10; i++) {
-//         array_int_remove(arr, array_int_size(arr) - 1);
-//     }
-//     for (int i = 0; i < 10; i++) {
-//         array_int_remove(arr, 50);
-//     }
-//     for (int i = 0; i < 50; i++) {
-//         assert(array_int_get(arr, i) == i + 10);
-//     }
-//     for (int i = 50; i < 70; i++) {
-//         assert(array_int_get(arr, i) == i + 20);
-//     }
-//     array_destroy(arr);
+    for (int i = 0; i < 5; i++) {
+        test_t *t = (test_t *)array_get(arr, i);
+        assert(t->a == i);
+        char p[8] = {0};
+        int_to_str(i, p, sizeof(p));
+        assert(str_equal(t->p, p));
+    }
 
-//     arr = array_create();
-//     for (int i = 0; i < 10; i++) {
-//         array_int_append(arr, i);
-//     }
-//     for (int i = 0; i < 10; i++) {
-//         array_int_remove(arr, 0);
-//     }
-//     array_destroy(arr);
-// }
+    free(test);
+    test = NULL;
+    array_destroy(arr);
+}
 
-// void test_array_int_min() {
-//     array_t *arr = array_create();
-//     array_int_insert(arr, 0, 1);
-//     array_int_insert(arr, 0, -2);
-//     array_int_insert(arr, 0, 3);
-//     array_int_insert(arr, 1, -4);
-//     array_int_insert(arr, 4, 5);
-//     array_int_insert(arr, 0, -6);
-//     array_int_insert(arr, 2, -7);
-//     array_int_insert(arr, 2, 8);
-//     assert(array_int_min(arr) == -7);
-//     array_destroy(arr);
-// }
+void test_array_insert() {
+    int arr1[] = {5, 1, 9, 7, 4};
+    int len1 = array_len(arr1);
+    array_t *arr = array_create("int");
 
-// void test_array_int_max() {
-//     array_t *arr = array_create();
-//     array_int_insert(arr, 0, 1);
-//     array_int_insert(arr, 0, -2);
-//     array_int_insert(arr, 0, 3);
-//     array_int_insert(arr, 1, -4);
-//     array_int_insert(arr, 4, 5);
-//     array_int_insert(arr, 0, -6);
-//     array_int_insert(arr, 2, -7);
-//     array_int_insert(arr, 2, 8);
-//     assert(array_int_max(arr) == 8);
-//     array_destroy(arr);
-// }
+    wrapper_int_t *wrapper_int = wrap_int(1);
+    array_insert(arr, 0, wrapper_int);
+    unwrap_int(wrapper_int);
+    wrapper_int = wrap_int(5);
+    array_insert(arr, 0, wrapper_int);
+    unwrap_int(wrapper_int);
+    wrapper_int = wrap_int(7);
+    array_insert(arr, 2, wrapper_int);
+    unwrap_int(wrapper_int);
+    wrapper_int = wrap_int(4);
+    array_insert(arr, 3, wrapper_int);
+    unwrap_int(wrapper_int);
+    wrapper_int = wrap_int(9);
+    array_insert(arr, 2, wrapper_int);
+    unwrap_int(wrapper_int);
 
-// void test_array_int_index_of() {
-//     array_t *arr = array_create();
-//     array_int_append(arr, 1);
-//     array_int_append(arr, -2);
-//     array_int_append(arr, 2);
-//     array_int_append(arr, 2);
-//     array_int_append(arr, 5);
-//     array_int_append(arr, 2);
-//     array_int_append(arr, 2);
-//     array_int_append(arr, 4);
-//     assert(array_int_index_of(arr, 2) == 2);
-//     assert(array_int_index_of(arr, 1) == 0);
-//     assert(array_int_index_of(arr, 4) == 7);
-//     array_destroy(arr);
-// }
+    for (int i = 0; i < len1; i++) {
+        wrapper_int_t *wrapper = (wrapper_int_t *)array_get(arr, i);
+        assert(unwrap_int(wrapper) == arr1[i]);
+    }
+    array_destroy(arr);
 
-// void test_array_int_last_index_of() {
-//     array_t *arr = array_create();
-//     array_int_append(arr, 1);
-//     array_int_append(arr, -2);
-//     array_int_append(arr, 2);
-//     array_int_append(arr, 2);
-//     array_int_append(arr, 5);
-//     array_int_append(arr, 2);
-//     array_int_append(arr, 2);
-//     array_int_append(arr, 4);
-//     assert(array_int_last_index_of(arr, 2) == 6);
-//     assert(array_int_last_index_of(arr, 1) == 0);
-//     assert(array_int_last_index_of(arr, 4) == 7);
-//     array_destroy(arr);
-// }
+    double arr2[] = {5.5, 1.1, 9.9, 7.7, 4.4};
+    int len2 = array_len(arr2);
+    arr = array_create("double");
 
-// void test_array_int_count() {
-//     array_t *arr = array_create();
-//     array_int_append(arr, 1);
-//     array_int_append(arr, -2);
-//     array_int_append(arr, 2);
-//     array_int_append(arr, 2);
-//     array_int_append(arr, 5);
-//     array_int_append(arr, 2);
-//     array_int_append(arr, 2);
-//     array_int_append(arr, 4);
-//     assert(array_int_count(arr, 2) == 4);
-//     assert(array_int_count(arr, 1) == 1);
-//     assert(array_int_count(arr, 40) == 0);
-//     array_destroy(arr);
-// }
+    wrapper_double_t *wrapper_double = wrap_double(1.1);
+    array_insert(arr, 0, wrapper_double);
+    unwrap_double(wrapper_double);
+    wrapper_double = wrap_double(5.5);
+    array_insert(arr, 0, wrapper_double);
+    unwrap_double(wrapper_double);
+    wrapper_double = wrap_double(7.7);
+    array_insert(arr, 2, wrapper_double);
+    unwrap_double(wrapper_double);
+    wrapper_double = wrap_double(4.4);
+    array_insert(arr, 3, wrapper_double);
+    unwrap_double(wrapper_double);
+    wrapper_double = wrap_double(9.9);
+    array_insert(arr, 2, wrapper_double);
+    unwrap_double(wrapper_double);
 
-// void test_array_int_reverse() {
-//     array_t *arr = array_create();
-//     for (int i = 0; i < 100; i++) {
-//         array_int_append(arr, i);
-//     }
-//     array_int_reverse(arr);
-//     for (int i = 0; i < 100; i++) {
-//         assert(array_int_get(arr, i) == 100 - i - 1);
-//     }
-//     array_destroy(arr);
-// }
+    for (int i = 0; i < len2; i++) {
+        wrapper_double_t *wrapper = (wrapper_double_t *)array_get(arr, i);
+        assert(equal_double(unwrap_double(wrapper), arr2[i]));
+    }
+    array_destroy(arr);
 
-// void test_array_int_swap() {
-//     array_t *arr = array_create();
-//     for (int i = 0; i < 100; i++) {
-//         array_int_append(arr, i);
-//     }
-//     int i = 0;
-//     int j = 99;
-//     while (i < j) {
-//         array_int_swap(arr, i, j);
-//         i++;
-//         j--;
-//     }
-//     for (int i = 0; i < 100; i++) {
-//         assert(array_int_get(arr, i) == 100 - i - 1);
-//     }
-//     array_destroy(arr);
-// }
+    arr = array_create("T");
+    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * 5);
+    int arr3[] = {1, 4, 3, 2, 0};
+    int len3 = array_len(arr3);
+
+    for (int i = 0; i < len3; i++) {
+        test[i].a = i;
+        char str[8] = {0};
+        int_to_str(i, str, sizeof(str));
+        str_copy(test[i].p, str);
+    }
+
+    array_insert(arr, 0, &test[3]);
+    array_insert(arr, 0, &test[1]);
+    array_insert(arr, 2, &test[0]);
+    array_insert(arr, 1, &test[4]);
+    array_insert(arr, 3, &test[2]);
+
+    for (int i = 0; i < len3; i++) {
+        test_t *t = (test_t *)array_get(arr, i);
+        assert(t->a == arr3[i]);
+        char p[8] = {0};
+        int_to_str(arr3[i], p, sizeof(p));
+        assert(str_equal(t->p, p));
+    }
+
+    free(test);
+    test = NULL;
+    array_destroy(arr);
+}
+
+void test_array_remove() {
+    array_t *arr = array_create("int");
+    for (int i = 0; i < 10; i++) {
+        wrapper_int_t *wrapper = wrap_int(i);
+        array_append(arr, wrapper);
+        unwrap_int(wrapper);
+    }
+    array_remove(arr, 2);
+    array_remove(arr, 1);
+    array_remove(arr, 0);
+    array_remove(arr, 5);
+    array_remove(arr, 5);
+    for (int i = 0; i < 5; i++) {
+        wrapper_int_t *wrapper = (wrapper_int_t *)array_get(arr, i);
+        assert(unwrap_int(wrapper) == i + 3);
+    }
+    array_destroy(arr);
+
+    arr = array_create("double");
+    for (int i = 0; i < 10; i++) {
+        wrapper_double_t *wrapper = wrap_double((double)i);
+        array_append(arr, wrapper);
+        unwrap_double(wrapper);
+    }
+    array_remove(arr, 2);
+    array_remove(arr, 1);
+    array_remove(arr, 0);
+    array_remove(arr, 5);
+    array_remove(arr, 5);
+    for (int i = 0; i < 5; i++) {
+        wrapper_double_t *wrapper = (wrapper_double_t *)array_get(arr, i);
+        assert(equal_double(unwrap_double(wrapper), (double)(i + 3)));
+    }
+    array_destroy(arr);
+
+    arr = array_create("T");
+    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * 10);
+    for (int i = 0; i < 10; i++) {
+        test[i].a = i;
+        char str[8] = {0};
+        int_to_str(i, str, sizeof(str));
+        str_copy(test[i].p, str);
+        array_append(arr, &test[i]);
+    }
+    array_remove(arr, 2);
+    array_remove(arr, 1);
+    array_remove(arr, 0);
+    array_remove(arr, 5);
+    array_remove(arr, 5);
+    for (int i = 0; i < 5; i++) {
+        test_t *t = (test_t *)array_get(arr, i);
+        assert(t->a == i + 3);
+        char p[8] = {0};
+        int_to_str(i + 3, p, sizeof(p));
+        assert(str_equal(t->p, p));
+    }
+    free(test);
+    test = NULL;
+    array_destroy(arr);
+}
+
+static int cmp_by_int(const void *data1, const void *data2) {
+    test_t *t1 = (test_t *)data1;
+    test_t *t2 = (test_t *)data2;
+    return t1->a - t2->a;
+}
+
+static int cmp_by_str(const void *data1, const void *data2) {
+    test_t *t1 = (test_t *)data1;
+    test_t *t2 = (test_t *)data2;
+    return strncmp(t1->p, t2->p, strlen(t1->p));
+}
+
+void test_array_min() {
+    int arr1[] = {5, 7, 1, 9, 4, 2, 5, 6};
+    int len1 = array_len(arr1);
+    array_t *arr = array_create("int");
+    for (int i = 0; i < len1; i++) {
+        wrapper_int_t *wrapper = wrap_int(arr1[i]);
+        array_append(arr, wrapper);
+        unwrap_int(wrapper);
+    }
+    wrapper_int_t *wrapper_int = (wrapper_int_t *)array_min(arr, NULL);
+    assert(unwrap_int(wrapper_int) == 1);
+    array_destroy(arr);
+
+    double arr2[] = {5.5, 7.7, 1.1, 9.9, 4.4, 2.2, 5.5, 6.6};
+    int len2 = array_len(arr2);
+    arr = array_create("double");
+    for (int i = 0; i < len2; i++) {
+        wrapper_double_t *wrapper = wrap_double((double)arr2[i]);
+        array_append(arr, wrapper);
+        unwrap_double(wrapper);
+    }
+    wrapper_double_t *wrapper_double = (wrapper_double_t *)array_min(arr, NULL);
+    assert(equal_double(unwrap_double(wrapper_double), 1.1));
+    array_destroy(arr);
+
+    arr = array_create("T");
+    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * len1);
+    for (int i = 0; i < len1; i++) {
+        test[i].a = arr1[i];
+        char str[8] = {0};
+        int_to_str(arr1[i], str, sizeof(str));
+        str_copy(test[i].p, str);
+        array_append(arr, &test[i]);
+    }
+    test_t *t = (test_t *)array_min(arr, cmp_by_int);
+    assert(t->a == 1);
+    t = (test_t *)array_min(arr, cmp_by_str);
+    char p[8] = {0};
+    int_to_str(1, p, sizeof(p));
+    assert(str_equal(t->p, p));
+    free(test);
+    test = NULL;
+    array_destroy(arr);
+}
+
+void test_array_max() {
+    int arr1[] = {5, 7, 1, 9, 4, 2, 5, 6};
+    int len1 = array_len(arr1);
+    array_t *arr = array_create("int");
+    for (int i = 0; i < len1; i++) {
+        wrapper_int_t *wrapper = wrap_int(arr1[i]);
+        array_append(arr, wrapper);
+        unwrap_int(wrapper);
+    }
+    wrapper_int_t *wrapper_int = (wrapper_int_t *)array_max(arr, NULL);
+    assert(unwrap_int(wrapper_int) == 9);
+    array_destroy(arr);
+
+    double arr2[] = {5.5, 7.7, 1.1, 9.9, 4.4, 2.2, 5.5, 6.6};
+    int len2 = array_len(arr2);
+    arr = array_create("double");
+    for (int i = 0; i < len2; i++) {
+        wrapper_double_t *wrapper = wrap_double((double)arr2[i]);
+        array_append(arr, wrapper);
+        unwrap_double(wrapper);
+    }
+    wrapper_double_t *wrapper_double = (wrapper_double_t *)array_max(arr, NULL);
+    assert(equal_double(unwrap_double(wrapper_double), 9.9));
+    array_destroy(arr);
+
+    arr = array_create("T");
+    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * len1);
+    for (int i = 0; i < len1; i++) {
+        test[i].a = arr1[i];
+        char str[8] = {0};
+        int_to_str(arr1[i], str, sizeof(str));
+        str_copy(test[i].p, str);
+        array_append(arr, &test[i]);
+    }
+    test_t *t = (test_t *)array_max(arr, cmp_by_int);
+    assert(t->a == 9);
+    t = (test_t *)array_max(arr, cmp_by_str);
+    char p[8] = {0};
+    int_to_str(9, p, sizeof(p));
+    assert(str_equal(t->p, p));
+    free(test);
+    test = NULL;
+    array_destroy(arr);
+}
+
+static bool match_by_int(const void *data) {
+    test_t *t = (test_t *)data;
+    return t->a == 4;
+}
+
+void test_array_index_of() {
+    int arr1[] = {5, 4, 2, 2, 5, 4, 1};
+    int len1 = array_len(arr1);
+
+    array_t *arr = array_create("int");
+    for (int i = 0; i < len1; i++) {
+        wrapper_int_t *wrapper = wrap_int(arr1[i]);
+        array_append(arr, wrapper);
+        unwrap_int(wrapper);
+    }
+    wrapper_int_t *wrapper_int = wrap_int(4);
+    assert(array_index_of(arr, wrapper_int) == 1);
+    unwrap_int(wrapper_int);
+    wrapper_int = wrap_int(10);
+    assert(array_index_of(arr, wrapper_int) == -1);
+    unwrap_int(wrapper_int);
+    array_destroy(arr);
+
+    arr = array_create("double");
+    for (int i = 0; i < len1; i++) {
+        wrapper_double_t *wrapper = wrap_double((double)arr1[i]);
+        array_append(arr, wrapper);
+        unwrap_double(wrapper);
+    }
+    wrapper_double_t *wrapper_double = wrap_double(4.0);
+    assert(array_index_of(arr, wrapper_double) == 1);
+    unwrap_double(wrapper_double);
+    wrapper_double = wrap_double(10.0);
+    assert(array_index_of(arr, wrapper_double) == -1);
+    unwrap_double(wrapper_double);
+    array_destroy(arr);
+
+    arr = array_create("T");
+    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * len1);
+    for (int i = 0; i < len1; i++) {
+        test[i].a = arr1[i];
+        char str[8] = {0};
+        int_to_str(arr1[i], str, sizeof(str));
+        str_copy(test[i].p, str);
+        array_append(arr, &test[i]);
+    }
+    assert(array_index_of(arr, match_by_int) == 1);
+    free(test);
+    test = NULL;
+    array_destroy(arr);
+}
+
+void test_array_last_index_of() {
+    int arr1[] = {5, 4, 2, 2, 5, 4, 1};
+    int len1 = array_len(arr1);
+
+    array_t *arr = array_create("int");
+    for (int i = 0; i < len1; i++) {
+        wrapper_int_t *wrapper = wrap_int(arr1[i]);
+        array_append(arr, wrapper);
+        unwrap_int(wrapper);
+    }
+    wrapper_int_t *wrapper_int = wrap_int(4);
+    assert(array_last_index_of(arr, wrapper_int) == 5);
+    unwrap_int(wrapper_int);
+    wrapper_int = wrap_int(10);
+    assert(array_last_index_of(arr, wrapper_int) == -1);
+    unwrap_int(wrapper_int);
+    array_destroy(arr);
+
+    arr = array_create("double");
+    for (int i = 0; i < len1; i++) {
+        wrapper_double_t *wrapper = wrap_double((double)arr1[i]);
+        array_append(arr, wrapper);
+        unwrap_double(wrapper);
+    }
+    wrapper_double_t *wrapper_double = wrap_double(4.0);
+    assert(array_last_index_of(arr, wrapper_double) == 5);
+    unwrap_double(wrapper_double);
+    wrapper_double = wrap_double(10.0);
+    assert(array_last_index_of(arr, wrapper_double) == -1);
+    unwrap_double(wrapper_double);
+    array_destroy(arr);
+
+    arr = array_create("T");
+    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * len1);
+    for (int i = 0; i < len1; i++) {
+        test[i].a = arr1[i];
+        char str[8] = {0};
+        int_to_str(arr1[i], str, sizeof(str));
+        str_copy(test[i].p, str);
+        array_append(arr, &test[i]);
+    }
+    assert(array_last_index_of(arr, match_by_int) == 5);
+    free(test);
+    test = NULL;
+    array_destroy(arr);
+}
+
+void test_array_count() {
+}
+
+void test_array_reverse() {
+}
+
+void test_array_swap() {
+}
 
 // void test_array_int_sort() {
 //     array_t *arr = array_create();
@@ -553,173 +771,6 @@ void test_array_set() {
 //         i++;
 //     }
 //     array_destroy(arr);
-// }
-
-// void test_array_double_append() {
-//     array_t *arr = array_double_create();
-//     for (int i = 0; i < 100; i++) {
-//         array_double_append(arr, i);
-//     }
-//     for (int i = 0; i < 100; i++) {
-//         assert(array_double_get(arr, i) == i);
-//     }
-//     array_double_destroy(arr);
-// }
-
-// void test_array_double_extend() {
-//     array_t *arr = array_double_create();
-//     double a[5] = {0, 1, 2, 3, 4};
-//     int len = array_len(a);
-//     for (int i = 0; i < 100; i++) {
-//         array_double_extend(arr, a, len);
-//     }
-//     for (int i = 0; i < 100; i += len) {
-//         for (int j = 0; j < len; j++) {
-//             assert(equal_double(array_double_get(arr, i + j), j));
-//         }
-//     }
-//     array_double_destroy(arr);
-// }
-
-// void test_array_double_insert() {
-//     array_t *arr = array_double_create();
-//     array_double_insert(arr, 0, 1.1);
-//     array_double_insert(arr, 0, 2.2);
-//     array_double_insert(arr, 0, 3.3);
-//     array_double_insert(arr, 1, 4.4);
-//     array_double_insert(arr, 4, 5.5);
-//     array_double_insert(arr, 0, 6.6);
-//     array_double_insert(arr, 2, 7.7);
-//     array_double_insert(arr, 2, 8.8);
-//     assert(equal_double(array_double_get(arr, 0), 6.6));
-//     assert(equal_double(array_double_get(arr, 1), 3.3));
-//     assert(equal_double(array_double_get(arr, 2), 8.8));
-//     assert(equal_double(array_double_get(arr, 3), 7.7));
-//     assert(equal_double(array_double_get(arr, 4), 4.4));
-//     assert(equal_double(array_double_get(arr, 5), 2.2));
-//     assert(equal_double(array_double_get(arr, 6), 1.1));
-//     assert(equal_double(array_double_get(arr, 7), 5.5));
-//     array_double_destroy(arr);
-// }
-
-// void test_array_double_remove() {
-//     array_t *arr = array_double_create();
-//     for (int i = 0; i < 100; i++) {
-//         array_double_append(arr, i);
-//     }
-//     for (int i = 0; i < 10; i++) {
-//         array_double_remove(arr, 0);
-//     }
-//     for (int i = 0; i < 10; i++) {
-//         array_double_remove(arr, array_double_size(arr) - 1);
-//     }
-//     for (int i = 0; i < 10; i++) {
-//         array_double_remove(arr, 50);
-//     }
-//     for (int i = 0; i < 00; i++) {
-//         assert(equal_double(array_double_get(arr, i), i + 10));
-//     }
-//     for (int i = 50; i < 70; i++) {
-//         assert(equal_double(array_double_get(arr, i), i + 20));
-//     }
-//     array_double_destroy(arr);
-
-//     arr = array_double_create();
-//     for (int i = 0; i < 10; i++) {
-//         array_double_append(arr, i);
-//     }
-//     for (int i = 0; i < 10; i++) {
-//         array_double_remove(arr, 0);
-//     }
-//     array_double_destroy(arr);
-// }
-
-// void test_array_double_min() {
-//     array_t *arr = array_double_create();
-//     array_double_insert(arr, 0, 1);
-//     array_double_insert(arr, 0, -2);
-//     array_double_insert(arr, 0, 3);
-//     array_double_insert(arr, 1, -4);
-//     array_double_insert(arr, 4, 5);
-//     array_double_insert(arr, 0, -6);
-//     array_double_insert(arr, 2, -7);
-//     array_double_insert(arr, 2, 8);
-//     assert(equal_double(array_double_min(arr), -7));
-//     array_double_destroy(arr);
-// }
-
-// void test_array_double_max() {
-//     array_t *arr = array_double_create();
-//     array_double_insert(arr, 0, 1);
-//     array_double_insert(arr, 0, -2);
-//     array_double_insert(arr, 0, 3);
-//     array_double_insert(arr, 1, -4);
-//     array_double_insert(arr, 4, 5);
-//     array_double_insert(arr, 0, -6);
-//     array_double_insert(arr, 2, -7);
-//     array_double_insert(arr, 2, 8);
-//     assert(equal_double(array_double_max(arr), 8));
-//     array_double_destroy(arr);
-// }
-
-// void test_array_double_index_of() {
-//     array_t *arr = array_double_create();
-//     array_double_append(arr, 1.1);
-//     array_double_append(arr, -2.2);
-//     array_double_append(arr, 2.2);
-//     array_double_append(arr, 2.2);
-//     array_double_append(arr, 5.5);
-//     array_double_append(arr, 2.2);
-//     array_double_append(arr, 2.2);
-//     array_double_append(arr, 4.4);
-//     assert(array_double_index_of(arr, 2.2) == 2);
-//     assert(array_double_index_of(arr, 1.1) == 0);
-//     assert(array_double_index_of(arr, 4.4) == 7);
-//     array_double_destroy(arr);
-// }
-
-// void test_array_double_last_index_of() {
-//     array_t *arr = array_double_create();
-//     array_double_append(arr, 1.1);
-//     array_double_append(arr, -2.2);
-//     array_double_append(arr, 2.2);
-//     array_double_append(arr, 2.2);
-//     array_double_append(arr, 5.5);
-//     array_double_append(arr, 2.2);
-//     array_double_append(arr, 2.2);
-//     array_double_append(arr, 4.4);
-//     assert(array_double_last_index_of(arr, 2.2) == 6);
-//     assert(array_double_last_index_of(arr, 1.1) == 0);
-//     assert(array_double_last_index_of(arr, 4.4) == 7);
-//     array_double_destroy(arr);
-// }
-
-// void test_array_double_count() {
-//     array_t *arr = array_double_create();
-//     array_double_append(arr, 1.1);
-//     array_double_append(arr, -2.2);
-//     array_double_append(arr, 2.2);
-//     array_double_append(arr, 2.2);
-//     array_double_append(arr, 5.5);
-//     array_double_append(arr, 2.2);
-//     array_double_append(arr, 2.2);
-//     array_double_append(arr, 4.4);
-//     assert(array_double_count(arr, 2.2) == 4);
-//     assert(array_double_count(arr, 1.1) == 1);
-//     assert(array_double_count(arr, 40.0) == 0);
-//     array_double_destroy(arr);
-// }
-
-// void test_array_double_reverse() {
-//     array_t *arr = array_double_create();
-//     for (int i = 0; i < 100; i++) {
-//         array_double_append(arr, i);
-//     }
-//     array_double_reverse(arr);
-//     for (int i = 0; i < 100; i++) {
-//         assert(equal_double(array_double_get(arr, i), 100 - i - 1));
-//     }
-//     array_double_destroy(arr);
 // }
 
 // void test_array_double_swap() {
@@ -848,222 +899,6 @@ void test_array_set() {
 //         i++;
 //     }
 //     array_double_destroy(arr);
-// }
-
-// void test_array_set() {
-//     int *num1 = (int *)malloc(sizeof(int));
-//     *num1 = 1;
-//     int *num2 = (int *)malloc(sizeof(int));
-//     *num2 = 2;
-//     int *num3 = (int *)malloc(sizeof(int));
-//     *num3 = 3;
-
-//     array_t *arr = array_create();
-//     array_append(arr, num1);
-//     array_append(arr, num2);
-//     array_append(arr, num3);
-//     assert(*(int *)array_get(arr, 0) == 1);
-//     assert(*(int *)array_get(arr, 1) == 2);
-//     assert(*(int *)array_get(arr, 2) == 3);
-//     *num1 = 9;
-//     *num3 = 7;
-//     array_set(arr, 0, num1);
-//     array_set(arr, 2, num3);
-//     assert(*(int *)array_get(arr, 0) == 9);
-//     assert(*(int *)array_get(arr, 1) == 2);
-//     assert(*(int *)array_get(arr, 2) == 7);
-//     array_destroy(arr);
-
-//     free(num1);
-//     free(num2);
-//     free(num3);
-// }
-
-// void test_array_append() {
-//     student_t *stu = (student_t *)malloc(sizeof(student_t) * 10);
-
-//     array_t *arr = array_create();
-//     for (int i = 0; i < 10; i++) {
-//         stu[i].id = i;
-//         snprintf(stu[i].name, sizeof(stu[i].name), "Name-%d", i);
-//         array_append(arr, &stu[i]);
-//     }
-//     for (int i = 0; i < 10; i++) {
-//         student_t *s = (student_t *)array_get(arr, i);
-//         char name[32] = {0};
-//         snprintf(name, sizeof(name), "Name-%d", i);
-//         assert(s->id == i);
-//         assert(strncmp(s->name, name, strlen(name)) == 0);
-//     }
-
-//     array_destroy(arr);
-//     free(stu);
-// }
-
-// void test_array_insert() {
-//     student_t *stu = (student_t *)malloc(sizeof(student_t) * 8);
-//     for (int i = 0; i < 8; i++) {
-//         stu[i].id = i;
-//         snprintf(stu[i].name, sizeof(stu[i].name), "Name-%d", i);
-//     }
-
-//     array_t *arr = array_create();
-//     array_insert(arr, 0, &stu[0]);
-//     array_insert(arr, 0, &stu[1]);
-//     array_insert(arr, 0, &stu[2]);
-//     array_insert(arr, 1, &stu[3]);
-//     array_insert(arr, 4, &stu[4]);
-//     array_insert(arr, 0, &stu[5]);
-//     array_insert(arr, 2, &stu[6]);
-//     array_insert(arr, 2, &stu[7]);
-
-//     int result[] = {5, 2, 7, 6, 3, 1, 0, 4};
-//     for (int i = 0; i < 8; i++) {
-//         student_t *s = (student_t *)array_get(arr, i);
-//         char name[32] = {0};
-//         assert(s->id == result[i]);
-//         snprintf(name, sizeof(name), "Name-%d", result[i]);
-//         assert(strncmp(s->name, name, strlen(name)) == 0);
-//     }
-
-//     array_destroy(arr);
-//     free(stu);
-// }
-
-// void test_array_remove() {
-//     int *nums = (int *)malloc(sizeof(int) * 10);
-
-//     array_t *arr = array_create();
-//     for (int i = 0; i < 10; i++) {
-//         nums[i] = i;
-//         array_append(arr, &nums[i]);
-//     }
-//     array_remove(arr, 3);
-//     array_remove(arr, 0);
-//     array_remove(arr, 7);
-//     array_remove(arr, 5);
-//     array_remove(arr, 0);
-//     assert(*(int *)array_get(arr, 0) == 2);
-//     assert(*(int *)array_get(arr, 1) == 4);
-//     assert(*(int *)array_get(arr, 2) == 5);
-//     assert(*(int *)array_get(arr, 3) == 6);
-//     assert(*(int *)array_get(arr, 4) == 8);
-
-//     array_destroy(arr);
-//     free(nums);
-// }
-
-// static int cmp_by_id(const void *data1, const void *data2) {
-//     student_t *s1 = (student_t *)data1;
-//     student_t *s2 = (student_t *)data2;
-//     return s1->id - s2->id;
-// }
-
-// static int cmp_by_name(const void *data1, const void *data2) {
-//     student_t *s1 = (student_t *)data1;
-//     student_t *s2 = (student_t *)data2;
-//     return strncmp(s1->name, s2->name, strlen(s1->name));
-// }
-
-// void test_array_min() {
-//     student_t *stu = (student_t *)malloc(sizeof(student_t) * 10);
-//     int id[] = {4, 6, 9, 0, 1, 7, 5, 2, 3, 8};
-
-//     array_t *arr = array_create();
-//     for (int i = 0; i < 10; i++) {
-//         stu[i].id = id[i];
-//         snprintf(stu[i].name, sizeof(stu[i].name), "Name-%d", id[i]);
-//         array_append(arr, &stu[i]);
-//     }
-
-//     student_t *s = (student_t *)array_min(arr, cmp_by_id);
-//     assert(s->id == 0);
-//     assert(strncmp(s->name, "Name-0", strlen("Name-0")) == 0);
-//     s = (student_t *)array_min(arr, cmp_by_name);
-//     assert(s->id == 0);
-//     assert(strncmp(s->name, "Name-0", strlen("Name-0")) == 0);
-
-//     array_destroy(arr);
-//     free(stu);
-// }
-
-// void test_array_max() {
-//     student_t *stu = (student_t *)malloc(sizeof(student_t) * 10);
-//     int id[] = {4, 6, 9, 0, 1, 7, 5, 2, 3, 8};
-
-//     array_t *arr = array_create();
-//     for (int i = 0; i < 10; i++) {
-//         stu[i].id = id[i];
-//         snprintf(stu[i].name, sizeof(stu[i].name), "Name-%d", id[i]);
-//         array_append(arr, &stu[i]);
-//     }
-
-//     student_t *s = (student_t *)array_max(arr, cmp_by_id);
-//     assert(s->id == 9);
-//     assert(strncmp(s->name, "Name-9", strlen("Name-9")) == 0);
-//     s = (student_t *)array_max(arr, cmp_by_name);
-//     assert(s->id == 9);
-//     assert(strncmp(s->name, "Name-9", strlen("Name-9")) == 0);
-
-//     array_destroy(arr);
-//     free(stu);
-// }
-
-// static bool match_by_id(const void *data) {
-//     student_t *s = (student_t *)data;
-//     return s->id == 5;
-// }
-
-// void test_array_find() {
-//     student_t *stu = (student_t *)malloc(sizeof(student_t) * 10);
-//     int id[] = {4, 6, 5, 5, 1, 7, 5, 2, 3, 5};
-
-//     array_t *arr = array_create();
-//     for (int i = 0; i < 10; i++) {
-//         stu[i].id = id[i];
-//         snprintf(stu[i].name, sizeof(stu[i].name), "Name-%d", id[i]);
-//         array_append(arr, &stu[i]);
-//     }
-
-//     student_t *s = (student_t *)array_find(arr, match_by_id);
-//     assert(s->id == 5);
-//     assert(strncmp(s->name, "Name-5", strlen("Name-5")) == 0);
-
-//     array_destroy(arr);
-//     free(stu);
-// }
-
-// void test_array_count() {
-//     student_t *stu = (student_t *)malloc(sizeof(student_t) * 10);
-//     int id[] = {4, 6, 5, 5, 1, 7, 5, 2, 3, 5};
-
-//     array_t *arr = array_create();
-//     for (int i = 0; i < 10; i++) {
-//         stu[i].id = id[i];
-//         snprintf(stu[i].name, sizeof(stu[i].name), "Name-%d", id[i]);
-//         array_append(arr, &stu[i]);
-//     }
-//     assert(array_count(arr, match_by_id) == 4);
-
-//     array_destroy(arr);
-//     free(stu);
-// }
-
-// void test_array_reverse() {
-//     int *nums = (int *)malloc(sizeof(int) * 10);
-
-//     array_t *arr = array_create();
-//     for (int i = 0; i < 10; i++) {
-//         nums[i] = i;
-//         array_append(arr, &nums[i]);
-//     }
-//     array_reverse(arr);
-//     for (int i = 0; i < 10; i++) {
-//         assert(*(int *)array_get(arr, i) == 10 - i - 1);
-//     }
-
-//     array_destroy(arr);
-//     free(nums);
 // }
 
 // void test_array_swap() {
