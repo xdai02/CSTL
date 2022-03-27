@@ -196,109 +196,36 @@ array_t *array_reverse(array_t *array);
  */
 array_t *array_swap(array_t *array, int index1, int index2);
 
-// /**
-//  * @brief   Sort the cino-int-array.
-//  * @param array     cino-int-array
-//  * @param reverse   true for descending, false for ascending
-//  * @return  Returns the modified cino-int-array.
-//  */
-// array_t *array_int_sort(array_t *array, bool reverse);
+/**
+ * @brief   Sort the cino-array.
+ * @param array     cino-array
+ * @param reverse   true = descending, false = ascending
+ * @param compare   User-defined callback function for comparison, only for T (generic)
+ *                  cino-array. Set to `NULL` if the elements in the cino-array are
+ *                  primitive.
+ * @return  Returns the modified cino-array.
+ */
+array_t *array_sort(array_t *array, bool reverse, compare_t compare);
 
-// /**
-//  * @brief   Get the iterator.
-//  * @param array cino-int-array
-//  * @return  Returns the iterator.
-//  */
-// iter_t array_int_iter(array_t *array);
+/**
+ * @brief   Get the iterator.
+ * @param array cino-array
+ * @return  Returns the iterator.
+ */
+iter_t array_iter(array_t *array);
 
-// /**
-//  * @brief   Determine if the cino-int-array has the next iterator.
-//  * @param array cino-int-array
-//  * @return  Returns `true` if next iterator exists, otherwise returns `false`.
-//  */
-// bool array_int_iter_has_next(const array_t *array);
+/**
+ * @brief   Determine if the cino-array has next iterator.
+ * @param array cino-array
+ * @return  Returns `true` if next iterator exists, otherwise returns `false`.
+ */
+bool array_iter_has_next(const array_t *array);
 
-// /**
-//  * @brief   Get the next iterator.
-//  * @param array cino-int-array
-//  * @return  Returns the next iterator.
-//  */
-// iter_t array_int_iter_next(array_t *array);
-
-// /**
-//  * @brief   Swap two elements at specified indices in the cino-double-array.
-//  * @param array     cino-double-array
-//  * @param index1    index 1
-//  * @param index2    index 2
-//  * @return  Returns the modified cino-double-array.
-//  */
-// array_t *array_double_swap(array_t *array, int index1, int index2);
-
-// /**
-//  * @brief   Sort the cino-double-array.
-//  * @param array     cino-double-array
-//  * @param reverse   true for descending, false for ascending
-//  * @return  Returns the modified cino-double-array.
-//  */
-// array_t *array_double_sort(array_t *array, bool reverse);
-
-// /**
-//  * @brief   Get the iterator.
-//  * @param array cino-double-array
-//  * @return  Returns the iterator.
-//  */
-// iter_t array_double_iter(array_t *array);
-
-// /**
-//  * @brief   Determine if the cino-double-array has the next iterator.
-//  * @param array cino-double-array
-//  * @return  Returns `true` if next iterator exists, otherwise returns `false`.
-//  */
-// bool array_double_iter_has_next(const array_t *array);
-
-// /**
-//  * @brief   Get the next iterator.
-//  * @param array cino-double-array
-//  * @return  Returns the next iterator.
-//  */
-// iter_t array_double_iter_next(array_t *array);
-
-// /**
-//  * @brief   Swap two elements at specified indices in the cino-array.
-//  * @param array     cino-array
-//  * @param index1    index 1
-//  * @param index2    index 2
-//  * @return  Returns the modified cino-array.
-//  */
-// array_t *array_swap(array_t *array, int index1, int index2);
-
-// /**
-//  * @brief   Sort the cino-array.
-//  * @param array     cino-array
-//  * @param compare   user-defined callback function for comparison
-//  * @return  Returns the modified cino-array.
-//  */
-// array_t *array_sort(array_t *array, compare_t compare);
-
-// /**
-//  * @brief   Get the iterator.
-//  * @param array cino-array
-//  * @return  Returns the iterator.
-//  */
-// iter_t array_iter(array_t *array);
-
-// /**
-//  * @brief   Determine if the cino-array has the next iterator.
-//  * @param array cino-array
-//  * @return  Returns `true` if next iterator exists, otherwise returns `false`.
-//  */
-// bool array_iter_has_next(const array_t *array);
-
-// /**
-//  * @brief   Get the next iterator.
-//  * @param array cino-array
-//  * @return  Returns the next iterator.
-//  */
-// iter_t array_iter_next(array_t *array);
+/**
+ * @brief   Get the next iterator.
+ * @param array cino-array
+ * @return  Returns the next iterator.
+ */
+iter_t array_iter_next(array_t *array);
 
 #endif

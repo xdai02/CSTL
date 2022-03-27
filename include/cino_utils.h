@@ -125,6 +125,11 @@ typedef enum logger_t {
 #define max(x, y) (((x) > (y)) ? (x) : (y))
 
 /**
+ * @brief   Returns the negation of the value.
+ */
+#define negate(x) (0 - x)
+
+/**
  * @brief   Swap two values of specified type.
  */
 #define swap(x, y, type) \

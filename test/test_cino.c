@@ -5,6 +5,7 @@
 void test_cino_utils() {
     test_min();
     test_max();
+    test_negate();
     test_swap();
     test_equal_double();
 
@@ -111,11 +112,10 @@ void test_cino_array() {
     test_array_count();
     test_array_reverse();
     test_array_swap();
-
-    // test_array_sort();
-    // test_array_iter();
-    // test_array_iter_has_next();
-    // test_array_iter_next();
+    test_array_sort();
+    test_array_iter();
+    test_array_iter_has_next();
+    test_array_iter_next();
 
     printf("[PASS] test_cino_array\n");
 }

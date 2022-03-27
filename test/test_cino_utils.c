@@ -25,6 +25,17 @@ void test_max() {
     assert(max('z', 'Z') == 'z');
 }
 
+void test_negate() {
+    assert(negate(5) == -5);
+    assert(negate(0) == 0);
+    assert(negate(+0) == 0);
+    assert(negate(-0) == 0);
+    assert(negate(-5) == 5);
+    assert(equal_double(negate(3.14), -3.14));
+    assert(equal_double(negate(-3.14), 3.14));
+    assert(equal_double(negate(0.0), 0.0));
+}
+
 void test_swap() {
     int num1 = 1;
     int num2 = 2;

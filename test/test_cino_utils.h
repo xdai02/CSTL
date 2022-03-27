@@ -11,6 +11,7 @@
 
 void test_min();
 void test_max();
+void test_negate();
 void test_swap();
 void test_equal_double();
 

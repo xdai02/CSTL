@@ -642,287 +642,214 @@ array_t *array_swap(array_t *array, int index1, int index2) {
     return array;
 }
 
-// /**
-//  * @brief   Specify the rules for comparing two int values in ascending order.
-//  * @param data1 pointer to the first value
-//  * @param data2 pointer to the second value
-//  * @return  Returns
-//  *              - 0 if two values are equal
-//  *              - positive if the first value is greater than the second value
-//  *              - negative if the first value is less than the second value
-//  */
-// static int cmp_int_less(const void *data1, const void *data2) {
-//     int *p1 = (int *)data1;
-//     int *p2 = (int *)data2;
-//     return *p1 - *p2;
-// }
+/**
+ * @brief   Specify the rules for comparing two int values in ascending order.
+ * @param data1 pointer to the first value
+ * @param data2 pointer to the second value
+ * @return  Returns
+ *              - 0 if two values are equal
+ *              - positive if the first value is greater than the second value
+ *              - negative if the first value is less than the second value
+ */
+static int cmp_int_asc(const void *data1, const void *data2) {
+    int *p1 = (int *)data1;
+    int *p2 = (int *)data2;
+    return *p1 - *p2;
+}
 
-// /**
-//  * @brief   Specify the rules for comparing two int values in descending order.
-//  * @param data1 pointer to the first value
-//  * @param data2 pointer to the second value
-//  * @return  Returns
-//  *              - 0 if two values are equal
-//  *              - positive if the first value is less than the second value
-//  *              - negative if the first value is greater than the second value
-//  */
-// static int cmp_int_greater(const void *data1, const void *data2) {
-//     int *p1 = (int *)data1;
-//     int *p2 = (int *)data2;
-//     return *p2 - *p1;
-// }
+/**
+ * @brief   Specify the rules for comparing two int values in descending order.
+ * @param data1 pointer to the first value
+ * @param data2 pointer to the second value
+ * @return  Returns
+ *              - 0 if two values are equal
+ *              - positive if the first value is less than the second value
+ *              - negative if the first value is greater than the second value
+ */
+static int cmp_int_desc(const void *data1, const void *data2) {
+    int *p1 = (int *)data1;
+    int *p2 = (int *)data2;
+    return *p2 - *p1;
+}
 
-// /**
-//  * @brief   Sort the cino-int-array.
-//  * @param array     cino-int-array
-//  * @param reverse   true for descending, false for ascending
-//  * @return  Returns the modified cino-int-array.
-//  */
-// array_t *array_int_sort(array_t *array, bool reverse) {
-//     return_value_if_fail(array != NULL, NULL);
-//     if (reverse) {
-//         qsort(array->i_arr, array->size, sizeof(int), cmp_int_greater);
-//     } else {
-//         qsort(array->i_arr, array->size, sizeof(int), cmp_int_less);
-//     }
-//     return array;
-// }
+/**
+ * @brief   Specify the rules for comparing two double values in ascending order.
+ * @param data1 pointer to the first value
+ * @param data2 pointer to the second value
+ * @return  Returns
+ *              - 0 if two values are equal
+ *              - positive if the first value is greater than the second value
+ *              - negative if the first value is less than the second value
+ */
+static int cmp_double_asc(const void *data1, const void *data2) {
+    double *p1 = (double *)data1;
+    double *p2 = (double *)data2;
+    return *p1 > *p2 ? 1 : -1;
+}
 
-// /**
-//  * @brief   Get the iterator.
-//  * @param array cino-int-array
-//  * @return  Returns the iterator.
-//  */
-// iter_t array_int_iter(array_t *array) {
-//     return_value_if_fail(array != NULL, NULL);
-//     if (array->size > 0) {
-//         array->iterator->iter = array->i_arr;
-//     } else {
-//         array->iterator->iter = NULL;
-//     }
-//     return array->iterator->iter;
-// }
+/**
+ * @brief   Specify the rules for comparing two double values in descending order.
+ * @param data1 pointer to the first value
+ * @param data2 pointer to the second value
+ * @return  Returns
+ *              - 0 if two values are equal
+ *              - positive if the first value is less than the second value
+ *              - negative if the first value is greater than the second value
+ */
+static int cmp_double_desc(const void *data1, const void *data2) {
+    double *p1 = (double *)data1;
+    double *p2 = (double *)data2;
+    return *p2 > *p1 ? 1 : -1;
+}
 
-// /**
-//  * @brief   Determine if the cino-int-array has the next iterator.
-//  * @param array cino-int-array
-//  * @return  Returns `true` if next iterator exists, otherwise returns `false`.
-//  */
-// bool array_int_iter_has_next(const array_t *array) {
-//     return_value_if_fail(array != NULL && array->iterator->iter != NULL, false);
-//     return (void *)((byte_t *)array->iterator->iter + sizeof(int)) < (void *)(array->i_arr + array->size);
-// }
+/**
+ * @brief   Parition function for quick sort.
+ * @param arr       an array of pointers
+ * @param start     start index of partition
+ * @param end       end index of partition
+ * @param compare   user-defined callback function for comparison
+ * @return  Returns the index of the pivot.
+ */
+static int quick_sort_partition(void **arr, int start, int end, compare_t compare) {
+    int i = start - 1;
+    void *pivot = arr[end];
 
-// /**
-//  * @brief   Get the next iterator.
-//  * @param array cino-int-array
-//  * @return  Returns the next iterator.
-//  */
-// iter_t array_int_iter_next(array_t *array) {
-//     return_value_if_fail(array != NULL, NULL);
-//     if (array_int_iter_has_next(array)) {
-//         byte_t *iter = (byte_t *)array->iterator->iter;
-//         iter += sizeof(int);
-//         array->iterator->iter = (void *)iter;
-//     } else {
-//         array->iterator->iter = NULL;
-//     }
-//     return array->iterator->iter;
-// }
+    for (int j = start; j < end; j++) {
+        if (compare(arr[j], pivot) < 0) {
+            i++;
+            swap(arr[i], arr[j], void *);
+        }
+    }
 
-// /**
-//  * @brief   Specify the rules for comparing two double values in ascending order.
-//  * @param data1 pointer to the first value
-//  * @param data2 pointer to the second value
-//  * @return  Returns
-//  *              - 0 if two values are equal
-//  *              - positive if the first value is greater than the second value
-//  *              - negative if the first value is less than the second value
-//  */
-// static int cmp_double_less(const void *data1, const void *data2) {
-//     double *p1 = (double *)data1;
-//     double *p2 = (double *)data2;
-//     return *p1 > *p2 ? 1 : -1;
-// }
+    swap(arr[i + 1], arr[end], void *);
+    return i + 1;
+}
 
-// /**
-//  * @brief   Specify the rules for comparing two double values in descending order.
-//  * @param data1 pointer to the first value
-//  * @param data2 pointer to the second value
-//  * @return  Returns
-//  *              - 0 if two values are equal
-//  *              - positive if the first value is less than the second value
-//  *              - negative if the first value is greater than the second value
-//  */
-// static int cmp_double_greater(const void *data1, const void *data2) {
-//     double *p1 = (double *)data1;
-//     double *p2 = (double *)data2;
-//     return *p2 > *p1 ? 1 : -1;
-// }
+/**
+ * @brief   Stack-based quick sort for cino-array.
+ * @param arr       an array of pointers
+ * @param size      number of elements in the array
+ * @param compare   user-defined callback function for comparison
+ */
+static void quick_sort(void **arr, size_t size, compare_t compare) {
+    int stack[size];
+    memset(stack, 0x00, size * sizeof(int));
 
-// /**
-//  * @brief   Sort the cino-double-array.
-//  * @param array     cino-double-array
-//  * @param reverse   true for descending, false for ascending
-//  * @return  Returns the modified cino-double-array.
-//  */
-// array_t *array_double_sort(array_t *array, bool reverse) {
-//     return_value_if_fail(array != NULL, NULL);
-//     if (reverse) {
-//         qsort(array->d_arr, array->size, sizeof(double), cmp_double_greater);
-//     } else {
-//         qsort(array->d_arr, array->size, sizeof(double), cmp_double_less);
-//     }
-//     return array;
-// }
+    int n = 0;
+    stack[n++] = 0;
+    stack[n++] = size - 1;
 
-// /**
-//  * @brief   Get the iterator.
-//  * @param array cino-double-array
-//  * @return  Returns the iterator.
-//  */
-// iter_t array_double_iter(array_t *array) {
-//     return_value_if_fail(array != NULL, NULL);
-//     if (array->size > 0) {
-//         array->iterator->iter = array->d_arr;
-//     } else {
-//         array->iterator->iter = NULL;
-//     }
-//     return array->iterator->iter;
-// }
+    while (n > 0) {
+        int right = stack[--n];
+        int left = stack[--n];
 
-// /**
-//  * @brief   Determine if the cino-double-array has the next iterator.
-//  * @param array cino-double-array
-//  * @return  Returns `true` if next iterator exists, otherwise returns `false`.
-//  */
-// bool array_double_iter_has_next(const array_t *array) {
-//     return_value_if_fail(array != NULL && array->iterator->iter != NULL, false);
-//     return (void *)((byte_t *)array->iterator->iter + sizeof(double)) < (void *)(array->d_arr + array->size);
-// }
+        int index = quick_sort_partition(arr, left, right, compare);
+        if (index - 1 > left) {
+            stack[n++] = left;
+            stack[n++] = index - 1;
+        }
+        if (index + 1 < right) {
+            stack[n++] = index + 1;
+            stack[n++] = right;
+        }
+    }
+}
 
-// /**
-//  * @brief   Get the next iterator.
-//  * @param array cino-double-array
-//  * @return  Returns the next iterator.
-//  */
-// iter_t array_double_iter_next(array_t *array) {
-//     return_value_if_fail(array != NULL, NULL);
-//     if (array_double_iter_has_next(array)) {
-//         byte_t *iter = (byte_t *)array->iterator->iter;
-//         iter += sizeof(double);
-//         array->iterator->iter = (void *)iter;
-//     } else {
-//         array->iterator->iter = NULL;
-//     }
-//     return array->iterator->iter;
-// }
+/**
+ * @brief   Sort the cino-array.
+ * @param array     cino-array
+ * @param reverse   true = descending, false = ascending
+ * @param compare   User-defined callback function for comparison, only for T (generic)
+ *                  cino-array. Set to `NULL` if the elements in the cino-array are
+ *                  primitive.
+ * @return  Returns the modified cino-array.
+ */
+array_t *array_sort(array_t *array, bool reverse, compare_t compare) {
+    return_value_if_fail(array != NULL, NULL);
 
-// /**
-//  * @brief   Parition function for quick sort.
-//  * @param arr       an array of pointers
-//  * @param start     start index of partition
-//  * @param end       end index of partition
-//  * @param compare   user-defined callback function for comparison
-//  * @return  Returns the index of the pivot.
-//  */
-// static int quick_sort_partition(void **arr, int start, int end, compare_t compare) {
-//     int i = start - 1;
-//     void *pivot = arr[end];
+    if (str_equal(array->data_type, "int")) {
+        qsort(array->arr, array->size, sizeof(int), reverse ? cmp_int_desc : cmp_int_asc);
+    } else if (str_equal(array->data_type, "double")) {
+        qsort(array->arr, array->size, sizeof(double), reverse ? cmp_double_desc : cmp_double_asc);
+    } else if (str_equal(array->data_type, "T")) {
+        return_value_if_fail(compare != NULL, array);
+        quick_sort(array->t_arr, array->size, compare);
+        if (reverse) {
+            array_reverse(array);
+        }
+    }
 
-//     for (int j = start; j < end; j++) {
-//         if (compare(arr[j], pivot) < 0) {
-//             i++;
-//             swap(arr[i], arr[j], void *);
-//         }
-//     }
+    return array;
+}
 
-//     swap(arr[i + 1], arr[end], void *);
-//     return i + 1;
-// }
+/**
+ * @brief   Get the iterator.
+ * @param array cino-array
+ * @return  Returns the iterator.
+ */
+iter_t array_iter(array_t *array) {
+    return_value_if_fail(array != NULL, NULL);
 
-// /**
-//  * @brief   Stack-based quick sort for cino-array.
-//  * @param arr       an array of pointers
-//  * @param size      number of elements in the array
-//  * @param compare   user-defined callback function for comparison
-//  */
-// static void quick_sort(void **arr, size_t size, compare_t compare) {
-//     int stack[size];
-//     memset(stack, 0x00, size * sizeof(int));
+    if (array->size > 0) {
+        if (str_equal(array->data_type, "int") || str_equal(array->data_type, "double")) {
+            array->iterator->iter = array->arr;
+        } else if (str_equal(array->data_type, "T")) {
+            array->iterator->iter = array->t_arr[0];
+            array->iterator->iter_index = 0;
+        }
+    } else {
+        array->iterator->iter = NULL;
+        array->iterator->iter_index = -1;
+    }
 
-//     int n = 0;
-//     stack[n++] = 0;
-//     stack[n++] = size - 1;
+    return array->iterator->iter;
+}
 
-//     while (n > 0) {
-//         int right = stack[--n];
-//         int left = stack[--n];
+/**
+ * @brief   Determine if the cino-array has next iterator.
+ * @param array cino-array
+ * @return  Returns `true` if next iterator exists, otherwise returns `false`.
+ */
+bool array_iter_has_next(const array_t *array) {
+    return_value_if_fail(array != NULL && array->iterator->iter != NULL, false);
 
-//         int index = quick_sort_partition(arr, left, right, compare);
-//         if (index - 1 > left) {
-//             stack[n++] = left;
-//             stack[n++] = index - 1;
-//         }
-//         if (index + 1 < right) {
-//             stack[n++] = index + 1;
-//             stack[n++] = right;
-//         }
-//     }
-// }
+    if (str_equal(array->data_type, "int")) {
+        return (void *)((byte_t *)array->iterator->iter + sizeof(int)) < (void *)((int *)array->arr + array->size);
+    } else if (str_equal(array->data_type, "double")) {
+        return (void *)((byte_t *)array->iterator->iter + sizeof(double)) < (void *)((double *)array->arr + array->size);
+    } else if (str_equal(array->data_type, "T")) {
+        return array->iterator->iter_index + 1 < array->size;
+    }
 
-// /**
-//  * @brief   Sort the cino-array.
-//  * @param array     cino-array
-//  * @param compare   user-defined callback function for comparison
-//  * @return  Returns the modified cino-array.
-//  */
-// array_t *array_sort(array_t *array, compare_t compare) {
-//     return_value_if_fail(array != NULL, NULL);
-//     quick_sort(array->t_arr, array->size, compare);
-//     return array;
-// }
+    return false;
+}
 
-// /**
-//  * @brief   Get the iterator.
-//  * @param array cino-array
-//  * @return  Returns the iterator.
-//  */
-// iter_t array_iter(array_t *array) {
-//     return_value_if_fail(array != NULL, NULL);
-//     if (array->size > 0) {
-//         array->iterator->iter = array->t_arr[0];
-//         array->iterator->iter_index = 0;
-//     } else {
-//         array->iterator->iter = NULL;
-//         array->iterator->iter_index = -1;
-//     }
-//     return array->iterator->iter;
-// }
+/**
+ * @brief   Get the next iterator.
+ * @param array cino-array
+ * @return  Returns the next iterator.
+ */
+iter_t array_iter_next(array_t *array) {
+    return_value_if_fail(array != NULL, NULL);
 
-// /**
-//  * @brief   Determine if the cino-array has the next iterator.
-//  * @param array cino-array
-//  * @return  Returns `true` if next iterator exists, otherwise returns `false`.
-//  */
-// bool array_iter_has_next(const array_t *array) {
-//     return_value_if_fail(array != NULL && array->iterator->iter != NULL && array->iterator->iter_index >= 0, false);
-//     return array->iterator->iter_index + 1 < array->size;
-// }
+    if (array_iter_has_next(array)) {
+        byte_t *iter = NULL;
+        if (str_equal(array->data_type, "int")) {
+            iter = (byte_t *)array->iterator->iter;
+            iter += sizeof(int);
+            array->iterator->iter = (void *)iter;
+        } else if (str_equal(array->data_type, "double")) {
+            iter = (byte_t *)array->iterator->iter;
+            iter += sizeof(double);
+            array->iterator->iter = (void *)iter;
+        } else if (str_equal(array->data_type, "T")) {
+            array->iterator->iter_index++;
+            array->iterator->iter = array->t_arr[array->iterator->iter_index];
+        }
+    } else {
+        array->iterator->iter = NULL;
+        array->iterator->iter_index = -1;
+    }
 
-// /**
-//  * @brief   Get the next iterator.
-//  * @param array cino-array
-//  * @return  Returns the next iterator.
-//  */
-// iter_t array_iter_next(array_t *array) {
-//     return_value_if_fail(array != NULL, NULL);
-//     if (array_iter_has_next(array)) {
-//         array->iterator->iter_index++;
-//         array->iterator->iter = array->t_arr[array->iterator->iter_index];
-//     } else {
-//         array->iterator->iter = NULL;
-//         array->iterator->iter_index = -1;
-//     }
-//     return array->iterator->iter;
-// }
+    return array->iterator->iter;
+}
