@@ -5,7 +5,7 @@
  ****************************************/
 
 typedef struct iterator_t {
-    void *iter;      // points to the current element
+    iter_t iter;     // points to the current element
     int iter_index;  // generic array use only
 } iterator_t;
 
@@ -552,7 +552,7 @@ int array_last_index_of(const array_t *array, void *context) {
 /**
  * @brief   Count the occurrences of the element matched.
  * @param array     cino-array
- * @param context   - For primitive cino-array, a wrapper type of the counting data should 
+ * @param context   - For primitive cino-array, a wrapper type of the counting data should
  *                    be passed. It is caller's responsibility to unwrap.
  *                  - For T (generic) cino-array, a match_t callback function should be passed
  *                    as the matching rule.

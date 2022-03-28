@@ -15,7 +15,7 @@ setup:
 
 ############### CINO ###############
 
-cino: cino_utils cino_string cino_array
+cino: cino_utils cino_string cino_array cino_list
 
 cino_utils: $(SRC)/cino_utils.c
 	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)/cino_utils.c -o $(BIN)/cino_utils.o
@@ -26,9 +26,12 @@ cino_string: $(SRC)/cino_string.c
 cino_array: $(SRC)/cino_array.c
 	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)/cino_array.c -o $(BIN)/cino_array.o
 
+cino_list: $(SRC)/cino_list.c
+	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)/cino_list.c -o $(BIN)/cino_list.o
+
 ############### TEST ###############
 
-test: test_cino_utils test_cino_string test_cino_array test_cino
+test: test_cino_utils test_cino_string test_cino_array test_cino_list test_cino
 
 test_cino_utils: $(TEST)/test_cino_utils.c
 	$(CC) $(CFLAGS) -I$(INC) -c $(TEST)/test_cino_utils.c -o $(BIN)/test_cino_utils.o
@@ -38,6 +41,9 @@ test_cino_string: $(TEST)/test_cino_string.c
 
 test_cino_array: $(TEST)/test_cino_array.c
 	$(CC) $(CFLAGS) -I$(INC) -c $(TEST)/test_cino_array.c -o $(BIN)/test_cino_array.o
+
+test_cino_list: $(TEST)/test_cino_list.c
+	$(CC) $(CFLAGS) -I$(INC) -c $(TEST)/test_cino_list.c -o $(BIN)/test_cino_list.o
 
 test_cino: $(TEST)/test_cino.c
 	$(CC) $(CFLAGS) -I$(INC) -c $(TEST)/test_cino.c -o $(BIN)/test_cino.o
