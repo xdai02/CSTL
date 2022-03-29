@@ -106,13 +106,12 @@ array_t *array_insert(array_t *array, int index, T data);
 
 /**
  * @brief   Removes the element at the specified position in the cino-array.
- * @note    This function just removes the element from the cino-array. It is caller's
- *          responsibility to free the removed element, if it is a T (generic) cino-array.
  * @param array cino-array
  * @param index index
- * @return  Returns the modified cino-array.
+ * @return  For primitive cino-array, this function returns a wrapper type of the removed
+ *          primitive. It is caller's responsibility to unwrap to get the primitive.
  */
-array_t *array_remove(array_t *array, int index);
+T array_remove(array_t *array, int index);
 
 /**
  * @brief   Get the minimum value in the cino-array.

@@ -399,11 +399,17 @@ void test_array_remove() {
         array_append(arr, wrapper);
         unwrap_int(wrapper);
     }
-    array_remove(arr, 2);
-    array_remove(arr, 1);
-    array_remove(arr, 0);
-    array_remove(arr, 5);
-    array_remove(arr, 5);
+    wrapper_int_t *wrapper_int = NULL;
+    wrapper_int = (wrapper_int_t *)array_remove(arr, 2);
+    unwrap_int(wrapper_int);
+    wrapper_int = (wrapper_int_t *)array_remove(arr, 1);
+    unwrap_int(wrapper_int);
+    wrapper_int = (wrapper_int_t *)array_remove(arr, 0);
+    unwrap_int(wrapper_int);
+    wrapper_int = (wrapper_int_t *)array_remove(arr, 5);
+    unwrap_int(wrapper_int);
+    wrapper_int = (wrapper_int_t *)array_remove(arr, 5);
+    unwrap_int(wrapper_int);
     for (int i = 0; i < 5; i++) {
         wrapper_int_t *wrapper = (wrapper_int_t *)array_get(arr, i);
         assert(unwrap_int(wrapper) == i + 3);
@@ -416,11 +422,17 @@ void test_array_remove() {
         array_append(arr, wrapper);
         unwrap_double(wrapper);
     }
-    array_remove(arr, 2);
-    array_remove(arr, 1);
-    array_remove(arr, 0);
-    array_remove(arr, 5);
-    array_remove(arr, 5);
+    wrapper_double_t *wrapper_double = NULL;
+    wrapper_double = (wrapper_double_t *)array_remove(arr, 2);
+    unwrap_double(wrapper_double);
+    wrapper_double = (wrapper_double_t *)array_remove(arr, 1);
+    unwrap_double(wrapper_double);
+    wrapper_double = (wrapper_double_t *)array_remove(arr, 0);
+    unwrap_double(wrapper_double);
+    wrapper_double = (wrapper_double_t *)array_remove(arr, 5);
+    unwrap_double(wrapper_double);
+    wrapper_double = (wrapper_double_t *)array_remove(arr, 5);
+    unwrap_double(wrapper_double);
     for (int i = 0; i < 5; i++) {
         wrapper_double_t *wrapper = (wrapper_double_t *)array_get(arr, i);
         assert(equal_double(unwrap_double(wrapper), (double)(i + 3)));

@@ -63,10 +63,19 @@ list_t *list_create(const str_t data_type) {
     call_and_return_value_if_fail(list->data_type != NULL, list_destroy(list), NULL);
     str_copy(list->data_type, data_type);
 
-    list->head = NULL;
-    list->tail = NULL;
-    list->size = 0;
+    list->head = (node_t *)calloc(1, sizeof(node_t));
+    call_and_return_value_if_fail(list->head != NULL, list_destroy(list), NULL);
+    list->tail = (node_t *)calloc(1, sizeof(node_t));
+    call_and_return_value_if_fail(list->tail != NULL, list_destroy(list), NULL);
 
+    list->head->data = NULL;
+    list->tail->data = NULL;
+    list->head->prev = NULL;
+    list->tail->next = NULL;
+    list->head->next = list->tail;
+    list->tail->prev = list->head;
+
+    list->size = 0;
     return list;
 }
 
@@ -299,31 +308,237 @@ int list_index_of(const list_t *list, void *context) {
     return -1;
 }
 
+/**
+ * @brief   Inserts the specified element at the beginning of the cino-list.
+ * @param list  cino-list
+ * @param data  For primitive data, a wrapper type of that primitive is needed.
+ *              This function will not unwrap or free the wrapper. It is caller's
+ *              responsibility to unwrap.
+ * @return  Returns the modified cino-list.
+ */
 list_t *list_push_front(list_t *list, T data) {
     return_value_if_fail(list != NULL && data != NULL, list);
 
     node_t *node = (node_t *)calloc(1, sizeof(node_t));
     return_value_if_fail(node != NULL, list);
+    node->data = NULL;
+    node->prev = NULL;
+    node->next = NULL;
 
+    if (str_equal(list->data_type, "int")) {
+        wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
+        node->data = calloc(1, sizeof(int));
+        call_and_return_value_if_fail(node->data != NULL, free(node), list);
+        *(int *)node->data = wrapper_int->data;
+    } else if (str_equal(list->data_type, "double")) {
+        wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
+        node->data = calloc(1, sizeof(double));
+        call_and_return_value_if_fail(node->data != NULL, free(node), list);
+        *(double *)node->data = wrapper_double->data;
+    } else if (str_equal(list->data_type, "T")) {
+        node->data = data;
+    }
+
+    node->prev = list->head;
+    node->next = list->head->next;
+    list->head->next = node;
+    node->next->prev = node;
+
+    list->size++;
     return list;
 }
 
+/**
+ * @brief   Inserts the specified element at the end of the cino-list.
+ * @param list  cino-list
+ * @param data  For primitive data, a wrapper type of that primitive is needed.
+ *              This function will not unwrap or free the wrapper. It is caller's
+ *              responsibility to unwrap.
+ * @return  Returns the modified cino-list.
+ */
 list_t *list_push_back(list_t *list, T data) {
-    return NULL;
+    return_value_if_fail(list != NULL && data != NULL, list);
+
+    node_t *node = (node_t *)calloc(1, sizeof(node_t));
+    return_value_if_fail(node != NULL, list);
+    node->data = NULL;
+    node->prev = NULL;
+    node->next = NULL;
+
+    if (str_equal(list->data_type, "int")) {
+        wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
+        node->data = calloc(1, sizeof(int));
+        call_and_return_value_if_fail(node->data != NULL, free(node), list);
+        *(int *)node->data = wrapper_int->data;
+    } else if (str_equal(list->data_type, "double")) {
+        wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
+        node->data = calloc(1, sizeof(double));
+        call_and_return_value_if_fail(node->data != NULL, free(node), list);
+        *(double *)node->data = wrapper_double->data;
+    } else if (str_equal(list->data_type, "T")) {
+        node->data = data;
+    }
+
+    node->next = list->tail;
+    node->prev = list->tail->prev;
+    list->tail->prev = node;
+    node->prev->next = node;
+
+    list->size++;
+    return list;
 }
 
-list_t *list_pop_front(list_t *list) {
-    return NULL;
+/**
+ * @brief   Removes the first element from the cino-list.
+ * @param list  cino-list
+ * @return  For primitive cino-list, this function returns a wrapper type of the removed
+ *          primitive. It is caller's responsibility to unwrap to get the primitive.
+ */
+T list_pop_front(list_t *list) {
+    return_value_if_fail(list != NULL && !list_is_empty(list), NULL);
+
+    T removed = NULL;
+
+    node_t *node = list->head->next;
+
+    if (str_equal(list->data_type, "int")) {
+        int *data = (int *)node->data;
+        wrapper_int_t *wrapper_int = wrap_int(*data);
+        removed = (T)wrapper_int;
+    } else if (str_equal(list->data_type, "double")) {
+        double *data = (double *)node->data;
+        wrapper_double_t *wrapper_double = wrap_double(*data);
+        removed = (T)wrapper_double;
+    } else if (str_equal(list->data_type, "T")) {
+        removed = node->data;
+    }
+
+    node->prev->next = node->next;
+    node->next->prev = node->prev;
+    node->prev = NULL;
+    node->next = NULL;
+    free(node);
+    node = NULL;
+
+    list->size--;
+    return removed;
 }
 
-list_t *list_pop_back(list_t *list) {
-    return NULL;
+/**
+ * @brief   Removes the last element from the cino-list.
+ * @param list  cino-list
+ * @return  For primitive cino-list, this function returns a wrapper type of the removed
+ *          primitive. It is caller's responsibility to unwrap to get the primitive.
+ */
+T list_pop_back(list_t *list) {
+    return_value_if_fail(list != NULL && !list_is_empty(list), NULL);
+
+    T removed = NULL;
+
+    node_t *node = list->tail->prev;
+
+    if (str_equal(list->data_type, "int")) {
+        int *data = (int *)node->data;
+        wrapper_int_t *wrapper_int = wrap_int(*data);
+        removed = (T)wrapper_int;
+    } else if (str_equal(list->data_type, "double")) {
+        double *data = (double *)node->data;
+        wrapper_double_t *wrapper_double = wrap_double(*data);
+        removed = (T)wrapper_double;
+    } else if (str_equal(list->data_type, "T")) {
+        removed = node->data;
+    }
+
+    node->prev->next = node->next;
+    node->next->prev = node->prev;
+    node->prev = NULL;
+    node->next = NULL;
+    free(node);
+    node = NULL;
+
+    list->size--;
+    return removed;
 }
 
+/**
+ * @brief   Inserts the specified element at the indexed location of the cino-list.
+ * @param list  cino-list
+ * @param data  For primitive data, a wrapper type of that primitive is needed.
+ *              This function will not unwrap or free the wrapper. It is caller's
+ *              responsibility to unwrap.
+ * @return  Returns the modified cino-list.
+ */
 list_t *list_insert(list_t *list, int index, T data) {
-    return NULL;
+    return_value_if_fail(list != NULL && index >= 0 && index <= list->size && data != NULL, list);
+
+    node_t *node = list_get_node(list, index);
+    if (!node) {
+        list_push_back(list, data);
+        list->size++;
+        return list;
+    }
+
+    node_t *new_node = (node_t *)calloc(1, sizeof(node_t));
+    return_value_if_fail(new_node != NULL, list);
+    new_node->data = NULL;
+    new_node->prev = NULL;
+    new_node->next = NULL;
+
+    if (str_equal(list->data_type, "int")) {
+        wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
+        new_node->data = calloc(1, sizeof(int));
+        call_and_return_value_if_fail(new_node->data != NULL, free(new_node), list);
+        *(int *)new_node->data = wrapper_int->data;
+    } else if (str_equal(list->data_type, "double")) {
+        wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
+        new_node->data = calloc(1, sizeof(double));
+        call_and_return_value_if_fail(new_node->data != NULL, free(new_node), list);
+        *(double *)new_node->data = wrapper_double->data;
+    } else if (str_equal(list->data_type, "T")) {
+        new_node->data = data;
+    }
+
+    new_node->prev = node->prev;
+    new_node->next = node;
+    new_node->prev->next = new_node;
+    new_node->next->prev = new_node;
+
+    list->size++;
+    return list;
 }
 
-list_t *list_remove(list_t *list, int index, T data) {
-    return NULL;
+/**
+ * @brief   Removes the indexed element from the cino-list.
+ * @param list  cino-list
+ * @return  For primitive cino-list, this function returns a wrapper type of the removed
+ *          primitive. It is caller's responsibility to unwrap to get the primitive.
+ */
+T list_remove(list_t *list, int index, T data) {
+    return_value_if_fail(list != NULL && index >= 0 && index < list->size && !list_is_empty(list), NULL);
+
+    T removed = NULL;
+
+    node_t *node = list_get_node(list, index);
+
+    if (str_equal(list->data_type, "int")) {
+        int *data = (int *)node->data;
+        wrapper_int_t *wrapper_int = wrap_int(*data);
+        removed = (T)wrapper_int;
+    } else if (str_equal(list->data_type, "double")) {
+        double *data = (double *)node->data;
+        wrapper_double_t *wrapper_double = wrap_double(*data);
+        removed = (T)wrapper_double;
+    } else if (str_equal(list->data_type, "T")) {
+        removed = node->data;
+    }
+
+    node->prev->next = node->next;
+    node->next->prev = node->prev;
+    node->prev = NULL;
+    node->next = NULL;
+    free(node);
+    node = NULL;
+
+    list->size--;
+    return removed;
 }

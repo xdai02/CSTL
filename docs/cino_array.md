@@ -203,7 +203,7 @@ array_t *array_insert(array_t *array, int index, T data);
 - 函数原型：
 
 ```c
-array_t *array_remove(array_t *array, int index);
+T array_remove(array_t *array, int index);
 ```
 
 - 功能：删除cino-array中指定下标元素。
@@ -214,9 +214,9 @@ array_t *array_remove(array_t *array, int index);
 | array | cino-array |
 | index | 删除下标   |
 
-- 返回值：修改后的cino-array。
+- 返回值：被删除的元素。
 
-> 对于T（泛型）cino-array，该函数仅负责将元素从cino-array移除，调用者需要自行释放被删除元素。
+> 对于基本数据类型，此函数会返回该数据类型的包装类型，调用者需要自行拆箱获取元素值。
 
 ---
 
@@ -238,7 +238,7 @@ T array_min(const array_t *array, compare_t compare);
 
 - 返回值：cino-array最小值。
 
-> 对于基本数据类型cino-array，该函数会返回最小值的包装类型，调用者需要自行拆箱。
+> 对于基本数据类型cino-array，此函数会返回最小值的包装类型，调用者需要自行拆箱。
 
 ---
 
@@ -260,7 +260,7 @@ T array_max(const array_t *array, compare_t compare);
 
 - 返回值：cino-array最大值。
 
-> 对于基本数据类型cino-array，该函数会返回最大值的包装类型，调用者需要自行拆箱。
+> 对于基本数据类型cino-array，此函数会返回最大值的包装类型，调用者需要自行拆箱。
 
 ---
 

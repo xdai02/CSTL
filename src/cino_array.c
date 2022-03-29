@@ -14,8 +14,8 @@ typedef struct iterator_t {
  ****************************************/
 
 typedef struct array_t {
-    void *arr;  // primitive cino-array
-    T *t_arr;   // generic cino-array
+    T arr;     // primitive cino-array
+    T *t_arr;  // generic cino-array
     str_t data_type;
     size_t size;
     size_t capacity;
@@ -224,12 +224,11 @@ void array_set(array_t *array, int index, T data) {
  *              - STATUS_OK             : expand or shrink succeed
  *              - STATUS_BAD_PARAMETERS : invalid parameters
  *              - STATUS_OUT_OF_MEMORY  : memory allocation failed
- *              - STATUS_UNDEFINED      : data type undefined
  */
 static status_t array_resize(array_t *array) {
     return_value_if_fail(array != NULL, STATUS_BAD_PARAMETERS);
 
-    void *p = NULL;
+    T p = NULL;
 
     // first allocation
     if (array->capacity == 0) {
@@ -244,8 +243,6 @@ static status_t array_resize(array_t *array) {
         } else if (str_equal(array->data_type, "T")) {
             array->t_arr = calloc(array->capacity, sizeof(T));
             p = array->t_arr;
-        } else {
-            return STATUS_UNDEFINED;
         }
 
         return_value_if_fail(p != NULL, STATUS_OUT_OF_MEMORY);
@@ -268,8 +265,6 @@ static status_t array_resize(array_t *array) {
             p = realloc(array->t_arr, sizeof(T) * array->capacity * EXPANSION);
             return_value_if_fail(p != NULL, STATUS_OUT_OF_MEMORY);
             array->t_arr = p;
-        } else {
-            return STATUS_UNDEFINED;
         }
         array->capacity *= EXPANSION;
     }
@@ -283,8 +278,6 @@ static status_t array_resize(array_t *array) {
                 array->arr = realloc(array->arr, sizeof(double) * capacity);
             } else if (str_equal(array->data_type, "T")) {
                 array->t_arr = realloc(array->t_arr, sizeof(T) * capacity);
-            } else {
-                return STATUS_UNDEFINED;
             }
             array->capacity = capacity;
         }
@@ -371,14 +364,27 @@ array_t *array_insert(array_t *array, int index, T data) {
 
 /**
  * @brief   Removes the element at the specified position in the cino-array.
- * @note    This function just removes the element from the cino-array. It is caller's
- *          responsibility to free the removed element, if it is a T (generic) cino-array.
  * @param array cino-array
  * @param index index
- * @return  Returns the modified cino-array.
+ * @return  For primitive cino-array, this function returns a wrapper type of the removed
+ *          primitive. It is caller's responsibility to unwrap to get the primitive.
  */
-array_t *array_remove(array_t *array, int index) {
+T array_remove(array_t *array, int index) {
     return_value_if_fail(array != NULL && index >= 0 && index < array->size, array);
+
+    T removed = NULL;
+
+    if (str_equal(array->data_type, "int")) {
+        int *arr = (int *)array->arr;
+        wrapper_int_t *wrapper_int = wrap_int(arr[index]);
+        removed = (T)wrapper_int;
+    } else if (str_equal(array->data_type, "double")) {
+        double *arr = (double *)array->arr;
+        wrapper_double_t *wrapper_double = wrap_double(arr[index]);
+        removed = (T)wrapper_double;
+    } else if (str_equal(array->data_type, "T")) {
+        removed = array->t_arr[index];
+    }
 
     for (int i = index + 1; i < array->size; i++) {
         if (str_equal(array->data_type, "int")) {
@@ -391,10 +397,11 @@ array_t *array_remove(array_t *array, int index) {
             array->t_arr[i - 1] = array->t_arr[i];
         }
     }
-    array->size--;
 
+    array->size--;
     array_resize(array);
-    return array;
+
+    return removed;
 }
 
 /**
@@ -574,6 +581,7 @@ int array_count(const array_t *array, void *context) {
     return_value_if_fail(array != NULL && context != NULL, 0);
 
     int cnt = 0;
+
     for (int i = 0; i < array->size; i++) {
         if (str_equal(array->data_type, "int")) {
             wrapper_int_t *wrapper_int = (wrapper_int_t *)context;
@@ -658,7 +666,7 @@ array_t *array_swap(array_t *array, int index1, int index2) {
  *              - positive if the first value is greater than the second value
  *              - negative if the first value is less than the second value
  */
-static int cmp_int_asc(const void *data1, const void *data2) {
+static int cmp_int_asc(const T data1, const T data2) {
     int *p1 = (int *)data1;
     int *p2 = (int *)data2;
     return *p1 - *p2;
@@ -673,7 +681,7 @@ static int cmp_int_asc(const void *data1, const void *data2) {
  *              - positive if the first value is less than the second value
  *              - negative if the first value is greater than the second value
  */
-static int cmp_int_desc(const void *data1, const void *data2) {
+static int cmp_int_desc(const T data1, const T data2) {
     int *p1 = (int *)data1;
     int *p2 = (int *)data2;
     return *p2 - *p1;
@@ -688,7 +696,7 @@ static int cmp_int_desc(const void *data1, const void *data2) {
  *              - positive if the first value is greater than the second value
  *              - negative if the first value is less than the second value
  */
-static int cmp_double_asc(const void *data1, const void *data2) {
+static int cmp_double_asc(const T data1, const T data2) {
     double *p1 = (double *)data1;
     double *p2 = (double *)data2;
     return *p1 > *p2 ? 1 : -1;
@@ -703,7 +711,7 @@ static int cmp_double_asc(const void *data1, const void *data2) {
  *              - positive if the first value is less than the second value
  *              - negative if the first value is greater than the second value
  */
-static int cmp_double_desc(const void *data1, const void *data2) {
+static int cmp_double_desc(const T data1, const T data2) {
     double *p1 = (double *)data1;
     double *p2 = (double *)data2;
     return *p2 > *p1 ? 1 : -1;
@@ -717,18 +725,18 @@ static int cmp_double_desc(const void *data1, const void *data2) {
  * @param compare   user-defined callback function for comparison
  * @return  Returns the index of the pivot.
  */
-static int quick_sort_partition(void **arr, int start, int end, compare_t compare) {
+static int quick_sort_partition(T *arr, int start, int end, compare_t compare) {
     int i = start - 1;
-    void *pivot = arr[end];
+    T pivot = arr[end];
 
     for (int j = start; j < end; j++) {
         if (compare(arr[j], pivot) < 0) {
             i++;
-            swap(arr[i], arr[j], void *);
+            swap(arr[i], arr[j], T);
         }
     }
 
-    swap(arr[i + 1], arr[end], void *);
+    swap(arr[i + 1], arr[end], T);
     return i + 1;
 }
 
@@ -738,7 +746,7 @@ static int quick_sort_partition(void **arr, int start, int end, compare_t compar
  * @param size      number of elements in the array
  * @param compare   user-defined callback function for comparison
  */
-static void quick_sort(void **arr, size_t size, compare_t compare) {
+static void quick_sort(T *arr, size_t size, compare_t compare) {
     int stack[size];
     memset(stack, 0x00, size * sizeof(int));
 
@@ -843,11 +851,11 @@ iter_t array_iter_next(array_t *array) {
         if (str_equal(array->data_type, "int")) {
             iter = (byte_t *)array->iterator->iter;
             iter += sizeof(int);
-            array->iterator->iter = (void *)iter;
+            array->iterator->iter = (iter_t)iter;
         } else if (str_equal(array->data_type, "double")) {
             iter = (byte_t *)array->iterator->iter;
             iter += sizeof(double);
-            array->iterator->iter = (void *)iter;
+            array->iterator->iter = (iter_t)iter;
         } else if (str_equal(array->data_type, "T")) {
             array->iterator->iter_index++;
             array->iterator->iter = array->t_arr[array->iterator->iter_index];

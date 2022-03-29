@@ -108,16 +108,58 @@ void list_set(list_t *list, int index, T data);
  */
 int list_index_of(const list_t *list, void *context);
 
+/**
+ * @brief   Inserts the specified element at the beginning of the cino-list.
+ * @param list  cino-list
+ * @param data  For primitive data, a wrapper type of that primitive is needed.
+ *              This function will not unwrap or free the wrapper. It is caller's
+ *              responsibility to unwrap.
+ * @return  Returns the modified cino-list.
+ */
 list_t *list_push_front(list_t *list, T data);
 
+/**
+ * @brief   Inserts the specified element at the end of the cino-list.
+ * @param list  cino-list
+ * @param data  For primitive data, a wrapper type of that primitive is needed.
+ *              This function will not unwrap or free the wrapper. It is caller's
+ *              responsibility to unwrap.
+ * @return  Returns the modified cino-list.
+ */
 list_t *list_push_back(list_t *list, T data);
 
-list_t *list_pop_front(list_t *list);
+/**
+ * @brief   Removes the first element from the cino-list.
+ * @param list  cino-list
+ * @return  For primitive cino-list, this function returns a wrapper type of the removed
+ *          primitive. It is caller's responsibility to unwrap to get the primitive.
+ */
+T list_pop_front(list_t *list);
 
-list_t *list_pop_back(list_t *list);
+/**
+ * @brief   Removes the last element from the cino-list.
+ * @param list  cino-list
+ * @return  For primitive cino-list, this function returns a wrapper type of the removed
+ *          primitive. It is caller's responsibility to unwrap to get the primitive.
+ */
+T list_pop_back(list_t *list);
 
+/**
+ * @brief   Inserts the specified element at the indexed location of the cino-list.
+ * @param list  cino-list
+ * @param data  For primitive data, a wrapper type of that primitive is needed.
+ *              This function will not unwrap or free the wrapper. It is caller's
+ *              responsibility to unwrap.
+ * @return  Returns the modified cino-list.
+ */
 list_t *list_insert(list_t *list, int index, T data);
 
-list_t *list_remove(list_t *list, int index, T data);
+/**
+ * @brief   Removes the indexed element from the cino-list.
+ * @param list  cino-list
+ * @return  For primitive cino-list, this function returns a wrapper type of the removed
+ *          primitive. It is caller's responsibility to unwrap to get the primitive.
+ */
+T list_remove(list_t *list, int index, T data);
 
 #endif
