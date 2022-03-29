@@ -2,12 +2,12 @@
  * Module   :   cino_util
  * Function :   Generic utilities and interfaces
  * Category :
+ *              - Type Definition
  *              - status_t
  *              - logger_t
  *              - Numeric Operation
  *              - Validity Check
  *              - Array Operation
- *              - Dynamic Memory Allocation
  *              - Type Conversion
  *              - Wrapper
  *              - String Operation
@@ -23,6 +23,10 @@
 #include <ctype.h>
 #include <math.h>
 
+/****************************************
+ *            Type Definition
+ ****************************************/
+
 #define str_t char *  // str_t == char *
 
 typedef char byte_t;  // byte_t == char
@@ -34,7 +38,7 @@ typedef char byte_t;  // byte_t == char
 /**
  * @brief   User-defined comparison function interface.
  * @param data1 pointer to the first data
- * @param data1 pointer to the second data
+ * @param data2 pointer to the second data
  * @return  Returns
  *              - 0 if two values are equal
  *              - positive if the first value is greater than the second value
@@ -63,6 +67,7 @@ typedef enum status_t {
     STATUS_BAD_PARAMETERS,
     STATUS_IO_ERROR,
     STATUS_OUT_OF_BOUNDS,
+    STATUS_NOT_MODIFIED,
     STATUS_UNDEFINED,
 } status_t;
 
@@ -198,42 +203,18 @@ bool equal_double(double x, double y);
 #define array_len(arr) ((int)(sizeof(arr) / sizeof((arr)[0])))
 
 /****************************************
- *      Dynamic Memory Management
- ****************************************/
-
-/**
- * @brief   Dynamically allocate memory of the specified byte size.
- * @note    It is caller's responsibility to `free()` after using it.
- * @param size  requested memory size in bytes
- * @return  Returns a pointer to the beginning of the block. If the function failed
- *          to allocate the requested block of memory, a null pointer is returned.
- */
-void *cino_alloc(size_t size);
-
-/**
- * @brief   Changes the size of the memory block pointed to by given pointer.
- * @note    It is caller's responsibility to `free()` after using it.
- * @param p         pointer to a memory block previously allocated
- * @param old_size  old size for the memory block in bytes
- * @param new_size  new size for the memory block in bytes
- * @return  Returns a pointer to the beginning of the block. If the function failed
- *          to allocate the requested block of memory, a null pointer is returned.
- */
-void *cino_realloc(void *p, size_t old_size, size_t new_size);
-
-/****************************************
  *            Type Conversion
  ****************************************/
 
 /**
  * @brief   Convert string to boolean.
  * @param str   string
- * @return  Returns false if:
+ * @return  Returns `false` if:
  *              1. str == NULL
  *              2. strlen(str) == 0
  *              3. str_equal_ignore_case(str, "false")
- *              4. a string of zeros
- *          Otherwise return true.
+ *              4. a string of zeroes
+ *          Otherwise returns `true`.
  */
 bool str_to_bool(const str_t str);
 
@@ -539,7 +520,7 @@ str_t str_remove(str_t str, const str_t substr);
  * @param str   string
  * @param c     char
  * @return  Returns the index within the string of the first occurrence of the specified
- *          character, or -1 if the character is not found.
+ *          character, or `-1` if the character is not found.
  */
 int str_index_of_char(const str_t str, char c);
 
@@ -550,7 +531,7 @@ int str_index_of_char(const str_t str, char c);
  * @param c     char
  * @param from  start index for searching
  * @return  Returns the index within the string of the first occurrence of the specified
- *          character, starting the search at the specified index, or -1 if the
+ *          character, starting the search at the specified index, or `-1` if the
  *          character is not found.
  */
 int str_index_of_char_from(const str_t str, char c, int from);
@@ -560,7 +541,7 @@ int str_index_of_char_from(const str_t str, char c, int from);
  * @param str       string
  * @param substr    substring
  * @return  Returns the index within the string of the first occurrence of the specified
- *          substring, or -1 if the substring is not found.
+ *          substring, or `-1` if the substring is not found.
  */
 int str_index_of_substring(const str_t str, const str_t substr);
 
@@ -571,7 +552,7 @@ int str_index_of_substring(const str_t str, const str_t substr);
  * @param substr    substring
  * @param from      start index for searching
  * @return  Returns the index within the string of the first occurrence of the specified
- *          substring, starting the search at the specified index, or -1 if the
+ *          substring, starting the search at the specified index, or `-1` if the
  *          substring is not found.
  */
 int str_index_of_substring_from(const str_t str, const str_t substr, int from);
@@ -581,7 +562,7 @@ int str_index_of_substring_from(const str_t str, const str_t substr, int from);
  * @param str   string
  * @param c     char
  * @return  Returns the index within the string of the last occurrence of the specified
- *          character, or -1 if the character is not found.
+ *          character, or `-1` if the character is not found.
  */
 int str_last_index_of_char(const str_t str, char c);
 
@@ -592,7 +573,7 @@ int str_last_index_of_char(const str_t str, char c);
  * @param c     char
  * @param from  start index for searching
  * @return  Returns the index within the string of the last occurrence of the specified
- *          character, searching backward starting at the specified index, or -1 if the
+ *          character, searching backward starting at the specified index, or `-1` if the
  *          character is not found.
  */
 int str_last_index_of_char_from(const str_t str, char c, int from);
@@ -602,7 +583,7 @@ int str_last_index_of_char_from(const str_t str, char c, int from);
  * @param str       string
  * @param substr    substring
  * @return  Returns the index within the string of the last occurrence of the specified
- *          substring, or -1 if the substring is not found.
+ *          substring, or `-1` if the substring is not found.
  */
 int str_last_index_of_substring(const str_t str, const str_t substr);
 
@@ -613,7 +594,7 @@ int str_last_index_of_substring(const str_t str, const str_t substr);
  * @param substr    substring
  * @param from  start index for searching
  * @return  Returns the index within the string of the last occurrence of the specified
- *          substring, searching backward starting at the specified index, or -1 if the
+ *          substring, searching backward starting at the specified index, or `-1` if the
  *          substring is not found.
  */
 int str_last_index_of_substring_from(const str_t str, const str_t substr, int from);

@@ -151,109 +151,6 @@ void test_array_len() {
     assert(array_len(arr5) == 6);
 }
 
-void test_cino_alloc() {
-    int *arr1 = (int *)cino_alloc(20 * sizeof(int));
-    for (int i = 0; i < 20; i++) {
-        arr1[i] = i;
-        assert(arr1[i] == i);
-    }
-    free(arr1);
-    arr1 = NULL;
-
-    str_t p1 = (str_t)cino_alloc(6 * sizeof(char));
-    memcpy(p1, "Hello", strlen("Hello"));
-    assert(str_equal(p1, "Hello"));
-    free(p1);
-    p1 = NULL;
-
-    str_t *p2 = (str_t *)cino_alloc(5 * sizeof(str_t));
-    for (int i = 0; i < 5; i++) {
-        p2[i] = (str_t)cino_alloc(10 * sizeof(char));
-        snprintf(p2[i], 10, "Test-%d", i);
-        char real[10] = {0};
-        snprintf(real, 10, "Test-%d", i);
-        assert(str_equal(p2[i], real));
-    }
-
-    for (int i = 0; i < 5; i++) {
-        free(p2[i]);
-        p2[i] = NULL;
-    }
-
-    free(p2);
-    p2 = NULL;
-
-    typedef struct test_t {
-        int a;
-        str_t p;
-    } test_t;
-
-    test_t *test = (test_t *)cino_alloc(sizeof(test_t));
-    test->a = 123;
-    test->p = (char *)cino_alloc(16 * sizeof(char));
-    memcpy(test->p, "Hello World!", strlen("Hello World!"));
-
-    assert(test->a == 123);
-    assert(str_equal(test->p, "Hello World!"));
-
-    free(test->p);
-    test->p = NULL;
-    free(test);
-    test = NULL;
-}
-
-void test_cino_realloc() {
-    int *arr1 = (int *)cino_alloc(20 * sizeof(int));
-    for (int i = 0; i < 20; i++) {
-        arr1[i] = i;
-        assert(arr1[i] == i);
-    }
-    arr1 = (int *)cino_realloc(arr1, 20 * sizeof(int), 40 * sizeof(int));
-    for (int i = 0; i < 20; i++) {
-        assert(arr1[i] == i);
-    }
-    for (int i = 20; i < 40; i++) {
-        assert(arr1[i] == 0);
-    }
-    free(arr1);
-    arr1 = NULL;
-
-    float *arr2 = (float *)cino_realloc(NULL, 0, 10 * sizeof(float));
-    assert(arr2);
-    free(arr2);
-    arr2 = NULL;
-
-    str_t p1 = (str_t)cino_alloc(6 * sizeof(char));
-    memcpy(p1, "Hello", strlen("Hello"));
-    assert(str_equal(p1, "Hello"));
-    p1 = (str_t)cino_realloc(p1, 6, 12 * sizeof(char));
-    assert(str_equal(p1, "Hello"));
-    free(p1);
-    p1 = NULL;
-
-    typedef struct test_t {
-        int a;
-        str_t p;
-    } test_t;
-
-    test_t *test = (test_t *)cino_alloc(sizeof(test_t));
-    test->a = 123;
-    test->p = (str_t)cino_alloc(16 * sizeof(char));
-    memcpy(test->p, "Hello World!", strlen("Hello World!"));
-
-    assert(test->a == 123);
-    assert(str_equal(test->p, "Hello World!"));
-    test->p = (str_t)cino_realloc(test->p, 16, 8);
-    assert(test->a == 123);
-    test->p[7] = '\0';
-    assert(str_equal(test->p, "Hello W"));
-
-    free(test->p);
-    test->p = NULL;
-    free(test);
-    test = NULL;
-}
-
 void test_str_to_bool() {
     assert(!str_to_bool(NULL));
     assert(!str_to_bool(""));
@@ -1218,9 +1115,9 @@ void test_str_last_index_of_substring_from() {
 void test_str_split() {
     const int ITEM_NUM = 10;
     const int ITEM_MAX_LEN = 64;
-    str_t *items = (str_t *)cino_alloc(ITEM_NUM * sizeof(str_t));
+    str_t *items = (str_t *)calloc(ITEM_NUM, sizeof(str_t));
     for (int i = 0; i < ITEM_NUM; i++) {
-        items[i] = (str_t)cino_alloc((ITEM_MAX_LEN + 1) * sizeof(char));
+        items[i] = (str_t)calloc(ITEM_MAX_LEN + 1, sizeof(char));
     }
 
     int cnt = 0;

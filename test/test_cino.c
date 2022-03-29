@@ -17,9 +17,6 @@ void test_cino_utils() {
 
     test_array_len();
 
-    test_cino_alloc();
-    test_cino_realloc();
-
     test_str_to_bool();
     test_bool_to_str();
     test_str_to_char();
@@ -65,7 +62,7 @@ void test_cino_utils() {
     test_str_last_index_of_substring_from();
     test_str_split();
 
-    printf("[PASS] test_cino_utils\n");
+    LOGGER(INFO, "[PASS] test_cino_utils");
 }
 
 void test_cino_string() {
@@ -92,7 +89,7 @@ void test_cino_string() {
     test_string_replace();
     test_string_remove();
 
-    printf("[PASS] test_cino_string\n");
+    LOGGER(INFO, "[PASS] test_cino_string");
 }
 
 void test_cino_array() {
@@ -118,11 +115,11 @@ void test_cino_array() {
     test_array_iter_has_next();
     test_array_iter_next();
 
-    printf("[PASS] test_cino_array\n");
+    LOGGER(INFO, "[PASS] test_cino_array");
 }
 
 void test_cino_list() {
-    printf("[PASS] test_cino_list\n");
+    LOGGER(INFO, "[PASS] test_cino_list");
 }
 
 int main(int argc, char *argv[]) {

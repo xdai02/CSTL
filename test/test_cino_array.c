@@ -119,7 +119,7 @@ void test_array_clear() {
     arr = array_create("T");
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
-    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * 5);
+    test_t *test = (test_t *)calloc(5, sizeof(test_t));
     for (int i = 0; i < 5; i++) {
         test[i].a = i;
         char str[8] = {0};
@@ -163,7 +163,7 @@ void test_array_get() {
     array_destroy(arr);
 
     arr = array_create("T");
-    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * 5);
+    test_t *test = (test_t *)calloc(5, sizeof(test_t));
     for (int i = 0; i < 5; i++) {
         test[i].a = i;
         char str[8] = {0};
@@ -229,7 +229,7 @@ void test_array_set() {
     array_destroy(arr);
 
     arr = array_create("T");
-    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * 3);
+    test_t *test = (test_t *)calloc(3, sizeof(test_t));
     for (int i = 0; i < 3; i++) {
         test[i].a = i;
         char str[8] = {0};
@@ -286,7 +286,7 @@ void test_array_append() {
     array_destroy(arr);
 
     arr = array_create("T");
-    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * 5);
+    test_t *test = (test_t *)calloc(5, sizeof(test_t));
     for (int i = 0; i < 5; i++) {
         test[i].a = i;
         char str[8] = {0};
@@ -362,7 +362,7 @@ void test_array_insert() {
     array_destroy(arr);
 
     arr = array_create("T");
-    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * 5);
+    test_t *test = (test_t *)calloc(5, sizeof(test_t));
     int arr3[] = {1, 4, 3, 2, 0};
     int len3 = array_len(arr3);
 
@@ -428,7 +428,7 @@ void test_array_remove() {
     array_destroy(arr);
 
     arr = array_create("T");
-    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * 10);
+    test_t *test = (test_t *)calloc(10, sizeof(test_t));
     for (int i = 0; i < 10; i++) {
         test[i].a = i;
         char str[8] = {0};
@@ -491,7 +491,7 @@ void test_array_min() {
     array_destroy(arr);
 
     arr = array_create("T");
-    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * len1);
+    test_t *test = (test_t *)calloc(len1, sizeof(test_t));
     for (int i = 0; i < len1; i++) {
         test[i].a = arr1[i];
         char str[8] = {0};
@@ -536,7 +536,7 @@ void test_array_max() {
     array_destroy(arr);
 
     arr = array_create("T");
-    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * len1);
+    test_t *test = (test_t *)calloc(len1, sizeof(test_t));
     for (int i = 0; i < len1; i++) {
         test[i].a = arr1[i];
         char str[8] = {0};
@@ -593,7 +593,7 @@ void test_array_index_of() {
     array_destroy(arr);
 
     arr = array_create("T");
-    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * len1);
+    test_t *test = (test_t *)calloc(len1, sizeof(test_t));
     for (int i = 0; i < len1; i++) {
         test[i].a = arr1[i];
         char str[8] = {0};
@@ -640,7 +640,7 @@ void test_array_last_index_of() {
     array_destroy(arr);
 
     arr = array_create("T");
-    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * len1);
+    test_t *test = (test_t *)calloc(len1, sizeof(test_t));
     for (int i = 0; i < len1; i++) {
         test[i].a = arr1[i];
         char str[8] = {0};
@@ -687,7 +687,7 @@ void test_array_count() {
     array_destroy(arr);
 
     arr = array_create("T");
-    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * len1);
+    test_t *test = (test_t *)calloc(len1, sizeof(test_t));
     for (int i = 0; i < len1; i++) {
         test[i].a = arr1[i];
         char str[8] = {0};
@@ -729,7 +729,7 @@ void test_array_reverse() {
     array_destroy(arr);
 
     arr = array_create("T");
-    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * 10);
+    test_t *test = (test_t *)calloc(10, sizeof(test_t));
     for (int i = 0; i < 10; i++) {
         test[i].a = i;
         char str[8] = {0};
@@ -790,7 +790,7 @@ void test_array_swap() {
     array_destroy(arr);
 
     arr = array_create("T");
-    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * 10);
+    test_t *test = (test_t *)calloc(10, sizeof(test_t));
     for (int i = 0; i < 10; i++) {
         test[i].a = i;
         char str[8] = {0};
@@ -875,7 +875,7 @@ void test_array_sort() {
     array_destroy(arr);
 
     arr = array_create("T");
-    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * len1);
+    test_t *test = (test_t *)calloc(len1, sizeof(test_t));
     for (int i = 0; i < len1; i++) {
         test[i].a = arr1[i];
         char str[8] = {0};
@@ -929,7 +929,7 @@ void test_array_iter() {
     array_destroy(arr);
 
     arr = array_create("T");
-    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * 5);
+    test_t *test = (test_t *)calloc(5, sizeof(test_t));
     for (int i = 0; i < 5; i++) {
         test[i].a = i;
         array_append(arr, &test[i]);
@@ -969,7 +969,7 @@ void test_array_iter_has_next() {
     array_destroy(arr);
 
     arr = array_create("T");
-    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * 5);
+    test_t *test = (test_t *)calloc(5, sizeof(test_t));
     for (int i = 0; i < 5; i++) {
         test[i].a = i;
         array_append(arr, &test[i]);
@@ -1017,7 +1017,7 @@ void test_array_iter_next() {
     array_destroy(arr);
 
     arr = array_create("T");
-    test_t *test = (test_t *)cino_alloc(sizeof(test_t) * 5);
+    test_t *test = (test_t *)calloc(5, sizeof(test_t));
     for (int i = 0; i < 5; i++) {
         test[i].a = i;
         char str[8] = {0};

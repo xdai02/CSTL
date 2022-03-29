@@ -1,55 +1,6 @@
 #include "cino_utils.h"
 
 /****************************************
- *      Dynamic Memory Management
- ****************************************/
-
-/**
- * @brief   Dynamically allocate memory of the specified byte size.
- * @note    It is caller's responsibility to `free()` after using it.
- * @param size  requested memory size in bytes
- * @return  Returns a pointer to the beginning of the block. If the function failed
- *          to allocate the requested block of memory, a null pointer is returned.
- */
-void *cino_alloc(size_t size) {
-    void *new_mem = NULL;
-    if (size <= 0 || !(new_mem = calloc(1, size))) {
-        return NULL;
-    }
-    return new_mem;
-}
-
-/**
- * @brief   Changes the size of the memory block pointed to by given pointer.
- * @note    It is caller's responsibility to `free()` after using it.
- * @param p         pointer to a memory block previously allocated
- * @param old_size  old size for the memory block in bytes
- * @param new_size  new size for the memory block in bytes
- * @return  Returns a pointer to the beginning of the block. If the function failed
- *          to allocate the requested block of memory, a null pointer is returned.
- */
-void *cino_realloc(void *p, size_t old_size, size_t new_size) {
-    void *new_mem = NULL;
-
-    if (old_size < 0 || new_size <= 0 || !(new_mem = calloc(1, new_size))) {
-        if (p) {
-            free(p);
-            p = NULL;
-        }
-        return NULL;
-    }
-
-    if (!p && old_size == 0) {
-        return new_mem;
-    }
-
-    memcpy(new_mem, p, min(old_size, new_size));
-    free(p);
-    p = new_mem;
-    return new_mem;
-}
-
-/****************************************
  *          Numeric Operation
  ****************************************/
 
@@ -70,12 +21,12 @@ bool equal_double(double x, double y) {
 /**
  * @brief   Convert string to boolean.
  * @param str   string
- * @return  Returns false if:
+ * @return  Returns `false` if:
  *              1. str == NULL
  *              2. strlen(str) == 0
  *              3. str_equal_ignore_case(str, "false")
- *              4. a string of zeros
- *          Otherwise return true.
+ *              4. a string of zeroes
+ *          Otherwise returns `true`.
  */
 bool str_to_bool(const str_t str) {
     if (!str || strlen(str) == 0 || str_equal_ignore_case(str, "false")) {
@@ -121,7 +72,7 @@ char str_to_char(const str_t str) {
  * @return  Returns the string after conversion.
  */
 str_t char_to_str(char c, str_t str, size_t str_size) {
-    return_value_if_fail(str != NULL && str_size > 0, NULL);
+    return_value_if_fail(str != NULL && str_size >= 2, NULL);
     memset(str, '\0', str_size);
     str[0] = c;
     str[1] = '\0';
@@ -202,7 +153,7 @@ str_t double_to_str(double val, int precision, str_t str, size_t str_size) {
  * @return  Returns the wrapper type for int, or `NULL` if fails.
  */
 wrapper_int_t *wrap_int(int data) {
-    wrapper_int_t *wrapper = (wrapper_int_t *)cino_alloc(sizeof(wrapper_int_t));
+    wrapper_int_t *wrapper = (wrapper_int_t *)calloc(1, sizeof(wrapper_int_t));
     return_value_if_fail(wrapper != NULL, NULL);
     wrapper->data = data;
     return wrapper;
@@ -230,7 +181,7 @@ int unwrap_int(wrapper_int_t *wrapper) {
  * @return  Returns the wrapper type for double, or `NULL` if fails.
  */
 wrapper_double_t *wrap_double(double data) {
-    wrapper_double_t *wrapper = (wrapper_double_t *)cino_alloc(sizeof(wrapper_double_t));
+    wrapper_double_t *wrapper = (wrapper_double_t *)calloc(1, sizeof(wrapper_double_t));
     return_value_if_fail(wrapper != NULL, NULL);
     wrapper->data = data;
     return wrapper;
@@ -645,7 +596,7 @@ str_t str_remove(str_t str, const str_t substr) {
  * @param str   string
  * @param c     char
  * @return  Returns the index within the string of the first occurrence of the specified
- *          character, or -1 if the character is not found.
+ *          character, or `-1` if the character is not found.
  */
 int str_index_of_char(const str_t str, char c) {
     return_value_if_fail(str != NULL, -1);
@@ -673,7 +624,7 @@ int str_index_of_char(const str_t str, char c) {
  * @param c     char
  * @param from  start index for searching
  * @return  Returns the index within the string of the first occurrence of the specified
- *          character, starting the search at the specified index, or -1 if the
+ *          character, starting the search at the specified index, or `-1` if the
  *          character is not found.
  */
 int str_index_of_char_from(const str_t str, char c, int from) {
@@ -702,7 +653,7 @@ int str_index_of_char_from(const str_t str, char c, int from) {
  * @param str       string
  * @param substr    substring
  * @return  Returns the index within the string of the first occurrence of the specified
- *          substring, or -1 if the substring is not found.
+ *          substring, or `-1` if the substring is not found.
  */
 int str_index_of_substring(const str_t str, const str_t substr) {
     return_value_if_fail(str != NULL && substr != NULL, -1);
@@ -726,7 +677,7 @@ int str_index_of_substring(const str_t str, const str_t substr) {
  * @param substr    substring
  * @param from      start index for searching
  * @return  Returns the index within the string of the first occurrence of the specified
- *          substring, starting the search at the specified index, or -1 if the
+ *          substring, starting the search at the specified index, or `-1` if the
  *          substring is not found.
  */
 int str_index_of_substring_from(const str_t str, const str_t substr, int from) {
@@ -751,7 +702,7 @@ int str_index_of_substring_from(const str_t str, const str_t substr, int from) {
  * @param str   string
  * @param c     char
  * @return  Returns the index within the string of the last occurrence of the specified
- *          character, or -1 if the character is not found.
+ *          character, or `-1` if the character is not found.
  */
 int str_last_index_of_char(const str_t str, char c) {
     return_value_if_fail(str != NULL, -1);
@@ -779,7 +730,7 @@ int str_last_index_of_char(const str_t str, char c) {
  * @param c     char
  * @param from  start index for searching
  * @return  Returns the index within the string of the last occurrence of the specified
- *          character, searching backward starting at the specified index, or -1 if the
+ *          character, searching backward starting at the specified index, or `-1` if the
  *          character is not found.
  */
 int str_last_index_of_char_from(const str_t str, char c, int from) {
@@ -808,7 +759,7 @@ int str_last_index_of_char_from(const str_t str, char c, int from) {
  * @param str       string
  * @param substr    substring
  * @return  Returns the index within the string of the last occurrence of the specified
- *          substring, or -1 if the substring is not found.
+ *          substring, or `-1` if the substring is not found.
  */
 int str_last_index_of_substring(const str_t str, const str_t substr) {
     return_value_if_fail(str != NULL && substr != NULL, -1);
@@ -838,7 +789,7 @@ int str_last_index_of_substring(const str_t str, const str_t substr) {
  * @param substr    substring
  * @param from  start index for searching
  * @return  Returns the index within the string of the last occurrence of the specified
- *          substring, searching backward starting at the specified index, or -1 if the
+ *          substring, searching backward starting at the specified index, or `-1` if the
  *          substring is not found.
  */
 int str_last_index_of_substring_from(const str_t str, const str_t substr, int from) {

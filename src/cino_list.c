@@ -56,10 +56,10 @@ static bool is_valid_data_type(const str_t data_type) {
 list_t *list_create(const str_t data_type) {
     return_value_if_fail(is_valid_data_type(data_type), NULL);
 
-    list_t *list = (list_t *)cino_alloc(sizeof(list_t));
+    list_t *list = (list_t *)calloc(1, sizeof(list_t));
     return_value_if_fail(list != NULL, NULL);
 
-    list->data_type = (str_t)cino_alloc(sizeof(char) * (str_length(data_type) + 1));
+    list->data_type = (str_t)calloc(str_length(data_type) + 1, sizeof(char));
     call_and_return_value_if_fail(list->data_type != NULL, list_destroy(list), NULL);
     str_copy(list->data_type, data_type);
 
@@ -145,6 +145,12 @@ list_t *list_clear(list_t *list) {
     return list;
 }
 
+/**
+ * @brief   Get the node in the cino-list by index.
+ * @param list  cino-list
+ * @param index index
+ * @return  Returns a pointer points to the indexed node.
+ */
 static node_t *list_get_node(const list_t *list, int index) {
     return_value_if_fail(list != NULL && index >= 0 && index < list->size, NULL);
 
@@ -294,7 +300,12 @@ int list_index_of(const list_t *list, void *context) {
 }
 
 list_t *list_push_front(list_t *list, T data) {
-    return NULL;
+    return_value_if_fail(list != NULL && data != NULL, list);
+
+    node_t *node = (node_t *)calloc(1, sizeof(node_t));
+    return_value_if_fail(node != NULL, list);
+
+    return list;
 }
 
 list_t *list_push_back(list_t *list, T data) {

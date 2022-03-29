@@ -61,13 +61,13 @@ static bool is_valid_data_type(const str_t data_type) {
 array_t *array_create(const str_t data_type) {
     return_value_if_fail(is_valid_data_type(data_type), NULL);
 
-    array_t *array = (array_t *)cino_alloc(sizeof(array_t));
+    array_t *array = (array_t *)calloc(1, sizeof(array_t));
     return_value_if_fail(array != NULL, NULL);
 
-    array->iterator = (iterator_t *)cino_alloc(sizeof(iterator_t));
+    array->iterator = (iterator_t *)calloc(1, sizeof(iterator_t));
     call_and_return_value_if_fail(array->iterator != NULL, array_destroy(array), NULL);
 
-    array->data_type = (str_t)cino_alloc(sizeof(char) * (str_length(data_type) + 1));
+    array->data_type = (str_t)calloc(str_length(data_type) + 1, sizeof(char));
     call_and_return_value_if_fail(array->data_type != NULL, array_destroy(array), NULL);
     str_copy(array->data_type, data_type);
 
@@ -220,10 +220,14 @@ void array_set(array_t *array, int index, T data) {
 /**
  * @brief   Expand or shrink the cino-array according to the size and capacity.
  * @param array cino-array
- * @return  Returns the modified cino-array.
+ * @return  Returns the status of resize:
+ *              - STATUS_OK             : expand or shrink succeed
+ *              - STATUS_BAD_PARAMETERS : invalid parameters
+ *              - STATUS_OUT_OF_MEMORY  : memory allocation failed
+ *              - STATUS_UNDEFINED      : data type undefined
  */
-static array_t *array_resize(array_t *array) {
-    return_value_if_fail(array != NULL, NULL);
+static status_t array_resize(array_t *array) {
+    return_value_if_fail(array != NULL, STATUS_BAD_PARAMETERS);
 
     void *p = NULL;
 
@@ -232,18 +236,20 @@ static array_t *array_resize(array_t *array) {
         array->capacity = 1;
 
         if (str_equal(array->data_type, "int")) {
-            array->arr = cino_alloc(sizeof(int) * array->capacity);
+            array->arr = calloc(array->capacity, sizeof(int));
             p = array->arr;
         } else if (str_equal(array->data_type, "double")) {
-            array->arr = cino_alloc(sizeof(double) * array->capacity);
+            array->arr = calloc(array->capacity, sizeof(double));
             p = array->arr;
         } else if (str_equal(array->data_type, "T")) {
-            array->t_arr = (T *)cino_alloc(sizeof(T) * array->capacity);
+            array->t_arr = calloc(array->capacity, sizeof(T));
             p = array->t_arr;
+        } else {
+            return STATUS_UNDEFINED;
         }
-        call_and_return_value_if_fail(p != NULL, array_destroy(array), NULL);
 
-        return array;
+        return_value_if_fail(p != NULL, STATUS_OUT_OF_MEMORY);
+        return STATUS_OK;
     }
 
     const int EXPANSION = 2;  // coefficient of expansion
@@ -251,16 +257,20 @@ static array_t *array_resize(array_t *array) {
     // expand
     if (array->size >= array->capacity) {
         if (str_equal(array->data_type, "int")) {
-            array->arr = cino_realloc(array->arr, sizeof(int) * array->capacity, sizeof(int) * array->capacity * 2);
-            p = array->arr;
+            p = realloc(array->arr, sizeof(int) * array->capacity * EXPANSION);
+            return_value_if_fail(p != NULL, STATUS_OUT_OF_MEMORY);
+            array->arr = p;
         } else if (str_equal(array->data_type, "double")) {
-            array->arr = cino_realloc(array->arr, sizeof(double) * array->capacity, sizeof(double) * array->capacity * 2);
-            p = array->arr;
+            p = realloc(array->arr, sizeof(double) * array->capacity * EXPANSION);
+            return_value_if_fail(p != NULL, STATUS_OUT_OF_MEMORY);
+            array->arr = p;
         } else if (str_equal(array->data_type, "T")) {
-            array->t_arr = (T *)cino_realloc(array->t_arr, sizeof(T) * array->capacity, sizeof(T) * array->capacity * 2);
-            p = array->t_arr;
+            p = realloc(array->t_arr, sizeof(T) * array->capacity * EXPANSION);
+            return_value_if_fail(p != NULL, STATUS_OUT_OF_MEMORY);
+            array->t_arr = p;
+        } else {
+            return STATUS_UNDEFINED;
         }
-        call_and_return_value_if_fail(p != NULL, array_destroy(array), NULL);
         array->capacity *= EXPANSION;
     }
     // shrink
@@ -268,17 +278,19 @@ static array_t *array_resize(array_t *array) {
         size_t capacity = array->capacity / EXPANSION;
         if (capacity > 0) {
             if (str_equal(array->data_type, "int")) {
-                array->arr = cino_realloc(array->arr, sizeof(int) * array->capacity, sizeof(int) * capacity);
+                array->arr = realloc(array->arr, sizeof(int) * capacity);
             } else if (str_equal(array->data_type, "double")) {
-                array->arr = cino_realloc(array->arr, sizeof(double) * array->capacity, sizeof(double) * capacity);
+                array->arr = realloc(array->arr, sizeof(double) * capacity);
             } else if (str_equal(array->data_type, "T")) {
-                array->t_arr = (T *)cino_realloc(array->t_arr, sizeof(T) * array->capacity, sizeof(T) * capacity);
+                array->t_arr = realloc(array->t_arr, sizeof(T) * capacity);
+            } else {
+                return STATUS_UNDEFINED;
             }
             array->capacity = capacity;
         }
     }
 
-    return array;
+    return STATUS_OK;
 }
 
 /**
@@ -292,10 +304,10 @@ static array_t *array_resize(array_t *array) {
  * @return  Returns the modified cino-array.
  */
 array_t *array_append(array_t *array, T data) {
-    return_value_if_fail(data != NULL, array);
+    return_value_if_fail(array != NULL && data != NULL, array);
 
-    array_resize(array);
-    return_value_if_fail(array != NULL, NULL);
+    status_t status = array_resize(array);
+    return_value_if_fail(status == STATUS_OK, array);
 
     if (str_equal(array->data_type, "int")) {
         wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
@@ -324,10 +336,10 @@ array_t *array_append(array_t *array, T data) {
  * @return  Returns the modified cino-array.
  */
 array_t *array_insert(array_t *array, int index, T data) {
-    return_value_if_fail(index >= 0 && index <= array->size && data != NULL, array);
+    return_value_if_fail(array != NULL && index >= 0 && index <= array->size && data != NULL, array);
 
-    array_resize(array);
-    return_value_if_fail(array != NULL, NULL);
+    status_t status = array_resize(array);
+    return_value_if_fail(status == STATUS_OK, array);
 
     for (int i = array->size - 1; i >= index; i--) {
         if (str_equal(array->data_type, "int")) {

@@ -89,6 +89,7 @@ bool (*match_t)(const void *data);
 | STATUS_BAD_PARAMETERS | 无效参数 |
 | STATUS_IO_ERROR       | I/O错误  |
 | STATUS_OUT_OF_BOUNDS  | 越界     |
+| STATUS_NOT_MODIFIED  | 未变动     |
 | STATUS_UNDEFINED      | 未定义   |
 
 <div style="page-break-after: always;"></div>
@@ -311,48 +312,6 @@ array_len(arr)
 | arr  | C数组 |
 
 - 返回值：C数组元素个数。
-
-<div style="page-break-after: always;"></div>
-
-### 动态内存管理
-
-#### cino_alloc()
-
-- 函数原型：
-
-```c
-void *cino_alloc(size_t size);
-```
-
-- 功能：动态申请空间。
-- 参数：
-
-| 参数 | 说明                       |
-| ---- | -------------------------- |
-| size | 申请空间大小（单位：字节） |
-
-- 返回值：返回分配空间的首地址，分配失败返回`NULL`。
-
----
-
-#### cino_realloc()
-
-- 函数原型：
-
-```c
-void *cino_realloc(void *p, size_t old_size, size_t new_size);
-```
-
-- 功能：改变申请空间大小。
-- 参数：
-
-| 参数     | 说明                     |
-| -------- | ------------------------ |
-| p        | 原申请空间               |
-| old_size | 原空间大小（单位：字节） |
-| new_size | 新空间大小（单位：字节） |
-
-- 返回值：返回分配空间的首地址，分配失败返回`NULL`。
 
 <div style="page-break-after: always;"></div>
 
