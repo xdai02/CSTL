@@ -213,3 +213,131 @@ int list_index_of(const list_t *list, void *context);
 
 ---
 
+#### list_push_front()
+
+- 函数原型：
+
+```c
+list_t *list_push_front(list_t *list, T data);
+```
+
+- 功能：在cino-list头部插入元素。
+- 参数：
+
+| 参数 | 说明      |
+| ---- | --------- |
+| list | cino-list |
+| data | 新元素    |
+
+- 返回值：修改后的cino-list。
+
+> - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型，此函数不会释放该包装类型，需要由调用者自行释放。
+
+---
+
+#### list_push_back()
+
+- 函数原型：
+
+```c
+list_t *list_push_back(list_t *list, T data);
+```
+
+- 功能：在cino-list尾部插入元素。
+- 参数：
+
+| 参数 | 说明      |
+| ---- | --------- |
+| list | cino-list |
+| data | 新元素    |
+
+- 返回值：修改后的cino-list。
+
+> - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型，此函数不会释放该包装类型，需要由调用者自行释放。
+
+---
+
+#### list_pop_front()
+
+- 函数原型：
+
+```c
+T list_pop_front(list_t *list);
+```
+
+- 功能：删除cino-list头部元素。
+- 参数：
+
+| 参数 | 说明      |
+| ---- | --------- |
+| list | cino-list |
+
+- 返回值：返回被删除的元素。
+
+> - 对于基本数据类型，此函数会返回该数据类型的包装类型，调用者需要自行拆箱获取元素值。
+
+---
+
+#### list_pop_back()
+
+- 函数原型：
+
+```c
+T list_pop_back(list_t *list);
+```
+
+- 功能：删除cino-list尾部元素。
+- 参数：
+
+| 参数 | 说明      |
+| ---- | --------- |
+| list | cino-list |
+
+- 返回值：修改后的cino-list。
+
+> - 对于基本数据类型，此函数会返回该数据类型的包装类型，调用者需要自行拆箱获取元素值。
+
+---
+
+#### list_insert()
+
+- 函数原型：
+
+```c
+list_t *list_insert(list_t *list, int index, T data);
+```
+
+- 功能：cino-list在指定下标插入元素。
+- 参数：
+
+| 参数  | 说明      |
+| ----- | --------- |
+| list  | cino-list |
+| index | 插入下标  |
+| data  | 新元素    |
+
+- 返回值：修改后的cino-list。
+
+> - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型，此函数不会释放该包装类型，需要由调用者自行释放。
+
+---
+
+#### list_remove()
+
+- 函数原型：
+
+```c
+T list_remove(list_t *list, int index);
+```
+
+- 功能：删除cino-list中指定下标元素。
+- 参数：
+
+| 参数  | 说明      |
+| ----- | --------- |
+| list  | cino-list |
+| index | 删除下标  |
+
+- 返回值：被删除的元素。
+
+> - 对于基本数据类型，此函数会返回该数据类型的包装类型，调用者需要自行拆箱获取元素值。

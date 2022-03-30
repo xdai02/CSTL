@@ -129,6 +129,12 @@ void test_cino_list() {
     test_list_get();
     test_list_set();
     test_list_index_of();
+    test_list_push_front();
+    test_list_push_back();
+    test_list_pop_front();
+    test_list_pop_back();
+    test_list_insert();
+    test_list_remove();
 
     LOGGER(INFO, "[PASS] test_cino_list");
 }

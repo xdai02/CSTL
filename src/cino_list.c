@@ -492,6 +492,7 @@ T list_pop_back(list_t *list) {
 /**
  * @brief   Inserts the specified element at the indexed location of the cino-list.
  * @param list  cino-list
+ * @param index index
  * @param data  For primitive data, a wrapper type of that primitive is needed.
  *              This function will not unwrap or free the wrapper. It is caller's
  *              responsibility to unwrap.
@@ -503,7 +504,6 @@ list_t *list_insert(list_t *list, int index, T data) {
     node_t *node = list_get_node(list, index);
     if (!node) {
         list_push_back(list, data);
-        list->size++;
         return list;
     }
 
@@ -539,10 +539,11 @@ list_t *list_insert(list_t *list, int index, T data) {
 /**
  * @brief   Removes the indexed element from the cino-list.
  * @param list  cino-list
+ * @param index index
  * @return  For primitive cino-list, this function returns a wrapper type of the removed
  *          primitive. It is caller's responsibility to unwrap to get the primitive.
  */
-T list_remove(list_t *list, int index, T data) {
+T list_remove(list_t *list, int index) {
     return_value_if_fail(list != NULL && index >= 0 && index < list->size && !list_is_empty(list), NULL);
 
     T removed = NULL;

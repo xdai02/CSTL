@@ -16,5 +16,11 @@ void test_list_get_back();
 void test_list_get();
 void test_list_set();
 void test_list_index_of();
+void test_list_push_front();
+void test_list_push_back();
+void test_list_pop_front();
+void test_list_pop_back();
+void test_list_insert();
+void test_list_remove();
 
 #endif

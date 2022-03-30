@@ -170,7 +170,6 @@ array_t *array_append(array_t *array, T data);
 - 返回值：修改后的cino-array。
 
 > - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型，此函数不会释放该包装类型，需要由调用者自行释放。
-> - 对于T（泛型）cino-array，调用者需要在调用此函数前自行释放被覆盖位置的空间。
 
 ---
 
@@ -182,7 +181,7 @@ array_t *array_append(array_t *array, T data);
 array_t *array_insert(array_t *array, int index, T data);
 ```
 
-- 功能：cino-array插入元素。
+- 功能：cino-array在指定下标插入元素。
 - 参数：
 
 | 参数  | 说明       |
@@ -194,7 +193,6 @@ array_t *array_insert(array_t *array, int index, T data);
 - 返回值：修改后的cino-array。
 
 > - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型，此函数不会释放该包装类型，需要由调用者自行释放。
-> - 对于T（泛型）cino-array，调用者需要在调用此函数前自行释放被覆盖位置的空间。
 
 ---
 

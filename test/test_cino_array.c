@@ -514,9 +514,7 @@ void test_array_min() {
     test_t *t = (test_t *)array_min(arr, cmp_by_int);
     assert(t->a == 1);
     t = (test_t *)array_min(arr, cmp_by_str);
-    char p[8] = {0};
-    int_to_str(1, p, sizeof(p));
-    assert(str_equal(t->p, p));
+    assert(str_equal(t->p, "1"));
     free(test);
     test = NULL;
     array_destroy(arr);
@@ -559,9 +557,7 @@ void test_array_max() {
     test_t *t = (test_t *)array_max(arr, cmp_by_int);
     assert(t->a == 9);
     t = (test_t *)array_max(arr, cmp_by_str);
-    char p[8] = {0};
-    int_to_str(9, p, sizeof(p));
-    assert(str_equal(t->p, p));
+    assert(str_equal(t->p, "9"));
     free(test);
     test = NULL;
     array_destroy(arr);
