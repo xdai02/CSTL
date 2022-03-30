@@ -89,7 +89,16 @@ void list_destroy(list_t *list) {
     return_if_fail(list != NULL);
 
     while (!list_is_empty(list)) {
-        list_pop_front(list);
+        T data = list_pop_front(list);
+        if (str_equal(list->data_type, "int") || str_equal(list->data_type, "double")) {
+            free(data);
+            data = NULL;
+        }
+    }
+
+    if (list->data_type) {
+        free(list->data_type);
+        list->data_type = NULL;
     }
 
     if (list->head) {
@@ -138,7 +147,11 @@ list_t *list_clear(list_t *list) {
     return_value_if_fail(list != NULL, NULL);
 
     while (!list_is_empty(list)) {
-        list_pop_front(list);
+        T data = list_pop_front(list);
+        if (str_equal(list->data_type, "int") || str_equal(list->data_type, "double")) {
+            free(data);
+            data = NULL;
+        }
     }
 
     if (list->head) {
@@ -172,7 +185,7 @@ static node_t *list_get_node(const list_t *list, int index) {
         }
     } else {
         node = list->tail->prev;
-        for (int i = 0; i < index; i++) {
+        for (int i = 0; i < list->size - index - 1; i++) {
             node = node->prev;
         }
     }
@@ -257,9 +270,11 @@ void list_set(list_t *list, int index, T data) {
 
     node_t *node = list_get_node(list, index);
     if (str_equal(list->data_type, "int")) {
-        *(int *)node->data = unwrap_int((wrapper_int_t *)data);
+        wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
+        *(int *)node->data = wrapper_int->data;
     } else if (str_equal(list->data_type, "double")) {
-        *(double *)node->data = unwrap_double((wrapper_double_t *)data);
+        wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
+        *(double *)node->data = wrapper_double->data;
     } else if (str_equal(list->data_type, "T")) {
         node->data = data;
     }
@@ -282,7 +297,7 @@ int list_index_of(const list_t *list, void *context) {
     int index = 0;
 
     node_t *current = list->head;
-    while (current && current->next) {
+    while (current && current->next && current->next != list->tail) {
         current = current->next;
 
         if (str_equal(list->data_type, "int")) {
@@ -417,6 +432,13 @@ T list_pop_front(list_t *list) {
     node->next->prev = node->prev;
     node->prev = NULL;
     node->next = NULL;
+
+    if (str_equal(list->data_type, "int") || str_equal(list->data_type, "double")) {
+        if (node->data) {
+            free(node->data);
+            node->data = NULL;
+        }
+    }
     free(node);
     node = NULL;
 
@@ -453,6 +475,13 @@ T list_pop_back(list_t *list) {
     node->next->prev = node->prev;
     node->prev = NULL;
     node->next = NULL;
+
+    if (str_equal(list->data_type, "int") || str_equal(list->data_type, "double")) {
+        if (node->data) {
+            free(node->data);
+            node->data = NULL;
+        }
+    }
     free(node);
     node = NULL;
 
@@ -536,6 +565,13 @@ T list_remove(list_t *list, int index, T data) {
     node->next->prev = node->prev;
     node->prev = NULL;
     node->next = NULL;
+
+    if (str_equal(list->data_type, "int") || str_equal(list->data_type, "double")) {
+        if (node->data) {
+            free(node->data);
+            node->data = NULL;
+        }
+    }
     free(node);
     node = NULL;
 

@@ -119,6 +119,17 @@ void test_cino_array() {
 }
 
 void test_cino_list() {
+    test_list_create();
+    test_list_destroy();
+    test_list_is_empty();
+    test_list_size();
+    test_list_clear();
+    test_list_get_front();
+    test_list_get_back();
+    test_list_get();
+    test_list_set();
+    test_list_index_of();
+
     LOGGER(INFO, "[PASS] test_cino_list");
 }
 
