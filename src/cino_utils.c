@@ -46,7 +46,7 @@ bool str_to_bool(const str_t str) {
 /**
  * @brief   Convert boolean to string.
  * @param val   boolean value
- * @return  Returns "true" if the boolean value is `true`, otherwise retuens "false".
+ * @return  Returns "true" if the boolean value is `true`, otherwise returns "false".
  */
 const str_t bool_to_str(bool val) {
     return val ? "true" : "false";
@@ -55,7 +55,7 @@ const str_t bool_to_str(bool val) {
 /**
  * @brief   Convert string to char.
  * @param str   string
- * @return  Returns the first character of the string. Returns '\0' if string is NULL.
+ * @return  Returns the first character of the string, or '\0' if string is NULL.
  */
 char str_to_char(const str_t str) {
     return_value_if_fail(str != NULL, '\0');
