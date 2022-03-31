@@ -6,7 +6,7 @@ void test_min() {
     assert(min(2, 2) == 2);
     assert(min(-5, -2) == -5);
     assert(min(0, 2) == 0);
-    assert(min(3.1415, 3.1416) == 3.1415);
+    assert(equal_double(min(3.1415, 3.1416), 3.1415));
     assert(min('a', 'b') == 'a');
     assert(min('X', 'H') == 'H');
     assert(min('A', 'a') == 'A');
@@ -18,7 +18,7 @@ void test_max() {
     assert(max(2, 2) == 2);
     assert(max(-5, -2) == -2);
     assert(max(0, 2) == 2);
-    assert(max(3.1415, 3.1416) == 3.1416);
+    assert(equal_double(max(3.1415, 3.1416), 3.1416));
     assert(max('a', 'b') == 'b');
     assert(max('X', 'H') == 'X');
     assert(max('A', 'a') == 'a');
