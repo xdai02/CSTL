@@ -516,6 +516,13 @@ str_t str_replace(str_t str, const str_t old_str, const str_t new_str);
 str_t str_remove(str_t str, const str_t substr);
 
 /**
+ * @brief   Reverse the order of the string.
+ * @param str       string
+ * @return  Returns the modified string.
+ */
+str_t str_reverse(str_t str);
+
+/**
  * @brief   Find the first occurrence of the specified character.
  * @param str   string
  * @param c     char

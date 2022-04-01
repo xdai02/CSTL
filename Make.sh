@@ -1,1 +1,1 @@
-gcc -Wall -std=c99 -Iinclude src/* test/* -o test
+gcc -Wall -std=c99 -Iinclude src/* demo/* -o demo
