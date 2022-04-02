@@ -162,8 +162,11 @@ array_t *array_clear(array_t *array) {
 
     array->size = 0;
     array->capacity = 0;
-    array->iterator->iter = NULL;
-    array->iterator->iter_index = -1;
+
+    if (array->iterator) {
+        array->iterator->iter = NULL;
+        array->iterator->iter_index = -1;
+    }
 
     return array;
 }

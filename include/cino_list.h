@@ -164,4 +164,25 @@ list_t *list_insert(list_t *list, int index, T data);
  */
 T list_remove(list_t *list, int index);
 
+/**
+ * @brief   Get the iterator.
+ * @param list cino-list
+ * @return  Returns the iterator.
+ */
+iter_t list_iter(list_t *list);
+
+/**
+ * @brief   Determine if the cino-list has next iterator.
+ * @param list cino-list
+ * @return  Returns `true` if next iterator exists, otherwise returns `false`.
+ */
+bool list_iter_has_next(const list_t *list);
+
+/**
+ * @brief   Get the next iterator.
+ * @param list cino-list
+ * @return  Returns the next iterator.
+ */
+iter_t list_iter_next(list_t *list);
+
 #endif

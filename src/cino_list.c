@@ -1,6 +1,14 @@
 #include "cino_list.h"
 
 /****************************************
+ *               Iterator
+ ****************************************/
+
+typedef struct iterator_t {
+    iter_t iter;  // points to the current element
+} iterator_t;
+
+/****************************************
  *               list_t
  ****************************************/
 
@@ -15,6 +23,7 @@ typedef struct list_t {
     node_t *tail;
     str_t data_type;
     size_t size;
+    iterator_t *iterator;
 } list_t;
 
 /**
@@ -59,6 +68,9 @@ list_t *list_create(const str_t data_type) {
     list_t *list = (list_t *)calloc(1, sizeof(list_t));
     return_value_if_fail(list != NULL, NULL);
 
+    list->iterator = (iterator_t *)calloc(1, sizeof(iterator_t));
+    call_and_return_value_if_fail(list->iterator != NULL, list_destroy(list), NULL);
+
     list->data_type = (str_t)calloc(str_length(data_type) + 1, sizeof(char));
     call_and_return_value_if_fail(list->data_type != NULL, list_destroy(list), NULL);
     str_copy(list->data_type, data_type);
@@ -76,6 +88,8 @@ list_t *list_create(const str_t data_type) {
     list->tail->prev = list->head;
 
     list->size = 0;
+    list->iterator->iter = NULL;
+
     return list;
 }
 
@@ -109,6 +123,12 @@ void list_destroy(list_t *list) {
     if (list->tail) {
         free(list->tail);
         list->tail = NULL;
+    }
+
+    if (list->iterator) {
+        list->iterator->iter = NULL;
+        free(list->iterator);
+        list->iterator = NULL;
     }
 
     if (list) {
@@ -162,6 +182,10 @@ list_t *list_clear(list_t *list) {
     if (list->tail) {
         free(list->tail);
         list->tail = NULL;
+    }
+
+    if (list->iterator) {
+        list->iterator->iter = NULL;
     }
 
     return list;
@@ -578,4 +602,44 @@ T list_remove(list_t *list, int index) {
 
     list->size--;
     return removed;
+}
+
+/**
+ * @brief   Get the iterator.
+ * @param list cino-list
+ * @return  Returns the iterator.
+ */
+iter_t list_iter(list_t *list) {
+    return_value_if_fail(list != NULL, NULL);
+    list->iterator->iter = (iter_t)list->head->next;
+    return list->iterator->iter;
+}
+
+/**
+ * @brief   Determine if the cino-list has next iterator.
+ * @param list cino-list
+ * @return  Returns `true` if next iterator exists, otherwise returns `false`.
+ */
+bool list_iter_has_next(const list_t *list) {
+    return_value_if_fail(list != NULL && list->iterator->iter != NULL, false);
+    node_t *node = (node_t *)list->iterator->iter;
+    return node->next && node->next != list->tail;
+}
+
+/**
+ * @brief   Get the next iterator.
+ * @param list cino-list
+ * @return  Returns the next iterator.
+ */
+iter_t list_iter_next(list_t *list) {
+    return_value_if_fail(list != NULL, NULL);
+
+    if (list_iter_has_next(list)) {
+        node_t *node = (node_t *)list->iterator->iter;
+        list->iterator->iter = (iter_t)node->next;
+    } else {
+        list->iterator->iter = NULL;
+    }
+
+    return list->iterator->iter;
 }
