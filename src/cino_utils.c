@@ -593,14 +593,14 @@ str_t str_remove(str_t str, const str_t substr) {
 
 /**
  * @brief   Reverse the order of the string.
- * @param str       string
+ * @param str   string
  * @return  Returns the modified string.
  */
-str_t str_reverse(str_t str){
-    return_value_if_fail(str != NULL,NULL);
+str_t str_reverse(str_t str) {
+    return_value_if_fail(str != NULL, NULL);
     size_t str_len = strlen(str);
-    for(int i=0;i<str_len/2;i++){
-        swap(str[i],str[str_len-i-1],char);
+    for (int i = 0; i < str_len / 2; i++) {
+        swap(str[i], str[str_len - i - 1], char);
     }
     return str;
 }

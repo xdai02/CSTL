@@ -1032,6 +1032,25 @@ str_t str_remove(str_t str, const str_t substr);
 
 ---
 
+#### str_reverse()
+
+- 函数原型：
+
+```c
+str_t str_reverse(str_t str);
+```
+
+- 功能：反转字符串。
+- 参数：
+
+| 参数   | 说明       |
+| ------ | ---------- |
+| str    | 字符串     |
+
+- 返回值：修改后的字符串。
+
+---
+
 #### str_index_of_char()
 
 - 函数原型：
