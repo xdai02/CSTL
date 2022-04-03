@@ -111,8 +111,11 @@ void test_cino_array() {
     test_array_reverse();
     test_array_swap();
     test_array_sort();
-    test_array_iter();
+    test_array_iter_begin();
+    test_array_iter_end();
+    test_array_iter_has_prev();
     test_array_iter_has_next();
+    test_array_iter_prev();
     test_array_iter_next();
 
     LOGGER(INFO, "[PASS] test_cino_array");

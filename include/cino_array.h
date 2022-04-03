@@ -164,7 +164,7 @@ int array_last_index_of(const array_t *array, void *context);
 /**
  * @brief   Count the occurrences of the element matched.
  * @param array     cino-array
- * @param context   - For primitive cino-array, a wrapper type of the counting data should 
+ * @param context   - For primitive cino-array, a wrapper type of the counting data should
  *                    be passed. It is caller's responsibility to unwrap.
  *                  - For T (generic) cino-array, a match_t callback function should be passed
  *                    as the matching rule.
@@ -199,11 +199,25 @@ array_t *array_swap(array_t *array, int index1, int index2);
 array_t *array_sort(array_t *array, bool reverse, compare_t compare);
 
 /**
- * @brief   Get the iterator.
+ * @brief   Get the begin iterator.
  * @param array cino-array
- * @return  Returns the iterator.
+ * @return  Returns the begin iterator.
  */
-iter_t array_iter(array_t *array);
+iter_t array_iter_begin(array_t *array);
+
+/**
+ * @brief   Get the end iterator.
+ * @param array cino-array
+ * @return  Returns the end iterator.
+ */
+iter_t array_iter_end(array_t *array);
+
+/**
+ * @brief   Determine if the cino-array has previous iterator.
+ * @param array cino-array
+ * @return  Returns `true` if previous iterator exists, otherwise returns `false`.
+ */
+bool array_iter_has_prev(const array_t *array);
 
 /**
  * @brief   Determine if the cino-array has next iterator.
@@ -211,6 +225,13 @@ iter_t array_iter(array_t *array);
  * @return  Returns `true` if next iterator exists, otherwise returns `false`.
  */
 bool array_iter_has_next(const array_t *array);
+
+/**
+ * @brief   Get the previous iterator.
+ * @param array cino-array
+ * @return  Returns the previous iterator.
+ */
+iter_t array_iter_prev(array_t *array);
 
 /**
  * @brief   Get the next iterator.

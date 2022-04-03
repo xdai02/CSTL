@@ -922,18 +922,18 @@ void test_array_sort() {
     array_destroy(arr);
 }
 
-void test_array_iter() {
+void test_array_iter_begin() {
     array_t *arr = array_create("int");
     for (int i = 0; i < 5; i++) {
         wrapper_int_t *wrapper = wrap_int(i);
         array_append(arr, wrapper);
         unwrap_int(wrapper);
     }
-    assert(array_iter(arr));
+    assert(array_iter_begin(arr));
     array_destroy(arr);
 
     arr = array_create("double");
-    assert(!array_iter(arr));
+    assert(!array_iter_begin(arr));
     array_destroy(arr);
 
     arr = array_create("T");
@@ -942,7 +942,74 @@ void test_array_iter() {
         test[i].a = i;
         array_append(arr, &test[i]);
     }
-    assert(array_iter(arr));
+    assert(array_iter_begin(arr));
+    free(test);
+    test = NULL;
+    array_destroy(arr);
+}
+
+void test_array_iter_end() {
+    array_t *arr = array_create("int");
+    for (int i = 0; i < 5; i++) {
+        wrapper_int_t *wrapper = wrap_int(i);
+        array_append(arr, wrapper);
+        unwrap_int(wrapper);
+    }
+    assert(array_iter_end(arr));
+    array_destroy(arr);
+
+    arr = array_create("double");
+    assert(!array_iter_end(arr));
+    array_destroy(arr);
+
+    arr = array_create("T");
+    test_t *test = (test_t *)calloc(5, sizeof(test_t));
+    for (int i = 0; i < 5; i++) {
+        test[i].a = i;
+        array_append(arr, &test[i]);
+    }
+    assert(array_iter_end(arr));
+    free(test);
+    test = NULL;
+    array_destroy(arr);
+}
+
+void test_array_iter_has_prev() {
+    array_t *arr = array_create("int");
+    for (int i = 0; i < 5; i++) {
+        wrapper_int_t *wrapper = wrap_int(i);
+        array_append(arr, wrapper);
+        unwrap_int(wrapper);
+    }
+    array_iter_end(arr);
+    assert(array_iter_has_prev(arr));
+    array_destroy(arr);
+
+    arr = array_create("double");
+    assert(!array_iter_end(arr));
+    for (int i = 0; i < 5; i++) {
+        wrapper_double_t *wrapper = wrap_double((double)i);
+        array_append(arr, wrapper);
+        unwrap_double(wrapper);
+    }
+    iter_t *iter = array_iter_end(arr);
+    assert(iter);
+    for (int i = 0; i < 5; i++) {
+        if (array_iter_has_prev(arr)) {
+            iter = array_iter_prev(arr);
+        }
+    }
+    assert(!array_iter_has_prev(arr));
+    array_destroy(arr);
+
+    arr = array_create("T");
+    test_t *test = (test_t *)calloc(5, sizeof(test_t));
+    for (int i = 0; i < 5; i++) {
+        test[i].a = i;
+        array_append(arr, &test[i]);
+    }
+    array_iter_end(arr);
+    assert(array_iter_has_prev(arr));
     free(test);
     test = NULL;
     array_destroy(arr);
@@ -955,18 +1022,18 @@ void test_array_iter_has_next() {
         array_append(arr, wrapper);
         unwrap_int(wrapper);
     }
-    array_iter(arr);
+    array_iter_begin(arr);
     assert(array_iter_has_next(arr));
     array_destroy(arr);
 
     arr = array_create("double");
-    assert(!array_iter(arr));
+    assert(!array_iter_begin(arr));
     for (int i = 0; i < 5; i++) {
         wrapper_double_t *wrapper = wrap_double((double)i);
         array_append(arr, wrapper);
         unwrap_double(wrapper);
     }
-    iter_t *iter = array_iter(arr);
+    iter_t *iter = array_iter_begin(arr);
     assert(iter);
     for (int i = 0; i < 5; i++) {
         if (array_iter_has_next(arr)) {
@@ -982,8 +1049,71 @@ void test_array_iter_has_next() {
         test[i].a = i;
         array_append(arr, &test[i]);
     }
-    array_iter(arr);
+    array_iter_begin(arr);
     assert(array_iter_has_next(arr));
+    free(test);
+    test = NULL;
+    array_destroy(arr);
+}
+
+void test_array_iter_prev() {
+    array_t *arr = array_create("int");
+    for (int i = 0; i < 5; i++) {
+        wrapper_int_t *wrapper = wrap_int(i);
+        array_append(arr, wrapper);
+        unwrap_int(wrapper);
+    }
+
+    int i = 0;
+    iter_t iter = array_iter_end(arr);
+    while (iter) {
+        assert(*(int *)iter == 5 - i - 1);
+        iter = array_iter_prev(arr);
+        i++;
+    }
+    assert(i == 5);
+    array_destroy(arr);
+
+    arr = array_create("double");
+    for (int i = 0; i < 5; i++) {
+        wrapper_double_t *wrapper = wrap_double((double)i);
+        array_append(arr, wrapper);
+        unwrap_double(wrapper);
+    }
+
+    i = 0;
+    iter = array_iter_end(arr);
+    while (iter) {
+        assert(equal_double(*(double *)iter, (double)(5 - i - 1)));
+        iter = array_iter_prev(arr);
+        i++;
+    }
+    assert(i == 5);
+    array_destroy(arr);
+
+    arr = array_create("T");
+    test_t *test = (test_t *)calloc(5, sizeof(test_t));
+    for (int i = 0; i < 5; i++) {
+        test[i].a = i;
+        char str[8] = {0};
+        int_to_str(i, str, sizeof(str));
+        str_copy(test[i].p, str);
+        array_append(arr, &test[i]);
+    }
+
+    i = 0;
+    iter = array_iter_end(arr);
+    while (iter) {
+        test_t *t = (test_t *)iter;
+        assert(t->a == 5 - i - 1);
+        char p[8] = {0};
+        int_to_str(5 - i - 1, p, sizeof(p));
+        assert(str_equal(t->p, p));
+        iter = array_iter_prev(arr);
+        i++;
+    }
+    assert(i == 5);
+
     free(test);
     test = NULL;
     array_destroy(arr);
@@ -998,7 +1128,7 @@ void test_array_iter_next() {
     }
 
     int i = 0;
-    iter_t iter = array_iter(arr);
+    iter_t iter = array_iter_begin(arr);
     while (iter) {
         assert(*(int *)iter == i);
         iter = array_iter_next(arr);
@@ -1015,7 +1145,7 @@ void test_array_iter_next() {
     }
 
     i = 0;
-    iter = array_iter(arr);
+    iter = array_iter_begin(arr);
     while (iter) {
         assert(equal_double(*(double *)iter, (double)i));
         iter = array_iter_next(arr);
@@ -1035,7 +1165,7 @@ void test_array_iter_next() {
     }
 
     i = 0;
-    iter = array_iter(arr);
+    iter = array_iter_begin(arr);
     while (iter) {
         test_t *t = (test_t *)iter;
         assert(t->a == i);

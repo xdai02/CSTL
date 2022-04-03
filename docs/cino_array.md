@@ -383,22 +383,60 @@ array_t *array_sort(array_t *array, bool reverse, compare_t compare);
 
 ---
 
-#### array_iter()
+#### array_iter_begin()
 
 - 函数原型：
 
 ```c
-iter_t array_iter(array_t *array)
+iter_t array_iter_begin(array_t *array)
 ```
 
-- 功能：获取cino-array的迭代器。
+- 功能：获取cino-array的首元素迭代器。
 - 参数：
 
 | 参数  | 说明       |
 | ----- | ---------- |
 | array | cino-array |
 
-- 返回值：迭代器。
+- 返回值：首元素迭代器。
+
+---
+
+#### array_iter_end()
+
+- 函数原型：
+
+```c
+iter_t array_iter_end(array_t *array)
+```
+
+- 功能：获取cino-array的尾元素迭代器。
+- 参数：
+
+| 参数  | 说明       |
+| ----- | ---------- |
+| array | cino-array |
+
+- 返回值：尾元素迭代器。
+
+---
+
+#### array_iter_has_prev()
+
+- 函数原型：
+
+```c
+bool array_iter_has_prev(const array_t *array)
+```
+
+- 功能：判断是否存在上一个迭代器。
+- 参数：
+
+| 参数  | 说明       |
+| ----- | ---------- |
+| array | cino-array |
+
+- 返回值：如果存在上一个迭代器返回`true`，不存在返回`false`。
 
 ---
 
@@ -421,6 +459,25 @@ bool array_iter_has_next(const array_t *array)
 
 ---
 
+#### array_iter_prev()
+
+- 函数原型：
+
+```c
+iter_t array_iter_prev(array_t *array)
+```
+
+- 功能：获取上一个迭代器。
+- 参数：
+
+| 参数  | 说明       |
+| ----- | ---------- |
+| array | cino-array |
+
+- 返回值：上一个迭代器。
+
+---
+
 #### array_iter_next()
 
 - 函数原型：
@@ -437,4 +494,3 @@ iter_t array_iter_next(array_t *array)
 | array | cino-array |
 
 - 返回值：下一个迭代器。
-

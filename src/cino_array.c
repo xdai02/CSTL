@@ -14,8 +14,7 @@ typedef struct iterator_t {
  ****************************************/
 
 typedef struct array_t {
-    T arr;     // primitive cino-array
-    T *t_arr;  // generic cino-array
+    T arr;
     str_t data_type;
     size_t size;
     size_t capacity;
@@ -72,7 +71,6 @@ array_t *array_create(const str_t data_type) {
     str_copy(array->data_type, data_type);
 
     array->arr = NULL;
-    array->t_arr = NULL;
     array->size = 0;
     array->capacity = 0;
     array->iterator->iter = NULL;
@@ -101,11 +99,6 @@ void array_destroy(array_t *array) {
     if (array->arr) {
         free(array->arr);
         array->arr = NULL;
-    }
-
-    if (array->t_arr) {
-        free(array->t_arr);
-        array->t_arr = NULL;
     }
 
     if (array->iterator) {
@@ -155,18 +148,13 @@ array_t *array_clear(array_t *array) {
         array->arr = NULL;
     }
 
-    if (array->t_arr) {
-        free(array->t_arr);
-        array->t_arr = NULL;
-    }
-
-    array->size = 0;
-    array->capacity = 0;
-
     if (array->iterator) {
         array->iterator->iter = NULL;
         array->iterator->iter_index = -1;
     }
+
+    array->size = 0;
+    array->capacity = 0;
 
     return array;
 }
@@ -181,17 +169,20 @@ array_t *array_clear(array_t *array) {
 T array_get(const array_t *array, int index) {
     return_value_if_fail(array != NULL && index >= 0 && index < array->size, NULL);
 
+    T data = NULL;
+
     if (str_equal(array->data_type, "int")) {
         int *arr = (int *)array->arr;
-        return (T)wrap_int(arr[index]);
+        data = (T)wrap_int(arr[index]);
     } else if (str_equal(array->data_type, "double")) {
         double *arr = (double *)array->arr;
-        return (T)wrap_double(arr[index]);
+        data = (T)wrap_double(arr[index]);
     } else if (str_equal(array->data_type, "T")) {
-        return array->t_arr[index];
+        void **arr = (void **)array->arr;
+        data = (T)arr[index];
     }
 
-    return NULL;
+    return data;
 }
 
 /**
@@ -216,7 +207,8 @@ void array_set(array_t *array, int index, T data) {
         double *arr = (double *)array->arr;
         arr[index] = wrapper_double->data;
     } else if (str_equal(array->data_type, "T")) {
-        array->t_arr[index] = data;
+        void **arr = (void **)array->arr;
+        arr[index] = data;
     }
 }
 
@@ -239,16 +231,13 @@ static status_t array_resize(array_t *array) {
 
         if (str_equal(array->data_type, "int")) {
             array->arr = calloc(array->capacity, sizeof(int));
-            p = array->arr;
         } else if (str_equal(array->data_type, "double")) {
             array->arr = calloc(array->capacity, sizeof(double));
-            p = array->arr;
         } else if (str_equal(array->data_type, "T")) {
-            array->t_arr = calloc(array->capacity, sizeof(T));
-            p = array->t_arr;
+            array->arr = calloc(array->capacity, sizeof(T));
         }
 
-        return_value_if_fail(p != NULL, STATUS_OUT_OF_MEMORY);
+        return_value_if_fail(array->arr != NULL, STATUS_OUT_OF_MEMORY);
         return STATUS_OK;
     }
 
@@ -258,17 +247,14 @@ static status_t array_resize(array_t *array) {
     if (array->size >= array->capacity) {
         if (str_equal(array->data_type, "int")) {
             p = realloc(array->arr, sizeof(int) * array->capacity * EXPANSION);
-            return_value_if_fail(p != NULL, STATUS_OUT_OF_MEMORY);
-            array->arr = p;
         } else if (str_equal(array->data_type, "double")) {
             p = realloc(array->arr, sizeof(double) * array->capacity * EXPANSION);
-            return_value_if_fail(p != NULL, STATUS_OUT_OF_MEMORY);
-            array->arr = p;
         } else if (str_equal(array->data_type, "T")) {
-            p = realloc(array->t_arr, sizeof(T) * array->capacity * EXPANSION);
-            return_value_if_fail(p != NULL, STATUS_OUT_OF_MEMORY);
-            array->t_arr = p;
+            p = realloc(array->arr, sizeof(T) * array->capacity * EXPANSION);
         }
+
+        return_value_if_fail(p != NULL, STATUS_OUT_OF_MEMORY);
+        array->arr = p;
         array->capacity *= EXPANSION;
     }
     // shrink
@@ -280,7 +266,7 @@ static status_t array_resize(array_t *array) {
             } else if (str_equal(array->data_type, "double")) {
                 array->arr = realloc(array->arr, sizeof(double) * capacity);
             } else if (str_equal(array->data_type, "T")) {
-                array->t_arr = realloc(array->t_arr, sizeof(T) * capacity);
+                array->arr = realloc(array->arr, sizeof(T) * capacity);
             }
             array->capacity = capacity;
         }
@@ -314,7 +300,8 @@ array_t *array_append(array_t *array, T data) {
         double *arr = (double *)array->arr;
         arr[array->size++] = wrapper_double->data;
     } else if (str_equal(array->data_type, "T")) {
-        array->t_arr[array->size++] = data;
+        void **arr = (void **)array->arr;
+        arr[array->size++] = data;
     }
 
     return array;
@@ -345,7 +332,8 @@ array_t *array_insert(array_t *array, int index, T data) {
             double *arr = (double *)array->arr;
             arr[i + 1] = arr[i];
         } else if (str_equal(array->data_type, "T")) {
-            array->t_arr[i + 1] = array->t_arr[i];
+            void **arr = (void **)array->arr;
+            arr[i + 1] = arr[i];
         }
     }
 
@@ -358,7 +346,8 @@ array_t *array_insert(array_t *array, int index, T data) {
         double *arr = (double *)array->arr;
         arr[index] = wrapper_double->data;
     } else if (str_equal(array->data_type, "T")) {
-        array->t_arr[index] = data;
+        void **arr = (void **)array->arr;
+        arr[index] = data;
     }
 
     array->size++;
@@ -386,7 +375,8 @@ T array_remove(array_t *array, int index) {
         wrapper_double_t *wrapper_double = wrap_double(arr[index]);
         removed = (T)wrapper_double;
     } else if (str_equal(array->data_type, "T")) {
-        removed = array->t_arr[index];
+        void **arr = (void **)array->arr;
+        removed = (T)arr[index];
     }
 
     for (int i = index + 1; i < array->size; i++) {
@@ -397,7 +387,8 @@ T array_remove(array_t *array, int index) {
             double *arr = (double *)array->arr;
             arr[i - 1] = arr[i];
         } else if (str_equal(array->data_type, "T")) {
-            array->t_arr[i - 1] = array->t_arr[i];
+            void **arr = (void **)array->arr;
+            arr[i - 1] = arr[i];
         }
     }
 
@@ -419,36 +410,39 @@ T array_remove(array_t *array, int index) {
 T array_min(const array_t *array, compare_t compare) {
     return_value_if_fail(array != NULL && array->size > 0, NULL);
 
+    T min = NULL;
+
     if (str_equal(array->data_type, "int")) {
         int *arr = (int *)array->arr;
-        int min = arr[0];
+        int min_val = arr[0];
         for (int i = 1; i < array->size; i++) {
-            if (arr[i] < min) {
-                min = arr[i];
+            if (arr[i] < min_val) {
+                min_val = arr[i];
             }
         }
-        return wrap_int(min);
+        min = (T)wrap_int(min_val);
     } else if (str_equal(array->data_type, "double")) {
         double *arr = (double *)array->arr;
-        double min = arr[0];
+        double min_val = arr[0];
         for (int i = 1; i < array->size; i++) {
-            if (arr[i] < min) {
-                min = arr[i];
+            if (arr[i] < min_val) {
+                min_val = arr[i];
             }
         }
-        return wrap_double(min);
+        min = (T)wrap_double(min_val);
     } else if (str_equal(array->data_type, "T")) {
         return_value_if_fail(compare != NULL, NULL);
-        T min = array->t_arr[0];
+        void **arr = (void **)array->arr;
+        T min_val = arr[0];
         for (int i = 1; i < array->size; i++) {
-            if (compare(array->t_arr[i], min) < 0) {
-                min = array->t_arr[i];
+            if (compare(arr[i], min_val) < 0) {
+                min_val = arr[i];
             }
         }
-        return min;
+        min = min_val;
     }
 
-    return NULL;
+    return min;
 }
 
 /**
@@ -463,36 +457,39 @@ T array_min(const array_t *array, compare_t compare) {
 T array_max(const array_t *array, compare_t compare) {
     return_value_if_fail(array != NULL && array->size > 0, NULL);
 
+    T max = NULL;
+
     if (str_equal(array->data_type, "int")) {
         int *arr = (int *)array->arr;
-        int max = arr[0];
+        int max_val = arr[0];
         for (int i = 1; i < array->size; i++) {
-            if (arr[i] > max) {
-                max = arr[i];
+            if (arr[i] > max_val) {
+                max_val = arr[i];
             }
         }
-        return wrap_int(max);
+        max = (T)wrap_int(max_val);
     } else if (str_equal(array->data_type, "double")) {
         double *arr = (double *)array->arr;
-        double max = arr[0];
+        double max_val = arr[0];
         for (int i = 1; i < array->size; i++) {
-            if (arr[i] > max) {
-                max = arr[i];
+            if (arr[i] > max_val) {
+                max_val = arr[i];
             }
         }
-        return wrap_double(max);
+        max = (T)wrap_double(max_val);
     } else if (str_equal(array->data_type, "T")) {
         return_value_if_fail(compare != NULL, NULL);
-        T max = array->t_arr[0];
+        void **arr = (void **)array->arr;
+        T max_val = arr[0];
         for (int i = 1; i < array->size; i++) {
-            if (compare(array->t_arr[i], max) > 0) {
-                max = array->t_arr[i];
+            if (compare(arr[i], max_val) > 0) {
+                max_val = arr[i];
             }
         }
-        return max;
+        max = max_val;
     }
 
-    return NULL;
+    return max;
 }
 
 /**
@@ -524,7 +521,8 @@ int array_index_of(const array_t *array, void *context) {
             }
         } else if (str_equal(array->data_type, "T")) {
             match_t match = (match_t)context;
-            if (match(array->t_arr[i])) {
+            void **arr = (void **)array->arr;
+            if (match(arr[i])) {
                 return i;
             }
         }
@@ -562,7 +560,8 @@ int array_last_index_of(const array_t *array, void *context) {
             }
         } else if (str_equal(array->data_type, "T")) {
             match_t match = (match_t)context;
-            if (match(array->t_arr[i])) {
+            void **arr = (void **)array->arr;
+            if (match(arr[i])) {
                 return i;
             }
         }
@@ -600,7 +599,8 @@ int array_count(const array_t *array, void *context) {
             }
         } else if (str_equal(array->data_type, "T")) {
             match_t match = (match_t)context;
-            if (match(array->t_arr[i])) {
+            void **arr = (void **)array->arr;
+            if (match(arr[i])) {
                 cnt++;
             }
         }
@@ -628,7 +628,8 @@ array_t *array_reverse(array_t *array) {
             double *arr = (double *)array->arr;
             swap(arr[i], arr[j], double);
         } else if (str_equal(array->data_type, "T")) {
-            swap(array->t_arr[i], array->t_arr[j], T);
+            void **arr = (void **)array->arr;
+            swap(arr[i], arr[j], T);
         }
         i++;
         j--;
@@ -654,7 +655,8 @@ array_t *array_swap(array_t *array, int index1, int index2) {
         double *arr = (double *)array->arr;
         swap(arr[index1], arr[index2], double);
     } else if (str_equal(array->data_type, "T")) {
-        swap(array->t_arr[index1], array->t_arr[index2], T);
+        void **arr = (void **)array->arr;
+        swap(arr[index1], arr[index2], T);
     }
 
     return array;
@@ -790,7 +792,8 @@ array_t *array_sort(array_t *array, bool reverse, compare_t compare) {
         qsort(array->arr, array->size, sizeof(double), reverse ? cmp_double_desc : cmp_double_asc);
     } else if (str_equal(array->data_type, "T")) {
         return_value_if_fail(compare != NULL, array);
-        quick_sort(array->t_arr, array->size, compare);
+        void **arr = (void **)array->arr;
+        quick_sort(arr, array->size, compare);
         if (reverse) {
             array_reverse(array);
         }
@@ -800,18 +803,19 @@ array_t *array_sort(array_t *array, bool reverse, compare_t compare) {
 }
 
 /**
- * @brief   Get the iterator.
+ * @brief   Get the begin iterator.
  * @param array cino-array
- * @return  Returns the iterator.
+ * @return  Returns the begin iterator.
  */
-iter_t array_iter(array_t *array) {
+iter_t array_iter_begin(array_t *array) {
     return_value_if_fail(array != NULL, NULL);
 
     if (array->size > 0) {
         if (str_equal(array->data_type, "int") || str_equal(array->data_type, "double")) {
             array->iterator->iter = array->arr;
         } else if (str_equal(array->data_type, "T")) {
-            array->iterator->iter = array->t_arr[0];
+            void **arr = (void **)array->arr;
+            array->iterator->iter = arr[0];
             array->iterator->iter_index = 0;
         }
     } else {
@@ -820,6 +824,51 @@ iter_t array_iter(array_t *array) {
     }
 
     return array->iterator->iter;
+}
+
+/**
+ * @brief   Get the end iterator.
+ * @param array cino-array
+ * @return  Returns the end iterator.
+ */
+iter_t array_iter_end(array_t *array) {
+    return_value_if_fail(array != NULL, NULL);
+
+    if (array->size > 0) {
+        if (str_equal(array->data_type, "int")) {
+            array->iterator->iter = (iter_t)((byte_t *)array->arr + (array->size - 1) * sizeof(int));
+        } else if (str_equal(array->data_type, "double")) {
+            array->iterator->iter = (iter_t)((byte_t *)array->arr + (array->size - 1) * sizeof(double));
+        } else if (str_equal(array->data_type, "T")) {
+            void **arr = (void **)array->arr;
+            array->iterator->iter = arr[array->size - 1];
+            array->iterator->iter_index = array->size - 1;
+        }
+    } else {
+        array->iterator->iter = NULL;
+        array->iterator->iter_index = -1;
+    }
+
+    return array->iterator->iter;
+}
+
+/**
+ * @brief   Determine if the cino-array has previous iterator.
+ * @param array cino-array
+ * @return  Returns `true` if previous iterator exists, otherwise returns `false`.
+ */
+bool array_iter_has_prev(const array_t *array) {
+    return_value_if_fail(array != NULL && array->iterator->iter != NULL, false);
+
+    if (str_equal(array->data_type, "int")) {
+        return (void *)((byte_t *)array->iterator->iter - sizeof(int)) >= (void *)((int *)array->arr);
+    } else if (str_equal(array->data_type, "double")) {
+        return (void *)((byte_t *)array->iterator->iter - sizeof(double)) >= (void *)((double *)array->arr);
+    } else if (str_equal(array->data_type, "T")) {
+        return array->iterator->iter_index - 1 >= 0;
+    }
+
+    return false;
 }
 
 /**
@@ -842,6 +891,37 @@ bool array_iter_has_next(const array_t *array) {
 }
 
 /**
+ * @brief   Get the previous iterator.
+ * @param array cino-array
+ * @return  Returns the previous iterator.
+ */
+iter_t array_iter_prev(array_t *array) {
+    return_value_if_fail(array != NULL, NULL);
+
+    if (array_iter_has_prev(array)) {
+        byte_t *iter = NULL;
+        if (str_equal(array->data_type, "int")) {
+            iter = (byte_t *)array->iterator->iter;
+            iter -= sizeof(int);
+            array->iterator->iter = (iter_t)iter;
+        } else if (str_equal(array->data_type, "double")) {
+            iter = (byte_t *)array->iterator->iter;
+            iter -= sizeof(double);
+            array->iterator->iter = (iter_t)iter;
+        } else if (str_equal(array->data_type, "T")) {
+            void **arr = (void **)array->arr;
+            array->iterator->iter_index--;
+            array->iterator->iter = arr[array->iterator->iter_index];
+        }
+    } else {
+        array->iterator->iter = NULL;
+        array->iterator->iter_index = -1;
+    }
+
+    return array->iterator->iter;
+}
+
+/**
  * @brief   Get the next iterator.
  * @param array cino-array
  * @return  Returns the next iterator.
@@ -860,8 +940,9 @@ iter_t array_iter_next(array_t *array) {
             iter += sizeof(double);
             array->iterator->iter = (iter_t)iter;
         } else if (str_equal(array->data_type, "T")) {
+            void **arr = (void **)array->arr;
             array->iterator->iter_index++;
-            array->iterator->iter = array->t_arr[array->iterator->iter_index];
+            array->iterator->iter = arr[array->iterator->iter_index];
         }
     } else {
         array->iterator->iter = NULL;

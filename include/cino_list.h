@@ -165,18 +165,39 @@ list_t *list_insert(list_t *list, int index, T data);
 T list_remove(list_t *list, int index);
 
 /**
- * @brief   Get the iterator.
+ * @brief   Get the begin iterator.
  * @param list cino-list
- * @return  Returns the iterator.
+ * @return  Returns the begin iterator.
  */
-iter_t list_iter(list_t *list);
+iter_t list_iter_begin(list_t *list);
 
 /**
- * @brief   Determine if the cino-list has next iterator.
+ * @brief   Get the end iterator.
+ * @param list cino-list
+ * @return  Returns the end iterator.
+ */
+iter_t list_iter_end(list_t *list);
+
+/**
+ * @brief   Determine if exists the previous iterator.
+ * @param list cino-list
+ * @return  Returns `true` if previous iterator exists, otherwise returns `false`.
+ */
+bool list_iter_has_prev(const list_t *list);
+
+/**
+ * @brief   Determine if exists the next iterator.
  * @param list cino-list
  * @return  Returns `true` if next iterator exists, otherwise returns `false`.
  */
 bool list_iter_has_next(const list_t *list);
+
+/**
+ * @brief   Get the previous iterator.
+ * @param list cino-list
+ * @return  Returns the previous iterator.
+ */
+iter_t list_iter_prev(list_t *list);
 
 /**
  * @brief   Get the next iterator.

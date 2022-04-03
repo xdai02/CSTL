@@ -24,8 +24,11 @@ void test_array_count();
 void test_array_reverse();
 void test_array_swap();
 void test_array_sort();
-void test_array_iter();
+void test_array_iter_begin();
+void test_array_iter_end();
+void test_array_iter_has_prev();
 void test_array_iter_has_next();
+void test_array_iter_prev();
 void test_array_iter_next();
 
 #endif

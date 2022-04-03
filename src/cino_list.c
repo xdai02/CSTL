@@ -605,18 +605,40 @@ T list_remove(list_t *list, int index) {
 }
 
 /**
- * @brief   Get the iterator.
+ * @brief   Get the begin iterator.
  * @param list cino-list
- * @return  Returns the iterator.
+ * @return  Returns the begin iterator.
  */
-iter_t list_iter(list_t *list) {
+iter_t list_iter_begin(list_t *list) {
     return_value_if_fail(list != NULL, NULL);
     list->iterator->iter = (iter_t)list->head->next;
     return list->iterator->iter;
 }
 
 /**
- * @brief   Determine if the cino-list has next iterator.
+ * @brief   Get the end iterator.
+ * @param list cino-list
+ * @return  Returns the end iterator.
+ */
+iter_t list_iter_end(list_t *list) {
+    return_value_if_fail(list != NULL, NULL);
+    list->iterator->iter = (iter_t)list->tail->prev;
+    return list->iterator->iter;
+}
+
+/**
+ * @brief   Determine if exists the previous iterator.
+ * @param list cino-list
+ * @return  Returns `true` if previous iterator exists, otherwise returns `false`.
+ */
+bool list_iter_has_prev(const list_t *list) {
+    return_value_if_fail(list != NULL && list->iterator->iter != NULL, false);
+    node_t *node = (node_t *)list->iterator->iter;
+    return node->prev && node->prev != list->head;
+}
+
+/**
+ * @brief   Determine if exists the next iterator.
  * @param list cino-list
  * @return  Returns `true` if next iterator exists, otherwise returns `false`.
  */
@@ -624,6 +646,24 @@ bool list_iter_has_next(const list_t *list) {
     return_value_if_fail(list != NULL && list->iterator->iter != NULL, false);
     node_t *node = (node_t *)list->iterator->iter;
     return node->next && node->next != list->tail;
+}
+
+/**
+ * @brief   Get the previous iterator.
+ * @param list cino-list
+ * @return  Returns the previous iterator.
+ */
+iter_t list_iter_prev(list_t *list) {
+    return_value_if_fail(list != NULL, NULL);
+
+    if (list_iter_has_prev(list)) {
+        node_t *node = (node_t *)list->iterator->iter;
+        list->iterator->iter = (iter_t)node->prev;
+    } else {
+        list->iterator->iter = NULL;
+    }
+
+    return list->iterator->iter;
 }
 
 /**
