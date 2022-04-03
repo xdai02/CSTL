@@ -1,5 +1,3 @@
 - [ ] test_cino_utils添加str_reverse()测试代码
 - [ ] cino_string添加string_reverse() + 测试代码 + 更新文档
 - [ ] 添加更多demo
-- [ ] 完成cino-list迭代器
-- [ ] 添加prev iter + 更新文档

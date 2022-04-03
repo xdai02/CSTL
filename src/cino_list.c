@@ -611,8 +611,18 @@ T list_remove(list_t *list, int index) {
  */
 iter_t list_iter_begin(list_t *list) {
     return_value_if_fail(list != NULL, NULL);
-    list->iterator->iter = (iter_t)list->head->next;
-    return list->iterator->iter;
+
+    iter_t data = NULL;
+    node_t *node = list->head->next;
+
+    if (node == list->tail) {
+        list->iterator->iter = NULL;
+    } else {
+        list->iterator->iter = (iter_t)node;
+        data = (iter_t)node->data;
+    }
+
+    return data;
 }
 
 /**
@@ -622,8 +632,18 @@ iter_t list_iter_begin(list_t *list) {
  */
 iter_t list_iter_end(list_t *list) {
     return_value_if_fail(list != NULL, NULL);
-    list->iterator->iter = (iter_t)list->tail->prev;
-    return list->iterator->iter;
+
+    iter_t data = NULL;
+    node_t *node = list->tail->prev;
+
+    if (node == list->head) {
+        list->iterator->iter = NULL;
+    } else {
+        list->iterator->iter = (iter_t)node;
+        data = (iter_t)node->data;
+    }
+
+    return data;
 }
 
 /**
@@ -656,14 +676,17 @@ bool list_iter_has_next(const list_t *list) {
 iter_t list_iter_prev(list_t *list) {
     return_value_if_fail(list != NULL, NULL);
 
+    iter_t data = NULL;
+
     if (list_iter_has_prev(list)) {
         node_t *node = (node_t *)list->iterator->iter;
         list->iterator->iter = (iter_t)node->prev;
+        data = (iter_t)node->prev->data;
     } else {
         list->iterator->iter = NULL;
     }
 
-    return list->iterator->iter;
+    return data;
 }
 
 /**
@@ -674,12 +697,15 @@ iter_t list_iter_prev(list_t *list) {
 iter_t list_iter_next(list_t *list) {
     return_value_if_fail(list != NULL, NULL);
 
+    iter_t data = NULL;
+
     if (list_iter_has_next(list)) {
         node_t *node = (node_t *)list->iterator->iter;
         list->iterator->iter = (iter_t)node->next;
+        data = (iter_t)node->next->data;
     } else {
         list->iterator->iter = NULL;
     }
 
-    return list->iterator->iter;
+    return data;
 }

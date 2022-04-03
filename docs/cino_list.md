@@ -341,3 +341,118 @@ T list_remove(list_t *list, int index);
 - 返回值：被删除的元素。
 
 > - 对于基本数据类型，此函数会返回该数据类型的包装类型，调用者需要自行拆箱获取元素值。
+
+---
+
+#### list_iter_begin()
+
+- 函数原型：
+
+```c
+iter_t list_iter_begin(list_t *list)
+```
+
+- 功能：获取cino-list的首元素迭代器。
+- 参数：
+
+| 参数 | 说明      |
+| ---- | --------- |
+| list | cino-list |
+
+- 返回值：首元素迭代器。
+
+---
+
+#### list_iter_end()
+
+- 函数原型：
+
+```c
+iter_t list_iter_end(list_t *list)
+```
+
+- 功能：获取cino-list的尾元素迭代器。
+- 参数：
+
+| 参数 | 说明      |
+| ---- | --------- |
+| list | cino-list |
+
+- 返回值：尾元素迭代器。
+
+---
+
+#### list_iter_has_prev()
+
+- 函数原型：
+
+```c
+bool list_iter_has_prev(const list_t *list)
+```
+
+- 功能：判断是否存在上一个迭代器。
+- 参数：
+
+| 参数 | 说明      |
+| ---- | --------- |
+| list | cino-list |
+
+- 返回值：如果存在上一个迭代器返回`true`，不存在返回`false`。
+
+---
+
+#### list_iter_has_next()
+
+- 函数原型：
+
+```c
+bool list_iter_has_next(const list_t *list)
+```
+
+- 功能：判断是否存在下一个迭代器。
+- 参数：
+
+| 参数 | 说明      |
+| ---- | --------- |
+| list | cino-list |
+
+- 返回值：如果存在下一个迭代器返回`true`，不存在返回`false`。
+
+---
+
+#### list_iter_prev()
+
+- 函数原型：
+
+```c
+iter_t list_iter_prev(list_t *list)
+```
+
+- 功能：获取上一个迭代器。
+- 参数：
+
+| 参数 | 说明      |
+| ---- | --------- |
+| list | cino-list |
+
+- 返回值：上一个迭代器。
+
+---
+
+#### list_iter_next()
+
+- 函数原型：
+
+```c
+iter_t list_iter_next(list_t *list)
+```
+
+- 功能：获取下一个迭代器。
+- 参数：
+
+| 参数 | 说明      |
+| ---- | --------- |
+| list | cino-list |
+
+- 返回值：下一个迭代器。
+

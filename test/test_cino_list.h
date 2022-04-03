@@ -22,5 +22,11 @@ void test_list_pop_front();
 void test_list_pop_back();
 void test_list_insert();
 void test_list_remove();
+void test_list_iter_begin();
+void test_list_iter_end();
+void test_list_iter_has_prev();
+void test_list_iter_has_next();
+void test_list_iter_prev();
+void test_list_iter_next();
 
 #endif

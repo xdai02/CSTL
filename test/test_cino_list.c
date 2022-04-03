@@ -735,3 +735,239 @@ void test_list_remove() {
     test = NULL;
     list_destroy(list);
 }
+
+void test_list_iter_begin() {
+    list_t *list = list_create("int");
+    for (int i = 0; i < 5; i++) {
+        wrapper_int_t *wrapper = wrap_int(i);
+        list_push_back(list, wrapper);
+        unwrap_int(wrapper);
+    }
+    assert(list_iter_begin(list));
+    list_destroy(list);
+
+    list = list_create("double");
+    assert(!list_iter_begin(list));
+    list_destroy(list);
+
+    list = list_create("T");
+    test_t *test = (test_t *)calloc(5, sizeof(test_t));
+    for (int i = 0; i < 5; i++) {
+        test[i].a = i;
+        list_push_back(list, &test[i]);
+    }
+    assert(list_iter_begin(list));
+    free(test);
+    test = NULL;
+    list_destroy(list);
+}
+
+void test_list_iter_end() {
+    list_t *list = list_create("int");
+    for (int i = 0; i < 5; i++) {
+        wrapper_int_t *wrapper = wrap_int(i);
+        list_push_back(list, wrapper);
+        unwrap_int(wrapper);
+    }
+    assert(list_iter_end(list));
+    list_destroy(list);
+
+    list = list_create("double");
+    assert(!list_iter_end(list));
+    list_destroy(list);
+
+    list = list_create("T");
+    test_t *test = (test_t *)calloc(5, sizeof(test_t));
+    for (int i = 0; i < 5; i++) {
+        test[i].a = i;
+        list_push_back(list, &test[i]);
+    }
+    assert(list_iter_end(list));
+    free(test);
+    test = NULL;
+    list_destroy(list);
+}
+
+void test_list_iter_has_prev() {
+    list_t *list = list_create("int");
+    for (int i = 0; i < 5; i++) {
+        wrapper_int_t *wrapper = wrap_int(i);
+        list_push_back(list, wrapper);
+        unwrap_int(wrapper);
+    }
+    assert(list_iter_end(list));
+    assert(list_iter_has_prev(list));
+    list_destroy(list);
+
+    list = list_create("double");
+    assert(!list_iter_end(list));
+    assert(!list_iter_has_prev(list));
+    list_destroy(list);
+
+    list = list_create("T");
+    test_t *test = (test_t *)calloc(5, sizeof(test_t));
+    for (int i = 0; i < 5; i++) {
+        test[i].a = i;
+        list_push_back(list, &test[i]);
+    }
+    assert(list_iter_end(list));
+    assert(list_iter_has_prev(list));
+    free(test);
+    test = NULL;
+    list_destroy(list);
+}
+
+void test_list_iter_has_next() {
+    list_t *list = list_create("int");
+    for (int i = 0; i < 5; i++) {
+        wrapper_int_t *wrapper = wrap_int(i);
+        list_push_back(list, wrapper);
+        unwrap_int(wrapper);
+    }
+    assert(list_iter_begin(list));
+    assert(list_iter_has_next(list));
+    list_destroy(list);
+
+    list = list_create("double");
+    assert(!list_iter_begin(list));
+    assert(!list_iter_has_next(list));
+    list_destroy(list);
+
+    list = list_create("T");
+    test_t *test = (test_t *)calloc(5, sizeof(test_t));
+    for (int i = 0; i < 5; i++) {
+        test[i].a = i;
+        list_push_back(list, &test[i]);
+    }
+    assert(list_iter_begin(list));
+    assert(list_iter_has_next(list));
+    free(test);
+    test = NULL;
+    list_destroy(list);
+}
+
+void test_list_iter_prev() {
+    list_t *list = list_create("int");
+    for (int i = 0; i < 5; i++) {
+        wrapper_int_t *wrapper = wrap_int(i);
+        list_push_back(list, wrapper);
+        unwrap_int(wrapper);
+    }
+
+    int i = 0;
+    iter_t iter = list_iter_end(list);
+    while (iter) {
+        assert(*(int *)iter == 5 - i - 1);
+        iter = list_iter_prev(list);
+        i++;
+    }
+    assert(i == 5);
+    list_destroy(list);
+
+    list = list_create("double");
+    for (int i = 0; i < 5; i++) {
+        wrapper_double_t *wrapper = wrap_double((double)i);
+        list_push_back(list, wrapper);
+        unwrap_double(wrapper);
+    }
+
+    i = 0;
+    iter = list_iter_end(list);
+    while (iter) {
+        assert(equal_double(*(double *)iter, (double)(5 - i - 1)));
+        iter = list_iter_prev(list);
+        i++;
+    }
+    assert(i == 5);
+    list_destroy(list);
+
+    list = list_create("T");
+    test_t *test = (test_t *)calloc(5, sizeof(test_t));
+    for (int i = 0; i < 5; i++) {
+        test[i].a = i;
+        char str[8] = {0};
+        int_to_str(i, str, sizeof(str));
+        str_copy(test[i].p, str);
+        list_push_back(list, &test[i]);
+    }
+
+    i = 0;
+    iter = list_iter_end(list);
+    while (iter) {
+        test_t *t = (test_t *)iter;
+        assert(t->a == 5 - i - 1);
+        char p[8] = {0};
+        int_to_str(5 - i - 1, p, sizeof(p));
+        assert(str_equal(t->p, p));
+        iter = list_iter_prev(list);
+        i++;
+    }
+    assert(i == 5);
+
+    free(test);
+    test = NULL;
+    list_destroy(list);
+}
+
+void test_list_iter_next() {
+    list_t *list = list_create("int");
+    for (int i = 0; i < 5; i++) {
+        wrapper_int_t *wrapper = wrap_int(i);
+        list_push_back(list, wrapper);
+        unwrap_int(wrapper);
+    }
+
+    int i = 0;
+    iter_t iter = list_iter_begin(list);
+    while (iter) {
+        assert(*(int *)iter == i);
+        iter = list_iter_next(list);
+        i++;
+    }
+    assert(i == 5);
+    list_destroy(list);
+
+    list = list_create("double");
+    for (int i = 0; i < 5; i++) {
+        wrapper_double_t *wrapper = wrap_double((double)i);
+        list_push_back(list, wrapper);
+        unwrap_double(wrapper);
+    }
+
+    i = 0;
+    iter = list_iter_begin(list);
+    while (iter) {
+        assert(equal_double(*(double *)iter, (double)i));
+        iter = list_iter_next(list);
+        i++;
+    }
+    assert(i == 5);
+    list_destroy(list);
+
+    list = list_create("T");
+    test_t *test = (test_t *)calloc(5, sizeof(test_t));
+    for (int i = 0; i < 5; i++) {
+        test[i].a = i;
+        char str[8] = {0};
+        int_to_str(i, str, sizeof(str));
+        str_copy(test[i].p, str);
+        list_push_back(list, &test[i]);
+    }
+
+    i = 0;
+    iter = list_iter_begin(list);
+    while (iter) {
+        test_t *t = (test_t *)iter;
+        assert(t->a == i);
+        char p[8] = {0};
+        int_to_str(i, p, sizeof(p));
+        assert(str_equal(t->p, p));
+        iter = list_iter_next(list);
+        i++;
+    }
+    assert(i == 5);
+
+    free(test);
+    test = NULL;
+    list_destroy(list);
+}

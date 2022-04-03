@@ -138,6 +138,12 @@ void test_cino_list() {
     test_list_pop_back();
     test_list_insert();
     test_list_remove();
+    test_list_iter_begin();
+    test_list_iter_end();
+    test_list_iter_has_prev();
+    test_list_iter_has_next();
+    test_list_iter_prev();
+    test_list_iter_next();
 
     LOGGER(INFO, "[PASS] test_cino_list");
 }
