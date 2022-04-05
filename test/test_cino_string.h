@@ -27,5 +27,6 @@ void test_string_count_substring();
 void test_string_replace_char();
 void test_string_replace();
 void test_string_remove();
+void test_string_reverse();
 
 #endif

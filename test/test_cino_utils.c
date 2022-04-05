@@ -976,6 +976,33 @@ void test_str_remove() {
     assert(!p);
 }
 
+void test_str_reverse(){
+    str_t p = NULL;
+
+    char s1[] = "Hello World";
+    p = str_reverse(s1);
+    assert(str_equal(s1, "dlroW olleH"));
+    assert(str_equal(p, "dlroW olleH"));
+
+    char s2[] = "H";
+    p = str_reverse(s2);
+    assert(str_equal(s2, "H"));
+    assert(str_equal(p, "H"));
+
+    char s3[] = "";
+    p = str_reverse(s3);
+    assert(str_equal(s3, ""));
+    assert(str_equal(p, ""));
+
+    char s4[] = "Hello\0World";
+    p = str_reverse(s4);
+    assert(str_equal(s4, "olleH"));
+    assert(str_equal(p, "olleH"));
+
+    p = str_reverse(NULL);
+    assert(!p);
+}
+
 void test_str_index_of_char() {
     assert(str_index_of_char("Hello World", 'l') == 2);
     assert(str_index_of_char("Hello World", 'e') == 1);

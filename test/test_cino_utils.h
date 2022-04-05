@@ -57,6 +57,7 @@ void test_str_count_substring();
 void test_str_replace_char();
 void test_str_replace();
 void test_str_remove();
+void test_str_reverse();
 void test_str_index_of_char();
 void test_str_index_of_char_from();
 void test_str_index_of_substring();

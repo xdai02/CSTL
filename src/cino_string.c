@@ -373,3 +373,14 @@ string_t *string_remove(string_t *string, const str_t substr) {
 
     return string;
 }
+
+/**
+ * @brief   Reverse the order of the cino-string.
+ * @param string    cino-string
+ * @return  Returns the modified cino-string.
+ */
+string_t *string_reverse(string_t *string) {
+    return_value_if_fail(string != NULL, NULL);
+    str_reverse(string->string);
+    return string;
+}

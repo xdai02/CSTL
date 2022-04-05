@@ -52,6 +52,7 @@ void test_cino_utils() {
     test_str_replace_char();
     test_str_replace();
     test_str_remove();
+    test_str_reverse();
     test_str_index_of_char();
     test_str_index_of_char_from();
     test_str_index_of_substring();
@@ -88,6 +89,7 @@ void test_cino_string() {
     test_string_replace_char();
     test_string_replace();
     test_string_remove();
+    test_string_reverse();
 
     LOGGER(INFO, "[PASS] test_cino_string");
 }

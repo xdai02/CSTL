@@ -652,3 +652,25 @@ void test_string_remove() {
 
     string_destroy(s);
 }
+
+void test_string_reverse() {
+    string_t *s = NULL;
+
+    s = string_create("Hello World");
+    s = string_reverse(s);
+    assert(str_equal(string_get(s), "dlroW olleH"));
+
+    string_set(s, "H");
+    s = string_reverse(s);
+    assert(str_equal(string_get(s), "H"));
+   
+    string_set(s, "");
+    s = string_reverse(s);
+    assert(str_equal(string_get(s), "")); 
+    
+    string_set(s, "Hello\0World");
+    s = string_reverse(s);
+    assert(str_equal(string_get(s), "olleH"));
+
+    string_destroy(s);
+}
