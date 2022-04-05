@@ -976,7 +976,7 @@ void test_str_remove() {
     assert(!p);
 }
 
-void test_str_reverse(){
+void test_str_reverse() {
     str_t p = NULL;
 
     char s1[] = "Hello World";

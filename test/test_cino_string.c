@@ -663,11 +663,11 @@ void test_string_reverse() {
     string_set(s, "H");
     s = string_reverse(s);
     assert(str_equal(string_get(s), "H"));
-   
+
     string_set(s, "");
     s = string_reverse(s);
-    assert(str_equal(string_get(s), "")); 
-    
+    assert(str_equal(string_get(s), ""));
+
     string_set(s, "Hello\0World");
     s = string_reverse(s);
     assert(str_equal(string_get(s), "olleH"));

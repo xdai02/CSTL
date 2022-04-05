@@ -440,3 +440,22 @@ string_t *string_remove(string_t *string, const str_t substr);
 | substr | 需删除子串  |
 
 - 返回值：修改后的cino-string。
+
+---
+
+#### string_reverse()
+
+- 函数原型：
+
+```c
+string_t *string_reverse(string_t *string);
+```
+
+- 功能：反转cino-string。
+- 参数：
+
+| 参数   | 说明        |
+| ------ | ----------- |
+| string | cino-string |
+
+- 返回值：修改后的cino-string。
