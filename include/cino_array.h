@@ -72,8 +72,7 @@ T array_get(const array_t *array, int index);
  * @param array cino-array
  * @param index index
  * @param data  - For primitive data, a wrapper type of that primitive is needed.
- *              This function will not unwrap or free the wrapper. It is caller's
- *              responsibility to unwrap.
+ *              This function will unwrap for you.
  *              - For T (generic) cino-array, it is caller's responsibility to free
  *              the previous data before overwriting it.
  */
@@ -83,8 +82,7 @@ void array_set(array_t *array, int index, T data);
  * @brief   Appends the specified element to the end of the cino-array.
  * @param array cino-array
  * @param data  - For primitive data, a wrapper type of that primitive is needed.
- *              This function will not unwrap or free the wrapper. It is caller's
- *              responsibility to unwrap.
+ *              This function will unwrap for you.
  *              - For T (generic) cino-array, it is caller's responsibility to free
  *              the previous data before overwriting it.
  * @return  Returns the modified cino-array.
@@ -96,8 +94,7 @@ array_t *array_append(array_t *array, T data);
  * @param array cino-array
  * @param index index
  * @param data  - For primitive data, a wrapper type of that primitive is needed.
- *              This function will not unwrap or free the wrapper. It is caller's
- *              responsibility to unwrap.
+ *              This function will unwrap for you.
  *              - For T (generic) cino-array, it is caller's responsibility to free
  *              the previous data before overwriting it.
  * @return  Returns the modified cino-array.
@@ -140,7 +137,7 @@ T array_max(const array_t *array, compare_t compare);
  *          cino-array.
  * @param array     cino-array
  * @param context   - For primitive cino-array, a wrapper type of the searching data should
- *                    be passed. It is caller's responsibility to unwrap.
+ *                    be passed. This function will unwrap for you.
  *                  - For T (generic) cino-array, a match_t callback function should be passed
  *                    as the matching rule.
  * @return  Returns the index of the first occurrence of the specified element in the
@@ -153,7 +150,7 @@ int array_index_of(const array_t *array, void *context);
  *          cino-array.
  * @param array     cino-array
  * @param context   - For primitive cino-array, a wrapper type of the searching data should
- *                    be passed. It is caller's responsibility to unwrap.
+ *                    be passed. This function will unwrap for you.
  *                  - For T (generic) cino-array, a match_t callback function should be passed
  *                    as the matching rule.
  * @return  Returns the index of the last occurrence of the specified element in the
@@ -165,7 +162,7 @@ int array_last_index_of(const array_t *array, void *context);
  * @brief   Count the occurrences of the element matched.
  * @param array     cino-array
  * @param context   - For primitive cino-array, a wrapper type of the counting data should
- *                    be passed. It is caller's responsibility to unwrap.
+ *                    be passed. This function will unwrap for you.
  *                  - For T (generic) cino-array, a match_t callback function should be passed
  *                    as the matching rule.
  * @return  Returns occurrences of the element matched.

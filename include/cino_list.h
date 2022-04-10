@@ -88,8 +88,7 @@ T list_get(const list_t *list, int index);
  * @param list  cino-list
  * @param index index
  * @param data  - For primitive data, a wrapper type of that primitive is needed.
- *              This function will not unwrap or free the wrapper. It is caller's
- *              responsibility to unwrap.
+ *              This function will unwrap for you.
  *              - For T (generic) cino-list, it is caller's responsibility to free
  *              the previous data before overwriting it.
  */
@@ -100,7 +99,7 @@ void list_set(list_t *list, int index, T data);
  *          cino-list.
  * @param list      cino-list
  * @param context   - For primitive cino-list, a wrapper type of the searching data should
- *                    be passed. It is caller's responsibility to unwrap.
+ *                    be passed. This function will unwrap for you.
  *                  - For T (generic) cino-list, a match_t callback function should be passed
  *                    as the matching rule.
  * @return  Returns the index of the first occurrence of the specified element in the
@@ -112,8 +111,7 @@ int list_index_of(const list_t *list, void *context);
  * @brief   Inserts the specified element at the beginning of the cino-list.
  * @param list  cino-list
  * @param data  For primitive data, a wrapper type of that primitive is needed.
- *              This function will not unwrap or free the wrapper. It is caller's
- *              responsibility to unwrap.
+ *              This function will unwrap for you.
  * @return  Returns the modified cino-list.
  */
 list_t *list_push_front(list_t *list, T data);
@@ -122,8 +120,7 @@ list_t *list_push_front(list_t *list, T data);
  * @brief   Inserts the specified element at the end of the cino-list.
  * @param list  cino-list
  * @param data  For primitive data, a wrapper type of that primitive is needed.
- *              This function will not unwrap or free the wrapper. It is caller's
- *              responsibility to unwrap.
+ *              This function will unwrap for you.
  * @return  Returns the modified cino-list.
  */
 list_t *list_push_back(list_t *list, T data);
@@ -149,8 +146,7 @@ T list_pop_back(list_t *list);
  * @param list  cino-list
  * @param index index
  * @param data  For primitive data, a wrapper type of that primitive is needed.
- *              This function will not unwrap or free the wrapper. It is caller's
- *              responsibility to unwrap.
+ *              This function will unwrap for you.
  * @return  Returns the modified cino-list.
  */
 list_t *list_insert(list_t *list, int index, T data);

@@ -90,9 +90,7 @@ void test_list_clear() {
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
     for (int i = 0; i < 5; i++) {
-        wrapper_int_t *wrapper = wrap_int(i);
-        list_push_back(list, wrapper);
-        unwrap_int(wrapper);
+        list_push_back(list, wrap_int(i));
     }
     assert(!list_is_empty(list));
     assert(list_size(list) == 5);
@@ -105,9 +103,7 @@ void test_list_clear() {
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
     for (int i = 0; i < 5; i++) {
-        wrapper_double_t *wrapper = wrap_double(i);
-        list_push_back(list, wrapper);
-        unwrap_double(wrapper);
+        list_push_back(list, wrap_double(i));
     }
     assert(!list_is_empty(list));
     assert(list_size(list) == 5);
@@ -141,9 +137,7 @@ void test_list_get_front() {
     list_t *list = list_create("int");
     assert(!list_get_front(list));
     for (int i = 0; i < 5; i++) {
-        wrapper_int_t *wrapper = wrap_int(i);
-        list_push_back(list, wrapper);
-        unwrap_int(wrapper);
+        list_push_back(list, wrap_int(i));
     }
     wrapper_int_t *wrapper_int = (wrapper_int_t *)list_get_front(list);
     assert(unwrap_int(wrapper_int) == 0);
@@ -152,9 +146,7 @@ void test_list_get_front() {
     list = list_create("double");
     assert(!list_get_front(list));
     for (int i = 0; i < 5; i++) {
-        wrapper_double_t *wrapper = wrap_double((double)i);
-        list_push_back(list, wrapper);
-        unwrap_double(wrapper);
+        list_push_back(list, wrap_double(i));
     }
     wrapper_double_t *wrapper_double = (wrapper_double_t *)list_get_front(list);
     assert(equal_double(unwrap_double(wrapper_double), 0.0));
@@ -182,9 +174,7 @@ void test_list_get_back() {
     list_t *list = list_create("int");
     assert(!list_get_back(list));
     for (int i = 0; i < 5; i++) {
-        wrapper_int_t *wrapper = wrap_int(i);
-        list_push_back(list, wrapper);
-        unwrap_int(wrapper);
+        list_push_back(list, wrap_int(i));
     }
     wrapper_int_t *wrapper_int = (wrapper_int_t *)list_get_back(list);
     assert(unwrap_int(wrapper_int) == 4);
@@ -193,9 +183,7 @@ void test_list_get_back() {
     list = list_create("double");
     assert(!list_get_back(list));
     for (int i = 0; i < 5; i++) {
-        wrapper_double_t *wrapper = wrap_double((double)i);
-        list_push_back(list, wrapper);
-        unwrap_double(wrapper);
+        list_push_back(list, wrap_double(i));
     }
     wrapper_double_t *wrapper_double = (wrapper_double_t *)list_get_back(list);
     assert(equal_double(unwrap_double(wrapper_double), 4.0));
@@ -223,9 +211,7 @@ void test_list_get() {
     list_t *list = list_create("int");
     assert(!list_get(list, 0));
     for (int i = 0; i < 5; i++) {
-        wrapper_int_t *wrapper = wrap_int(i);
-        list_push_back(list, wrapper);
-        unwrap_int(wrapper);
+        list_push_back(list, wrap_int(i));
     }
     for (int i = 0; i < 5; i++) {
         wrapper_int_t *wrapper_int = (wrapper_int_t *)list_get(list, i);
@@ -236,13 +222,11 @@ void test_list_get() {
     list = list_create("double");
     assert(!list_get(list, 1));
     for (int i = 0; i < 5; i++) {
-        wrapper_double_t *wrapper = wrap_double((double)i);
-        list_push_back(list, wrapper);
-        unwrap_double(wrapper);
+        list_push_back(list, wrap_double(i));
     }
     for (int i = 0; i < 5; i++) {
         wrapper_double_t *wrapper_double = (wrapper_double_t *)list_get(list, i);
-        assert(equal_double(unwrap_double(wrapper_double), (double)i));
+        assert(equal_double(unwrap_double(wrapper_double), i));
     }
     list_destroy(list);
 
@@ -271,19 +255,13 @@ void test_list_get() {
 void test_list_set() {
     list_t *list = list_create("int");
     for (int i = 0; i < 3; i++) {
-        wrapper_int_t *wrapper = wrap_int(i);
-        list_push_back(list, wrapper);
-        unwrap_int(wrapper);
+        list_push_back(list, wrap_int(i));
     }
 
-    wrapper_int_t *wrapper_int = wrap_int(9);
-    list_set(list, 0, wrapper_int);
-    unwrap_int(wrapper_int);
-    wrapper_int = wrap_int(7);
-    list_set(list, 2, wrapper_int);
-    unwrap_int(wrapper_int);
+    list_set(list, 0, wrap_int(9));
+    list_set(list, 2, wrap_int(7));
 
-    wrapper_int = (wrapper_int_t *)list_get(list, 0);
+    wrapper_int_t *wrapper_int = (wrapper_int_t *)list_get(list, 0);
     assert(unwrap_int(wrapper_int) == 9);
     wrapper_int = (wrapper_int_t *)list_get(list, 1);
     assert(unwrap_int(wrapper_int) == 1);
@@ -293,19 +271,13 @@ void test_list_set() {
 
     list = list_create("double");
     for (int i = 0; i < 3; i++) {
-        wrapper_double_t *wrapper = wrap_double((double)i);
-        list_push_back(list, wrapper);
-        unwrap_double(wrapper);
+        list_push_back(list, wrap_double(i));
     }
 
-    wrapper_double_t *wrapper_double = wrap_double(9.0);
-    list_set(list, 0, wrapper_double);
-    unwrap_double(wrapper_double);
-    wrapper_double = wrap_double(7.0);
-    list_set(list, 2, wrapper_double);
-    unwrap_double(wrapper_double);
+    list_set(list, 0, wrap_double(9.0));
+    list_set(list, 2, wrap_double(7.0));
 
-    wrapper_double = (wrapper_double_t *)list_get(list, 0);
+    wrapper_double_t *wrapper_double = (wrapper_double_t *)list_get(list, 0);
     assert(equal_double(unwrap_double(wrapper_double), 9.0));
     wrapper_double = (wrapper_double_t *)list_get(list, 1);
     assert(equal_double(unwrap_double(wrapper_double), 1.0));
@@ -356,30 +328,18 @@ void test_list_index_of() {
 
     list_t *list = list_create("int");
     for (int i = 0; i < len1; i++) {
-        wrapper_int_t *wrapper = wrap_int(arr1[i]);
-        list_push_back(list, wrapper);
-        unwrap_int(wrapper);
+        list_push_back(list, wrap_int(arr1[i]));
     }
-    wrapper_int_t *wrapper_int = wrap_int(4);
-    assert(list_index_of(list, wrapper_int) == 1);
-    unwrap_int(wrapper_int);
-    wrapper_int = wrap_int(10);
-    assert(list_index_of(list, wrapper_int) == -1);
-    unwrap_int(wrapper_int);
+    assert(list_index_of(list, wrap_int(4)) == 1);
+    assert(list_index_of(list, wrap_int(10)) == -1);
     list_destroy(list);
 
     list = list_create("double");
     for (int i = 0; i < len1; i++) {
-        wrapper_double_t *wrapper = wrap_double((double)arr1[i]);
-        list_push_back(list, wrapper);
-        unwrap_double(wrapper);
+        list_push_back(list, wrap_double(arr1[i]));
     }
-    wrapper_double_t *wrapper_double = wrap_double(4.0);
-    assert(list_index_of(list, wrapper_double) == 1);
-    unwrap_double(wrapper_double);
-    wrapper_double = wrap_double(10.0);
-    assert(list_index_of(list, wrapper_double) == -1);
-    unwrap_double(wrapper_double);
+    assert(list_index_of(list, wrap_double(4.0)) == 1);
+    assert(list_index_of(list, wrap_double(10.0)) == -1);
     list_destroy(list);
 
     list = list_create("T");
@@ -400,9 +360,7 @@ void test_list_index_of() {
 void test_list_push_front() {
     list_t *list = list_create("int");
     for (int i = 0; i < 5; i++) {
-        wrapper_int_t *wrapper = wrap_int(i);
-        list_push_front(list, wrapper);
-        unwrap_int(wrapper);
+        list_push_front(list, wrap_int(i));
     }
     for (int i = 0; i < 5; i++) {
         wrapper_int_t *wrapper_int = (wrapper_int_t *)list_get(list, i);
@@ -412,13 +370,11 @@ void test_list_push_front() {
 
     list = list_create("double");
     for (int i = 0; i < 5; i++) {
-        wrapper_double_t *wrapper = wrap_double((double)i);
-        list_push_front(list, wrapper);
-        unwrap_double(wrapper);
+        list_push_front(list, wrap_double(i));
     }
     for (int i = 0; i < 5; i++) {
         wrapper_double_t *wrapper_double = (wrapper_double_t *)list_get(list, i);
-        assert(equal_double(unwrap_double(wrapper_double), (double)(5 - i - 1)));
+        assert(equal_double(unwrap_double(wrapper_double), 5 - i - 1));
     }
     list_destroy(list);
 
@@ -446,9 +402,7 @@ void test_list_push_front() {
 void test_list_push_back() {
     list_t *list = list_create("int");
     for (int i = 0; i < 5; i++) {
-        wrapper_int_t *wrapper = wrap_int(i);
-        list_push_back(list, wrapper);
-        unwrap_int(wrapper);
+        list_push_back(list, wrap_int(i));
     }
     for (int i = 0; i < 5; i++) {
         wrapper_int_t *wrapper_int = (wrapper_int_t *)list_get(list, i);
@@ -458,13 +412,11 @@ void test_list_push_back() {
 
     list = list_create("double");
     for (int i = 0; i < 5; i++) {
-        wrapper_double_t *wrapper = wrap_double((double)i);
-        list_push_back(list, wrapper);
-        unwrap_double(wrapper);
+        list_push_back(list, wrap_double(i));
     }
     for (int i = 0; i < 5; i++) {
         wrapper_double_t *wrapper_double = (wrapper_double_t *)list_get(list, i);
-        assert(equal_double(unwrap_double(wrapper_double), (double)i));
+        assert(equal_double(unwrap_double(wrapper_double), i));
     }
     list_destroy(list);
 
@@ -492,9 +444,7 @@ void test_list_push_back() {
 void test_list_pop_front() {
     list_t *list = list_create("int");
     for (int i = 0; i < 5; i++) {
-        wrapper_int_t *wrapper = wrap_int(i);
-        list_push_back(list, wrapper);
-        unwrap_int(wrapper);
+        list_push_back(list, wrap_int(i));
     }
     for (int i = 0; i < 5; i++) {
         wrapper_int_t *wrapper_int = (wrapper_int_t *)list_pop_front(list);
@@ -506,13 +456,11 @@ void test_list_pop_front() {
 
     list = list_create("double");
     for (int i = 0; i < 5; i++) {
-        wrapper_double_t *wrapper = wrap_double((double)i);
-        list_push_back(list, wrapper);
-        unwrap_double(wrapper);
+        list_push_back(list, wrap_double(i));
     }
     for (int i = 0; i < 5; i++) {
         wrapper_double_t *wrapper_double = (wrapper_double_t *)list_pop_front(list);
-        assert(equal_double(unwrap_double(wrapper_double), (double)i));
+        assert(equal_double(unwrap_double(wrapper_double), i));
     }
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
@@ -542,9 +490,7 @@ void test_list_pop_front() {
 void test_list_pop_back() {
     list_t *list = list_create("int");
     for (int i = 0; i < 5; i++) {
-        wrapper_int_t *wrapper = wrap_int(i);
-        list_push_back(list, wrapper);
-        unwrap_int(wrapper);
+        list_push_back(list, wrap_int(i));
     }
     for (int i = 0; i < 5; i++) {
         wrapper_int_t *wrapper_int = (wrapper_int_t *)list_pop_back(list);
@@ -556,13 +502,11 @@ void test_list_pop_back() {
 
     list = list_create("double");
     for (int i = 0; i < 5; i++) {
-        wrapper_double_t *wrapper = wrap_double((double)i);
-        list_push_back(list, wrapper);
-        unwrap_double(wrapper);
+        list_push_back(list, wrap_double(i));
     }
     for (int i = 0; i < 5; i++) {
         wrapper_double_t *wrapper_double = (wrapper_double_t *)list_pop_back(list);
-        assert(equal_double(unwrap_double(wrapper_double), (double)(5 - i - 1)));
+        assert(equal_double(unwrap_double(wrapper_double), 5 - i - 1));
     }
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
@@ -594,18 +538,10 @@ void test_list_insert() {
     int len = array_len(arr);
 
     list_t *list = list_create("int");
-    wrapper_int_t *wrapper_int = wrap_int(3);
-    list_insert(list, 0, wrapper_int);
-    unwrap_int(wrapper_int);
-    wrapper_int = wrap_int(5);
-    list_insert(list, 0, wrapper_int);
-    unwrap_int(wrapper_int);
-    wrapper_int = wrap_int(6);
-    list_insert(list, 1, wrapper_int);
-    unwrap_int(wrapper_int);
-    wrapper_int = wrap_int(2);
-    list_insert(list, 3, wrapper_int);
-    unwrap_int(wrapper_int);
+    list_insert(list, 0, wrap_int(3));
+    list_insert(list, 0, wrap_int(5));
+    list_insert(list, 1, wrap_int(6));
+    list_insert(list, 3, wrap_int(2));
 
     for (int i = 0; i < len; i++) {
         wrapper_int_t *wrapper = (wrapper_int_t *)list_get(list, i);
@@ -614,22 +550,14 @@ void test_list_insert() {
     list_destroy(list);
 
     list = list_create("double");
-    wrapper_double_t *wrapper_double = wrap_double((double)3);
-    list_insert(list, 0, wrapper_double);
-    unwrap_double(wrapper_double);
-    wrapper_double = wrap_double((double)5);
-    list_insert(list, 0, wrapper_double);
-    unwrap_double(wrapper_double);
-    wrapper_double = wrap_double((double)6);
-    list_insert(list, 1, wrapper_double);
-    unwrap_double(wrapper_double);
-    wrapper_double = wrap_double((double)2);
-    list_insert(list, 3, wrapper_double);
-    unwrap_double(wrapper_double);
+    list_insert(list, 0, wrap_double(3));
+    list_insert(list, 0, wrap_double(5));
+    list_insert(list, 1, wrap_double(6));
+    list_insert(list, 3, wrap_double(2));
 
     for (int i = 0; i < len; i++) {
         wrapper_double_t *wrapper = (wrapper_double_t *)list_get(list, i);
-        assert(equal_double(unwrap_double(wrapper), (double)arr[i]));
+        assert(equal_double(unwrap_double(wrapper), arr[i]));
     }
     list_destroy(list);
 
@@ -664,9 +592,7 @@ void test_list_insert() {
 void test_list_remove() {
     list_t *list = list_create("int");
     for (int i = 0; i < 5; i++) {
-        wrapper_int_t *wrapper = wrap_int(i);
-        list_push_back(list, wrapper);
-        unwrap_int(wrapper);
+        list_push_back(list, wrap_int(i));
     }
 
     wrapper_int_t *wrapper_int = (wrapper_int_t *)list_remove(list, 1);
@@ -685,9 +611,7 @@ void test_list_remove() {
 
     list = list_create("double");
     for (int i = 0; i < 5; i++) {
-        wrapper_double_t *wrapper = wrap_double((double)i);
-        list_push_back(list, wrapper);
-        unwrap_double(wrapper);
+        list_push_back(list, wrap_double(i));
     }
 
     wrapper_double_t *wrapper_double = (wrapper_double_t *)list_remove(list, 1);
@@ -700,7 +624,7 @@ void test_list_remove() {
     assert(list_size(list) == 2);
     for (int i = 2; i <= 3; i++) {
         wrapper_double_t *wrapper = (wrapper_double_t *)list_pop_front(list);
-        assert(equal_double(unwrap_double(wrapper), (double)i));
+        assert(equal_double(unwrap_double(wrapper), i));
     }
     list_destroy(list);
 
@@ -739,9 +663,7 @@ void test_list_remove() {
 void test_list_iter_begin() {
     list_t *list = list_create("int");
     for (int i = 0; i < 5; i++) {
-        wrapper_int_t *wrapper = wrap_int(i);
-        list_push_back(list, wrapper);
-        unwrap_int(wrapper);
+        list_push_back(list, wrap_int(i));
     }
     assert(list_iter_begin(list));
     list_destroy(list);
@@ -765,9 +687,7 @@ void test_list_iter_begin() {
 void test_list_iter_end() {
     list_t *list = list_create("int");
     for (int i = 0; i < 5; i++) {
-        wrapper_int_t *wrapper = wrap_int(i);
-        list_push_back(list, wrapper);
-        unwrap_int(wrapper);
+        list_push_back(list, wrap_int(i));
     }
     assert(list_iter_end(list));
     list_destroy(list);
@@ -791,9 +711,7 @@ void test_list_iter_end() {
 void test_list_iter_has_prev() {
     list_t *list = list_create("int");
     for (int i = 0; i < 5; i++) {
-        wrapper_int_t *wrapper = wrap_int(i);
-        list_push_back(list, wrapper);
-        unwrap_int(wrapper);
+        list_push_back(list, wrap_int(i));
     }
     assert(list_iter_end(list));
     assert(list_iter_has_prev(list));
@@ -820,9 +738,7 @@ void test_list_iter_has_prev() {
 void test_list_iter_has_next() {
     list_t *list = list_create("int");
     for (int i = 0; i < 5; i++) {
-        wrapper_int_t *wrapper = wrap_int(i);
-        list_push_back(list, wrapper);
-        unwrap_int(wrapper);
+        list_push_back(list, wrap_int(i));
     }
     assert(list_iter_begin(list));
     assert(list_iter_has_next(list));
@@ -849,9 +765,7 @@ void test_list_iter_has_next() {
 void test_list_iter_prev() {
     list_t *list = list_create("int");
     for (int i = 0; i < 5; i++) {
-        wrapper_int_t *wrapper = wrap_int(i);
-        list_push_back(list, wrapper);
-        unwrap_int(wrapper);
+        list_push_back(list, wrap_int(i));
     }
 
     int i = 0;
@@ -866,15 +780,13 @@ void test_list_iter_prev() {
 
     list = list_create("double");
     for (int i = 0; i < 5; i++) {
-        wrapper_double_t *wrapper = wrap_double((double)i);
-        list_push_back(list, wrapper);
-        unwrap_double(wrapper);
+        list_push_back(list, wrap_double(i));
     }
 
     i = 0;
     iter = list_iter_end(list);
     while (iter) {
-        assert(equal_double(*(double *)iter, (double)(5 - i - 1)));
+        assert(equal_double(*(double *)iter, 5 - i - 1));
         iter = list_iter_prev(list);
         i++;
     }
@@ -912,9 +824,7 @@ void test_list_iter_prev() {
 void test_list_iter_next() {
     list_t *list = list_create("int");
     for (int i = 0; i < 5; i++) {
-        wrapper_int_t *wrapper = wrap_int(i);
-        list_push_back(list, wrapper);
-        unwrap_int(wrapper);
+        list_push_back(list, wrap_int(i));
     }
 
     int i = 0;
@@ -929,15 +839,13 @@ void test_list_iter_next() {
 
     list = list_create("double");
     for (int i = 0; i < 5; i++) {
-        wrapper_double_t *wrapper = wrap_double((double)i);
-        list_push_back(list, wrapper);
-        unwrap_double(wrapper);
+        list_push_back(list, wrap_double(i));
     }
 
     i = 0;
     iter = list_iter_begin(list);
     while (iter) {
-        assert(equal_double(*(double *)iter, (double)i));
+        assert(equal_double(*(double *)iter, i));
         iter = list_iter_next(list);
         i++;
     }

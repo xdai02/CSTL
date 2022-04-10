@@ -190,8 +190,7 @@ T array_get(const array_t *array, int index) {
  * @param array cino-array
  * @param index index
  * @param data  - For primitive data, a wrapper type of that primitive is needed.
- *              This function will not unwrap or free the wrapper. It is caller's
- *              responsibility to unwrap.
+ *              This function will unwrap for you.
  *              - For T (generic) cino-array, it is caller's responsibility to free
  *              the previous data before overwriting it.
  */
@@ -202,10 +201,12 @@ void array_set(array_t *array, int index, T data) {
         wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
         int *arr = (int *)array->arr;
         arr[index] = wrapper_int->data;
+        unwrap_int(wrapper_int);
     } else if (str_equal(array->data_type, "double")) {
         wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
         double *arr = (double *)array->arr;
         arr[index] = wrapper_double->data;
+        unwrap_double(wrapper_double);
     } else if (str_equal(array->data_type, "T")) {
         void **arr = (void **)array->arr;
         arr[index] = data;
@@ -279,8 +280,7 @@ static status_t array_resize(array_t *array) {
  * @brief   Appends the specified element to the end of the cino-array.
  * @param array cino-array
  * @param data  - For primitive data, a wrapper type of that primitive is needed.
- *              This function will not unwrap or free the wrapper. It is caller's
- *              responsibility to unwrap.
+ *              This function will unwrap for you.
  *              - For T (generic) cino-array, it is caller's responsibility to free
  *              the previous data before overwriting it.
  * @return  Returns the modified cino-array.
@@ -295,10 +295,12 @@ array_t *array_append(array_t *array, T data) {
         wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
         int *arr = (int *)array->arr;
         arr[array->size++] = wrapper_int->data;
+        unwrap_int(wrapper_int);
     } else if (str_equal(array->data_type, "double")) {
         wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
         double *arr = (double *)array->arr;
         arr[array->size++] = wrapper_double->data;
+        unwrap_double(wrapper_double);
     } else if (str_equal(array->data_type, "T")) {
         void **arr = (void **)array->arr;
         arr[array->size++] = data;
@@ -312,8 +314,7 @@ array_t *array_append(array_t *array, T data) {
  * @param array cino-array
  * @param index index
  * @param data  - For primitive data, a wrapper type of that primitive is needed.
- *              This function will not unwrap or free the wrapper. It is caller's
- *              responsibility to unwrap.
+ *              This function will unwrap for you.
  *              - For T (generic) cino-array, it is caller's responsibility to free
  *              the previous data before overwriting it.
  * @return  Returns the modified cino-array.
@@ -341,10 +342,12 @@ array_t *array_insert(array_t *array, int index, T data) {
         wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
         int *arr = (int *)array->arr;
         arr[index] = wrapper_int->data;
+        unwrap_int(wrapper_int);
     } else if (str_equal(array->data_type, "double")) {
         wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
         double *arr = (double *)array->arr;
         arr[index] = wrapper_double->data;
+        unwrap_double(wrapper_double);
     } else if (str_equal(array->data_type, "T")) {
         void **arr = (void **)array->arr;
         arr[index] = data;
@@ -497,7 +500,7 @@ T array_max(const array_t *array, compare_t compare) {
  *          cino-array.
  * @param array     cino-array
  * @param context   - For primitive cino-array, a wrapper type of the searching data should
- *                    be passed. It is caller's responsibility to unwrap.
+ *                    be passed. This function will unwrap for you.
  *                  - For T (generic) cino-array, a match_t callback function should be passed
  *                    as the matching rule.
  * @return  Returns the index of the first occurrence of the specified element in the
@@ -506,29 +509,47 @@ T array_max(const array_t *array, compare_t compare) {
 int array_index_of(const array_t *array, void *context) {
     return_value_if_fail(array != NULL && context != NULL, -1);
 
+    int index = -1;
+
+    wrapper_int_t *wrapper_int = NULL;
+    wrapper_double_t *wrapper_double = NULL;
+
+    if (str_equal(array->data_type, "int")) {
+        wrapper_int = (wrapper_int_t *)context;
+    } else if (str_equal(array->data_type, "double")) {
+        wrapper_double = (wrapper_double_t *)context;
+    }
+
     for (int i = 0; i < array->size; i++) {
         if (str_equal(array->data_type, "int")) {
-            wrapper_int_t *wrapper_int = (wrapper_int_t *)context;
             int *arr = (int *)array->arr;
             if (arr[i] == wrapper_int->data) {
-                return i;
+                index = i;
+                break;
             }
         } else if (str_equal(array->data_type, "double")) {
-            wrapper_double_t *wrapper_double = (wrapper_double_t *)context;
             double *arr = (double *)array->arr;
             if (equal_double(arr[i], wrapper_double->data)) {
-                return i;
+                index = i;
+                break;
             }
         } else if (str_equal(array->data_type, "T")) {
             match_t match = (match_t)context;
             void **arr = (void **)array->arr;
             if (match(arr[i])) {
-                return i;
+                index = i;
+                break;
             }
         }
     }
 
-    return -1;
+    if (str_equal(array->data_type, "int")) {
+        unwrap_int(wrapper_int);
+    } else if (str_equal(array->data_type, "double")) {
+        unwrap_double(wrapper_double);
+    }
+
+    return index;
 }
 
 /**
@@ -536,7 +557,7 @@ int array_index_of(const array_t *array, void *context) {
  *          cino-array.
  * @param array     cino-array
  * @param context   - For primitive cino-array, a wrapper type of the searching data should
- *                    be passed. It is caller's responsibility to unwrap.
+ *                    be passed. This function will unwrap for you.
  *                  - For T (generic) cino-array, a match_t callback function should be passed
  *                    as the matching rule.
  * @return  Returns the index of the last occurrence of the specified element in the
@@ -545,36 +566,54 @@ int array_index_of(const array_t *array, void *context) {
 int array_last_index_of(const array_t *array, void *context) {
     return_value_if_fail(array != NULL && context != NULL, -1);
 
+    int index = -1;
+
+    wrapper_int_t *wrapper_int = NULL;
+    wrapper_double_t *wrapper_double = NULL;
+
+    if (str_equal(array->data_type, "int")) {
+        wrapper_int = (wrapper_int_t *)context;
+    } else if (str_equal(array->data_type, "double")) {
+        wrapper_double = (wrapper_double_t *)context;
+    }
+
     for (int i = array->size - 1; i >= 0; i--) {
         if (str_equal(array->data_type, "int")) {
-            wrapper_int_t *wrapper_int = (wrapper_int_t *)context;
             int *arr = (int *)array->arr;
             if (arr[i] == wrapper_int->data) {
-                return i;
+                index = i;
+                break;
             }
         } else if (str_equal(array->data_type, "double")) {
-            wrapper_double_t *wrapper_double = (wrapper_double_t *)context;
             double *arr = (double *)array->arr;
             if (equal_double(arr[i], wrapper_double->data)) {
-                return i;
+                index = i;
+                break;
             }
         } else if (str_equal(array->data_type, "T")) {
             match_t match = (match_t)context;
             void **arr = (void **)array->arr;
             if (match(arr[i])) {
-                return i;
+                index = i;
+                break;
             }
         }
     }
 
-    return -1;
+    if (str_equal(array->data_type, "int")) {
+        unwrap_int(wrapper_int);
+    } else if (str_equal(array->data_type, "double")) {
+        unwrap_double(wrapper_double);
+    }
+
+    return index;
 }
 
 /**
  * @brief   Count the occurrences of the element matched.
  * @param array     cino-array
  * @param context   - For primitive cino-array, a wrapper type of the counting data should
- *                    be passed. It is caller's responsibility to unwrap.
+ *                    be passed. This function will unwrap for you.
  *                  - For T (generic) cino-array, a match_t callback function should be passed
  *                    as the matching rule.
  * @return  Returns occurrences of the element matched.
@@ -584,15 +623,22 @@ int array_count(const array_t *array, void *context) {
 
     int cnt = 0;
 
+    wrapper_int_t *wrapper_int = NULL;
+    wrapper_double_t *wrapper_double = NULL;
+
+    if (str_equal(array->data_type, "int")) {
+        wrapper_int = (wrapper_int_t *)context;
+    } else if (str_equal(array->data_type, "double")) {
+        wrapper_double = (wrapper_double_t *)context;
+    }
+
     for (int i = 0; i < array->size; i++) {
         if (str_equal(array->data_type, "int")) {
-            wrapper_int_t *wrapper_int = (wrapper_int_t *)context;
             int *arr = (int *)array->arr;
             if (arr[i] == wrapper_int->data) {
                 cnt++;
             }
         } else if (str_equal(array->data_type, "double")) {
-            wrapper_double_t *wrapper_double = (wrapper_double_t *)context;
             double *arr = (double *)array->arr;
             if (equal_double(arr[i], wrapper_double->data)) {
                 cnt++;
@@ -604,6 +650,12 @@ int array_count(const array_t *array, void *context) {
                 cnt++;
             }
         }
+    }
+
+    if (str_equal(array->data_type, "int")) {
+        unwrap_int(wrapper_int);
+    } else if (str_equal(array->data_type, "double")) {
+        unwrap_double(wrapper_double);
     }
 
     return cnt;

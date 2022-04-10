@@ -146,7 +146,7 @@ void array_set(array_t *array, int index, T data);
 | index | 下标       |
 | data  | 新元素     |
 
-> - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型，此函数不会释放该包装类型，需要由调用者自行释放。
+> - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型，此函数会释放该包装类型。
 > - 对于T（泛型）cino-array，调用者需要在调用此函数前自行释放被覆盖位置的空间。
 
 ---
@@ -169,7 +169,7 @@ array_t *array_append(array_t *array, T data);
 
 - 返回值：修改后的cino-array。
 
-> - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型，此函数不会释放该包装类型，需要由调用者自行释放。
+> - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型，此函数会释放该包装类型。
 
 ---
 
@@ -192,7 +192,7 @@ array_t *array_insert(array_t *array, int index, T data);
 
 - 返回值：修改后的cino-array。
 
-> - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型，此函数不会释放该包装类型，需要由调用者自行释放。
+> - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型，此函数会释放该包装类型。
 
 ---
 
@@ -276,7 +276,7 @@ int array_index_of(const array_t *array, void *context);
 | 参数    | 说明                                                         |
 | ------- | ------------------------------------------------------------ |
 | array   | cino-array                                                   |
-| context | 对于基本数据类型cino-array，传入待查询元素的包装类型，调用者需要自行拆箱释放空间<br />对于T（泛型）cino-array，传入match_t类型的回调函数，用于匹配元素 |
+| context | 对于基本数据类型cino-array，传入待查询元素的包装类型，此函数会释放该包装类型<br />对于T（泛型）cino-array，传入match_t类型的回调函数，用于匹配元素 |
 
 - 返回值：cino-array指定元素首次出现下标，返回`-1`表示未找到。
 
@@ -296,7 +296,7 @@ int array_index_of(const array_t *array, void *context);
     | 参数    | 说明                                                         |
     | ------- | ------------------------------------------------------------ |
     | array   | cino-array                                                   |
-    | context | 对于基本数据类型cino-array，传入待查询元素的包装类型，调用者需要自行拆箱释放空间<br />对于T（泛型）cino-array，传入match_t类型的回调函数，用于匹配元素 |
+    | context | 对于基本数据类型cino-array，传入待查询元素的包装类型，此函数会释放该包装类型<br />对于T（泛型）cino-array，传入match_t类型的回调函数，用于匹配元素 |
 
     - 返回值：cino-array指定元素最后一次出现下标，返回`-1`表示未找到。
 
@@ -316,7 +316,7 @@ int array_count(const array_t *array, void *context);
 | 参数    | 说明                                                         |
 | ------- | ------------------------------------------------------------ |
 | array   | cino-array                                                   |
-| context | 对于基本数据类型cino-array，传入待查询元素的包装类型，调用者需要自行拆箱释放空间<br />对于T（泛型）cino-array，传入match_t类型的回调函数，用于匹配元素 |
+| context | 对于基本数据类型cino-array，传入待查询元素的包装类型，此函数会释放该包装类型<br />对于T（泛型）cino-array，传入match_t类型的回调函数，用于匹配元素 |
 
 - 返回值：指定元素出现次数。
 

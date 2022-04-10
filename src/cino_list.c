@@ -284,8 +284,7 @@ T list_get(const list_t *list, int index) {
  * @param list  cino-list
  * @param index index
  * @param data  - For primitive data, a wrapper type of that primitive is needed.
- *              This function will not unwrap or free the wrapper. It is caller's
- *              responsibility to unwrap.
+ *              This function will unwrap for you.
  *              - For T (generic) cino-list, it is caller's responsibility to free
  *              the previous data before overwriting it.
  */
@@ -296,9 +295,11 @@ void list_set(list_t *list, int index, T data) {
     if (str_equal(list->data_type, "int")) {
         wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
         *(int *)node->data = wrapper_int->data;
+        unwrap_int(wrapper_int);
     } else if (str_equal(list->data_type, "double")) {
         wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
         *(double *)node->data = wrapper_double->data;
+        unwrap_double(wrapper_double);
     } else if (str_equal(list->data_type, "T")) {
         node->data = data;
     }
@@ -309,7 +310,7 @@ void list_set(list_t *list, int index, T data) {
  *          cino-list.
  * @param list      cino-list
  * @param context   - For primitive cino-list, a wrapper type of the searching data should
- *                    be passed. It is caller's responsibility to unwrap.
+ *                    be passed. This function will unwrap for you.
  *                  - For T (generic) cino-list, a match_t callback function should be passed
  *                    as the matching rule.
  * @return  Returns the index of the first occurrence of the specified element in the
@@ -318,41 +319,57 @@ void list_set(list_t *list, int index, T data) {
 int list_index_of(const list_t *list, void *context) {
     return_value_if_fail(list != NULL && context != NULL, -1);
 
-    int index = 0;
+    int index = -1;
+
+    wrapper_int_t *wrapper_int = NULL;
+    wrapper_double_t *wrapper_double = NULL;
+
+    if (str_equal(list->data_type, "int")) {
+        wrapper_int = (wrapper_int_t *)context;
+    } else if (str_equal(list->data_type, "double")) {
+        wrapper_double = (wrapper_double_t *)context;
+    }
 
     node_t *current = list->head;
+    int i = 0;
     while (current && current->next && current->next != list->tail) {
         current = current->next;
 
         if (str_equal(list->data_type, "int")) {
-            wrapper_int_t *wrapper_int = (wrapper_int_t *)context;
             if (*(int *)current->data == wrapper_int->data) {
-                return index;
+                index = i;
+                break;
             }
         } else if (str_equal(list->data_type, "double")) {
-            wrapper_double_t *wrapper_double = (wrapper_double_t *)context;
             if (*(double *)current->data == wrapper_double->data) {
-                return index;
+                index = i;
+                break;
             }
         } else if (str_equal(list->data_type, "T")) {
             match_t match = (match_t)context;
             if (match(current->data)) {
-                return index;
+                index = i;
+                break;
             }
         }
 
-        index++;
+        i++;
     }
 
-    return -1;
+    if (str_equal(list->data_type, "int")) {
+        unwrap_int(wrapper_int);
+    } else if (str_equal(list->data_type, "double")) {
+        unwrap_double(wrapper_double);
+    }
+
+    return index;
 }
 
 /**
  * @brief   Inserts the specified element at the beginning of the cino-list.
  * @param list  cino-list
  * @param data  For primitive data, a wrapper type of that primitive is needed.
- *              This function will not unwrap or free the wrapper. It is caller's
- *              responsibility to unwrap.
+ *              This function will unwrap for you.
  * @return  Returns the modified cino-list.
  */
 list_t *list_push_front(list_t *list, T data) {
@@ -369,11 +386,13 @@ list_t *list_push_front(list_t *list, T data) {
         node->data = calloc(1, sizeof(int));
         call_and_return_value_if_fail(node->data != NULL, free(node), list);
         *(int *)node->data = wrapper_int->data;
+        unwrap_int(wrapper_int);
     } else if (str_equal(list->data_type, "double")) {
         wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
         node->data = calloc(1, sizeof(double));
         call_and_return_value_if_fail(node->data != NULL, free(node), list);
         *(double *)node->data = wrapper_double->data;
+        unwrap_double(wrapper_double);
     } else if (str_equal(list->data_type, "T")) {
         node->data = data;
     }
@@ -391,8 +410,7 @@ list_t *list_push_front(list_t *list, T data) {
  * @brief   Inserts the specified element at the end of the cino-list.
  * @param list  cino-list
  * @param data  For primitive data, a wrapper type of that primitive is needed.
- *              This function will not unwrap or free the wrapper. It is caller's
- *              responsibility to unwrap.
+ *              This function will unwrap for you.
  * @return  Returns the modified cino-list.
  */
 list_t *list_push_back(list_t *list, T data) {
@@ -409,11 +427,13 @@ list_t *list_push_back(list_t *list, T data) {
         node->data = calloc(1, sizeof(int));
         call_and_return_value_if_fail(node->data != NULL, free(node), list);
         *(int *)node->data = wrapper_int->data;
+        unwrap_int(wrapper_int);
     } else if (str_equal(list->data_type, "double")) {
         wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
         node->data = calloc(1, sizeof(double));
         call_and_return_value_if_fail(node->data != NULL, free(node), list);
         *(double *)node->data = wrapper_double->data;
+        unwrap_double(wrapper_double);
     } else if (str_equal(list->data_type, "T")) {
         node->data = data;
     }
@@ -518,8 +538,7 @@ T list_pop_back(list_t *list) {
  * @param list  cino-list
  * @param index index
  * @param data  For primitive data, a wrapper type of that primitive is needed.
- *              This function will not unwrap or free the wrapper. It is caller's
- *              responsibility to unwrap.
+ *              This function will unwrap for you.
  * @return  Returns the modified cino-list.
  */
 list_t *list_insert(list_t *list, int index, T data) {
@@ -542,11 +561,13 @@ list_t *list_insert(list_t *list, int index, T data) {
         new_node->data = calloc(1, sizeof(int));
         call_and_return_value_if_fail(new_node->data != NULL, free(new_node), list);
         *(int *)new_node->data = wrapper_int->data;
+        unwrap_int(wrapper_int);
     } else if (str_equal(list->data_type, "double")) {
         wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
         new_node->data = calloc(1, sizeof(double));
         call_and_return_value_if_fail(new_node->data != NULL, free(new_node), list);
         *(double *)new_node->data = wrapper_double->data;
+        unwrap_double(wrapper_double);
     } else if (str_equal(list->data_type, "T")) {
         new_node->data = data;
     }
