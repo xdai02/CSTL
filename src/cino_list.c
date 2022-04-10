@@ -54,6 +54,20 @@ static bool is_valid_data_type(const str_t data_type) {
 }
 
 /**
+ * @brief   Create a list node by given data.
+ * @param data  data
+ * @return  Returns the created node.
+ */
+static node_t *list_node_create(T data) {
+    node_t *node = (node_t *)calloc(1, sizeof(node_t));
+    return_value_if_fail(node != NULL, NULL);
+    node->data = data;
+    node->prev = NULL;
+    node->next = NULL;
+    return node;
+}
+
+/**
  * @brief   Create cino-list.
  * @param data_type data type of each element
  *                  valid data type includes:
@@ -75,15 +89,11 @@ list_t *list_create(const str_t data_type) {
     call_and_return_value_if_fail(list->data_type != NULL, list_destroy(list), NULL);
     str_copy(list->data_type, data_type);
 
-    list->head = (node_t *)calloc(1, sizeof(node_t));
+    list->head = list_node_create(NULL);
     call_and_return_value_if_fail(list->head != NULL, list_destroy(list), NULL);
-    list->tail = (node_t *)calloc(1, sizeof(node_t));
+    list->tail = list_node_create(NULL);
     call_and_return_value_if_fail(list->tail != NULL, list_destroy(list), NULL);
 
-    list->head->data = NULL;
-    list->tail->data = NULL;
-    list->head->prev = NULL;
-    list->tail->next = NULL;
     list->head->next = list->tail;
     list->tail->prev = list->head;
 
@@ -375,11 +385,8 @@ int list_index_of(const list_t *list, void *context) {
 list_t *list_push_front(list_t *list, T data) {
     return_value_if_fail(list != NULL && data != NULL, list);
 
-    node_t *node = (node_t *)calloc(1, sizeof(node_t));
+    node_t *node = list_node_create(NULL);
     return_value_if_fail(node != NULL, list);
-    node->data = NULL;
-    node->prev = NULL;
-    node->next = NULL;
 
     if (str_equal(list->data_type, "int")) {
         wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
@@ -416,11 +423,8 @@ list_t *list_push_front(list_t *list, T data) {
 list_t *list_push_back(list_t *list, T data) {
     return_value_if_fail(list != NULL && data != NULL, list);
 
-    node_t *node = (node_t *)calloc(1, sizeof(node_t));
+    node_t *node = list_node_create(NULL);
     return_value_if_fail(node != NULL, list);
-    node->data = NULL;
-    node->prev = NULL;
-    node->next = NULL;
 
     if (str_equal(list->data_type, "int")) {
         wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
@@ -550,11 +554,8 @@ list_t *list_insert(list_t *list, int index, T data) {
         return list;
     }
 
-    node_t *new_node = (node_t *)calloc(1, sizeof(node_t));
+    node_t *new_node = list_node_create(NULL);
     return_value_if_fail(new_node != NULL, list);
-    new_node->data = NULL;
-    new_node->prev = NULL;
-    new_node->next = NULL;
 
     if (str_equal(list->data_type, "int")) {
         wrapper_int_t *wrapper_int = (wrapper_int_t *)data;

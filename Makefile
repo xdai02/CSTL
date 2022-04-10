@@ -15,7 +15,7 @@ setup:
 
 ############### CINO ###############
 
-cino: cino_utils cino_string cino_array cino_list
+cino: cino_utils cino_string cino_array cino_list cino_tree
 
 cino_utils: $(SRC)/cino_utils.c
 	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)/cino_utils.c -o $(BIN)/cino_utils.o
@@ -28,6 +28,9 @@ cino_array: $(SRC)/cino_array.c
 
 cino_list: $(SRC)/cino_list.c
 	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)/cino_list.c -o $(BIN)/cino_list.o
+
+cino_tree: $(SRC)/cino_tree.c
+	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)/cino_tree.c -o $(BIN)/cino_tree.o
 
 ############### TEST ###############
 
