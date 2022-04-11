@@ -18,6 +18,7 @@ typedef struct array_t {
     str_t data_type;
     size_t size;
     size_t capacity;
+    compare_t compare;
     iterator_t *iterator;
 } array_t;
 
@@ -49,15 +50,90 @@ static bool is_valid_data_type(const str_t data_type) {
 }
 
 /**
+ * @brief   Specify the rules for comparing two int values in ascending order.
+ * @param data1 pointer to the first value
+ * @param data2 pointer to the second value
+ * @return  Returns
+ *              - 0 if two values are equal
+ *              - positive if the first value is greater than the second value
+ *              - negative if the first value is less than the second value
+ */
+static int cmp_int_asc(const T data1, const T data2) {
+    int *p1 = (int *)data1;
+    int *p2 = (int *)data2;
+    return *p1 - *p2;
+}
+
+/**
+ * @brief   Specify the rules for comparing two int values in descending order.
+ * @param data1 pointer to the first value
+ * @param data2 pointer to the second value
+ * @return  Returns
+ *              - 0 if two values are equal
+ *              - positive if the first value is less than the second value
+ *              - negative if the first value is greater than the second value
+ */
+static int cmp_int_desc(const T data1, const T data2) {
+    int *p1 = (int *)data1;
+    int *p2 = (int *)data2;
+    return *p2 - *p1;
+}
+
+/**
+ * @brief   Specify the rules for comparing two double values in ascending order.
+ * @param data1 pointer to the first value
+ * @param data2 pointer to the second value
+ * @return  Returns
+ *              - 0 if two values are equal
+ *              - positive if the first value is greater than the second value
+ *              - negative if the first value is less than the second value
+ */
+static int cmp_double_asc(const T data1, const T data2) {
+    double *p1 = (double *)data1;
+    double *p2 = (double *)data2;
+    return *p1 > *p2 ? 1 : -1;
+}
+
+/**
+ * @brief   Specify the rules for comparing two double values in descending order.
+ * @param data1 pointer to the first value
+ * @param data2 pointer to the second value
+ * @return  Returns
+ *              - 0 if two values are equal
+ *              - positive if the first value is less than the second value
+ *              - negative if the first value is greater than the second value
+ */
+static int cmp_double_desc(const T data1, const T data2) {
+    double *p1 = (double *)data1;
+    double *p2 = (double *)data2;
+    return *p2 > *p1 ? 1 : -1;
+}
+
+/**
+ * @brief   Specify the default rules for comparing two values in ascending order.
+ * @param data1 pointer to the first value
+ * @param data2 pointer to the second value
+ * @return  Returns
+ *              - 0 if two values are equal
+ *              - positive if the first value is greater than the second value
+ *              - negative if the first value is less than the second value
+ */
+static int cmp_default(const T data1, const T data2) {
+    return (byte_t *)data1 - (byte_t *)data2;
+}
+
+/**
  * @brief   Create cino-array.
  * @param data_type data type of each element
  *                  valid data type includes:
  *                      - int
  *                      - double
  *                      - T (generic)
+ * @param compare   User-defined callback function for comparison, only for T (generic)
+ *                  cino-array. Set to `NULL` if it is a primitive cino-array.
  * @return  Returns the pointer to cino-array, or `NULL` if creation failed.
  */
-array_t *array_create(const str_t data_type) {
+array_t *array_create(const str_t data_type, compare_t compare) {
     return_value_if_fail(is_valid_data_type(data_type), NULL);
 
     array_t *array = (array_t *)calloc(1, sizeof(array_t));
@@ -69,6 +145,11 @@ array_t *array_create(const str_t data_type) {
     array->data_type = (str_t)calloc(str_length(data_type) + 1, sizeof(char));
     call_and_return_value_if_fail(array->data_type != NULL, array_destroy(array), NULL);
     str_copy(array->data_type, data_type);
+
+    if (!compare) {
+        compare = cmp_default;
+    }
+    array->compare = compare;
 
     array->arr = NULL;
     array->size = 0;
@@ -403,14 +484,12 @@ T array_remove(array_t *array, int index) {
 
 /**
  * @brief   Get the minimum value in the cino-array.
- * @param array     cino-array
- * @param compare   User-defined callback function for comparison, only for T (generic)
- *                  cino-array. Set to `NULL` if it is a primitive cino-array.
+ * @param array cino-array
  * @return  Returns the minimum value in the cino-array, or `NULL` if conditions failed.
  *          For primitive cino-array, a wrapper type of that primitive is returned. It is
  *          caller's responsibility to unwrap.
  */
-T array_min(const array_t *array, compare_t compare) {
+T array_min(const array_t *array) {
     return_value_if_fail(array != NULL && array->size > 0, NULL);
 
     T min = NULL;
@@ -434,11 +513,10 @@ T array_min(const array_t *array, compare_t compare) {
         }
         min = (T)wrap_double(min_val);
     } else if (str_equal(array->data_type, "T")) {
-        return_value_if_fail(compare != NULL, NULL);
         void **arr = (void **)array->arr;
         T min_val = arr[0];
         for (int i = 1; i < array->size; i++) {
-            if (compare(arr[i], min_val) < 0) {
+            if (array->compare(arr[i], min_val) < 0) {
                 min_val = arr[i];
             }
         }
@@ -450,14 +528,12 @@ T array_min(const array_t *array, compare_t compare) {
 
 /**
  * @brief   Get the maximum value in the cino-array.
- * @param array     cino-array
- * @param compare   User-defined callback function for comparison, only for T (generic)
- *                  cino-array. Set to `NULL` if it is a primitive cino-array.
+ * @param array cino-array
  * @return  Returns the maximum value in the cino-array, or `NULL` if conditions failed.
  *          For primitive cino-array, a wrapper type of that primitive is returned. It is
  *          caller's responsibility to unwrap.
  */
-T array_max(const array_t *array, compare_t compare) {
+T array_max(const array_t *array) {
     return_value_if_fail(array != NULL && array->size > 0, NULL);
 
     T max = NULL;
@@ -481,11 +557,10 @@ T array_max(const array_t *array, compare_t compare) {
         }
         max = (T)wrap_double(max_val);
     } else if (str_equal(array->data_type, "T")) {
-        return_value_if_fail(compare != NULL, NULL);
         void **arr = (void **)array->arr;
         T max_val = arr[0];
         for (int i = 1; i < array->size; i++) {
-            if (compare(arr[i], max_val) > 0) {
+            if (array->compare(arr[i], max_val) > 0) {
                 max_val = arr[i];
             }
         }
@@ -715,66 +790,6 @@ array_t *array_swap(array_t *array, int index1, int index2) {
 }
 
 /**
- * @brief   Specify the rules for comparing two int values in ascending order.
- * @param data1 pointer to the first value
- * @param data2 pointer to the second value
- * @return  Returns
- *              - 0 if two values are equal
- *              - positive if the first value is greater than the second value
- *              - negative if the first value is less than the second value
- */
-static int cmp_int_asc(const T data1, const T data2) {
-    int *p1 = (int *)data1;
-    int *p2 = (int *)data2;
-    return *p1 - *p2;
-}
-
-/**
- * @brief   Specify the rules for comparing two int values in descending order.
- * @param data1 pointer to the first value
- * @param data2 pointer to the second value
- * @return  Returns
- *              - 0 if two values are equal
- *              - positive if the first value is less than the second value
- *              - negative if the first value is greater than the second value
- */
-static int cmp_int_desc(const T data1, const T data2) {
-    int *p1 = (int *)data1;
-    int *p2 = (int *)data2;
-    return *p2 - *p1;
-}
-
-/**
- * @brief   Specify the rules for comparing two double values in ascending order.
- * @param data1 pointer to the first value
- * @param data2 pointer to the second value
- * @return  Returns
- *              - 0 if two values are equal
- *              - positive if the first value is greater than the second value
- *              - negative if the first value is less than the second value
- */
-static int cmp_double_asc(const T data1, const T data2) {
-    double *p1 = (double *)data1;
-    double *p2 = (double *)data2;
-    return *p1 > *p2 ? 1 : -1;
-}
-
-/**
- * @brief   Specify the rules for comparing two double values in descending order.
- * @param data1 pointer to the first value
- * @param data2 pointer to the second value
- * @return  Returns
- *              - 0 if two values are equal
- *              - positive if the first value is less than the second value
- *              - negative if the first value is greater than the second value
- */
-static int cmp_double_desc(const T data1, const T data2) {
-    double *p1 = (double *)data1;
-    double *p2 = (double *)data2;
-    return *p2 > *p1 ? 1 : -1;
-}
-
-/**
  * @brief   Parition function for quick sort.
  * @param arr       an array of pointers
  * @param start     start index of partition
@@ -831,11 +846,9 @@ static void quick_sort(T *arr, size_t size, compare_t compare) {
  * @brief   Sort the cino-array.
  * @param array     cino-array
  * @param reverse   true = descending, false = ascending
- * @param compare   User-defined callback function for comparison, only for T (generic)
- *                  cino-array. Set to `NULL` if it is a primitive cino-array.
  * @return  Returns the modified cino-array.
  */
-array_t *array_sort(array_t *array, bool reverse, compare_t compare) {
+array_t *array_sort(array_t *array, bool reverse) {
     return_value_if_fail(array != NULL, NULL);
 
     if (str_equal(array->data_type, "int")) {
@@ -843,9 +856,8 @@ array_t *array_sort(array_t *array, bool reverse, compare_t compare) {
     } else if (str_equal(array->data_type, "double")) {
         qsort(array->arr, array->size, sizeof(double), reverse ? cmp_double_desc : cmp_double_asc);
     } else if (str_equal(array->data_type, "T")) {
-        return_value_if_fail(compare != NULL, array);
         void **arr = (void **)array->arr;
-        quick_sort(arr, array->size, compare);
+        quick_sort(arr, array->size, array->compare);
         if (reverse) {
             array_reverse(array);
         }

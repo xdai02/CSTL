@@ -13,6 +13,7 @@ typedef struct node_t {
 typedef struct tree_t {
     node_t *root;
     str_t data_type;
+    // compare_t compare;
 } tree_t;
 
 /**

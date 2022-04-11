@@ -23,9 +23,11 @@ typedef struct array_t array_t;
  *                      - int
  *                      - double
  *                      - T (generic)
+ * @param compare   User-defined callback function for comparison, only for T (generic)
+ *                  cino-array. Set to `NULL` if it is a primitive cino-array.
  * @return  Returns the pointer to cino-array, or `NULL` if creation failed.
  */
-array_t *array_create(const str_t data_type);
+array_t *array_create(const str_t data_type, compare_t compare);
 
 /**
  * @brief   Destroy cino-array.
@@ -112,25 +114,21 @@ T array_remove(array_t *array, int index);
 
 /**
  * @brief   Get the minimum value in the cino-array.
- * @param array     cino-array
- * @param compare   User-defined callback function for comparison, only for T (generic)
- *                  cino-array. Set to `NULL` if it is a primitive cino-array.
+ * @param array cino-array
  * @return  Returns the minimum value in the cino-array, or `NULL` if conditions failed.
  *          For primitive cino-array, a wrapper type of that primitive is returned. It is
  *          caller's responsibility to unwrap.
  */
-T array_min(const array_t *array, compare_t compare);
+T array_min(const array_t *array);
 
 /**
  * @brief   Get the maximum value in the cino-array.
- * @param array     cino-array
- * @param compare   User-defined callback function for comparison, only for T (generic)
- *                  cino-array. Set to `NULL` it is a primitive cino-array.
+ * @param array cino-array
  * @return  Returns the maximum value in the cino-array, or `NULL` if conditions failed.
  *          For primitive cino-array, a wrapper type of that primitive is returned. It is
  *          caller's responsibility to unwrap.
  */
-T array_max(const array_t *array, compare_t compare);
+T array_max(const array_t *array);
 
 /**
  * @brief   Find the index of the first occurrence of the specified element in the
@@ -189,11 +187,9 @@ array_t *array_swap(array_t *array, int index1, int index2);
  * @brief   Sort the cino-array.
  * @param array     cino-array
  * @param reverse   true = descending, false = ascending
- * @param compare   User-defined callback function for comparison, only for T (generic)
- *                  cino-array. Set to `NULL` if it is a primitive cino-array.
  * @return  Returns the modified cino-array.
  */
-array_t *array_sort(array_t *array, bool reverse, compare_t compare);
+array_t *array_sort(array_t *array, bool reverse);
 
 /**
  * @brief   Get the begin iterator.

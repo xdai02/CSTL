@@ -15,15 +15,16 @@
 - 函数原型：
 
 ```c
-array_t *array_create(const str_t data_type);
+array_t *array_create(const str_t data_type, compare_t compare);
 ```
 
 - 功能：创建cino-array。
 - 参数：
 
-| 参数      | 说明                                                   |
-| --------- | ------------------------------------------------------ |
-| data_type | cino-array的元素类型，支持"int"、“double”、“T”（泛型） |
+| 参数      | 说明                                                         |
+| --------- | ------------------------------------------------------------ |
+| data_type | cino-array的元素类型，支持"int"、“double”、“T”（泛型）       |
+| compare   | 用于比较的回调函数，仅针对T（泛型）cino-array，基本数据类型cino-array设置为`NULL`即可 |
 
 - 返回值：返回cino-array指针，创建失败返回`NULL`。
 
@@ -223,16 +224,15 @@ T array_remove(array_t *array, int index);
 - 函数原型：
 
 ```c
-T array_min(const array_t *array, compare_t compare);
+T array_min(const array_t *array);
 ```
 
 - 功能：获取cino-array最小值。
 - 参数：
 
-| 参数    | 说明                                                         |
-| ------- | ------------------------------------------------------------ |
-| array   | cino-array                                                   |
-| compare | 用于比较的回调函数，仅针对T（泛型）cino-array，基本数据类型cino-array设置为`NULL`即可 |
+| 参数  | 说明       |
+| ----- | ---------- |
+| array | cino-array |
 
 - 返回值：cino-array最小值。
 
@@ -245,7 +245,7 @@ T array_min(const array_t *array, compare_t compare);
 - 函数原型：
 
 ```c
-T array_max(const array_t *array, compare_t compare);
+T array_max(const array_t *array);
 ```
 
 - 功能：获取cino-array最大值。
@@ -253,8 +253,7 @@ T array_max(const array_t *array, compare_t compare);
 
 | 参数    | 说明                                                         |
 | ------- | ------------------------------------------------------------ |
-| array   | cino-array                                                   |
-| compare | 用于比较的回调函数，仅针对T（泛型）cino-array，基本数据类型cino-array设置为`NULL`即可 |
+| array   | cino-array                                                 |
 
 - 返回值：cino-array最大值。
 
@@ -315,7 +314,7 @@ int array_count(const array_t *array, void *context);
 
 | 参数    | 说明                                                         |
 | ------- | ------------------------------------------------------------ |
-| array   | cino-array                                                   |
+| array   | cino-array                                                 |
 | context | 对于基本数据类型cino-array，传入待查询元素的包装类型，此函数会释放该包装类型<br />对于T（泛型）cino-array，传入match_t类型的回调函数，用于匹配元素 |
 
 - 返回值：指定元素出现次数。
@@ -367,7 +366,7 @@ array_t *array_swap(array_t *array, int index1, int index2);
 - 函数原型：
 
 ```c
-array_t *array_sort(array_t *array, bool reverse, compare_t compare);
+array_t *array_sort(array_t *array, bool reverse);
 ```
 
 - 功能：cino-array排序。
@@ -375,9 +374,8 @@ array_t *array_sort(array_t *array, bool reverse, compare_t compare);
 
 | 参数    | 说明                                                         |
 | ------- | ------------------------------------------------------------ |
-| array   | cino-array                                                   |
+| array   | cino-array                                                 |
 | reverse | 是否逆序                                                     |
-| compare | 用于比较的回调函数，仅针对T（泛型）cino-array，基本数据类型cino-array设置为`NULL`即可 |
 
 - 返回值：修改后的cino-array。
 
