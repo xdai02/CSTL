@@ -13,7 +13,7 @@ typedef struct node_t {
 typedef struct tree_t {
     node_t *root;
     str_t data_type;
-    // compare_t compare;
+    compare_t compare;
 } tree_t;
 
 /**
@@ -43,6 +43,19 @@ static bool is_valid_data_type(const str_t data_type) {
     return false;
 }
 
+/**
+ * @brief   Specify the default rules for comparing two values in ascending order.
+ * @param data1 pointer to the first value
+ * @param data2 pointer to the second value
+ * @return  Returns
+ *              - 0 if two values are equal
+ *              - positive if the first value is greater than the second value
+ *              - negative if the first value is less than the second value
+ */
+static int cmp_default(const T data1, const T data2) {
+    return (byte_t *)data1 - (byte_t *)data2;
+}
+
 static node_t *tree_node_create(T data) {
     node_t *node = (node_t *)calloc(1, sizeof(node_t));
     return_value_if_fail(node != NULL, NULL);
@@ -52,7 +65,7 @@ static node_t *tree_node_create(T data) {
     return node;
 }
 
-tree_t *tree_create(const str_t data_type) {
+tree_t *tree_create(const str_t data_type, compare_t compare) {
     return_value_if_fail(is_valid_data_type(data_type), NULL);
 
     tree_t *tree = (tree_t *)calloc(1, sizeof(tree_t));
@@ -61,6 +74,11 @@ tree_t *tree_create(const str_t data_type) {
     tree->data_type = (str_t)calloc(str_length(data_type) + 1, sizeof(char));
     call_and_return_value_if_fail(tree->data_type != NULL, tree_destroy(tree), NULL);
     str_copy(tree->data_type, data_type);
+
+    if (!compare) {
+        compare = cmp_default;
+    }
+    tree->compare = compare;
 
     tree->root = NULL;
     return tree;
@@ -92,7 +110,7 @@ tree_t *tree_clear(tree_t *tree) {
     return tree;
 }
 
-tree_t *tree_insert(tree_t *tree, T data, compare_t compare) {
+tree_t *tree_insert(tree_t *tree, T data) {
     return_value_if_fail(tree != NULL && data != NULL, NULL);
 
     node_t *node = tree_node_create(NULL);
@@ -114,7 +132,6 @@ tree_t *tree_insert(tree_t *tree, T data, compare_t compare) {
         *(double *)node->data = wrapper_double->data;
         unwrap_double(wrapper_double);
     } else if (str_equal(tree->data_type, "T")) {
-        call_and_return_value_if_fail(compare != NULL, free(node), tree);
         node->data = data;
     }
 
@@ -165,19 +182,35 @@ tree_t *tree_insert(tree_t *tree, T data, compare_t compare) {
     } else if (str_equal(tree->data_type, "T")) {
         while (cur) {
             pre = cur;
-            if (compare(node->data, cur->data) < 0) {
+            if (tree->compare(node->data, cur->data) < 0) {
                 cur = cur->left;
             } else {
                 cur = cur->right;
             }
         }
 
-        if (compare(node->data, pre->data) < 0) {
+        if (tree->compare(node->data, pre->data) < 0) {
             pre->left = node;
         } else {
             pre->right = node;
         }
     }
+
+    return tree;
+}
+
+// TODO
+tree_t *tree_remove(tree_t *tree, void **context) {
+    return_value_if_fail(tree != NULL && context != NULL, tree);
+
+    // wrapper_int_t *wrapper_int = NULL;
+    // wrapper_double_t *wrapper_double = NULL;
+
+    // if (str_equal(tree->data_type, "int")) {
+    //     wrapper_int = (wrapper_int_t *)context;
+    // } else if (str_equal(tree->data_type, "double")) {
+    //     wrapper_double = (wrapper_double_t *)context;
+    // }
 
     return tree;
 }
