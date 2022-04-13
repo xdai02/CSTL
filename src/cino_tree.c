@@ -110,8 +110,115 @@ tree_t *tree_clear(tree_t *tree) {
     return tree;
 }
 
+static node_t *tree_min_node(tree_t *tree) {
+    return_value_if_fail(tree != NULL && tree->root != NULL, NULL);
+    node_t *cur = tree->root;
+    while (cur && cur->left) {
+        cur = cur->left;
+    }
+    return cur;
+}
+
+static node_t *tree_max_node(tree_t *tree) {
+    return_value_if_fail(tree != NULL && tree->root != NULL, NULL);
+    node_t *cur = tree->root;
+    while (cur && cur->right) {
+        cur = cur->right;
+    }
+    return cur;
+}
+
+T tree_min(tree_t *tree) {
+    node_t *min = tree_min_node(tree);
+    return_value_if_fail(min != NULL, NULL);
+
+    if (str_equal(tree->data_type, "int")) {
+        return wrap_int(*(int *)min->data);
+    } else if (str_equal(tree->data_type, "double")) {
+        return wrap_double(*(double *)min->data);
+    } else {
+        return min->data;
+    }
+
+    return NULL;
+}
+
+T tree_max(tree_t *tree) {
+    node_t *max = tree_max_node(tree);
+    return_value_if_fail(max != NULL, NULL);
+
+    if (str_equal(tree->data_type, "int")) {
+        return wrap_int(*(int *)max->data);
+    } else if (str_equal(tree->data_type, "double")) {
+        return wrap_double(*(double *)max->data);
+    } else {
+        return max->data;
+    }
+
+    return NULL;
+}
+
+bool tree_contains(tree_t *tree, T data) {
+    return_value_if_fail(tree != NULL && data != NULL, false);
+
+    bool found = false;
+
+    if (str_equal(tree->data_type, "int")) {
+        wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
+
+        node_t *cur = tree->root;
+        while (cur) {
+            int cur_data = *(int *)cur->data;
+            if (wrapper_int->data == cur_data) {
+                found = true;
+                break;
+            } else if (wrapper_int->data < cur_data) {
+                cur = cur->left;
+            } else {
+                cur = cur->right;
+            }
+        }
+
+        unwrap_int(wrapper_int);
+    } else if (str_equal(tree->data_type, "double")) {
+        wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
+
+        node_t *cur = tree->root;
+        while (cur) {
+            double cur_data = *(double *)cur->data;
+            if (equal_double(wrapper_double->data, cur_data)) {
+                found = true;
+                break;
+            } else if (wrapper_double->data < cur_data) {
+                cur = cur->left;
+            } else {
+                cur = cur->right;
+            }
+        }
+
+        unwrap_double(wrapper_double);
+    } else if (str_equal(tree->data_type, "T")) {
+        node_t *cur = tree->root;
+        while (cur) {
+            int cmp = tree->compare(data, cur->data);
+            if (cmp == 0) {
+                found = true;
+                break;
+            } else if (cmp < 0) {
+                cur = cur->left;
+            } else {
+                cur = cur->right;
+            }
+        }
+    }
+
+    return found;
+}
+
 tree_t *tree_insert(tree_t *tree, T data) {
     return_value_if_fail(tree != NULL && data != NULL, NULL);
+
+    return_value_if_fail(!tree_contains(tree, data), tree);
 
     node_t *node = tree_node_create(NULL);
     return_value_if_fail(node != NULL, tree);
@@ -199,18 +306,76 @@ tree_t *tree_insert(tree_t *tree, T data) {
     return tree;
 }
 
-// TODO
-tree_t *tree_remove(tree_t *tree, void **context) {
-    return_value_if_fail(tree != NULL && context != NULL, tree);
+T tree_remove(tree_t *tree, T data) {
+    return_value_if_fail(tree != NULL && data != NULL, tree);
 
-    // wrapper_int_t *wrapper_int = NULL;
-    // wrapper_double_t *wrapper_double = NULL;
+    if (str_equal(tree->data_type, "int")) {
+        wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
 
-    // if (str_equal(tree->data_type, "int")) {
-    //     wrapper_int = (wrapper_int_t *)context;
-    // } else if (str_equal(tree->data_type, "double")) {
-    //     wrapper_double = (wrapper_double_t *)context;
-    // }
+        node_t *pre = tree->root;
+        node_t *cur = tree->root;
+        while (cur) {
+            int cur_data = *(int *)cur->data;
+            if (wrapper_int->data == cur_data) {
+                break;
+            }
+            pre = cur;
+            if (wrapper_int->data < cur_data) {
+                cur = cur->left;
+            } else {
+                cur = cur->right;
+            }
+        }
+
+        // not found
+        call_and_return_value_if_fail(cur != NULL, unwrap_int(wrapper_int), NULL);
+
+        // remove leaf node
+        if (!cur->left && !cur->right) {
+            if (pre->left == cur) {
+                pre->left = NULL;
+            } else {
+                pre->right = NULL;
+            }
+
+            int removed = *(int *)cur->data;
+            free(cur);
+            cur = NULL;
+            return wrap_int(removed);
+        }
+        // remove node with only one child
+        else if (cur->left || cur->right) {
+            node_t *child = NULL;
+            if (cur->left) {
+                child = cur->left;
+            } else {
+                child = cur->right;
+            }
+
+            int removed = *(int *)cur->data;
+            cur->data = child->data;
+            cur->left = NULL;
+            cur->right = NULL;
+
+            free(child);
+            child = NULL;
+            return wrap_int(removed);
+        }
+        // remove node with two children
+        else {
+            node_t *max = tree_max_node(tree);
+            int removed = *(int *)cur->data;
+            cur->data = max->data;
+            free(max);
+            max = NULL;
+            // TODO: should known the parent
+
+            return wrap_int(removed);
+        }
+    } else if (str_equal(tree->data_type, "double")) {
+        wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
+    } else if (str_equal(tree->data_type, "T")) {
+    }
 
     return tree;
 }

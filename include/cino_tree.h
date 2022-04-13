@@ -24,6 +24,14 @@ bool tree_is_empty(const tree_t *tree);
 
 tree_t *tree_clear(tree_t *tree);
 
+T tree_min(tree_t *tree);
+
+T tree_max(tree_t *tree);
+
+bool tree_contains(tree_t *tree, T data);
+
 tree_t *tree_insert(tree_t *tree, T data);
+
+T tree_remove(tree_t *tree, T data);
 
 #endif
