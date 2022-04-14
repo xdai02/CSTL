@@ -54,6 +54,12 @@ typedef int (*compare_t)(const void *data1, const void *data2);
  */
 typedef bool (*match_t)(const void *data);
 
+/**
+ * @brief   User-defined visitor function interface for traversal.
+ * @param data  pointer to the data visiting
+ */
+typedef void (*visit_t)(void *data);
+
 /****************************************
  *              status_t
  ****************************************/

@@ -73,6 +73,23 @@ bool (*match_t)(const void *data);
 
 - 返回值：如果数据满足条件返回`true`，不满足条件返回`false`。
 
+---
+
+#### visit_t
+
+- 函数原型：
+
+```c
+void (*visit_t)(void *data);
+```
+
+- 功能：遍历访问函数接口。
+- 参数：
+
+| 参数 | 说明           |
+| ---- | -------------- |
+| data | 遍历的数据指针 |
+
 <div style="page-break-after: always;"></div>
 
 ### status_t
