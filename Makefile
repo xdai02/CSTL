@@ -34,7 +34,7 @@ cino_tree: $(SRC)/cino_tree.c
 
 ############### TEST ###############
 
-test: test_cino_utils test_cino_string test_cino_array test_cino_list test_cino
+test: test_cino_utils test_cino_string test_cino_array test_cino_list test_cino_tree test_cino
 
 test_cino_utils: $(TEST)/test_cino_utils.c
 	$(CC) $(CFLAGS) -I$(INC) -c $(TEST)/test_cino_utils.c -o $(BIN)/test_cino_utils.o
@@ -47,6 +47,9 @@ test_cino_array: $(TEST)/test_cino_array.c
 
 test_cino_list: $(TEST)/test_cino_list.c
 	$(CC) $(CFLAGS) -I$(INC) -c $(TEST)/test_cino_list.c -o $(BIN)/test_cino_list.o
+
+test_cino_tree: $(TEST)/test_cino_tree.c
+	$(CC) $(CFLAGS) -I$(INC) -c $(TEST)/test_cino_tree.c -o $(BIN)/test_cino_tree.o
 
 test_cino: $(TEST)/test_cino.c
 	$(CC) $(CFLAGS) -I$(INC) -c $(TEST)/test_cino.c -o $(BIN)/test_cino.o

@@ -2,6 +2,7 @@
 #include "test_cino_string.h"
 #include "test_cino_array.h"
 #include "test_cino_list.h"
+#include "test_cino_tree.h"
 
 void test_cino_utils() {
     test_min();
@@ -150,11 +151,16 @@ void test_cino_list() {
     LOGGER(INFO, "[PASS] test_cino_list");
 }
 
+void test_cino_tree() {
+    LOGGER(INFO, "[PASS] test_cino_tree");
+}
+
 int main(int argc, char *argv[]) {
     test_cino_utils();
     test_cino_string();
     test_cino_array();
     test_cino_list();
+    test_cino_tree();
 
     return 0;
 }
