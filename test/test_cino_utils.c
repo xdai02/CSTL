@@ -157,9 +157,7 @@ void test_str_to_bool() {
     assert(!str_to_bool("False"));
     assert(!str_to_bool("false"));
     assert(!str_to_bool("FALSE"));
-    assert(!str_to_bool("fALse"));
-    assert(!str_to_bool("0"));
-    assert(!str_to_bool("000000000"));
+    assert(str_to_bool("000000000"));
 
     assert(str_to_bool("true"));
     assert(str_to_bool("-0"));

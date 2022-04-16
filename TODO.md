@@ -6,3 +6,4 @@
 - [ ] cino-tree
 - [ ] cino-list增加char类型
 - [ ] destroy_t / match_t / compare_t在创建时确定
+- [ ] cino-string / str 新增remove_char_at()等函数

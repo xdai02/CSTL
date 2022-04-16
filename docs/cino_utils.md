@@ -7,92 +7,408 @@
 
 <div style="page-break-after: always;"></div>
 
-### 类型
+### cino_utils_basic
 
-#### str_t
+#### 合法性检查
+
+##### return_if_fail()
+
+- 函数原型：
+
+```c
+return_if_fail(expr)
+```
+
+- 功能：判断表达式`expr`是否成立，不成立直接返回。
+- 参数：
+
+| 参数 | 说明       |
+| ---- | ---------- |
+| expr | 逻辑表达式 |
+
+---
+
+##### return_value_if_fail()
+
+- 函数原型：
+
+```c
+return_value_if_fail(expr, ret)
+```
+
+- 功能：判断表达式`expr`是否成立，不成立返回`ret`。
+- 参数：
+
+| 参数 | 说明       |
+| ---- | ---------- |
+| expr | 逻辑表达式 |
+| ret  | 返回值     |
+
+---
+
+##### call_and_return_if_fail()
+
+- 函数原型：
+
+```c
+call_and_return_if_fail(expr, func)
+```
+
+- 功能：判断表达式`expr`是否成立，不成立调用`func`后返回。
+- 参数：
+
+| 参数 | 说明       |
+| ---- | ---------- |
+| expr | 逻辑表达式 |
+| func | 调用函数   |
+
+---
+
+##### call_and_return_value_if_fail()
+
+- 函数原型：
+
+```c
+call_and_return_value_if_fail(expr, func, ret)
+```
+
+- 功能：判断表达式`expr`是否成立，不成立调用`func`后返回`ret`。
+- 参数：
+
+| 参数 | 说明       |
+| ---- | ---------- |
+| expr | 逻辑表达式 |
+| func | 调用函数   |
+| ret  | 返回值     |
+
+<div style="page-break-after: always;"></div>
+
+#### 类型
+
+##### str_t
 
 - 功能：字符串，等价于char *。
 
 ---
 
-#### byte_t
+##### byte_t
 
 - 功能：字节，等价于char。
 
 ---
 
-#### iter_t
+##### iter_t
 
 - 功能：迭代器，等价于void *。
 
 ---
 
-#### T
+##### T
 
 - 功能：泛型，等价于void *。
 
 ---
 
-#### compare_t
+<div style="page-break-after: always;"></div>
+
+#### 数值操作
+
+##### min()
 
 - 函数原型：
 
 ```c
-int (*compare_t)(const void *data1, const void *data2);
+min(x, y)
 ```
 
-- 功能：比较函数接口。
+- 功能：返回两数较小值。
 - 参数：
 
-| 参数  | 说明                 |
-| ----- | -------------------- |
-| data1 | 指向第一个数据的指针 |
-| data2 | 指向第二个数据的指针 |
+| 参数 | 说明 |
+| ---- | ---- |
+| x    | 变量 |
+| y    | 变量 |
 
-- 返回值：
-    - data1 == data2返回0
-    - data1 > data2返回正数
-    - data1 < data2返回负数
+- 返回值：较小值。
 
 ---
 
-#### match_t
+##### max()
 
 - 函数原型：
 
 ```c
-bool (*match_t)(const void *data);
+max(x, y)
 ```
 
-- 功能：判断条件满足函数接口。
+- 功能：返回两数较大值。
 - 参数：
 
-| 参数 | 说明                           |
-| ---- | ------------------------------ |
-| data | 需要判断是否满足条件的数据指针 |
+| 参数 | 说明 |
+| ---- | ---- |
+| x    | 变量 |
+| y    | 变量 |
 
-- 返回值：如果数据满足条件返回`true`，不满足条件返回`false`。
+- 返回值：较大值。
 
 ---
 
-#### visit_t
+##### negate()
 
 - 函数原型：
 
 ```c
-void (*visit_t)(void *data);
+negate(x)
 ```
 
-- 功能：遍历访问函数接口。
+- 功能：取相反数。
 - 参数：
 
-| 参数 | 说明           |
-| ---- | -------------- |
-| data | 遍历的数据指针 |
+| 参数 | 说明 |
+| ---- | ---- |
+| x    | 变量 |
+
+- 返回值：相反数。
+
+---
+
+##### swap()
+
+- 函数原型：
+
+```c
+swap(x, y, type)
+```
+
+- 功能：交换变量的值。
+- 参数：
+
+| 参数 | 说明     |
+| ---- | -------- |
+| x    | 变量     |
+| y    | 变量     |
+| type | 数据类型 |
+
+---
+
+##### equal_double()
+
+- 函数原型：
+
+```c
+bool equal_double(double x, double y);
+```
+
+- 功能：判断两个浮点数是否相等。
+- 参数：
+
+| 参数 | 说明     |
+| ---- | -------- |
+| x    | 浮点数     |
+| y    | 浮点数     |
+
+- 返回值：相等返回`true`，不相等返回`false`。
 
 <div style="page-break-after: always;"></div>
 
-### status_t
+#### 数组操作
+
+##### array_len()
+
+- 函数原型：
+
+```c
+array_len(arr)
+```
+
+- 功能：获取C数组元素个数。
+- 参数：
+
+| 参数 | 说明  |
+| ---- | ----- |
+| arr  | C数组 |
+
+- 返回值：C数组元素个数。
+
+<div style="page-break-after: always;"></div>
+
+#### 类型转换
+
+##### str_to_bool()
+
+- 函数原型：
+
+```c
+bool str_to_bool(const str_t str);
+```
+
+- 功能：字符串转布尔。
+- 参数：
+
+| 参数 | 说明   |
+| ---- | ------ |
+| str  | 字符串 |
+
+- 返回值：
+    - 返回`false`的情况：
+        1. str == NULL
+        2. strlen(str) == 0
+        3. str == "false" || str == "FALSE" || str == "False"
+    - 其它情况返回`true`。
+
+---
+
+##### bool_to_str()
+
+- 函数原型：
+
+```c
+const str_t bool_to_str(bool val);
+```
+
+- 功能：布尔转字符串。
+- 参数：
+
+| 参数 | 说明   |
+| ---- | ------ |
+| val  | 布尔值 |
+
+- 返回值：如果`val`为true返回`"true"`，否则返回`"false"`。
+
+---
+
+##### str_to_char()
+
+- 函数原型：
+
+```c
+char str_to_char(const str_t str);
+```
+
+- 功能：字符串转字符。
+- 参数：
+
+| 参数 | 说明   |
+| ---- | ------ |
+| str  | 字符串 |
+
+- 返回值：如果`str`为NULL返回`'\0'`，否则返回`str`的第一个字符。
+
+---
+
+##### char_to_str()
+
+- 函数原型：
+
+```c
+str_t char_to_str(char c, str_t str, size_t str_size);
+```
+
+- 功能：字符转字符串。
+- 参数：
+
+| 参数     | 说明                     |
+| -------- | ------------------------ |
+| c        | 字符                     |
+| str      | 用于保存转换结果的字符串 |
+| str_size | sizeof(str)              |
+
+- 返回值：返回转换后的字符串。
+
+> 调用者需要确保`str`和`str_size`的有效性。
+
+---
+
+##### str_to_int()
+
+- 函数原型：
+
+```c
+int str_to_int(const str_t str);
+```
+
+- 功能：字符串转int。
+- 参数：
+
+| 参数 | 说明   |
+| ---- | ------ |
+| str  | 字符串 |
+
+- 返回值：如果`str`为NULL返回`0`，否则返回`atoi()`的结果。
+
+---
+
+##### int_to_str()
+
+- 函数原型：
+
+```c
+str_t int_to_str(int val, str_t str, size_t str_size);
+```
+
+- 功能：int转字符串。
+- 参数：
+
+| 参数     | 说明                     |
+| -------- | ------------------------ |
+| val      | int值                    |
+| str      | 用于保存转换结果的字符串 |
+| str_size | sizeof(str)              |
+
+- 返回值：返回转换后的字符串。
+
+> 调用者需要确保`str`和`str_size`的有效性。
+
+---
+
+##### str_to_double()
+
+- 函数原型：
+
+```c
+double str_to_double(const str_t str);
+```
+
+- 功能：字符串转double。
+- 参数：
+
+| 参数 | 说明   |
+| ---- | ------ |
+| str  | 字符串 |
+
+- 返回值：如果`str`为NULL返回`0`.0，否则返回`atof()`的结果。
+
+---
+
+##### double_to_str()
+
+- 函数原型：
+
+```c
+str_t double_to_str(double val, int precision, str_t str, size_t str_size);
+```
+
+- 功能：double转字符串。
+- 参数：
+
+| 参数      | 说明                                        |
+| --------- | ------------------------------------------- |
+| val       | double值                                    |
+| precision | 四舍五入小数点后保留位数，默认为2，最大为16 |
+| str       | 用于保存转换结果的字符串                    |
+| str_size  | sizeof(str)                                 |
+
+- 返回值：返回转换后的字符串。
+
+> 调用者需要确保`str`和`str_size`的有效性。
+
+<div style="page-break-after: always;"></div>
+
+### cino_utils_logger
+
+#### 状态码
+
+##### status_t
 
 - 功能：状态码。
 
@@ -111,7 +427,9 @@ void (*visit_t)(void *data);
 
 <div style="page-break-after: always;"></div>
 
-### logger_t
+#### 日志
+
+##### logger_t
 
 - 函数原型：
 
@@ -137,377 +455,11 @@ LOGGER(level, format, ...)
 
 <div style="page-break-after: always;"></div>
 
-### 数值操作
+### cino_utils_wrapper
 
-#### min()
+#### 包装类型
 
-- 函数原型：
-
-```c
-min(x, y)
-```
-
-- 功能：返回两数较小值。
-- 参数：
-
-| 参数 | 说明 |
-| ---- | ---- |
-| x    | 变量 |
-| y    | 变量 |
-
-- 返回值：较小值。
-
----
-
-#### max()
-
-- 函数原型：
-
-```c
-max(x, y)
-```
-
-- 功能：返回两数较大值。
-- 参数：
-
-| 参数 | 说明 |
-| ---- | ---- |
-| x    | 变量 |
-| y    | 变量 |
-
-- 返回值：较大值。
-
----
-
-#### negate()
-
-- 函数原型：
-
-```c
-negate(x)
-```
-
-- 功能：取相反数。
-- 参数：
-
-| 参数 | 说明 |
-| ---- | ---- |
-| x    | 变量 |
-
-- 返回值：相反数。
-
----
-
-#### swap()
-
-- 函数原型：
-
-```c
-swap(x, y, type)
-```
-
-- 功能：交换变量的值。
-- 参数：
-
-| 参数 | 说明     |
-| ---- | -------- |
-| x    | 变量     |
-| y    | 变量     |
-| type | 数据类型 |
-
----
-
-#### equal_double()
-
-- 函数原型：
-
-```c
-bool equal_double(double x, double y);
-```
-
-- 功能：判断两个浮点数是否相等。
-- 参数：
-
-| 参数 | 说明     |
-| ---- | -------- |
-| x    | 浮点数     |
-| y    | 浮点数     |
-
-- 返回值：相等返回`true`，不相等返回`false`。
-
-<div style="page-break-after: always;"></div>
-
-### 合法性检查
-
-#### return_if_fail()
-
-- 函数原型：
-
-```c
-return_if_fail(expr)
-```
-
-- 功能：判断表达式`expr`是否成立，不成立直接返回。
-- 参数：
-
-| 参数 | 说明       |
-| ---- | ---------- |
-| expr | 逻辑表达式 |
-
----
-
-#### return_value_if_fail()
-
-- 函数原型：
-
-```c
-return_value_if_fail(expr, ret)
-```
-
-- 功能：判断表达式`expr`是否成立，不成立返回`ret`。
-- 参数：
-
-| 参数 | 说明       |
-| ---- | ---------- |
-| expr | 逻辑表达式 |
-| ret  | 返回值     |
-
----
-
-#### call_and_return_if_fail()
-
-- 函数原型：
-
-```c
-call_and_return_if_fail(expr, func)
-```
-
-- 功能：判断表达式`expr`是否成立，不成立调用`func`后返回。
-- 参数：
-
-| 参数 | 说明       |
-| ---- | ---------- |
-| expr | 逻辑表达式 |
-| func | 调用函数   |
-
----
-
-#### call_and_return_value_if_fail()
-
-- 函数原型：
-
-```c
-call_and_return_value_if_fail(expr, func, ret)
-```
-
-- 功能：判断表达式`expr`是否成立，不成立调用`func`后返回`ret`。
-- 参数：
-
-| 参数 | 说明       |
-| ---- | ---------- |
-| expr | 逻辑表达式 |
-| func | 调用函数   |
-| ret  | 返回值     |
-
-<div style="page-break-after: always;"></div>
-
-### 数组操作
-
-#### array_len()
-
-- 函数原型：
-
-```c
-array_len(arr)
-```
-
-- 功能：获取C数组元素个数。
-- 参数：
-
-| 参数 | 说明  |
-| ---- | ----- |
-| arr  | C数组 |
-
-- 返回值：C数组元素个数。
-
-<div style="page-break-after: always;"></div>
-
-### 类型转换
-
-#### str_to_bool()
-
-- 函数原型：
-
-```c
-bool str_to_bool(const str_t str);
-```
-
-- 功能：字符串转布尔。
-- 参数：
-
-| 参数 | 说明   |
-| ---- | ------ |
-| str  | 字符串 |
-
-- 返回值：
-    - 返回`false`的情况：
-        1. str == NULL
-        2. strlen(str) == 0
-        3. str_equal_ignore_case(str, "false")
-        4. a string of zeroes
-    - 其它情况返回`true`。
-
----
-
-#### bool_to_str()
-
-- 函数原型：
-
-```c
-const str_t bool_to_str(bool val);
-```
-
-- 功能：布尔转字符串。
-- 参数：
-
-| 参数 | 说明   |
-| ---- | ------ |
-| val  | 布尔值 |
-
-- 返回值：如果`val`为true返回`"true"`，否则返回`"false"`。
-
----
-
-#### str_to_char()
-
-- 函数原型：
-
-```c
-char str_to_char(const str_t str);
-```
-
-- 功能：字符串转字符。
-- 参数：
-
-| 参数 | 说明   |
-| ---- | ------ |
-| str  | 字符串 |
-
-- 返回值：如果`str`为NULL返回`'\0'`，否则返回`str`的第一个字符。
-
----
-
-#### char_to_str()
-
-- 函数原型：
-
-```c
-str_t char_to_str(char c, str_t str, size_t str_size);
-```
-
-- 功能：字符转字符串。
-- 参数：
-
-| 参数     | 说明                     |
-| -------- | ------------------------ |
-| c        | 字符                     |
-| str      | 用于保存转换结果的字符串 |
-| str_size | sizeof(str)              |
-
-- 返回值：返回转换后的字符串。
-
-> 调用者需要确保`str`和`str_size`的有效性。
-
----
-
-#### str_to_int()
-
-- 函数原型：
-
-```c
-int str_to_int(const str_t str);
-```
-
-- 功能：字符串转int。
-- 参数：
-
-| 参数 | 说明   |
-| ---- | ------ |
-| str  | 字符串 |
-
-- 返回值：如果`str`为NULL返回`0`，否则返回`atoi()`的结果。
-
----
-
-#### int_to_str()
-
-- 函数原型：
-
-```c
-str_t int_to_str(int val, str_t str, size_t str_size);
-```
-
-- 功能：int转字符串。
-- 参数：
-
-| 参数     | 说明                     |
-| -------- | ------------------------ |
-| val      | int值                    |
-| str      | 用于保存转换结果的字符串 |
-| str_size | sizeof(str)              |
-
-- 返回值：返回转换后的字符串。
-
-> 调用者需要确保`str`和`str_size`的有效性。
-
----
-
-#### str_to_double()
-
-- 函数原型：
-
-```c
-double str_to_double(const str_t str);
-```
-
-- 功能：字符串转double。
-- 参数：
-
-| 参数 | 说明   |
-| ---- | ------ |
-| str  | 字符串 |
-
-- 返回值：如果`str`为NULL返回`0`.0，否则返回`atof()`的结果。
-
----
-
-#### double_to_str()
-
-- 函数原型：
-
-```c
-str_t double_to_str(double val, int precision, str_t str, size_t str_size);
-```
-
-- 功能：double转字符串。
-- 参数：
-
-| 参数      | 说明                                        |
-| --------- | ------------------------------------------- |
-| val       | double值                                    |
-| precision | 四舍五入小数点后保留位数，默认为2，最大为16 |
-| str       | 用于保存转换结果的字符串                    |
-| str_size  | sizeof(str)                                 |
-
-- 返回值：返回转换后的字符串。
-
-> 调用者需要确保`str`和`str_size`的有效性。
-
-<div style="page-break-after: always;"></div>
-
-### 包装类型
-
-#### wrapper_int_t
+##### wrapper_int_t
 
 ```c
 typedef struct wrapper_int_t {
@@ -519,7 +471,7 @@ typedef struct wrapper_int_t {
 
 ---
 
-#### wrapper_double_t
+##### wrapper_double_t
 
 ```c
 typedef struct wrapper_double_t {
@@ -531,7 +483,7 @@ typedef struct wrapper_double_t {
 
 ---
 
-#### wrap_int()
+##### wrap_int()
 
 - 函数原型：
 
@@ -550,7 +502,7 @@ wrapper_int_t *wrap_int(int data);
 
 ---
 
-#### unwrap_int()
+##### unwrap_int()
 
 - 函数原型：
 
@@ -569,7 +521,7 @@ int unwrap_int(wrapper_int_t *wrapper);
 
 ---
 
-#### wrap_double()
+##### wrap_double()
 
 - 函数原型：
 
@@ -588,7 +540,7 @@ wrapper_double_t *wrap_double(double data);
 
 ---
 
-#### unwrap_double()
+##### unwrap_double()
 
 - 函数原型：
 
@@ -607,9 +559,11 @@ double unwrap_double(wrapper_double_t *wrapper);
 
 <div style="page-break-after: always;"></div>
 
-### 字符串操作
+### cino_utils_str
 
-#### str_equal()
+#### 字符串操作
+
+##### str_equal()
 
 - 函数原型：
 
@@ -629,7 +583,7 @@ bool str_equal(const str_t s1, const str_t s2);
 
 ---
 
-#### str_equal_ignore_case()
+##### str_equal_ignore_case()
 
 - 函数原型：
 
@@ -649,7 +603,7 @@ bool str_equal_ignore_case(const str_t s1, const str_t s2);
 
 ---
 
-#### str_to_lower()
+##### str_to_lower()
 
 - 函数原型：
 
@@ -668,7 +622,7 @@ str_t str_to_lower(str_t str);
 
 ---
 
-#### str_to_upper()
+##### str_to_upper()
 
 - 函数原型：
 
@@ -687,7 +641,7 @@ str_t str_to_upper(str_t str);
 
 ---
 
-#### str_starts_with()
+##### str_starts_with()
 
 - 函数原型：
 
@@ -707,7 +661,7 @@ bool str_starts_with(const str_t str, const str_t prefix);
 
 ---
 
-#### str_ends_with()
+##### str_ends_with()
 
 - 函数原型：
 
@@ -727,7 +681,7 @@ bool str_ends_with(const str_t str, const str_t postfix);
 
 ---
 
-#### str_clear()
+##### str_clear()
 
 - 函数原型：
 
@@ -747,7 +701,7 @@ void str_clear(str_t str, size_t str_size);
 
 ---
 
-#### str_length()
+##### str_length()
 
 - 函数原型：
 
@@ -766,7 +720,7 @@ size_t str_length(const str_t str);
 
 ---
 
-#### str_copy()
+##### str_copy()
 
 - 函数原型：
 
@@ -788,7 +742,7 @@ str_t str_copy(str_t destination, const str_t source);
 
 ---
 
-#### str_concat()
+##### str_concat()
 
 - 函数原型：
 
@@ -810,7 +764,7 @@ str_t str_concat(str_t destination, const str_t source);
 
 ---
 
-#### str_trim()
+##### str_trim()
 
 - 函数原型：
 
@@ -829,7 +783,7 @@ str_t str_trim(str_t str);
 
 ---
 
-#### str_append_char()
+##### str_append_char()
 
 - 函数原型：
 
@@ -851,7 +805,7 @@ str_t str_append_char(str_t str, char c);
 
 ---
 
-#### str_append_int()
+##### str_append_int()
 
 - 函数原型：
 
@@ -873,7 +827,7 @@ str_t str_append_int(str_t str, int val);
 
 ---
 
-#### str_append_double()
+##### str_append_double()
 
 - 函数原型：
 
@@ -896,7 +850,7 @@ str_t str_append_double(str_t str, double val, int precision);
 
 ---
 
-#### str_insert_char()
+##### str_insert_char()
 
 - 函数原型：
 
@@ -919,7 +873,7 @@ str_t str_insert_char(str_t str, int index, char c);
 
 ---
 
-#### str_insert_string()
+##### str_insert_string()
 
 - 函数原型：
 
@@ -942,7 +896,7 @@ str_t str_insert_string(str_t str, int index, const str_t substr);
 
 ---
 
-#### str_substring()
+##### str_substring()
 
 - 函数原型：
 
@@ -967,7 +921,7 @@ str_t str_substring(str_t str, int start, int end, str_t substr, size_t substr_s
 
 ---
 
-#### str_count_substring()
+##### str_count_substring()
 
 - 函数原型：
 
@@ -987,7 +941,7 @@ int str_count_substring(const str_t str, const str_t substr);
 
 ---
 
-#### str_replace_char()
+##### str_replace_char()
 
 - 函数原型：
 
@@ -1008,7 +962,7 @@ str_t str_replace_char(str_t str, char old_char, char new_char);
 
 ---
 
-#### str_replace()
+##### str_replace()
 
 - 函数原型：
 
@@ -1029,7 +983,7 @@ str_t str_replace(str_t str, const str_t old_str, const str_t new_str);
 
 ---
 
-#### str_remove()
+##### str_remove()
 
 - 函数原型：
 
@@ -1049,7 +1003,7 @@ str_t str_remove(str_t str, const str_t substr);
 
 ---
 
-#### str_reverse()
+##### str_reverse()
 
 - 函数原型：
 
@@ -1068,7 +1022,7 @@ str_t str_reverse(str_t str);
 
 ---
 
-#### str_index_of_char()
+##### str_index_of_char()
 
 - 函数原型：
 
@@ -1088,7 +1042,7 @@ int str_index_of_char(const str_t str, char c);
 
 ---
 
-#### str_index_of_char_from()
+##### str_index_of_char_from()
 
 - 函数原型：
 
@@ -1109,7 +1063,7 @@ int str_index_of_char_from(const str_t str, char c, int from);
 
 ---
 
-#### str_index_of_substring()
+##### str_index_of_substring()
 
 - 函数原型：
 
@@ -1129,7 +1083,7 @@ int str_index_of_substring(const str_t str, const str_t substr);
 
 ---
 
-#### str_index_of_substring_from()
+##### str_index_of_substring_from()
 
 - 函数原型：
 
@@ -1150,7 +1104,7 @@ int str_index_of_substring_from(const str_t str, const str_t substr, int from);
 
 ---
 
-#### str_last_index_of_char()
+##### str_last_index_of_char()
 
 - 函数原型：
 
@@ -1170,7 +1124,7 @@ int str_last_index_of_char(const str_t str, char c);
 
 ---
 
-#### str_last_index_of_char_from()
+##### str_last_index_of_char_from()
 
 - 函数原型：
 
@@ -1191,7 +1145,7 @@ int str_last_index_of_char_from(const str_t str, char c, int from);
 
 ---
 
-#### str_last_index_of_substring()
+##### str_last_index_of_substring()
 
 - 函数原型：
 
@@ -1211,7 +1165,7 @@ int str_last_index_of_substring(const str_t str, const str_t substr);
 
 ---
 
-#### str_last_index_of_substring_from()
+##### str_last_index_of_substring_from()
 
 - 函数原型：
 
@@ -1232,7 +1186,7 @@ int str_last_index_of_substring_from(const str_t str, const str_t substr, int fr
 
 ---
 
-#### str_split()
+##### str_split()
 
 - 函数原型：
 
@@ -1252,3 +1206,66 @@ int str_split(const str_t str, const str_t delimiter, str_t *items);
 - 返回值：分割次数。
 
 > 调用者需要确保`items`的有效性。
+
+<div style="page-break-after: always;"></div>
+
+### cino_utils_interface
+
+#### 回调函数接口
+
+##### compare_t
+
+- 函数原型：
+
+```c
+int (*compare_t)(const void *data1, const void *data2);
+```
+
+- 功能：比较函数接口。
+- 参数：
+
+| 参数  | 说明                 |
+| ----- | -------------------- |
+| data1 | 指向第一个数据的指针 |
+| data2 | 指向第二个数据的指针 |
+
+- 返回值：
+    - data1 == data2返回0
+    - data1 > data2返回正数
+    - data1 < data2返回负数
+
+---
+
+##### match_t
+
+- 函数原型：
+
+```c
+bool (*match_t)(const void *data);
+```
+
+- 功能：判断条件满足函数接口。
+- 参数：
+
+| 参数 | 说明                           |
+| ---- | ------------------------------ |
+| data | 需要判断是否满足条件的数据指针 |
+
+- 返回值：如果数据满足条件返回`true`，不满足条件返回`false`。
+
+---
+
+##### visit_t
+
+- 函数原型：
+
+```c
+void (*visit_t)(void *data);
+```
+
+- 功能：遍历访问函数接口。
+- 参数：
+
+| 参数 | 说明           |
+| ---- | -------------- |
+| data | 遍历的数据指针 |

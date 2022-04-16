@@ -17,8 +17,16 @@ setup:
 
 cino: cino_utils cino_string cino_array cino_list cino_tree
 
-cino_utils: $(SRC)/cino_utils.c
-	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)/cino_utils.c -o $(BIN)/cino_utils.o
+cino_utils: cino_utils_basic cino_utils_str cino_utils_wrapper
+
+cino_utils_basic: $(SRC)/cino_utils_basic.c
+	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)/cino_utils_basic.c -o $(BIN)/cino_utils_basic.o
+
+cino_utils_str: $(SRC)/cino_utils_str.c
+	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)/cino_utils_str.c -o $(BIN)/cino_utils_str.o
+
+cino_utils_wrapper: $(SRC)/cino_utils_wrapper.c
+	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)/cino_utils_wrapper.c -o $(BIN)/cino_utils_wrapper.o
 
 cino_string: $(SRC)/cino_string.c
 	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)/cino_string.c -o $(BIN)/cino_string.o
