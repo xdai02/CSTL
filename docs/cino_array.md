@@ -15,7 +15,7 @@
 - 函数原型：
 
 ```c
-array_t *array_create(const str_t data_type, compare_t compare);
+array_t *array_create(const str_t data_type, compare_t compare, destroy_t destroy);
 ```
 
 - 功能：创建cino-array。
@@ -25,6 +25,7 @@ array_t *array_create(const str_t data_type, compare_t compare);
 | --------- | ------------------------------------------------------------ |
 | data_type | cino-array的元素类型，支持"int"、“double”、“T”（泛型）       |
 | compare   | 用于比较的回调函数，仅针对T（泛型）cino-array，基本数据类型cino-array设置为`NULL`即可 |
+| destroy   | 用于销毁的回调函数，仅针对T（泛型）cino-array，基本数据类型cino-array设置为`NULL`即可 |
 
 - 返回值：返回cino-array指针，创建失败返回`NULL`。
 
@@ -44,8 +45,6 @@ void array_destroy(array_t *array);
 | 参数  | 说明       |
 | ----- | ---------- |
 | array | cino-array |
-
-> 对于T（泛型）cino-array，调用者需要在调用此函数之前自行释放所插入的元素。
 
 ---
 
@@ -104,7 +103,24 @@ array_t *array_clear(array_t *array);
 
 - 返回值：修改后的cino-array。
 
-> 对于T（泛型）cino-array，调用者需要在调用此函数之前自行释放所插入的元素。
+---
+
+#### array_foreach()
+
+- 函数原型：
+
+```c
+void array_foreach(array_t *array, visit_t visit, bool backwards);
+```
+
+- 功能：遍历cino-array。
+- 参数：
+
+| 参数      | 说明                       |
+| --------- | -------------------------- |
+| array     | cino-array                 |
+| visit     | 用于访问单个元素的回调函数 |
+| backwards | 反向遍历                   |
 
 ---
 
@@ -126,7 +142,7 @@ T array_get(const array_t *array, int index);
 
 - 返回值：返回cino-array指定下标元素。
 
-> 对于基本数据类型cino-array，此函数会返回该数据类型的包装类型，调用者需要自行拆箱获取元素值。
+> 对于基本数据类型cino-array，此函数会返回该数据类型的包装类型，调用者应该使用`->data`访问基本元素，而不是拆箱。
 
 ---
 
@@ -147,8 +163,7 @@ void array_set(array_t *array, int index, T data);
 | index | 下标       |
 | data  | 新元素     |
 
-> - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型，此函数会释放该包装类型。
-> - 对于T（泛型）cino-array，调用者需要在调用此函数前自行释放被覆盖位置的空间。
+> - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型。
 
 ---
 
@@ -170,7 +185,7 @@ array_t *array_append(array_t *array, T data);
 
 - 返回值：修改后的cino-array。
 
-> - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型，此函数会释放该包装类型。
+> - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型。
 
 ---
 
@@ -193,7 +208,7 @@ array_t *array_insert(array_t *array, int index, T data);
 
 - 返回值：修改后的cino-array。
 
-> - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型，此函数会释放该包装类型。
+> - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型。
 
 ---
 
@@ -215,7 +230,7 @@ T array_remove(array_t *array, int index);
 
 - 返回值：被删除的元素。
 
-> 对于基本数据类型，此函数会返回该数据类型的包装类型，调用者需要自行拆箱获取元素值。
+> 对于基本数据类型，此函数会返回该数据类型的包装类型，调用者需要拆箱/释放。
 
 ---
 
@@ -236,7 +251,7 @@ T array_min(const array_t *array);
 
 - 返回值：cino-array最小值。
 
-> 对于基本数据类型cino-array，此函数会返回最小值的包装类型，调用者需要自行拆箱。
+> 对于基本数据类型cino-array，此函数会返回最小值的包装类型，调用者应该使用`->data`访问基本元素，而不是拆箱。
 
 ---
 
@@ -257,7 +272,7 @@ T array_max(const array_t *array);
 
 - 返回值：cino-array最大值。
 
-> 对于基本数据类型cino-array，此函数会返回最大值的包装类型，调用者需要自行拆箱。
+> 对于基本数据类型cino-array，此函数会返回最大值的包装类型，调用者应该使用`->data`访问基本元素，而不是拆箱。
 
 ---
 
@@ -378,117 +393,3 @@ array_t *array_sort(array_t *array, bool reverse);
 | reverse | 是否逆序                                                     |
 
 - 返回值：修改后的cino-array。
-
----
-
-#### array_iter_begin()
-
-- 函数原型：
-
-```c
-iter_t array_iter_begin(array_t *array)
-```
-
-- 功能：获取cino-array的首元素迭代器。
-- 参数：
-
-| 参数  | 说明       |
-| ----- | ---------- |
-| array | cino-array |
-
-- 返回值：首元素迭代器。
-
----
-
-#### array_iter_end()
-
-- 函数原型：
-
-```c
-iter_t array_iter_end(array_t *array)
-```
-
-- 功能：获取cino-array的尾元素迭代器。
-- 参数：
-
-| 参数  | 说明       |
-| ----- | ---------- |
-| array | cino-array |
-
-- 返回值：尾元素迭代器。
-
----
-
-#### array_iter_has_prev()
-
-- 函数原型：
-
-```c
-bool array_iter_has_prev(const array_t *array)
-```
-
-- 功能：判断是否存在上一个迭代器。
-- 参数：
-
-| 参数  | 说明       |
-| ----- | ---------- |
-| array | cino-array |
-
-- 返回值：如果存在上一个迭代器返回`true`，不存在返回`false`。
-
----
-
-#### array_iter_has_next()
-
-- 函数原型：
-
-```c
-bool array_iter_has_next(const array_t *array)
-```
-
-- 功能：判断是否存在下一个迭代器。
-- 参数：
-
-| 参数  | 说明       |
-| ----- | ---------- |
-| array | cino-array |
-
-- 返回值：如果存在下一个迭代器返回`true`，不存在返回`false`。
-
----
-
-#### array_iter_prev()
-
-- 函数原型：
-
-```c
-iter_t array_iter_prev(array_t *array)
-```
-
-- 功能：获取上一个迭代器。
-- 参数：
-
-| 参数  | 说明       |
-| ----- | ---------- |
-| array | cino-array |
-
-- 返回值：上一个迭代器。
-
----
-
-#### array_iter_next()
-
-- 函数原型：
-
-```c
-iter_t array_iter_next(array_t *array)
-```
-
-- 功能：获取下一个迭代器。
-- 参数：
-
-| 参数  | 说明       |
-| ----- | ---------- |
-| array | cino-array |
-
-- 返回值：下一个迭代器。

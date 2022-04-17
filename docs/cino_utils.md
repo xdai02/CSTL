@@ -97,12 +97,6 @@ call_and_return_value_if_fail(expr, func, ret)
 
 ---
 
-##### iter_t
-
-- 功能：迭代器，等价于void *。
-
----
-
 ##### T
 
 - 功能：泛型，等价于void *。
@@ -191,12 +185,12 @@ swap(x, y, type)
 
 ---
 
-##### equal_double()
+##### double_equal()
 
 - 函数原型：
 
 ```c
-bool equal_double(double x, double y);
+bool double_equal(double x, double y);
 ```
 
 - 功能：判断两个浮点数是否相等。
@@ -213,12 +207,12 @@ bool equal_double(double x, double y);
 
 #### 数组操作
 
-##### array_len()
+##### arr_len()
 
 - 函数原型：
 
 ```c
-array_len(arr)
+arr_len(arr)
 ```
 
 - 功能：获取C数组元素个数。
@@ -229,6 +223,24 @@ array_len(arr)
 | arr  | C数组 |
 
 - 返回值：C数组元素个数。
+
+---
+
+##### arr_reverse()
+
+- 函数原型：
+
+```c
+arr_reverse(arr, type)
+```
+
+- 功能：反转C数组。
+- 参数：
+
+| 参数 | 说明     |
+| ---- | -------- |
+| arr  | C数组    |
+| type | 数据类型 |
 
 <div style="page-break-after: always;"></div>
 
@@ -1269,3 +1281,21 @@ void (*visit_t)(void *data);
 | 参数 | 说明           |
 | ---- | -------------- |
 | data | 遍历的数据指针 |
+
+---
+
+##### destroy_t
+
+- 函数原型：
+
+```c
+void (*destroy_t)(void *data);
+```
+
+- 功能：销毁数据结构元素的函数接口。
+- 参数：
+
+| 参数 | 说明           |
+| ---- | -------------- |
+| data | 待销毁元素指针 |
+

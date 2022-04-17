@@ -17,6 +17,7 @@ void test_cino_utils() {
     test_call_and_return_value_if_fail();
 
     test_arr_len();
+    test_arr_reverse();
 
     test_str_to_bool();
     test_bool_to_str();

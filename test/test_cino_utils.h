@@ -16,6 +16,7 @@ void test_swap();
 void test_double_equal();
 
 void test_arr_len();
+void test_arr_reverse();
 
 void test_str_to_bool();
 void test_bool_to_str();

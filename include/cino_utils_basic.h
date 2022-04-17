@@ -116,6 +116,9 @@ bool double_equal(double x, double y);
  */
 #define arr_len(arr) ((int)(sizeof(arr) / sizeof((arr)[0])))
 
+/**
+ * @brief   Reverses the C array.
+ */
 #define arr_reverse(arr, type)          \
     do {                                \
         int i = 0;                      \
@@ -123,7 +126,7 @@ bool double_equal(double x, double y);
         while (i < j) {                 \
             swap(arr[i], arr[j], type); \
             i++;                        \
-            j++;                        \
+            j--;                        \
         }                               \
     } while (0)
 

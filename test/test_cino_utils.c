@@ -143,11 +143,27 @@ void test_arr_len() {
     double arr3[] = {3.14, 2.7};
     assert(arr_len(arr3) == 2);
 
-    char arr4[3] = {'A', 'B', '\0'};
-    assert(arr_len(arr4) == 3);
+    const char *arr4[] = {"hello", "world", "C/C++", "Java", "Python", "JavaScript"};
+    assert(arr_len(arr4) == 6);
+}
 
-    const char *arr5[] = {"hello", "world", "C/C++", "Java", "Python", "JavaScript"};
-    assert(arr_len(arr5) == 6);
+void test_arr_reverse() {
+    int arr1[5] = {1, 2, 3, 4, 5};
+    arr_reverse(arr1, int);
+    for (int i = 0; i < 5; i++) {
+        assert(arr1[i] == 5 - i);
+    }
+
+    double arr2[] = {3.14, 2.7};
+    arr_reverse(arr2, double);
+    assert(double_equal(arr2[0], 2.7));
+    assert(double_equal(arr2[1], 3.14));
+
+    char *arr3[6] = {"hello", "world", "C/C++", "Java", "Python", "JavaScript"};
+    arr_reverse(arr3, char *);
+    assert(str_equal(arr3[0], "JavaScript"));
+    assert(str_equal(arr3[2], "Java"));
+    assert(str_equal(arr3[5], "hello"));
 }
 
 void test_str_to_bool() {
