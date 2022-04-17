@@ -68,8 +68,6 @@
 
 typedef char byte_t;  // byte_t == char
 
-#define iter_t void*  // iter_t == void *
-
 #define T void*  // T == void *
 
 /****************************************
@@ -107,7 +105,7 @@ typedef char byte_t;  // byte_t == char
  * @param y value 2
  * @return  Returns true if two double values are equal, otherwise return false.
  */
-bool equal_double(double x, double y);
+bool double_equal(double x, double y);
 
 /****************************************
  *          Array Operation
@@ -116,7 +114,18 @@ bool equal_double(double x, double y);
 /**
  * @brief   Returns the number of elements in C array.
  */
-#define array_len(arr) ((int)(sizeof(arr) / sizeof((arr)[0])))
+#define arr_len(arr) ((int)(sizeof(arr) / sizeof((arr)[0])))
+
+#define arr_reverse(arr, type)          \
+    do {                                \
+        int i = 0;                      \
+        int j = arr_len(arr) - 1;       \
+        while (i < j) {                 \
+            swap(arr[i], arr[j], type); \
+            i++;                        \
+            j++;                        \
+        }                               \
+    } while (0)
 
 /****************************************
  *            Type Conversion

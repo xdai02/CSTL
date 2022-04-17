@@ -17,17 +17,15 @@
 typedef struct array_t array_t;
 
 /**
- * @brief   Create cino-array.
- * @param data_type data type of each element
+ * @brief   Determine if the data type is supported by cino-array.
+ * @param data_type data type
  *                  valid data type includes:
  *                      - int
  *                      - double
  *                      - T (generic)
- * @param compare   User-defined callback function for comparison, only for T (generic)
- *                  cino-array. Set to `NULL` if it is a primitive cino-array.
- * @return  Returns the pointer to cino-array, or `NULL` if creation failed.
+ * @return  Returns the `true` if it is valid, otherwise returns `false`.
  */
-array_t *array_create(const str_t data_type, compare_t compare);
+array_t *array_create(const str_t data_type, compare_t compare, destroy_t destroy);
 
 /**
  * @brief   Destroy cino-array.
@@ -60,12 +58,15 @@ size_t array_size(const array_t *array);
  */
 array_t *array_clear(array_t *array);
 
+void array_foreach(array_t *array, visit_t visit, bool backwards);
+
 /**
  * @brief   Get the element of the indexed component in the cino-array.
  * @param array cino-array
  * @param index index
- * @return  For primitive cino-array, this function returns a wrapper type of the
- *          primitive. It is caller's responsibility to unwrap to get the primitive.
+ * @return  For primitive elements, this function returns a wrapper type of the
+ *          primitive. Caller should use `->data` to get the primitive value, instead
+ *          of unwrapping it.
  */
 T array_get(const array_t *array, int index);
 
@@ -190,47 +191,5 @@ array_t *array_swap(array_t *array, int index1, int index2);
  * @return  Returns the modified cino-array.
  */
 array_t *array_sort(array_t *array, bool reverse);
-
-/**
- * @brief   Get the begin iterator.
- * @param array cino-array
- * @return  Returns the begin iterator.
- */
-iter_t array_iter_begin(array_t *array);
-
-/**
- * @brief   Get the end iterator.
- * @param array cino-array
- * @return  Returns the end iterator.
- */
-iter_t array_iter_end(array_t *array);
-
-/**
- * @brief   Determine if the cino-array has previous iterator.
- * @param array cino-array
- * @return  Returns `true` if previous iterator exists, otherwise returns `false`.
- */
-bool array_iter_has_prev(const array_t *array);
-
-/**
- * @brief   Determine if the cino-array has next iterator.
- * @param array cino-array
- * @return  Returns `true` if next iterator exists, otherwise returns `false`.
- */
-bool array_iter_has_next(const array_t *array);
-
-/**
- * @brief   Get the previous iterator.
- * @param array cino-array
- * @return  Returns the previous iterator.
- */
-iter_t array_iter_prev(array_t *array);
-
-/**
- * @brief   Get the next iterator.
- * @param array cino-array
- * @return  Returns the next iterator.
- */
-iter_t array_iter_next(array_t *array);
 
 #endif

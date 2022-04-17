@@ -37,4 +37,10 @@ typedef bool (*match_t)(const void *data);
  */
 typedef void (*visit_t)(void *data);
 
+/**
+ * @brief   User-defined function for destroying a single element.
+ * @param data  pointer to the data destroying
+ */
+typedef void (*destroy_t)(void *data);
+
 #endif

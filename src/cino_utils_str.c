@@ -133,7 +133,6 @@ size_t str_length(const str_t str) {
  */
 str_t str_copy(str_t destination, const str_t source) {
     return_value_if_fail(destination != NULL && source != NULL, destination);
-
     strncpy(destination, source, strlen(source));
     destination[strlen(source)] = '\0';
     return destination;
@@ -148,7 +147,6 @@ str_t str_copy(str_t destination, const str_t source) {
  */
 str_t str_concat(str_t destination, const str_t source) {
     return_value_if_fail(destination != NULL && source != NULL, destination);
-
     size_t dest_len = strlen(destination);
     size_t src_len = strlen(source);
     strncat(destination, source, src_len);

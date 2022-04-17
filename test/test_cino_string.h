@@ -1,9 +1,8 @@
 #ifndef _TEST_CINO_STRING_H_
 #define _TEST_CINO_STRING_H_
 
-#include <assert.h>
-#include "cino_utils.h"
 #include "cino_string.h"
+#include <assert.h>
 
 void test_string_create();
 void test_string_destroy();

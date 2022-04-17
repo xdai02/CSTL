@@ -35,7 +35,7 @@ static bool is_valid_data_type(const str_t data_type) {
         "T",  // generic
     };
 
-    int data_types_len = array_len(data_types);
+    int data_types_len = arr_len(data_types);
     for (int i = 0; i < data_types_len; i++) {
         if (str_equal(data_types[i], data_type)) {
             return true;
@@ -335,7 +335,7 @@ bool tree_contains(tree_t *tree, T data) {
         node_t *cur = tree->root;
         while (cur) {
             double cur_data = *(double *)cur->data;
-            if (equal_double(wrapper_double->data, cur_data)) {
+            if (double_equal(wrapper_double->data, cur_data)) {
                 found = true;
                 break;
             } else if (wrapper_double->data < cur_data) {
@@ -388,7 +388,7 @@ static node_t *tree_node_get(tree_t *tree, T data) {
         } else if (str_equal(tree->data_type, "double")) {
             wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
             double cur_data = *(double *)cur->data;
-            if (equal_double(wrapper_double->data, cur_data)) {
+            if (double_equal(wrapper_double->data, cur_data)) {
                 return cur;
             } else if (wrapper_double->data < cur_data) {
                 cur = cur->left;

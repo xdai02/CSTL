@@ -10,7 +10,7 @@
  * @param y value 2
  * @return  Returns true if two double values are equal, otherwise return false.
  */
-bool equal_double(double x, double y) {
+bool double_equal(double x, double y) {
     return fabs(x - y) < 1e-6;
 }
 

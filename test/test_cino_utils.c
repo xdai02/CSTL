@@ -1,87 +1,4 @@
 #include "test_cino_utils.h"
-#include "cino_utils.h"
-
-void test_min() {
-    assert(min(5, 2) == 2);
-    assert(min(2, 2) == 2);
-    assert(min(-5, -2) == -5);
-    assert(min(0, 2) == 0);
-    assert(equal_double(min(3.1415, 3.1416), 3.1415));
-    assert(min('a', 'b') == 'a');
-    assert(min('X', 'H') == 'H');
-    assert(min('A', 'a') == 'A');
-    assert(min('z', 'Z') == 'Z');
-}
-
-void test_max() {
-    assert(max(5, 2) == 5);
-    assert(max(2, 2) == 2);
-    assert(max(-5, -2) == -2);
-    assert(max(0, 2) == 2);
-    assert(equal_double(max(3.1415, 3.1416), 3.1416));
-    assert(max('a', 'b') == 'b');
-    assert(max('X', 'H') == 'X');
-    assert(max('A', 'a') == 'a');
-    assert(max('z', 'Z') == 'z');
-}
-
-void test_negate() {
-    assert(negate(5) == -5);
-    assert(negate(0) == 0);
-    assert(negate(+0) == 0);
-    assert(negate(-0) == 0);
-    assert(negate(-5) == 5);
-    assert(equal_double(negate(3.14), -3.14));
-    assert(equal_double(negate(-3.14), 3.14));
-    assert(equal_double(negate(0.0), 0.0));
-}
-
-void test_swap() {
-    int num1 = 1;
-    int num2 = 2;
-    swap(num1, num2, int);
-    assert(num1 == 2);
-    assert(num2 == 1);
-
-    double num3 = 3.14;
-    double num4 = 2.71;
-    swap(num3, num4, double);
-    assert(equal_double(num3, 2.71));
-    assert(equal_double(num4, 3.14));
-
-    int num5 = 123;
-    int num6 = 789;
-    int *p1 = &num5;
-    int *p2 = &num6;
-    swap(*p1, *p2, int);
-    assert(num5 == 789);
-    assert(num6 == 123);
-    assert(*p1 == 789);
-    assert(*p2 == 123);
-
-    int num7 = 321;
-    int num8 = 987;
-    int *p3 = &num7;
-    int *p4 = &num8;
-    swap(p3, p4, int *);
-    assert(num7 == 321);
-    assert(num8 == 987);
-    assert(*p3 == 987);
-    assert(*p4 == 321);
-    assert(p3 == &num8);
-    assert(p4 == &num7);
-}
-
-void test_equal_double() {
-    assert(equal_double(0, 0));
-    assert(!equal_double(5, 4.9));
-    assert(!equal_double(0.001, 0));
-    assert(equal_double(3.141592, 3.141592));
-    assert(equal_double(-3.141592, -3.141592));
-    assert(equal_double(0, -0));
-    assert(!equal_double(5.00001, 4.99999));
-    assert(equal_double(12345.6789, 12345.67890));
-}
 
 void test_return_if_fail() {
     int cnt = 0;
@@ -134,21 +51,103 @@ void test_call_and_return_value_if_fail() {
     assert(cnt == -1);
 }
 
-void test_array_len() {
+void test_min() {
+    assert(min(5, 2) == 2);
+    assert(min(2, 2) == 2);
+    assert(min(-5, -2) == -5);
+    assert(min(0, 2) == 0);
+    assert(double_equal(min(3.1415, 3.1416), 3.1415));
+    assert(min('a', 'b') == 'a');
+    assert(min('X', 'H') == 'H');
+    assert(min('A', 'a') == 'A');
+    assert(min('z', 'Z') == 'Z');
+}
+
+void test_max() {
+    assert(max(5, 2) == 5);
+    assert(max(2, 2) == 2);
+    assert(max(-5, -2) == -2);
+    assert(max(0, 2) == 2);
+    assert(double_equal(max(3.1415, 3.1416), 3.1416));
+    assert(max('a', 'b') == 'b');
+    assert(max('X', 'H') == 'X');
+    assert(max('A', 'a') == 'a');
+    assert(max('z', 'Z') == 'z');
+}
+
+void test_negate() {
+    assert(negate(5) == -5);
+    assert(negate(0) == 0);
+    assert(negate(+0) == 0);
+    assert(negate(-0) == 0);
+    assert(negate(-5) == 5);
+    assert(double_equal(negate(3.14), -3.14));
+    assert(double_equal(negate(-3.14), 3.14));
+    assert(double_equal(negate(0.0), 0.0));
+}
+
+void test_swap() {
+    int num1 = 1;
+    int num2 = 2;
+    swap(num1, num2, int);
+    assert(num1 == 2);
+    assert(num2 == 1);
+
+    double num3 = 3.14;
+    double num4 = 2.71;
+    swap(num3, num4, double);
+    assert(double_equal(num3, 2.71));
+    assert(double_equal(num4, 3.14));
+
+    int num5 = 123;
+    int num6 = 789;
+    int *p1 = &num5;
+    int *p2 = &num6;
+    swap(*p1, *p2, int);
+    assert(num5 == 789);
+    assert(num6 == 123);
+    assert(*p1 == 789);
+    assert(*p2 == 123);
+
+    int num7 = 321;
+    int num8 = 987;
+    int *p3 = &num7;
+    int *p4 = &num8;
+    swap(p3, p4, int *);
+    assert(num7 == 321);
+    assert(num8 == 987);
+    assert(*p3 == 987);
+    assert(*p4 == 321);
+    assert(p3 == &num8);
+    assert(p4 == &num7);
+}
+
+void test_double_equal() {
+    assert(double_equal(0, 0));
+    assert(!double_equal(5, 4.9));
+    assert(!double_equal(0.001, 0));
+    assert(double_equal(3.141592, 3.141592));
+    assert(double_equal(-3.141592, -3.141592));
+    assert(double_equal(0, -0));
+    assert(!double_equal(5.00001, 4.99999));
+    assert(double_equal(12345.6789, 12345.67890));
+}
+
+void test_arr_len() {
     int arr1[5] = {1, 2, 3, 4, 5};
-    assert(array_len(arr1) == 5);
+    assert(arr_len(arr1) == 5);
 
     float arr2[] = {6.1f, 7.2f, 8.3f, 9.4f};
-    assert(array_len(arr2) == 4);
+    assert(arr_len(arr2) == 4);
 
     double arr3[] = {3.14, 2.7};
-    assert(array_len(arr3) == 2);
+    assert(arr_len(arr3) == 2);
 
     char arr4[3] = {'A', 'B', '\0'};
-    assert(array_len(arr4) == 3);
+    assert(arr_len(arr4) == 3);
 
     const char *arr5[] = {"hello", "world", "C/C++", "Java", "Python", "JavaScript"};
-    assert(array_len(arr5) == 6);
+    assert(arr_len(arr5) == 6);
 }
 
 void test_str_to_bool() {
@@ -265,18 +264,18 @@ void test_int_to_str() {
 }
 
 void test_str_to_double() {
-    assert(equal_double(str_to_double("123"), 123.0));
-    assert(equal_double(str_to_double("-123"), -123.0));
-    assert(equal_double(str_to_double("0"), 0.0));
-    assert(equal_double(str_to_double("+0"), 0.0));
-    assert(equal_double(str_to_double("-0"), 0.0));
-    assert(equal_double(str_to_double("-3.14"), -3.14));
-    assert(equal_double(str_to_double("2147483647"), 2147483647.0));
-    assert(equal_double(str_to_double("-2147483648"), -2147483648.0));
-    assert(equal_double(str_to_double("0.00"), 0.0));
-    assert(equal_double(str_to_double("3.1415926"), 3.1415926));
-    assert(equal_double(str_to_double("1e2"), 100.0));
-    assert(equal_double(str_to_double("-2.3e4"), -23000.0));
+    assert(double_equal(str_to_double("123"), 123.0));
+    assert(double_equal(str_to_double("-123"), -123.0));
+    assert(double_equal(str_to_double("0"), 0.0));
+    assert(double_equal(str_to_double("+0"), 0.0));
+    assert(double_equal(str_to_double("-0"), 0.0));
+    assert(double_equal(str_to_double("-3.14"), -3.14));
+    assert(double_equal(str_to_double("2147483647"), 2147483647.0));
+    assert(double_equal(str_to_double("-2147483648"), -2147483648.0));
+    assert(double_equal(str_to_double("0.00"), 0.0));
+    assert(double_equal(str_to_double("3.1415926"), 3.1415926));
+    assert(double_equal(str_to_double("1e2"), 100.0));
+    assert(double_equal(str_to_double("-2.3e4"), -23000.0));
 }
 
 void test_double_to_str() {
@@ -325,14 +324,14 @@ void test_unwrap_int() {
 
 void test_wrap_double() {
     wrapper_double_t *wrapper = wrap_double(3.14);
-    assert(equal_double(wrapper->data, 3.14));
-    assert(equal_double(unwrap_double(wrapper), 3.14));
+    assert(double_equal(wrapper->data, 3.14));
+    assert(double_equal(unwrap_double(wrapper), 3.14));
 }
 
 void test_unwrap_double() {
     wrapper_double_t *wrapper = wrap_double(3.14);
-    assert(equal_double(wrapper->data, 3.14));
-    assert(equal_double(unwrap_double(wrapper), 3.14));
+    assert(double_equal(wrapper->data, 3.14));
+    assert(double_equal(unwrap_double(wrapper), 3.14));
 }
 
 void test_str_equal() {

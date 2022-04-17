@@ -150,9 +150,7 @@ string_t *string_to_upper(string_t *string) {
  *          returns false.
  */
 bool string_starts_with(const string_t *string, const str_t prefix) {
-    if (!string) {
-        return false;
-    }
+    return_value_if_fail(string != NULL, false);
     return str_starts_with(string->string, prefix);
 }
 
@@ -164,9 +162,7 @@ bool string_starts_with(const string_t *string, const str_t prefix) {
  *          returns false.
  */
 bool string_ends_with(const string_t *string, const str_t postfix) {
-    if (!string) {
-        return false;
-    }
+    return_value_if_fail(string != NULL, false);
     return str_ends_with(string->string, postfix);
 }
 
