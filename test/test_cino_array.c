@@ -97,21 +97,45 @@ void test_array_is_empty() {
 
 void test_array_size() {
     array_t *arr = array_create("int", NULL, NULL);
-    assert(arr);
+    assert(array_is_empty(arr));
+    assert(array_size(arr) == 0);
+    for (int i = 0; i < 5; i++) {
+        array_append(arr, wrap_int(i));
+    }
+    assert(!array_is_empty(arr));
+    assert(array_size(arr) == 5);
+    array_clear(arr);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
     array_destroy(arr);
 
     arr = array_create("double", NULL, NULL);
-    assert(arr);
+    assert(array_is_empty(arr));
+    assert(array_size(arr) == 0);
+    for (int i = 0; i < 5; i++) {
+        array_append(arr, wrap_double(i));
+    }
+    assert(!array_is_empty(arr));
+    assert(array_size(arr) == 5);
+    array_clear(arr);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
     array_destroy(arr);
 
     arr = array_create("T", NULL, NULL);
-    assert(arr);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
+    test_t *test = (test_t *)calloc(5, sizeof(test_t));
+    for (int i = 0; i < 5; i++) {
+        array_append(arr, &test[i]);
+    }
+    assert(!array_is_empty(arr));
+    assert(array_size(arr) == 5);
+    array_clear(arr);
+    assert(array_is_empty(arr));
+    assert(array_size(arr) == 0);
+    free(test);
+    test = NULL;
     array_destroy(arr);
 }
 

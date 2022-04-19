@@ -121,28 +121,23 @@ void test_cino_array() {
 }
 
 void test_cino_list() {
-    // test_list_create();
-    // test_list_destroy();
-    // test_list_is_empty();
-    // test_list_size();
-    // test_list_clear();
-    // test_list_get_front();
-    // test_list_get_back();
-    // test_list_get();
-    // test_list_set();
-    // test_list_index_of();
-    // test_list_push_front();
-    // test_list_push_back();
-    // test_list_pop_front();
-    // test_list_pop_back();
-    // test_list_insert();
-    // test_list_remove();
-    // test_list_iter_begin();
-    // test_list_iter_end();
-    // test_list_iter_has_prev();
-    // test_list_iter_has_next();
-    // test_list_iter_prev();
-    // test_list_iter_next();
+    test_list_create();
+    test_list_destroy();
+    test_list_is_empty();
+    test_list_size();
+    test_list_clear();
+    test_list_foreach();
+    test_list_get_front();
+    test_list_get_back();
+    test_list_get();
+    test_list_set();
+    test_list_index_of();
+    test_list_push_front();
+    test_list_push_back();
+    test_list_pop_front();
+    test_list_pop_back();
+    test_list_insert();
+    test_list_remove();
 
     LOGGER(INFO, "[PASS] test_cino_list");
 }
