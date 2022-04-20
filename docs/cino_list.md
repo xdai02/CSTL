@@ -15,15 +15,16 @@
 - 函数原型：
 
 ```c
-list_t *list_create(const str_t data_type);
+list_t *list_create(const str_t data_type, destroy_t destroy);
 ```
 
 - 功能：创建cino-list。
 - 参数：
 
-| 参数      | 说明                                                  |
-| --------- | ----------------------------------------------------- |
-| data_type | cino-list的元素类型，支持"int"、“double”、“T”（泛型） |
+| 参数      | 说明                                                         |
+| --------- | ------------------------------------------------------------ |
+| data_type | cino-list的元素类型，支持"int"、“double”、“T”（泛型）        |
+| destroy   | 用于销毁的回调函数，仅针对T（泛型）cino-list，基本数据类型cino-list设置为`NULL`即可 |
 
 - 返回值：返回cino-list指针，创建失败返回`NULL`。
 
@@ -43,8 +44,6 @@ void list_destroy(list_t *list);
 | 参数 | 说明      |
 | ---- | --------- |
 | list | cino-list |
-
-> 对于T（泛型）cino-list，调用者需要在调用此函数之前自行释放所插入的元素。
 
 ---
 
@@ -103,7 +102,26 @@ list_t *list_clear(list_t *list);
 
 - 返回值：修改后的cino-list。
 
-> 对于T（泛型）cino-list，调用者需要在调用此函数之前自行释放所插入的元素。
+---
+
+#### list_foreach()
+
+- 函数原型：
+
+```c
+void list_foreach(list_t *list, visit_t visit, bool backward);
+```
+
+- 功能：遍历cino-list。
+- 参数：
+
+| 参数      | 说明                       |
+| --------- | -------------------------- |
+| list      | cino-list                  |
+| visit     | 用于访问单个元素的回调函数 |
+| backwards | 反向遍历                   |
+
+- 返回值：修改后的cino-list。
 
 ---
 
@@ -124,7 +142,7 @@ T list_get_front(const list_t *list);
 
 - 返回值：返回cino-list头部元素。
 
-> 对于基本数据类型cino-list，此函数会返回该数据类型的包装类型，调用者需要自行拆箱获取元素值。
+> 对于基本数据类型cino-list，此函数会返回该数据类型的包装类型，调用者应该使用`->data`访问基本元素，而不是拆箱。
 
 ---
 
@@ -145,7 +163,7 @@ T list_get_back(const list_t *list);
 
 - 返回值：返回cino-list尾部元素。
 
-> 对于基本数据类型cino-list，此函数会返回该数据类型的包装类型，调用者需要自行拆箱获取元素值。
+> 对于基本数据类型cino-list，此函数会返回该数据类型的包装类型，调用者应该使用`->data`访问基本元素，而不是拆箱。
 
 ---
 
@@ -167,7 +185,7 @@ T list_get(const list_t *list, int index);
 
 - 返回值：返回cino-list指定下标元素。
 
-> 对于基本数据类型cino-list，此函数会返回该数据类型的包装类型，调用者需要自行拆箱获取元素值。
+> 对于基本数据类型cino-list，此函数会返回该数据类型的包装类型，调用者应该使用`->data`访问基本元素，而不是拆箱。
 
 ---
 
@@ -188,8 +206,7 @@ void list_set(list_t *list, int index, T data);
 | index | 下标      |
 | data  | 新元素    |
 
-> - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型，此函数会释放该包装类型。
-> - 对于T（泛型）cino-list，调用者需要在调用此函数前自行释放被覆盖位置的空间。
+> - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型。
 
 ---
 
@@ -207,7 +224,7 @@ int list_index_of(const list_t *list, void *context);
 | 参数    | 说明                                                         |
 | ------- | ------------------------------------------------------------ |
 | list    | cino-list                                                    |
-| context | 对于基本数据类型cino-list，传入待查询元素的包装类型，会释放该包装类型<br />对于T（泛型）cino-list，传入match_t类型的回调函数，用于匹配元素 |
+| context | 对于基本数据类型cino-list，传入待查询元素的包装类型，此函数会释放该包装类型<br />对于T（泛型）cino-list，传入match_t类型的回调函数，用于匹配元素 |
 
 - 返回值：cino-list指定元素首次出现下标，返回`-1`表示未找到。
 
@@ -231,7 +248,7 @@ list_t *list_push_front(list_t *list, T data);
 
 - 返回值：修改后的cino-list。
 
-> - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型，此函数会释放该包装类型。
+> - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型。
 
 ---
 
@@ -253,7 +270,7 @@ list_t *list_push_back(list_t *list, T data);
 
 - 返回值：修改后的cino-list。
 
-> - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型，此函数会释放该包装类型。
+> - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型。
 
 ---
 
@@ -274,7 +291,7 @@ T list_pop_front(list_t *list);
 
 - 返回值：返回被删除的元素。
 
-> - 对于基本数据类型，此函数会返回该数据类型的包装类型，调用者需要自行拆箱获取元素值。
+> - 对于基本数据类型，此函数会返回该数据类型的包装类型，调用者需要拆箱/释放。
 
 ---
 
@@ -295,7 +312,7 @@ T list_pop_back(list_t *list);
 
 - 返回值：修改后的cino-list。
 
-> - 对于基本数据类型，此函数会返回该数据类型的包装类型，调用者需要自行拆箱获取元素值。
+> - 对于基本数据类型，此函数会返回该数据类型的包装类型，调用者需要拆箱/释放。
 
 ---
 
@@ -318,7 +335,7 @@ list_t *list_insert(list_t *list, int index, T data);
 
 - 返回值：修改后的cino-list。
 
-> - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型，此函数会释放该包装类型。
+> - 对于基本数据类型，调用者需要传入该基本数据类型的包装类型。
 
 ---
 
@@ -340,119 +357,4 @@ T list_remove(list_t *list, int index);
 
 - 返回值：被删除的元素。
 
-> - 对于基本数据类型，此函数会返回该数据类型的包装类型，调用者需要自行拆箱获取元素值。
-
----
-
-#### list_iter_begin()
-
-- 函数原型：
-
-```c
-iter_t list_iter_begin(list_t *list)
-```
-
-- 功能：获取cino-list的首元素迭代器。
-- 参数：
-
-| 参数 | 说明      |
-| ---- | --------- |
-| list | cino-list |
-
-- 返回值：首元素迭代器。
-
----
-
-#### list_iter_end()
-
-- 函数原型：
-
-```c
-iter_t list_iter_end(list_t *list)
-```
-
-- 功能：获取cino-list的尾元素迭代器。
-- 参数：
-
-| 参数 | 说明      |
-| ---- | --------- |
-| list | cino-list |
-
-- 返回值：尾元素迭代器。
-
----
-
-#### list_iter_has_prev()
-
-- 函数原型：
-
-```c
-bool list_iter_has_prev(const list_t *list)
-```
-
-- 功能：判断是否存在上一个迭代器。
-- 参数：
-
-| 参数 | 说明      |
-| ---- | --------- |
-| list | cino-list |
-
-- 返回值：如果存在上一个迭代器返回`true`，不存在返回`false`。
-
----
-
-#### list_iter_has_next()
-
-- 函数原型：
-
-```c
-bool list_iter_has_next(const list_t *list)
-```
-
-- 功能：判断是否存在下一个迭代器。
-- 参数：
-
-| 参数 | 说明      |
-| ---- | --------- |
-| list | cino-list |
-
-- 返回值：如果存在下一个迭代器返回`true`，不存在返回`false`。
-
----
-
-#### list_iter_prev()
-
-- 函数原型：
-
-```c
-iter_t list_iter_prev(list_t *list)
-```
-
-- 功能：获取上一个迭代器。
-- 参数：
-
-| 参数 | 说明      |
-| ---- | --------- |
-| list | cino-list |
-
-- 返回值：上一个迭代器。
-
----
-
-#### list_iter_next()
-
-- 函数原型：
-
-```c
-iter_t list_iter_next(list_t *list)
-```
-
-- 功能：获取下一个迭代器。
-- 参数：
-
-| 参数 | 说明      |
-| ---- | --------- |
-| list | cino-list |
-
-- 返回值：下一个迭代器。
-
+> - 对于基本数据类型，此函数会返回该数据类型的包装类型，调用者需要拆箱/释放。

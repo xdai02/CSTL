@@ -5,5 +5,4 @@
 - [ ] cino-set
 - [ ] cino-tree
 - [ ] cino-list / cino-array增加char类型
-- [ ] destroy_t / match_t / compare_t在创建时确定
-- [ ] cino-list更新文档
+- [ ] destroy_t / compare_t在创建时确定
