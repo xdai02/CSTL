@@ -59,3 +59,31 @@ double unwrap_double(wrapper_double_t *wrapper) {
     wrapper = NULL;
     return data;
 }
+
+/**
+ * @brief   Get the wrapper type for char
+ * @param data  char value
+ * @return  Returns the wrapper type for char, or `NULL` if fails.
+ */
+wrapper_char_t *wrap_char(char data) {
+    wrapper_char_t *wrapper = (wrapper_char_t *)calloc(1, sizeof(wrapper_char_t));
+    return_value_if_fail(wrapper != NULL, NULL);
+    wrapper->data = data;
+    return wrapper;
+}
+
+/**
+ * @brief   Unwrap and free wrapper_char_t.
+ * @param wrapper   wrapper_char_t
+ * @return  Returns the primitive char data.
+ */
+char unwrap_char(wrapper_char_t *wrapper) {
+    if (!wrapper) {
+        LOGGER(ERROR, "Null pointer exception.");
+        return STATUS_BAD_PARAMETERS;
+    }
+    char data = wrapper->data;
+    free(wrapper);
+    wrapper = NULL;
+    return data;
+}

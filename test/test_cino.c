@@ -32,6 +32,8 @@ void test_cino_utils() {
     test_unwrap_int();
     test_wrap_double();
     test_unwrap_double();
+    test_wrap_char();
+    test_unwrap_char();
 
     test_str_equal();
     test_str_equal_ignore_case();

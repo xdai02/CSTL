@@ -350,6 +350,18 @@ void test_unwrap_double() {
     assert(double_equal(unwrap_double(wrapper), 3.14));
 }
 
+void test_wrap_char() {
+    wrapper_char_t *wrapper = wrap_char('A');
+    assert(wrapper->data == 'A');
+    assert(unwrap_char(wrapper) == 'A');
+}
+
+void test_unwrap_char() {
+    wrapper_char_t *wrapper = wrap_char('A');
+    assert(wrapper->data == 'A');
+    assert(unwrap_char(wrapper) == 'A');
+}
+
 void test_str_equal() {
     assert(str_equal("hello", "hello"));
     assert(str_equal("Hello", "Hello"));

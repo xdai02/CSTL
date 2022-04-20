@@ -30,6 +30,13 @@ typedef struct wrapper_double_t {
 } wrapper_double_t;
 
 /**
+ * @brief   Wrapper type for char.
+ */
+typedef struct wrapper_char_t {
+    char data;
+} wrapper_char_t;
+
+/**
  * @brief   Get the wrapper type for int
  * @param data  int value
  * @return  Returns the wrapper type for int, or `NULL` if fails.
@@ -56,5 +63,19 @@ wrapper_double_t *wrap_double(double data);
  * @return  Returns the primitive double data.
  */
 double unwrap_double(wrapper_double_t *wrapper);
+
+/**
+ * @brief   Get the wrapper type for char
+ * @param data  char value
+ * @return  Returns the wrapper type for char, or `NULL` if fails.
+ */
+wrapper_char_t *wrap_char(char data);
+
+/**
+ * @brief   Unwrap and free wrapper_char_t.
+ * @param wrapper   wrapper_char_t
+ * @return  Returns the primitive char data.
+ */
+char unwrap_char(wrapper_char_t *wrapper);
 
 #endif

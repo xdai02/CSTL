@@ -22,6 +22,7 @@ typedef struct array_t array_t;
  *                  valid data type includes:
  *                      - int
  *                      - double
+ *                      - char
  *                      - T (generic)
  * @param compare   User-defined callback function for comparison, only for T (generic)
  *                  cino-array. Set to `NULL` if it is a primitive cino-array.

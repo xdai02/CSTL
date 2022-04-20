@@ -569,6 +569,44 @@ double unwrap_double(wrapper_double_t *wrapper);
 
 - 返回值：原始double值。
 
+---
+
+##### wrap_char()
+
+- 函数原型：
+
+```c
+wrapper_char_t *wrap_char(char data);
+```
+
+- 功能：包装char类型。
+- 参数：
+
+| 参数 | 说明   |
+| ---- | ------ |
+| data | char值 |
+
+- 返回值：wrapper_char_t。
+
+---
+
+##### unwrap_char()
+
+- 函数原型：
+
+```c
+char unwrap_char(wrapper_char_t *wrapper);
+```
+
+- 功能：拆箱char类型。
+- 参数：
+
+| 参数    | 说明           |
+| ------- | -------------- |
+| wrapper | wrapper_char_t |
+
+- 返回值：原始char值。
+
 <div style="page-break-after: always;"></div>
 
 ### cino_utils_str

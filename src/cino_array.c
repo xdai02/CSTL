@@ -19,6 +19,7 @@ typedef struct array_t {
  *                  valid data type includes:
  *                      - int
  *                      - double
+ *                      - char
  *                      - T (generic)
  * @return  Returns the `true` if it is valid, otherwise returns `false`.
  */
@@ -28,6 +29,7 @@ static bool is_valid_data_type(const str_t data_type) {
     const str_t data_types[] = {
         "int",
         "double",
+        "char",
         "T",  // generic
     };
 
@@ -71,6 +73,21 @@ static int compare_double(const T data1, const T data2) {
 }
 
 /**
+ * @brief   Specify the rules for comparing two int values.
+ * @param data1 pointer to the first value
+ * @param data2 pointer to the second value
+ * @return  Returns
+ *              - 0 if two values are equal
+ *              - positive if the first value is greater than the second value
+ *              - negative if the first value is less than the second value
+ */
+static int compare_char(const T data1, const T data2) {
+    wrapper_char_t *wrapper1 = (wrapper_char_t *)data1;
+    wrapper_char_t *wrapper2 = (wrapper_char_t *)data2;
+    return wrapper1->data - wrapper2->data;
+}
+
+/**
  * @brief   Specify the default rules for comparing two values.
  * @param data1 pointer to the first value
  * @param data2 pointer to the second value
@@ -102,6 +119,15 @@ static void destroy_double(T data) {
 }
 
 /**
+ * @brief   Specify the rules for destroying a single char element.
+ * @param data  pointer to the element
+ */
+static void destroy_char(T data) {
+    wrapper_char_t *wrapper = (wrapper_char_t *)data;
+    unwrap_char(wrapper);
+}
+
+/**
  * @brief   Specify the rules for destroying a single element.
  * @param data  pointer to the element
  */
@@ -115,6 +141,7 @@ static void destroy_default(T data) {
  *                  valid data type includes:
  *                      - int
  *                      - double
+ *                      - char
  *                      - T (generic)
  * @param compare   User-defined callback function for comparison, only for T (generic)
  *                  cino-array. Set to `NULL` if it is a primitive cino-array.
@@ -137,6 +164,9 @@ array_t *array_create(const str_t data_type, compare_t compare, destroy_t destro
     } else if (str_equal(data_type, "double")) {
         array->compare = compare_double;
         array->destroy = destroy_double;
+    } else if (str_equal(data_type, "char")) {
+        array->compare = compare_char;
+        array->destroy = destroy_char;
     } else {
         array->compare = compare ? compare : compare_default;
         array->destroy = destroy ? destroy : destroy_default;
@@ -354,10 +384,10 @@ T array_remove(array_t *array, int index) {
 /**
  * @brief   Get the minimum value in the cino-array.
  * @param array cino-array
- * @return  Returns the minimum value in the cino-array, or `NULL` if the cino-array 
+ * @return  Returns the minimum value in the cino-array, or `NULL` if the cino-array
  *          is empty.
- *          For primitive cino-array, a wrapper type of that primitive is returned. 
- *          Caller should use `->data` to get the primitive value, instead of unwrapping 
+ *          For primitive cino-array, a wrapper type of that primitive is returned.
+ *          Caller should use `->data` to get the primitive value, instead of unwrapping
  *          it.
  */
 T array_min(const array_t *array) {
@@ -375,10 +405,10 @@ T array_min(const array_t *array) {
 /**
  * @brief   Get the maximum value in the cino-array.
  * @param array cino-array
- * @return  Returns the maximum value in the cino-array, or `NULL` if the cino-array 
+ * @return  Returns the maximum value in the cino-array, or `NULL` if the cino-array
  *          is empty.
- *          For primitive cino-array, a wrapper type of that primitive is returned. 
- *          Caller should use `->data` to get the primitive value, instead of unwrapping 
+ *          For primitive cino-array, a wrapper type of that primitive is returned.
+ *          Caller should use `->data` to get the primitive value, instead of unwrapping
  *          it.
  */
 T array_max(const array_t *array) {
@@ -422,6 +452,15 @@ int array_index_of(const array_t *array, void *context) {
         for (int i = 0; i < array->size; i++) {
             wrapper_double_t *cur = (wrapper_double_t *)array->arr[i];
             if (double_equal(cur->data, data)) {
+                return i;
+            }
+        }
+    } else if (str_equal(array->data_type, "char")) {
+        wrapper_char_t *wrapper = (wrapper_char_t *)context;
+        char data = unwrap_char(wrapper);
+        for (int i = 0; i < array->size; i++) {
+            wrapper_char_t *cur = (wrapper_char_t *)array->arr[i];
+            if (cur->data == data) {
                 return i;
             }
         }
@@ -469,6 +508,15 @@ int array_last_index_of(const array_t *array, void *context) {
                 return i;
             }
         }
+    } else if (str_equal(array->data_type, "char")) {
+        wrapper_char_t *wrapper = (wrapper_char_t *)context;
+        char data = unwrap_char(wrapper);
+        for (int i = array->size - 1; i >= 0; i--) {
+            wrapper_char_t *cur = (wrapper_char_t *)array->arr[i];
+            if (cur->data == data) {
+                return i;
+            }
+        }
     } else if (str_equal(array->data_type, "T")) {
         for (int i = array->size - 1; i >= 0; i--) {
             match_t match = (match_t)context;
@@ -510,6 +558,15 @@ int array_count(const array_t *array, void *context) {
         for (int i = array->size - 1; i >= 0; i--) {
             wrapper_double_t *cur = (wrapper_double_t *)array->arr[i];
             if (double_equal(cur->data, data)) {
+                cnt++;
+            }
+        }
+    } else if (str_equal(array->data_type, "char")) {
+        wrapper_char_t *wrapper = (wrapper_char_t *)context;
+        char data = unwrap_char(wrapper);
+        for (int i = array->size - 1; i >= 0; i--) {
+            wrapper_char_t *cur = (wrapper_char_t *)array->arr[i];
+            if (cur->data == data) {
                 cnt++;
             }
         }

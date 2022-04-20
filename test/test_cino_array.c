@@ -17,6 +17,12 @@ static void visit_double(void *data) {
     assert(wrapper->data >= 0.0 && wrapper->data < 5.0);
 }
 
+static void visit_char(void *data) {
+    wrapper_char_t *wrapper = (wrapper_char_t *)data;
+    assert(wrapper);
+    assert(wrapper->data >= 'A' && wrapper->data < 'A' + 5);
+}
+
 static void visit_test(void *data) {
     test_t *test = (test_t *)data;
     assert(test);
@@ -48,6 +54,12 @@ void test_array_create() {
     assert(array_size(arr) == 0);
     array_destroy(arr);
 
+    arr = array_create("char", NULL, NULL);
+    assert(arr);
+    assert(array_is_empty(arr));
+    assert(array_size(arr) == 0);
+    array_destroy(arr);
+
     arr = array_create("T", NULL, NULL);
     assert(arr);
     assert(array_is_empty(arr));
@@ -68,6 +80,12 @@ void test_array_destroy() {
     assert(array_size(arr) == 0);
     array_destroy(arr);
 
+    arr = array_create("char", NULL, NULL);
+    assert(arr);
+    assert(array_is_empty(arr));
+    assert(array_size(arr) == 0);
+    array_destroy(arr);
+
     arr = array_create("T", NULL, NULL);
     assert(arr);
     assert(array_is_empty(arr));
@@ -83,6 +101,12 @@ void test_array_is_empty() {
     array_destroy(arr);
 
     arr = array_create("double", NULL, NULL);
+    assert(arr);
+    assert(array_is_empty(arr));
+    assert(array_size(arr) == 0);
+    array_destroy(arr);
+
+    arr = array_create("char", NULL, NULL);
     assert(arr);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
@@ -114,6 +138,19 @@ void test_array_size() {
     assert(array_size(arr) == 0);
     for (int i = 0; i < 5; i++) {
         array_append(arr, wrap_double(i));
+    }
+    assert(!array_is_empty(arr));
+    assert(array_size(arr) == 5);
+    array_clear(arr);
+    assert(array_is_empty(arr));
+    assert(array_size(arr) == 0);
+    array_destroy(arr);
+
+    arr = array_create("char", NULL, NULL);
+    assert(array_is_empty(arr));
+    assert(array_size(arr) == 0);
+    for (int i = 'A'; i < 'A' + 5; i++) {
+        array_append(arr, wrap_char(i));
     }
     assert(!array_is_empty(arr));
     assert(array_size(arr) == 5);
@@ -166,6 +203,19 @@ void test_array_clear() {
     assert(array_size(arr) == 0);
     array_destroy(arr);
 
+    arr = array_create("char", NULL, NULL);
+    assert(array_is_empty(arr));
+    assert(array_size(arr) == 0);
+    for (int i = 'A'; i < 'A' + 5; i++) {
+        array_append(arr, wrap_char(i));
+    }
+    assert(!array_is_empty(arr));
+    assert(array_size(arr) == 5);
+    array_clear(arr);
+    assert(array_is_empty(arr));
+    assert(array_size(arr) == 0);
+    array_destroy(arr);
+
     arr = array_create("T", NULL, NULL);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
@@ -196,6 +246,13 @@ void test_array_foreach() {
         array_append(arr, wrap_double(i));
     }
     array_foreach(arr, visit_double, true);
+    array_destroy(arr);
+
+    arr = array_create("char", NULL, NULL);
+    for (int i = 'A'; i < 'A' + 5; i++) {
+        array_append(arr, wrap_char(i));
+    }
+    array_foreach(arr, visit_char, false);
     array_destroy(arr);
 
     arr = array_create("T", NULL, NULL);
@@ -230,6 +287,16 @@ void test_array_get() {
     }
     for (int i = 0; i < 5; i++) {
         wrapper_double_t *wrapper = (wrapper_double_t *)array_get(arr, i);
+        assert(wrapper->data == i);
+    }
+    array_destroy(arr);
+
+    arr = array_create("char", NULL, NULL);
+    for (int i = 'A'; i < 'A' + 5; i++) {
+        array_append(arr, wrap_char(i));
+    }
+    for (int i = 'A'; i < 'A' + 5; i++) {
+        wrapper_char_t *wrapper = (wrapper_char_t *)array_get(arr, i - 'A');
         assert(wrapper->data == i);
     }
     array_destroy(arr);
@@ -289,6 +356,21 @@ void test_array_set() {
     assert(double_equal(wrapper_double->data, 7.7));
     array_destroy(arr);
 
+    arr = array_create("char", NULL, NULL);
+    for (int i = 'A'; i <= 'C'; i++) {
+        array_append(arr, wrap_char(i));
+    }
+    array_set(arr, 0, wrap_char('X'));
+    array_set(arr, 2, wrap_char('Y'));
+
+    wrapper_char_t *wrapper_char = (wrapper_char_t *)array_get(arr, 0);
+    assert(wrapper_char->data == 'X');
+    wrapper_char = (wrapper_char_t *)array_get(arr, 1);
+    assert(wrapper_char->data == 'B');
+    wrapper_char = (wrapper_char_t *)array_get(arr, 2);
+    assert(wrapper_char->data == 'Y');
+    array_destroy(arr);
+
     arr = array_create("T", NULL, NULL);
     test_t *test = (test_t *)calloc(3, sizeof(test_t));
 
@@ -340,6 +422,16 @@ void test_array_append() {
     for (int i = 0; i < 5; i++) {
         wrapper_double_t *wrapper = (wrapper_double_t *)array_get(arr, i);
         assert(double_equal(wrapper->data, i));
+    }
+    array_destroy(arr);
+
+    arr = array_create("char", NULL, NULL);
+    for (int i = 'A'; i < 'A' + 5; i++) {
+        array_append(arr, wrap_char(i));
+    }
+    for (int i = 'A'; i < 'A' + 5; i++) {
+        wrapper_char_t *wrapper = (wrapper_char_t *)array_get(arr, i - 'A');
+        assert(wrapper->data == i);
     }
     array_destroy(arr);
 
@@ -400,12 +492,28 @@ void test_array_insert() {
     }
     array_destroy(arr);
 
-    arr = array_create("T", NULL, NULL);
-    test_t *test = (test_t *)calloc(5, sizeof(test_t));
-    int arr3[] = {1, 4, 3, 2, 0};
-    int len3 = arr_len(arr3);
+    char arr3[] = {'C', 'A', 'A' + 5, 'D', 'B', '\0'};
+    int len3 = str_length(arr3);
+    arr = array_create("char", NULL, NULL);
+
+    array_insert(arr, 0, wrap_char('A'));
+    array_insert(arr, 0, wrap_char('C'));
+    array_insert(arr, 2, wrap_char('D'));
+    array_insert(arr, 3, wrap_char('B'));
+    array_insert(arr, 2, wrap_char('A' + 5));
 
     for (int i = 0; i < len3; i++) {
+        wrapper_char_t *wrapper = (wrapper_char_t *)array_get(arr, i);
+        assert(wrapper->data == arr3[i]);
+    }
+    array_destroy(arr);
+
+    arr = array_create("T", NULL, NULL);
+    test_t *test = (test_t *)calloc(5, sizeof(test_t));
+    int arr4[] = {1, 4, 3, 2, 0};
+    int len4 = arr_len(arr4);
+
+    for (int i = 0; i < len4; i++) {
         test[i].i = i;
         char str[8] = {0};
         int_to_str(i, str, sizeof(str));
@@ -418,11 +526,11 @@ void test_array_insert() {
     array_insert(arr, 1, &test[4]);
     array_insert(arr, 3, &test[2]);
 
-    for (int i = 0; i < len3; i++) {
+    for (int i = 0; i < len4; i++) {
         test_t *t = (test_t *)array_get(arr, i);
-        assert(t->i == arr3[i]);
+        assert(t->i == arr4[i]);
         char str[8] = {0};
-        int_to_str(arr3[i], str, sizeof(str));
+        int_to_str(arr4[i], str, sizeof(str));
         assert(str_equal(t->str, str));
     }
 
@@ -463,6 +571,23 @@ void test_array_remove() {
     for (int i = 0; i < 5; i++) {
         wrapper_double_t *wrapper = (wrapper_double_t *)array_get(arr, i);
         assert(double_equal(wrapper->data, i + 3));
+    }
+    array_destroy(arr);
+
+    arr = array_create("char", NULL, NULL);
+    for (int i = 'A'; i < 'A' + 10; i++) {
+        array_append(arr, wrap_char(i));
+    }
+
+    unwrap_char(array_remove(arr, 2));
+    unwrap_char(array_remove(arr, 1));
+    unwrap_char(array_remove(arr, 0));
+    unwrap_char(array_remove(arr, 5));
+    unwrap_char(array_remove(arr, 5));
+
+    for (int i = 'A'; i < 'A' + 5; i++) {
+        wrapper_char_t *wrapper = (wrapper_char_t *)array_get(arr, i - 'A');
+        assert(wrapper->data == i + 3);
     }
     array_destroy(arr);
 
@@ -517,6 +642,16 @@ void test_array_min() {
     assert(double_equal(wrapper_double->data, 1.1));
     array_destroy(arr);
 
+    char arr3[] = {'D', 'F', 'A', 'G', 'C', 'B', 'D', 'A' + 5, '\0'};
+    int len3 = str_length(arr3);
+    arr = array_create("char", NULL, NULL);
+    for (int i = 0; i < len3; i++) {
+        array_append(arr, wrap_char(arr3[i]));
+    }
+    wrapper_char_t *wrapper_char = (wrapper_char_t *)array_min(arr);
+    assert(wrapper_char->data == 'A');
+    array_destroy(arr);
+
     arr = array_create("T", compare_test_by_int, NULL);
     test_t *test = (test_t *)calloc(len1, sizeof(test_t));
 
@@ -554,6 +689,16 @@ void test_array_max() {
     }
     wrapper_double_t *wrapper_double = (wrapper_double_t *)array_max(arr);
     assert(double_equal(wrapper_double->data, 9.9));
+    array_destroy(arr);
+
+    char arr3[] = {'D', 'F', 'A', 'G', 'C', 'B', 'D', 'A' + 5, '\0'};
+    int len3 = str_length(arr3);
+    arr = array_create("char", NULL, NULL);
+    for (int i = 0; i < len3; i++) {
+        array_append(arr, wrap_char(arr3[i]));
+    }
+    wrapper_char_t *wrapper_char = (wrapper_char_t *)array_max(arr);
+    assert(wrapper_char->data == 'G');
     array_destroy(arr);
 
     arr = array_create("T", compare_test_by_int, NULL);
@@ -594,6 +739,17 @@ void test_array_index_of() {
     assert(array_index_of(arr, wrap_double(10.0)) == -1);
     array_destroy(arr);
 
+    char arr2[] = {'D', 'A', 'A' + 5, 'D', 'B', '\0'};
+    int len2 = str_length(arr2);
+
+    arr = array_create("char", NULL, NULL);
+    for (int i = 0; i < len2; i++) {
+        array_append(arr, wrap_char(arr2[i]));
+    }
+    assert(array_index_of(arr, wrap_char('D')) == 0);
+    assert(array_index_of(arr, wrap_char('X')) == -1);
+    array_destroy(arr);
+
     arr = array_create("T", NULL, NULL);
     test_t *test = (test_t *)calloc(len1, sizeof(test_t));
 
@@ -631,6 +787,17 @@ void test_array_last_index_of() {
     assert(array_last_index_of(arr, wrap_double(10.0)) == -1);
     array_destroy(arr);
 
+    char arr2[] = {'D', 'A', 'A' + 5, 'D', 'B', '\0'};
+    int len2 = str_length(arr2);
+
+    arr = array_create("char", NULL, NULL);
+    for (int i = 0; i < len2; i++) {
+        array_append(arr, wrap_char(arr2[i]));
+    }
+    assert(array_last_index_of(arr, wrap_char('D')) == 3);
+    assert(array_last_index_of(arr, wrap_char('X')) == -1);
+    array_destroy(arr);
+
     arr = array_create("T", NULL, NULL);
     test_t *test = (test_t *)calloc(len1, sizeof(test_t));
 
@@ -666,6 +833,17 @@ void test_array_count() {
     }
     assert(array_count(arr, wrap_double(4.0)) == 2);
     assert(array_count(arr, wrap_double(10.0)) == 0);
+    array_destroy(arr);
+
+    char arr2[] = {'D', 'A', 'A' + 5, 'D', 'B', '\0'};
+    int len2 = str_length(arr2);
+
+    arr = array_create("char", NULL, NULL);
+    for (int i = 0; i < len2; i++) {
+        array_append(arr, wrap_char(arr2[i]));
+    }
+    assert(array_count(arr, wrap_char('D')) == 2);
+    assert(array_count(arr, wrap_char('X')) == 0);
     array_destroy(arr);
 
     arr = array_create("T", NULL, NULL);
@@ -709,6 +887,19 @@ void test_array_reverse() {
     for (int i = 0; i < 10; i++) {
         wrapper_double_t *wrapper = (wrapper_double_t *)array_get(arr, i);
         assert(double_equal(wrapper->data, 10 - i - 1));
+    }
+    array_destroy(arr);
+
+    arr = array_create("char", NULL, NULL);
+    for (int i = 'A'; i < 'A' + 10; i++) {
+        array_append(arr, wrap_char(i));
+    }
+
+    array_reverse(arr);
+
+    for (int i = 'A'; i < 'A' + 10; i++) {
+        wrapper_char_t *wrapper = (wrapper_char_t *)array_get(arr, i - 'A');
+        assert(wrapper->data == 'A' + (10 - 1) - (i - 'A'));
     }
     array_destroy(arr);
 
@@ -774,6 +965,25 @@ void test_array_swap() {
     for (int i = 0; i < 10; i++) {
         wrapper_double_t *wrapper = (wrapper_double_t *)array_get(arr, i);
         assert(double_equal(wrapper->data, 10 - i - 1));
+    }
+    array_destroy(arr);
+
+    arr = array_create("char", NULL, NULL);
+    for (int i = 'A'; i < 'A' + 10; i++) {
+        array_append(arr, wrap_char(i));
+    }
+
+    i = 0;
+    j = 9;
+    while (i < j) {
+        array_swap(arr, i, j);
+        i++;
+        j--;
+    }
+
+    for (int i = 'A'; i < 'A' + 10; i++) {
+        wrapper_char_t *wrapper = (wrapper_char_t *)array_get(arr, i - 'A');
+        assert(wrapper->data == 'A' + (10 - 1) - (i - 'A'));
     }
     array_destroy(arr);
 
@@ -863,6 +1073,37 @@ void test_array_sort() {
     for (int i = 0; i < len1; i++) {
         wrapper_double_t *wrapper = (wrapper_double_t *)array_get(arr, i);
         assert(double_equal(wrapper->data, arr2[len2 - i - 1]));
+    }
+    array_destroy(arr);
+
+    char arr3[] = {'E', 'D', 'B', 'B', 'E', 'D', 'A', '\0'};
+    int len3 = str_length(arr3);
+
+    char arr4[] = {'A', 'B', 'B', 'D', 'D', 'E', 'E', '\0'};
+    int len4 = str_length(arr4);
+
+    arr = array_create("char", NULL, NULL);
+    for (int i = 0; i < len3; i++) {
+        array_append(arr, wrap_char(arr3[i]));
+    }
+
+    array_sort(arr, false);
+
+    for (int i = 0; i < len4; i++) {
+        wrapper_char_t *wrapper = (wrapper_char_t *)array_get(arr, i);
+        assert(wrapper->data == arr4[i]);
+    }
+    array_clear(arr);
+
+    for (int i = 0; i < len3; i++) {
+        array_append(arr, wrap_int(arr3[i]));
+    }
+
+    array_sort(arr, true);
+
+    for (int i = 0; i < len4; i++) {
+        wrapper_char_t *wrapper = (wrapper_char_t *)array_get(arr, i);
+        assert(wrapper->data == arr4[len4 - i - 1]);
     }
     array_destroy(arr);
 

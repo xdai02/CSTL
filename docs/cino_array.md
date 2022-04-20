@@ -23,7 +23,7 @@ array_t *array_create(const str_t data_type, compare_t compare, destroy_t destro
 
 | 参数      | 说明                                                         |
 | --------- | ------------------------------------------------------------ |
-| data_type | cino-array的元素类型，支持"int"、“double”、“T”（泛型）       |
+| data_type | cino-array的元素类型，支持"int"、“double”、"char"、“T”（泛型） |
 | compare   | 用于比较的回调函数，仅针对T（泛型）cino-array，基本数据类型cino-array设置为`NULL`即可 |
 | destroy   | 用于销毁的回调函数，仅针对T（泛型）cino-array，基本数据类型cino-array设置为`NULL`即可 |
 

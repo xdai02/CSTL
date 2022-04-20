@@ -31,6 +31,8 @@ void test_wrap_int();
 void test_unwrap_int();
 void test_wrap_double();
 void test_unwrap_double();
+void test_wrap_char();
+void test_unwrap_char();
 
 void test_str_equal();
 void test_str_equal_ignore_case();
