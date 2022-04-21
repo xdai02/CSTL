@@ -24,6 +24,7 @@ typedef struct list_t {
  *                  valid data type includes:
  *                      - int
  *                      - double
+ *                      - char
  *                      - T (generic)
  * @return  Returns the `true` if it is valid, otherwise returns `false`.
  */
@@ -33,6 +34,7 @@ static bool is_valid_data_type(const str_t data_type) {
     const str_t data_types[] = {
         "int",
         "double",
+        "char",
         "T",  // generic
     };
 
@@ -64,6 +66,15 @@ static void destroy_double(T data) {
 }
 
 /**
+ * @brief   Specify the rules for destroying a single char element.
+ * @param data  pointer to the element
+ */
+static void destroy_char(T data) {
+    wrapper_char_t *wrapper = (wrapper_char_t *)data;
+    unwrap_char(wrapper);
+}
+
+/**
  * @brief   Specify the rules for destroying a single element.
  * @param data  pointer to the element
  */
@@ -91,6 +102,7 @@ static node_t *list_node_create(T data) {
  *                  valid data type includes:
  *                      - int
  *                      - double
+ *                      - char
  *                      - T (generic)
  * @param destroy   User-defined callback function for destroying, only for T (generic)
  *                  cino-list. Set to `NULL` if it is a primitive cino-list.
@@ -108,6 +120,8 @@ list_t *list_create(const str_t data_type, destroy_t destroy) {
         list->destroy = destroy_int;
     } else if (str_equal(data_type, "double")) {
         list->destroy = destroy_double;
+    } else if (str_equal(data_type, "char")) {
+        list->destroy = destroy_char;
     } else if (str_equal(data_type, "T")) {
         list->destroy = destroy ? destroy : destroy_default;
     }
@@ -180,6 +194,8 @@ list_t *list_clear(list_t *list) {
             unwrap_int(data);
         } else if (str_equal(list->data_type, "double")) {
             unwrap_double(data);
+        } else if (str_equal(list->data_type, "char")) {
+            unwrap_char(data);
         }
     }
 
@@ -337,6 +353,20 @@ int list_index_of(const list_t *list, void *context) {
             cur = cur->next;
             wrapper_double_t *cur_wrapper = (wrapper_double_t *)cur->data;
             if (double_equal(cur_wrapper->data, data)) {
+                return i;
+            }
+            i++;
+        }
+    } else if (str_equal(list->data_type, "char")) {
+        wrapper_char_t *wrapper = (wrapper_char_t *)context;
+        char data = unwrap_char(wrapper);
+
+        int i = 0;
+        node_t *cur = list->head;
+        while (cur && cur->next && cur->next != list->tail) {
+            cur = cur->next;
+            wrapper_char_t *cur_wrapper = (wrapper_char_t *)cur->data;
+            if (cur_wrapper->data == data) {
                 return i;
             }
             i++;

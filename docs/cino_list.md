@@ -23,7 +23,7 @@ list_t *list_create(const str_t data_type, destroy_t destroy);
 
 | 参数      | 说明                                                         |
 | --------- | ------------------------------------------------------------ |
-| data_type | cino-list的元素类型，支持"int"、“double”、“T”（泛型）        |
+| data_type | cino-list的元素类型，支持"int"、“double”、"char"、“T”（泛型） |
 | destroy   | 用于销毁的回调函数，仅针对T（泛型）cino-list，基本数据类型cino-list设置为`NULL`即可 |
 
 - 返回值：返回cino-list指针，创建失败返回`NULL`。
