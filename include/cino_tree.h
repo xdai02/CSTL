@@ -22,17 +22,18 @@ typedef struct tree_t tree_t;
  *                  valid data type includes:
  *                      - int
  *                      - double
+ *                      - char
  *                      - T (generic)
  * @param compare   User-defined callback function for comparison, only for T (generic)
  *                  cino-tree. Set to `NULL` if it is a primitive cino-tree.
+ * @param destroy   User-defined callback function for destroying, only for T (generic)
+ *                  cino-array. Set to `NULL` if it is a primitive cino-array.
  * @return  Returns the pointer to cino-tree, or `NULL` if creation failed.
  */
-tree_t *tree_create(const str_t data_type, compare_t compare);
+tree_t *tree_create(const str_t data_type, compare_t compare, destroy_t destroy);
 
 /**
  * @brief   Destroy cino-tree.
- * @note    It is caller's responsibility to free all the elements before calling
- *          this function, if it is a T (generic) cino-tree.
  * @param tree  cino-tree
  */
 void tree_destroy(tree_t *tree);
@@ -46,8 +47,6 @@ bool tree_is_empty(const tree_t *tree);
 
 /**
  * @brief   Clear all the elments in the cino-tree.
- * @note    It is caller's responsibility to free all the elements before calling
- *          this function, if it is a T (generic) cino-tree.
  * @param tree  cino-tree
  * @return  Returns the modified cino-tree.
  */
@@ -77,24 +76,29 @@ void tree_post_order(tree_t *tree, visit_t visit);
 /**
  * @brief   Get the minimum value in the cino-tree.
  * @param tree  cino-tree
- * @return  Returns the minimum value in the cino-tree, or `NULL` if conditions failed.
- *          For primitive cino-tree, a wrapper type of that primitive is returned. It is
- *          caller's responsibility to unwrap.
+ * @return  Returns the minimum value in the cino-tree, or `NULL` if the cino-tree
+ *          is empty.
+ *          For primitive cino-tree, a wrapper type of that primitive is returned.
+ *          Caller should use `->data` to get the primitive value, instead of unwrapping
+ *          it.
  */
 T tree_min(tree_t *tree);
 
 /**
  * @brief   Get the maximum value in the cino-tree.
  * @param tree  cino-tree
- * @return  Returns the maximum value in the cino-tree, or `NULL` if conditions failed.
- *          For primitive cino-tree, a wrapper type of that primitive is returned. It is
- *          caller's responsibility to unwrap.
+ * @return  Returns the maximum value in the cino-tree, or `NULL` if the cino-tree
+ *          is empty.
+ *          For primitive cino-tree, a wrapper type of that primitive is returned.
+ *          Caller should use `->data` to get the primitive value, instead of unwrapping
+ *          it.
  */
 T tree_max(tree_t *tree);
 
 /**
  * @brief   Determine if the data can be found in the cino-tree.
  * @param tree  cino-tree
+ * @param data  For primitive data, a wrapper type of that primitive is needed.
  * @return  Returns `true` if the data is found, otherwise returns `false`.
  */
 bool tree_contains(tree_t *tree, T data);
@@ -102,10 +106,7 @@ bool tree_contains(tree_t *tree, T data);
 /**
  * @brief   Inserts the specified element to the cino-tree.
  * @param tree  cino-tree
- * @param data  - For primitive data, a wrapper type of that primitive is needed.
- *              This function will unwrap for you.
- *              - For T (generic) cino-tree, it is caller's responsibility to free
- *              the previous data before overwriting it.
+ * @param data  For primitive data, a wrapper type of that primitive is needed.
  * @return  Returns the modified cino-tree.
  */
 tree_t *tree_insert(tree_t *tree, T data);

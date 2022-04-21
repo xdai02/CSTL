@@ -4,6 +4,13 @@
  *               tree_t
  ****************************************/
 
+typedef enum data_type_t {
+    DATA_TYPE_INT,
+    DATA_TYPE_DOUBLE,
+    DATA_TYPE_CHAR,
+    DATA_TYPE_T,
+} data_type_t;
+
 typedef struct node_t {
     T data;
     struct node_t *left;
@@ -13,8 +20,9 @@ typedef struct node_t {
 
 typedef struct tree_t {
     node_t *root;
-    str_t data_type;
+    data_type_t data_type;
     compare_t compare;
+    destroy_t destroy;
 } tree_t;
 
 /**
@@ -23,6 +31,7 @@ typedef struct tree_t {
  *                  valid data type includes:
  *                      - int
  *                      - double
+ *                      - char
  *                      - T (generic)
  * @return  Returns the `true` if it is valid, otherwise returns `false`.
  */
@@ -32,6 +41,7 @@ static bool is_valid_data_type(const str_t data_type) {
     const str_t data_types[] = {
         "int",
         "double",
+        "char",
         "T",  // generic
     };
 
@@ -45,7 +55,7 @@ static bool is_valid_data_type(const str_t data_type) {
 }
 
 /**
- * @brief   Specify the default rules for comparing two values in ascending order.
+ * @brief   Specify the rules for comparing two int values.
  * @param data1 pointer to the first value
  * @param data2 pointer to the second value
  * @return  Returns
@@ -53,8 +63,88 @@ static bool is_valid_data_type(const str_t data_type) {
  *              - positive if the first value is greater than the second value
  *              - negative if the first value is less than the second value
  */
-static int cmp_default(const T data1, const T data2) {
+static int compare_int(const T data1, const T data2) {
+    wrapper_int_t *wrapper1 = (wrapper_int_t *)data1;
+    wrapper_int_t *wrapper2 = (wrapper_int_t *)data2;
+    return wrapper1->data - wrapper2->data;
+}
+
+/**
+ * @brief   Specify the rules for comparing two double values.
+ * @param data1 pointer to the first value
+ * @param data2 pointer to the second value
+ * @return  Returns
+ *              - 0 if two values are equal
+ *              - positive if the first value is greater than the second value
+ *              - negative if the first value is less than the second value
+ */
+static int compare_double(const T data1, const T data2) {
+    wrapper_double_t *wrapper1 = (wrapper_double_t *)data1;
+    wrapper_double_t *wrapper2 = (wrapper_double_t *)data2;
+    return wrapper1->data > wrapper2->data ? 1 : -1;
+}
+
+/**
+ * @brief   Specify the rules for comparing two int values.
+ * @param data1 pointer to the first value
+ * @param data2 pointer to the second value
+ * @return  Returns
+ *              - 0 if two values are equal
+ *              - positive if the first value is greater than the second value
+ *              - negative if the first value is less than the second value
+ */
+static int compare_char(const T data1, const T data2) {
+    wrapper_char_t *wrapper1 = (wrapper_char_t *)data1;
+    wrapper_char_t *wrapper2 = (wrapper_char_t *)data2;
+    return wrapper1->data - wrapper2->data;
+}
+
+/**
+ * @brief   Specify the default rules for comparing two values.
+ * @param data1 pointer to the first value
+ * @param data2 pointer to the second value
+ * @return  Returns
+ *              - 0 if two values are equal
+ *              - positive if the first value is greater than the second value
+ *              - negative if the first value is less than the second value
+ */
+static int compare_default(const T data1, const T data2) {
     return (byte_t *)data1 - (byte_t *)data2;
+}
+
+/**
+ * @brief   Specify the rules for destroying a single int element.
+ * @param data  pointer to the element
+ */
+static void destroy_int(T data) {
+    wrapper_int_t *wrapper = (wrapper_int_t *)data;
+    unwrap_int(wrapper);
+}
+
+/**
+ * @brief   Specify the rules for destroying a single double element.
+ * @param data  pointer to the element
+ */
+static void destroy_double(T data) {
+    wrapper_double_t *wrapper = (wrapper_double_t *)data;
+    unwrap_double(wrapper);
+}
+
+/**
+ * @brief   Specify the rules for destroying a single char element.
+ * @param data  pointer to the element
+ */
+static void destroy_char(T data) {
+    wrapper_char_t *wrapper = (wrapper_char_t *)data;
+    unwrap_char(wrapper);
+}
+
+/**
+ * @brief   Specify the rules for destroying a single element.
+ * @param data  pointer to the element
+ */
+static void destroy_default(T data) {
+    return;
 }
 
 /**
@@ -78,34 +168,44 @@ static node_t *tree_node_create(T data) {
  *                  valid data type includes:
  *                      - int
  *                      - double
+ *                      - char
  *                      - T (generic)
  * @param compare   User-defined callback function for comparison, only for T (generic)
  *                  cino-tree. Set to `NULL` if it is a primitive cino-tree.
+ * @param destroy   User-defined callback function for destroying, only for T (generic)
+ *                  cino-array. Set to `NULL` if it is a primitive cino-array.
  * @return  Returns the pointer to cino-tree, or `NULL` if creation failed.
  */
-tree_t *tree_create(const str_t data_type, compare_t compare) {
+tree_t *tree_create(const str_t data_type, compare_t compare, destroy_t destroy) {
     return_value_if_fail(is_valid_data_type(data_type), NULL);
 
     tree_t *tree = (tree_t *)calloc(1, sizeof(tree_t));
     return_value_if_fail(tree != NULL, NULL);
-
-    tree->data_type = (str_t)calloc(str_length(data_type) + 1, sizeof(char));
-    call_and_return_value_if_fail(tree->data_type != NULL, tree_destroy(tree), NULL);
-    str_copy(tree->data_type, data_type);
-
-    if (!compare) {
-        compare = cmp_default;
-    }
-    tree->compare = compare;
-
     tree->root = NULL;
+
+    if (str_equal(data_type, "int")) {
+        tree->data_type = DATA_TYPE_INT;
+        tree->compare = compare_int;
+        tree->destroy = destroy_int;
+    } else if (str_equal(data_type, "double")) {
+        tree->data_type = DATA_TYPE_DOUBLE;
+        tree->compare = compare_double;
+        tree->destroy = destroy_double;
+    } else if (str_equal(data_type, "char")) {
+        tree->data_type = DATA_TYPE_CHAR;
+        tree->compare = compare_char;
+        tree->destroy = destroy_char;
+    } else if (str_equal(data_type, "T")) {
+        tree->data_type = DATA_TYPE_T;
+        tree->compare = compare ? compare : compare_default;
+        tree->destroy = destroy ? destroy : destroy_default;
+    }
+
     return tree;
 }
 
 /**
  * @brief   Destroy cino-tree.
- * @note    It is caller's responsibility to free all the elements before calling
- *          this function, if it is a T (generic) cino-tree.
  * @param tree  cino-tree
  */
 void tree_destroy(tree_t *tree) {
@@ -113,10 +213,8 @@ void tree_destroy(tree_t *tree) {
 
     tree_clear(tree);
 
-    if (tree->data_type) {
-        free(tree->data_type);
-        tree->data_type = NULL;
-    }
+    tree->compare = NULL;
+    tree->destroy = NULL;
 
     if (tree) {
         free(tree);
@@ -135,12 +233,16 @@ bool tree_is_empty(const tree_t *tree) {
 
 /**
  * @brief   Helper function for clearing all the elments in the cino-tree.
+ * @param tree  cino-tree
  * @param node  tree node
  */
-static void tree_clear_post_order(node_t *node) {
-    return_if_fail(node != NULL);
-    tree_clear_post_order(node->left);
-    tree_clear_post_order(node->right);
+static void tree_clear_post_order(tree_t *tree, node_t *node) {
+    return_if_fail(tree != NULL && node != NULL);
+
+    tree_clear_post_order(tree, node->left);
+    tree_clear_post_order(tree, node->right);
+
+    tree->destroy(node->data);
     free(node->data);
     node->data = NULL;
     node->parent = NULL;
@@ -152,14 +254,12 @@ static void tree_clear_post_order(node_t *node) {
 
 /**
  * @brief   Clear all the elments in the cino-tree.
- * @note    It is caller's responsibility to free all the elements before calling
- *          this function, if it is a T (generic) cino-tree.
  * @param tree  cino-tree
  * @return  Returns the modified cino-tree.
  */
 tree_t *tree_clear(tree_t *tree) {
     return_value_if_fail(tree != NULL, NULL);
-    tree_clear_post_order(tree->root);
+    tree_clear_post_order(tree, tree->root);
     tree->root = NULL;
     return tree;
 }
@@ -261,98 +361,79 @@ static node_t *tree_max_node(tree_t *tree) {
 /**
  * @brief   Get the minimum value in the cino-tree.
  * @param tree  cino-tree
- * @return  Returns the minimum value in the cino-tree, or `NULL` if conditions failed.
- *          For primitive cino-tree, a wrapper type of that primitive is returned. It is
- *          caller's responsibility to unwrap.
+ * @return  Returns the minimum value in the cino-tree, or `NULL` if the cino-tree
+ *          is empty.
+ *          For primitive cino-tree, a wrapper type of that primitive is returned.
+ *          Caller should use `->data` to get the primitive value, instead of unwrapping
+ *          it.
  */
 T tree_min(tree_t *tree) {
-    node_t *min = tree_min_node(tree);
-    return_value_if_fail(min != NULL, NULL);
-
-    if (str_equal(tree->data_type, "int")) {
-        return wrap_int(*(int *)min->data);
-    } else if (str_equal(tree->data_type, "double")) {
-        return wrap_double(*(double *)min->data);
-    } else {
-        return min->data;
-    }
-
-    return NULL;
+    return_value_if_fail(tree != NULL, NULL);
+    node_t *min_node = tree_min_node(tree);
+    return min_node ? min_node->data : NULL;
 }
 
 /**
  * @brief   Get the maximum value in the cino-tree.
  * @param tree  cino-tree
- * @return  Returns the maximum value in the cino-tree, or `NULL` if conditions failed.
- *          For primitive cino-tree, a wrapper type of that primitive is returned. It is
- *          caller's responsibility to unwrap.
+ * @return  Returns the maximum value in the cino-tree, or `NULL` if the cino-tree
+ *          is empty.
+ *          For primitive cino-tree, a wrapper type of that primitive is returned.
+ *          Caller should use `->data` to get the primitive value, instead of unwrapping
+ *          it.
  */
 T tree_max(tree_t *tree) {
-    node_t *max = tree_max_node(tree);
-    return_value_if_fail(max != NULL, NULL);
-
-    if (str_equal(tree->data_type, "int")) {
-        return wrap_int(*(int *)max->data);
-    } else if (str_equal(tree->data_type, "double")) {
-        return wrap_double(*(double *)max->data);
-    } else {
-        return max->data;
-    }
-
-    return NULL;
+    return_value_if_fail(tree != NULL, NULL);
+    node_t *max_node = tree_max_node(tree);
+    return max_node ? max_node->data : NULL;
 }
 
 /**
  * @brief   Determine if the data can be found in the cino-tree.
  * @param tree  cino-tree
+ * @param data  For primitive data, a wrapper type of that primitive is needed.
  * @return  Returns `true` if the data is found, otherwise returns `false`.
  */
 bool tree_contains(tree_t *tree, T data) {
     return_value_if_fail(tree != NULL && data != NULL, false);
 
-    bool found = false;
+    node_t *cur = tree->root;
 
-    if (str_equal(tree->data_type, "int")) {
-        wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
+    if (tree->data_type == DATA_TYPE_INT) {
+        wrapper_int_t *wrapper = (wrapper_int_t *)data;
+        int key_data = unwrap_int(wrapper);
 
-        node_t *cur = tree->root;
         while (cur) {
-            int cur_data = *(int *)cur->data;
-            if (wrapper_int->data == cur_data) {
-                found = true;
-                break;
-            } else if (wrapper_int->data < cur_data) {
+            wrapper_int_t *cur_wrapper = (wrapper_int_t *)cur->data;
+            int cur_data = cur_wrapper->data;
+            if (key_data == cur_data) {
+                return true;
+            } else if (key_data < cur_data) {
                 cur = cur->left;
             } else {
                 cur = cur->right;
             }
         }
+    } else if (tree->data_type == DATA_TYPE_DOUBLE) {
+        wrapper_double_t *wrapper = (wrapper_double_t *)data;
+        double key_data = unwrap_double(wrapper);
 
-        unwrap_int(wrapper_int);
-    } else if (str_equal(tree->data_type, "double")) {
-        wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
-
-        node_t *cur = tree->root;
         while (cur) {
-            double cur_data = *(double *)cur->data;
-            if (double_equal(wrapper_double->data, cur_data)) {
-                found = true;
-                break;
-            } else if (wrapper_double->data < cur_data) {
+            wrapper_double_t *cur_wrapper = (wrapper_double_t *)cur->data;
+            double cur_data = cur_wrapper->data;
+            if (double_equal(key_data, cur_data)) {
+                return true;
+            } else if (key_data < cur_data) {
                 cur = cur->left;
             } else {
                 cur = cur->right;
             }
         }
-
-        unwrap_double(wrapper_double);
-    } else if (str_equal(tree->data_type, "T")) {
-        node_t *cur = tree->root;
+    } else if (tree->data_type == DATA_TYPE_T) {
         while (cur) {
             int cmp = tree->compare(data, cur->data);
             if (cmp == 0) {
-                found = true;
-                break;
+                return true;
             } else if (cmp < 0) {
                 cur = cur->left;
             } else {
@@ -361,7 +442,7 @@ bool tree_contains(tree_t *tree, T data) {
         }
     }
 
-    return found;
+    return false;
 }
 
 /**
@@ -374,37 +455,46 @@ static node_t *tree_node_get(tree_t *tree, T data) {
     return_value_if_fail(tree != NULL && data != NULL, NULL);
 
     node_t *cur = tree->root;
-    while (cur) {
-        if (str_equal(tree->data_type, "int")) {
-            wrapper_int_t *wrapper_int = (wrapper_int_t *)data;
-            int cur_data = *(int *)cur->data;
-            if (wrapper_int->data == cur_data) {
+
+    if (tree->data_type == DATA_TYPE_INT) {
+        wrapper_int_t *wrapper = (wrapper_int_t *)data;
+        int key_data = unwrap_int(wrapper);
+
+        while (cur) {
+            wrapper_int_t *cur_wrapper = cur->data;
+            int cur_data = cur_wrapper->data;
+            if (key_data == cur_data) {
                 return cur;
-            } else if (wrapper_int->data < cur_data) {
+            } else if (key_data < cur_data) {
                 cur = cur->left;
             } else {
                 cur = cur->right;
             }
-        } else if (str_equal(tree->data_type, "double")) {
-            wrapper_double_t *wrapper_double = (wrapper_double_t *)data;
-            double cur_data = *(double *)cur->data;
-            if (double_equal(wrapper_double->data, cur_data)) {
+        }
+    } else if (tree->data_type == DATA_TYPE_DOUBLE) {
+        wrapper_double_t *wrapper = (wrapper_double_t *)data;
+        double key_data = unwrap_double(wrapper);
+
+        while (cur) {
+            wrapper_double_t *cur_wrapper = cur->data;
+            double cur_data = cur_wrapper->data;
+            if (double_equal(key_data, cur_data)) {
                 return cur;
-            } else if (wrapper_double->data < cur_data) {
+            } else if (key_data < cur_data) {
                 cur = cur->left;
             } else {
                 cur = cur->right;
             }
-        } else if (str_equal(tree->data_type, "T")) {
-            while (cur) {
-                int cmp = tree->compare(data, cur->data);
-                if (cmp == 0) {
-                    return cur;
-                } else if (cmp < 0) {
-                    cur = cur->left;
-                } else {
-                    cur = cur->right;
-                }
+        }
+    } else if (tree->data_type == DATA_TYPE_T) {
+        while (cur) {
+            int cmp = tree->compare(data, cur->data);
+            if (cmp == 0) {
+                return cur;
+            } else if (cmp < 0) {
+                cur = cur->left;
+            } else {
+                cur = cur->right;
             }
         }
     }
@@ -415,48 +505,14 @@ static node_t *tree_node_get(tree_t *tree, T data) {
 /**
  * @brief   Inserts the specified element to the cino-tree.
  * @param tree  cino-tree
- * @param data  - For primitive data, a wrapper type of that primitive is needed.
- *              This function will unwrap for you.
- *              - For T (generic) cino-tree, it is caller's responsibility to free
- *              the previous data before overwriting it.
+ * @param data  For primitive data, a wrapper type of that primitive is needed.
  * @return  Returns the modified cino-tree.
  */
 tree_t *tree_insert(tree_t *tree, T data) {
     return_value_if_fail(tree != NULL && data != NULL, tree);
 
-    wrapper_int_t *wrapper_int = NULL;
-    wrapper_double_t *wrapper_double = NULL;
-    if (str_equal(tree->data_type, "int")) {
-        wrapper_int = (wrapper_int_t *)data;
-    } else if (str_equal(tree->data_type, "double")) {
-        wrapper_double = (wrapper_double_t *)data;
-    }
-
-    if (tree_contains(tree, data)) {
-        if (str_equal(tree->data_type, "int")) {
-            unwrap_int(wrapper_int);
-        } else if (str_equal(tree->data_type, "double")) {
-            unwrap_double(wrapper_double);
-        }
-        return NULL;
-    }
-
-    node_t *node = tree_node_create(NULL);
+    node_t *node = tree_node_create(data);
     return_value_if_fail(node != NULL, tree);
-
-    if (str_equal(tree->data_type, "int")) {
-        node->data = calloc(1, sizeof(int));
-        call_and_return_value_if_fail(node->data != NULL, free(node), tree);
-        *(int *)node->data = wrapper_int->data;
-        unwrap_int(wrapper_int);
-    } else if (str_equal(tree->data_type, "double")) {
-        node->data = calloc(1, sizeof(double));
-        call_and_return_value_if_fail(node->data != NULL, free(node), tree);
-        *(double *)node->data = wrapper_double->data;
-        unwrap_double(wrapper_double);
-    } else if (str_equal(tree->data_type, "T")) {
-        node->data = data;
-    }
 
     if (!tree->root) {
         tree->root = node;
@@ -466,48 +522,75 @@ tree_t *tree_insert(tree_t *tree, T data) {
     node_t *cur = tree->root;
     node_t *parent = cur->parent;
 
-    if (str_equal(tree->data_type, "int")) {
-        int data = *(int *)node->data;
+    if (tree->data_type == DATA_TYPE_INT) {
+        wrapper_int_t *wrapper = (wrapper_int_t *)data;
+        int key_data = wrapper->data;
+
         while (cur) {
-            parent = cur->parent;
-            int cur_data = *(int *)cur->data;
-            if (data < cur_data) {
+            parent = cur;
+
+            wrapper_int_t *cur_wrapper = (wrapper_int_t *)cur->data;
+            int cur_data = cur_wrapper->data;
+            if (key_data == cur_data) {
+                tree->destroy(cur->data);
+                free(node);
+                node = NULL;
+                return tree;
+            } else if (key_data < cur_data) {
                 cur = cur->left;
             } else {
                 cur = cur->right;
             }
         }
 
-        int parent_data = *(int *)parent->data;
-        if (data < parent_data) {
+        wrapper_int_t *parent_wrapper = (wrapper_int_t *)parent;
+        int parent_data = parent_wrapper->data;
+        if (key_data < parent_data) {
             parent->left = node;
         } else {
             parent->right = node;
         }
         node->parent = parent;
-    } else if (str_equal(tree->data_type, "double")) {
-        double data = *(double *)node->data;
+    } else if (tree->data_type == DATA_TYPE_DOUBLE) {
+        wrapper_double_t *wrapper = (wrapper_double_t *)data;
+        double key_data = wrapper->data;
+
         while (cur) {
             parent = cur;
-            double cur_data = *(double *)cur->data;
-            if (data < cur_data) {
+
+            wrapper_double_t *cur_wrapper = (wrapper_double_t *)cur->data;
+            double cur_data = cur_wrapper->data;
+            if (double_equal(key_data, cur_data)) {
+                tree->destroy(cur->data);
+                free(node);
+                node = NULL;
+                return tree;
+            } else if (key_data < cur_data) {
                 cur = cur->left;
             } else {
                 cur = cur->right;
             }
         }
 
-        double parent_data = *(double *)parent->data;
-        if (data < parent_data) {
+        wrapper_double_t *parent_wrapper = (wrapper_double_t *)parent;
+        double parent_data = parent_wrapper->data;
+        if (key_data < parent_data) {
             parent->left = node;
         } else {
             parent->right = node;
         }
         node->parent = parent;
-    } else if (str_equal(tree->data_type, "T")) {
+    } else if (tree->data_type == DATA_TYPE_T) {
         while (cur) {
             parent = cur;
-            if (tree->compare(node->data, cur->data) < 0) {
+
+            int cmp = tree->compare(node->data, cur->data);
+            if (cmp == 0) {
+                tree->destroy(cur->data);
+                free(node);
+                node = NULL;
+                return tree;
+            } else if (cmp < 0) {
                 cur = cur->left;
             } else {
                 cur = cur->right;
@@ -540,22 +623,22 @@ T tree_remove(tree_t *tree, T data) {
 
     wrapper_int_t *wrapper_int = NULL;
     wrapper_double_t *wrapper_double = NULL;
-    if (str_equal(tree->data_type, "int")) {
+    if (tree->data_type == DATA_TYPE_INT) {
         wrapper_int = (wrapper_int_t *)data;
-    } else if (str_equal(tree->data_type, "double")) {
+    } else if (tree->data_type == DATA_TYPE_DOUBLE) {
         wrapper_double = (wrapper_double_t *)data;
     }
 
     if (tree_contains(tree, data)) {
-        if (str_equal(tree->data_type, "int")) {
+        if (tree->data_type == DATA_TYPE_INT) {
             unwrap_int(wrapper_int);
-        } else if (str_equal(tree->data_type, "double")) {
+        } else if (tree->data_type == DATA_TYPE_DOUBLE) {
             unwrap_double(wrapper_double);
         }
         return NULL;
     }
 
-    if (str_equal(tree->data_type, "int")) {
+    if (tree->data_type == DATA_TYPE_INT) {
         node_t *cur = tree_node_get(tree, data);
         call_and_return_value_if_fail(cur != NULL, unwrap_int(wrapper_int), NULL);
 
@@ -618,7 +701,7 @@ T tree_remove(tree_t *tree, T data) {
 
             return wrap_int(removed);
         }
-    } else if (str_equal(tree->data_type, "double")) {
+    } else if (tree->data_type == DATA_TYPE_DOUBLE) {
         node_t *cur = tree_node_get(tree, data);
         call_and_return_value_if_fail(cur != NULL, unwrap_double(wrapper_double), NULL);
 
@@ -681,7 +764,7 @@ T tree_remove(tree_t *tree, T data) {
 
             return wrap_double(removed);
         }
-    } else if (str_equal(tree->data_type, "T")) {
+    } else if (tree->data_type == DATA_TYPE_T) {
         node_t *cur = tree_node_get(tree, data);
         return_value_if_fail(cur != NULL, NULL);
 
@@ -763,26 +846,26 @@ void tree_set(tree_t *tree, T old_data, T new_data) {
     wrapper_int_t *new_wrapper_int = NULL;
     wrapper_double_t *new_wrapper_double = NULL;
 
-    if (str_equal(tree->data_type, "int")) {
+    if (tree->data_type == DATA_TYPE_INT) {
         old_wrapper_int = (wrapper_int_t *)old_data;
         new_wrapper_int = (wrapper_int_t *)new_data;
-    } else if (str_equal(tree->data_type, "double")) {
+    } else if (tree->data_type == DATA_TYPE_DOUBLE) {
         old_wrapper_double = (wrapper_double_t *)old_data;
         new_wrapper_double = (wrapper_double_t *)new_data;
     }
 
     if (!tree_contains(tree, old_data)) {
-        if (str_equal(tree->data_type, "int")) {
+        if (tree->data_type == DATA_TYPE_INT) {
             unwrap_int(old_wrapper_int);
             unwrap_int(new_wrapper_int);
-        } else if (str_equal(tree->data_type, "double")) {
+        } else if (tree->data_type == DATA_TYPE_DOUBLE) {
             unwrap_double(old_wrapper_double);
             unwrap_double(new_wrapper_double);
         }
         return;
     }
 
-    if (str_equal(tree->data_type, "int")) {
+    if (tree->data_type == DATA_TYPE_INT) {
         node_t *cur = tree_node_get(tree, old_data);
         if (!cur) {
             unwrap_int(old_wrapper_int);
@@ -790,7 +873,7 @@ void tree_set(tree_t *tree, T old_data, T new_data) {
             return;
         }
         *(int *)cur->data = new_wrapper_int->data;
-    } else if (str_equal(tree->data_type, "double")) {
+    } else if (tree->data_type == DATA_TYPE_DOUBLE) {
         node_t *cur = tree_node_get(tree, old_data);
         if (!cur) {
             unwrap_double(old_wrapper_double);
@@ -798,7 +881,7 @@ void tree_set(tree_t *tree, T old_data, T new_data) {
             return;
         }
         *(double *)cur->data = new_wrapper_double->data;
-    } else if (str_equal(tree->data_type, "T")) {
+    } else if (tree->data_type == DATA_TYPE_T) {
         node_t *cur = tree_node_get(tree, old_data);
         cur->data = new_data;
     }

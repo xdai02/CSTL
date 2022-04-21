@@ -4,9 +4,16 @@
  *               array_t
  ****************************************/
 
+typedef enum data_type_t {
+    DATA_TYPE_INT,
+    DATA_TYPE_DOUBLE,
+    DATA_TYPE_CHAR,
+    DATA_TYPE_T,
+} data_type_t;
+
 typedef struct array_t {
     T *arr;
-    str_t data_type;
+    data_type_t data_type;
     size_t size;
     size_t capacity;
     compare_t compare;
@@ -159,22 +166,22 @@ array_t *array_create(const str_t data_type, compare_t compare, destroy_t destro
     array->capacity = 0;
 
     if (str_equal(data_type, "int")) {
+        array->data_type = DATA_TYPE_INT;
         array->compare = compare_int;
         array->destroy = destroy_int;
     } else if (str_equal(data_type, "double")) {
+        array->data_type = DATA_TYPE_DOUBLE;
         array->compare = compare_double;
         array->destroy = destroy_double;
     } else if (str_equal(data_type, "char")) {
+        array->data_type = DATA_TYPE_CHAR;
         array->compare = compare_char;
         array->destroy = destroy_char;
-    } else {
+    } else if (str_equal(data_type, "T")) {
+        array->data_type = DATA_TYPE_T;
         array->compare = compare ? compare : compare_default;
         array->destroy = destroy ? destroy : destroy_default;
     }
-
-    array->data_type = (str_t)calloc(str_length(data_type) + 1, sizeof(char));
-    call_and_return_value_if_fail(array->data_type != NULL, array_destroy(array), NULL);
-    str_copy(array->data_type, data_type);
 
     return array;
 }
@@ -188,10 +195,8 @@ void array_destroy(array_t *array) {
 
     array_clear(array);
 
-    if (array->data_type) {
-        free(array->data_type);
-        array->data_type = NULL;
-    }
+    array->compare = NULL;
+    array->destroy = NULL;
 
     if (array) {
         free(array);
@@ -437,7 +442,7 @@ T array_max(const array_t *array) {
 int array_index_of(const array_t *array, void *context) {
     return_value_if_fail(array != NULL && context != NULL, -1);
 
-    if (str_equal(array->data_type, "int")) {
+    if (array->data_type == DATA_TYPE_INT) {
         wrapper_int_t *wrapper = (wrapper_int_t *)context;
         int data = unwrap_int(wrapper);
         for (int i = 0; i < array->size; i++) {
@@ -446,7 +451,7 @@ int array_index_of(const array_t *array, void *context) {
                 return i;
             }
         }
-    } else if (str_equal(array->data_type, "double")) {
+    } else if (array->data_type == DATA_TYPE_DOUBLE) {
         wrapper_double_t *wrapper = (wrapper_double_t *)context;
         double data = unwrap_double(wrapper);
         for (int i = 0; i < array->size; i++) {
@@ -455,7 +460,7 @@ int array_index_of(const array_t *array, void *context) {
                 return i;
             }
         }
-    } else if (str_equal(array->data_type, "char")) {
+    } else if (array->data_type == DATA_TYPE_CHAR) {
         wrapper_char_t *wrapper = (wrapper_char_t *)context;
         char data = unwrap_char(wrapper);
         for (int i = 0; i < array->size; i++) {
@@ -464,7 +469,7 @@ int array_index_of(const array_t *array, void *context) {
                 return i;
             }
         }
-    } else if (str_equal(array->data_type, "T")) {
+    } else if (array->data_type == DATA_TYPE_T) {
         for (int i = 0; i < array->size; i++) {
             match_t match = (match_t)context;
             if (match(array->arr[i])) {
@@ -490,7 +495,7 @@ int array_index_of(const array_t *array, void *context) {
 int array_last_index_of(const array_t *array, void *context) {
     return_value_if_fail(array != NULL && context != NULL, -1);
 
-    if (str_equal(array->data_type, "int")) {
+    if (array->data_type == DATA_TYPE_INT) {
         wrapper_int_t *wrapper = (wrapper_int_t *)context;
         int data = unwrap_int(wrapper);
         for (int i = array->size - 1; i >= 0; i--) {
@@ -499,7 +504,7 @@ int array_last_index_of(const array_t *array, void *context) {
                 return i;
             }
         }
-    } else if (str_equal(array->data_type, "double")) {
+    } else if (array->data_type == DATA_TYPE_DOUBLE) {
         wrapper_double_t *wrapper = (wrapper_double_t *)context;
         double data = unwrap_double(wrapper);
         for (int i = array->size - 1; i >= 0; i--) {
@@ -508,7 +513,7 @@ int array_last_index_of(const array_t *array, void *context) {
                 return i;
             }
         }
-    } else if (str_equal(array->data_type, "char")) {
+    } else if (array->data_type == DATA_TYPE_CHAR) {
         wrapper_char_t *wrapper = (wrapper_char_t *)context;
         char data = unwrap_char(wrapper);
         for (int i = array->size - 1; i >= 0; i--) {
@@ -517,7 +522,7 @@ int array_last_index_of(const array_t *array, void *context) {
                 return i;
             }
         }
-    } else if (str_equal(array->data_type, "T")) {
+    } else if (array->data_type == DATA_TYPE_T) {
         for (int i = array->size - 1; i >= 0; i--) {
             match_t match = (match_t)context;
             if (match(array->arr[i])) {
@@ -543,7 +548,7 @@ int array_count(const array_t *array, void *context) {
 
     int cnt = 0;
 
-    if (str_equal(array->data_type, "int")) {
+    if (array->data_type == DATA_TYPE_INT) {
         wrapper_int_t *wrapper = (wrapper_int_t *)context;
         int data = unwrap_int(wrapper);
         for (int i = array->size - 1; i >= 0; i--) {
@@ -552,7 +557,7 @@ int array_count(const array_t *array, void *context) {
                 cnt++;
             }
         }
-    } else if (str_equal(array->data_type, "double")) {
+    } else if (array->data_type == DATA_TYPE_DOUBLE) {
         wrapper_double_t *wrapper = (wrapper_double_t *)context;
         double data = unwrap_double(wrapper);
         for (int i = array->size - 1; i >= 0; i--) {
@@ -561,7 +566,7 @@ int array_count(const array_t *array, void *context) {
                 cnt++;
             }
         }
-    } else if (str_equal(array->data_type, "char")) {
+    } else if (array->data_type == DATA_TYPE_CHAR) {
         wrapper_char_t *wrapper = (wrapper_char_t *)context;
         char data = unwrap_char(wrapper);
         for (int i = array->size - 1; i >= 0; i--) {
@@ -570,7 +575,7 @@ int array_count(const array_t *array, void *context) {
                 cnt++;
             }
         }
-    } else if (str_equal(array->data_type, "T")) {
+    } else if (array->data_type == DATA_TYPE_T) {
         for (int i = array->size - 1; i >= 0; i--) {
             match_t match = (match_t)context;
             if (match(array->arr[i])) {

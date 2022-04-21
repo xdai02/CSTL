@@ -4,4 +4,4 @@
 - [ ] cino-map
 - [ ] cino-set
 - [ ] cino-tree
-- [ ] destroy_t / compare_t在创建时确定
+- [ ] cino-tree文档根据注释更新

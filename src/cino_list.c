@@ -4,6 +4,13 @@
  *               list_t
  ****************************************/
 
+typedef enum data_type_t {
+    DATA_TYPE_INT,
+    DATA_TYPE_DOUBLE,
+    DATA_TYPE_CHAR,
+    DATA_TYPE_T,
+} data_type_t;
+
 typedef struct node_t {
     T data;
     struct node_t *prev;
@@ -13,7 +20,7 @@ typedef struct node_t {
 typedef struct list_t {
     node_t *head;
     node_t *tail;
-    str_t data_type;
+    data_type_t data_type;
     size_t size;
     destroy_t destroy;
 } list_t;
@@ -117,12 +124,16 @@ list_t *list_create(const str_t data_type, destroy_t destroy) {
     list->size = 0;
 
     if (str_equal(data_type, "int")) {
+        list->data_type = DATA_TYPE_INT;
         list->destroy = destroy_int;
     } else if (str_equal(data_type, "double")) {
+        list->data_type = DATA_TYPE_DOUBLE;
         list->destroy = destroy_double;
     } else if (str_equal(data_type, "char")) {
+        list->data_type = DATA_TYPE_CHAR;
         list->destroy = destroy_char;
     } else if (str_equal(data_type, "T")) {
+        list->data_type = DATA_TYPE_T;
         list->destroy = destroy ? destroy : destroy_default;
     }
 
@@ -133,10 +144,6 @@ list_t *list_create(const str_t data_type, destroy_t destroy) {
 
     list->head->next = list->tail;
     list->tail->prev = list->head;
-
-    list->data_type = (str_t)calloc(str_length(data_type) + 1, sizeof(char));
-    call_and_return_value_if_fail(list->data_type != NULL, list_destroy(list), NULL);
-    str_copy(list->data_type, data_type);
 
     return list;
 }
@@ -150,11 +157,7 @@ void list_destroy(list_t *list) {
 
     list_clear(list);
 
-    if (list->data_type) {
-        free(list->data_type);
-        list->data_type = NULL;
-    }
-
+    list->destroy = NULL;
     if (list) {
         free(list);
         list = NULL;
@@ -190,11 +193,11 @@ list_t *list_clear(list_t *list) {
 
     while (!list_is_empty(list)) {
         T data = list_pop_front(list);
-        if (str_equal(list->data_type, "int")) {
+        if (list->data_type == DATA_TYPE_INT) {
             unwrap_int(data);
-        } else if (str_equal(list->data_type, "double")) {
+        } else if (list->data_type == DATA_TYPE_DOUBLE) {
             unwrap_double(data);
-        } else if (str_equal(list->data_type, "char")) {
+        } else if (list->data_type == DATA_TYPE_CHAR) {
             unwrap_char(data);
         }
     }
@@ -329,7 +332,7 @@ void list_set(list_t *list, int index, T data) {
 int list_index_of(const list_t *list, void *context) {
     return_value_if_fail(list != NULL && context != NULL, -1);
 
-    if (str_equal(list->data_type, "int")) {
+    if (list->data_type == DATA_TYPE_INT) {
         wrapper_int_t *wrapper = (wrapper_int_t *)context;
         int data = unwrap_int(wrapper);
 
@@ -343,7 +346,7 @@ int list_index_of(const list_t *list, void *context) {
             }
             i++;
         }
-    } else if (str_equal(list->data_type, "double")) {
+    } else if (list->data_type == DATA_TYPE_DOUBLE) {
         wrapper_double_t *wrapper = (wrapper_double_t *)context;
         double data = unwrap_double(wrapper);
 
@@ -357,7 +360,7 @@ int list_index_of(const list_t *list, void *context) {
             }
             i++;
         }
-    } else if (str_equal(list->data_type, "char")) {
+    } else if (list->data_type == DATA_TYPE_CHAR) {
         wrapper_char_t *wrapper = (wrapper_char_t *)context;
         char data = unwrap_char(wrapper);
 
@@ -371,7 +374,7 @@ int list_index_of(const list_t *list, void *context) {
             }
             i++;
         }
-    } else if (str_equal(list->data_type, "T")) {
+    } else if (list->data_type == DATA_TYPE_T) {
         match_t match = (match_t)context;
 
         int i = 0;
