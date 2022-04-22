@@ -76,6 +76,9 @@ static int compare_int(const T data1, const T data2) {
 static int compare_double(const T data1, const T data2) {
     wrapper_double_t *wrapper1 = (wrapper_double_t *)data1;
     wrapper_double_t *wrapper2 = (wrapper_double_t *)data2;
+    if (double_equal(wrapper1->data, wrapper2->data)) {
+        return 0;
+    }
     return wrapper1->data > wrapper2->data ? 1 : -1;
 }
 

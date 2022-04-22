@@ -81,6 +81,9 @@ static int compare_int(const T data1, const T data2) {
 static int compare_double(const T data1, const T data2) {
     wrapper_double_t *wrapper1 = (wrapper_double_t *)data1;
     wrapper_double_t *wrapper2 = (wrapper_double_t *)data2;
+    if (double_equal(wrapper1->data, wrapper2->data)) {
+        return 0;
+    }
     return wrapper1->data > wrapper2->data ? 1 : -1;
 }
 
@@ -398,57 +401,19 @@ bool tree_contains(tree_t *tree, T data) {
     return_value_if_fail(tree != NULL && data != NULL, false);
 
     node_t *cur = tree->root;
-
-    if (tree->data_type == DATA_TYPE_INT) {
-        wrapper_int_t *wrapper = (wrapper_int_t *)data;
-        int key_data = unwrap_int(wrapper);
-
-        while (cur) {
-            wrapper_int_t *cur_wrapper = (wrapper_int_t *)cur->data;
-            int cur_data = cur_wrapper->data;
-            if (key_data == cur_data) {
-                return true;
-            } else if (key_data < cur_data) {
-                cur = cur->left;
-            } else {
-                cur = cur->right;
-            }
+    while (cur) {
+        int cmp = tree->compare(data, cur->data);
+        if (cmp == 0) {
+            break;
+        } else if (cmp < 0) {
+            cur = cur->left;
+        } else {
+            cur = cur->right;
         }
-    } else if (tree->data_type == DATA_TYPE_DOUBLE) {
-        wrapper_double_t *wrapper = (wrapper_double_t *)data;
-        double key_data = unwrap_double(wrapper);
-
-        while (cur) {
-            wrapper_double_t *cur_wrapper = (wrapper_double_t *)cur->data;
-            double cur_data = cur_wrapper->data;
-            if (double_equal(key_data, cur_data)) {
-                return true;
-            } else if (key_data < cur_data) {
-                cur = cur->left;
-            } else {
-                cur = cur->right;
-            }
-        }
-    } else if (tree->data_type == DATA_TYPE_CHAR) {
-        wrapper_char_t *wrapper = (wrapper_char_t *)data;
-        char key_data = unwrap_char(wrapper);
-
-        while (cur) {
-            wrapper_char_t *cur_wrapper = (wrapper_char_t *)cur->data;
-            char cur_data = cur_wrapper->data;
-            if (key_data == cur_data) {
-                return true;
-            } else if (key_data < cur_data) {
-                cur = cur->left;
-            } else {
-                cur = cur->right;
-            }
-        }
-    } else if (tree->data_type == DATA_TYPE_T) {
-        
     }
 
-    return false;
+    tree->destroy(data);
+    return cur != NULL;
 }
 
 /**
@@ -471,117 +436,28 @@ tree_t *tree_insert(tree_t *tree, T data) {
     node_t *cur = tree->root;
     node_t *parent = cur->parent;
 
-    if (tree->data_type == DATA_TYPE_INT) {
-        wrapper_int_t *wrapper = (wrapper_int_t *)data;
-        int key_data = wrapper->data;
+    while (cur) {
+        parent = cur;
 
-        while (cur) {
-            parent = cur;
-
-            wrapper_int_t *cur_wrapper = (wrapper_int_t *)cur->data;
-            int cur_data = cur_wrapper->data;
-            if (key_data == cur_data) {
-                tree->destroy(cur->data);
-                free(node);
-                node = NULL;
-                return tree;
-            } else if (key_data < cur_data) {
-                cur = cur->left;
-            } else {
-                cur = cur->right;
-            }
-        }
-
-        wrapper_int_t *parent_wrapper = (wrapper_int_t *)parent;
-        int parent_data = parent_wrapper->data;
-        if (key_data < parent_data) {
-            parent->left = node;
+        int cmp = tree->compare(node->data, cur->data);
+        if (cmp == 0) {
+            tree->destroy(cur->data);
+            free(node);
+            node = NULL;
+            return tree;
+        } else if (cmp < 0) {
+            cur = cur->left;
         } else {
-            parent->right = node;
+            cur = cur->right;
         }
-        node->parent = parent;
-    } else if (tree->data_type == DATA_TYPE_DOUBLE) {
-        wrapper_double_t *wrapper = (wrapper_double_t *)data;
-        double key_data = wrapper->data;
-
-        while (cur) {
-            parent = cur;
-
-            wrapper_double_t *cur_wrapper = (wrapper_double_t *)cur->data;
-            double cur_data = cur_wrapper->data;
-            if (double_equal(key_data, cur_data)) {
-                tree->destroy(cur->data);
-                free(node);
-                node = NULL;
-                return tree;
-            } else if (key_data < cur_data) {
-                cur = cur->left;
-            } else {
-                cur = cur->right;
-            }
-        }
-
-        wrapper_double_t *parent_wrapper = (wrapper_double_t *)parent;
-        double parent_data = parent_wrapper->data;
-        if (key_data < parent_data) {
-            parent->left = node;
-        } else {
-            parent->right = node;
-        }
-        node->parent = parent;
-    } else if (tree->data_type == DATA_TYPE_CHAR) {
-        wrapper_char_t *wrapper = (wrapper_char_t *)data;
-        char key_data = wrapper->data;
-
-        while (cur) {
-            parent = cur;
-
-            wrapper_char_t *cur_wrapper = (wrapper_char_t *)cur->data;
-            char cur_data = cur_wrapper->data;
-            if (key_data == cur_data) {
-                tree->destroy(cur->data);
-                free(node);
-                node = NULL;
-                return tree;
-            } else if (key_data < cur_data) {
-                cur = cur->left;
-            } else {
-                cur = cur->right;
-            }
-        }
-
-        wrapper_char_t *parent_wrapper = (wrapper_char_t *)parent;
-        char parent_data = parent_wrapper->data;
-        if (key_data < parent_data) {
-            parent->left = node;
-        } else {
-            parent->right = node;
-        }
-        node->parent = parent;
-    } else if (tree->data_type == DATA_TYPE_T) {
-        while (cur) {
-            parent = cur;
-
-            int cmp = tree->compare(node->data, cur->data);
-            if (cmp == 0) {
-                tree->destroy(cur->data);
-                free(node);
-                node = NULL;
-                return tree;
-            } else if (cmp < 0) {
-                cur = cur->left;
-            } else {
-                cur = cur->right;
-            }
-        }
-
-        if (tree->compare(node->data, parent->data) < 0) {
-            parent->left = node;
-        } else {
-            parent->right = node;
-        }
-        node->parent = parent;
     }
+
+    if (tree->compare(node->data, parent->data) < 0) {
+        parent->left = node;
+    } else {
+        parent->right = node;
+    }
+    node->parent = parent;
 
     return tree;
 }
@@ -596,67 +472,19 @@ tree_t *tree_remove(tree_t *tree, T data) {
     return_value_if_fail(tree != NULL && data != NULL, tree);
 
     node_t *cur = tree->root;
-
-    if (tree->data_type == DATA_TYPE_INT) {
-        wrapper_int_t *wrapper = (wrapper_int_t *)data;
-        int key_data = unwrap_int(wrapper);
-
-        while (cur) {
-            wrapper_int_t *cur_wrapper = cur->data;
-            int cur_data = cur_wrapper->data;
-            if (key_data == cur_data) {
-                break;
-            } else if (key_data < cur_data) {
-                cur = cur->left;
-            } else {
-                cur = cur->right;
-            }
-        }
-    } else if (tree->data_type == DATA_TYPE_DOUBLE) {
-        wrapper_double_t *wrapper = (wrapper_double_t *)data;
-        double key_data = unwrap_double(wrapper);
-
-        while (cur) {
-            wrapper_double_t *cur_wrapper = cur->data;
-            double cur_data = cur_wrapper->data;
-            if (double_equal(key_data, cur_data)) {
-                break;
-            } else if (key_data < cur_data) {
-                cur = cur->left;
-            } else {
-                cur = cur->right;
-            }
-        }
-    } else if (tree->data_type == DATA_TYPE_CHAR) {
-        wrapper_char_t *wrapper = (wrapper_char_t *)data;
-        char key_data = unwrap_char(wrapper);
-
-        while (cur) {
-            wrapper_char_t *cur_wrapper = cur->data;
-            char cur_data = cur_wrapper->data;
-            if (key_data == cur_data) {
-                break;
-            } else if (key_data < cur_data) {
-                cur = cur->left;
-            } else {
-                cur = cur->right;
-            }
-        }
-    } else if (tree->data_type == DATA_TYPE_T) {
-        while (cur) {
-            int cmp = tree->compare(data, cur->data);
-            if (cmp == 0) {
-                break;
-            } else if (cmp < 0) {
-                cur = cur->left;
-            } else {
-                cur = cur->right;
-            }
+    while (cur) {
+        int cmp = tree->compare(data, cur->data);
+        if (cmp == 0) {
+            break;
+        } else if (cmp < 0) {
+            cur = cur->left;
+        } else {
+            cur = cur->right;
         }
     }
 
     // not found
-    return_value_if_fail(cur != NULL, tree);
+    call_and_return_value_if_fail(cur != NULL, tree->destroy(data), tree);
 
     // remove root
     if (cur == tree->root) {
@@ -720,67 +548,22 @@ void tree_set(tree_t *tree, T old_data, T new_data) {
     return_if_fail(tree != NULL && old_data != NULL && new_data != NULL);
 
     node_t *cur = tree->root;
-
-    if (tree->data_type == DATA_TYPE_INT) {
-        wrapper_int_t *old_wrapper = (wrapper_int_t *)old_data;
-        int key_old_data = unwrap_int(old_wrapper);
-
-        while (cur) {
-            wrapper_int_t *cur_wrapper = cur->data;
-            int cur_data = cur_wrapper->data;
-            if (key_old_data == cur_data) {
-                break;
-            } else if (key_old_data < cur_data) {
-                cur = cur->left;
-            } else {
-                cur = cur->right;
-            }
-        }
-    } else if (tree->data_type == DATA_TYPE_DOUBLE) {
-        wrapper_double_t *old_wrapper = (wrapper_double_t *)old_data;
-        double key_old_data = unwrap_double(old_wrapper);
-
-        while (cur) {
-            wrapper_double_t *cur_wrapper = cur->data;
-            double cur_data = cur_wrapper->data;
-            if (double_equal(key_old_data, cur_data)) {
-                break;
-            } else if (key_old_data < cur_data) {
-                cur = cur->left;
-            } else {
-                cur = cur->right;
-            }
-        }
-    } else if (tree->data_type == DATA_TYPE_CHAR) {
-        wrapper_char_t *old_wrapper = (wrapper_char_t *)old_data;
-        char key_old_data = unwrap_char(old_wrapper);
-
-        while (cur) {
-            wrapper_char_t *cur_wrapper = cur->data;
-            char cur_data = cur_wrapper->data;
-            if (key_old_data == cur_data) {
-                break;
-            } else if (key_old_data < cur_data) {
-                cur = cur->left;
-            } else {
-                cur = cur->right;
-            }
-        }
-    } else if (tree->data_type == DATA_TYPE_T) {
-        while (cur) {
-            int cmp = tree->compare(old_data, cur->data);
-            if (cmp == 0) {
-                break;
-            } else if (cmp < 0) {
-                cur = cur->left;
-            } else {
-                cur = cur->right;
-            }
+    while (cur) {
+        int cmp = tree->compare(old_data, cur->data);
+        if (cmp == 0) {
+            break;
+        } else if (cmp < 0) {
+            cur = cur->left;
+        } else {
+            cur = cur->right;
         }
     }
 
     // not found
-    return_if_fail(cur != NULL);
+    if (!cur) {
+        tree->destroy(old_data);
+        tree->destroy(new_data);
+    }
 
     tree->destroy(cur->data);
     cur->data = new_data;
