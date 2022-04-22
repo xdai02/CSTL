@@ -3,5 +3,5 @@
 - [ ] cino-deque
 - [ ] cino-map
 - [ ] cino-set
-- [ ] cino-tree
-- [ ] cino-tree文档根据注释更新
+- [ ] cino-tree: rebalance()
+- [ ] 比较函数统一

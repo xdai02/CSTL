@@ -114,26 +114,16 @@ tree_t *tree_insert(tree_t *tree, T data);
 /**
  * @brief   Removes the element from the cino-tree.
  * @param tree  cino-tree
- * @param data  - For primitive data, a wrapper type of that primitive is needed.
- *              This function will unwrap for you.
- *              - For T (generic) cino-tree, it is caller's responsibility to free
- *              the previous data before overwriting it.
- * @return  For primitive cino-array, this function returns a wrapper type of the removed
- *          primitive. It is caller's responsibility to unwrap to get the primitive.
+ * @param data  For primitive data, a wrapper type of that primitive is needed.
+ * @return  Returns the modified cino-tree.
  */
-T tree_remove(tree_t *tree, T data);
+tree_t *tree_remove(tree_t *tree, T data);
 
 /**
  * @brief   Update the element in the cino-tree.
  * @param tree      cino-tree
- * @param old_data  - For primitive data, a wrapper type of that primitive is needed.
- *                  This function will unwrap for you.
- *                  - For T (generic) cino-tree, it is caller's responsibility to free
- *                  the previous data before overwriting it.
- * @param new_data  - For primitive data, a wrapper type of that primitive is needed.
- *                  This function will unwrap for you.
- *                  - For T (generic) cino-tree, it is caller's responsibility to free
- *                  the previous data before overwriting it.
+ * @param old_data  For primitive data, a wrapper type of that primitive is needed.
+ * @param new_data  For primitive data, a wrapper type of that primitive is needed.
  */
 void tree_set(tree_t *tree, T old_data, T new_data);
 

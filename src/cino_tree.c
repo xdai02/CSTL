@@ -332,12 +332,12 @@ void tree_post_order(tree_t *tree, visit_t visit) {
 
 /**
  * @brief   Get the minimum tree node.
- * @param tree  cino-tree
+ * @param root  root of cino-tree
  * @return  Returns the minimum tree node in the cino-tree.
  */
-static node_t *tree_min_node(tree_t *tree) {
-    return_value_if_fail(tree != NULL && tree->root != NULL, NULL);
-    node_t *cur = tree->root;
+static node_t *tree_min_node(node_t *root) {
+    return_value_if_fail(root != NULL, NULL);
+    node_t *cur = root;
     while (cur && cur->left) {
         cur = cur->left;
     }
@@ -346,12 +346,12 @@ static node_t *tree_min_node(tree_t *tree) {
 
 /**
  * @brief   Get the maximum tree node.
- * @param tree  cino-tree
+ * @param root  root of cino-tree
  * @return  Returns the maximum tree node in the cino-tree.
  */
-static node_t *tree_max_node(tree_t *tree) {
-    return_value_if_fail(tree != NULL && tree->root != NULL, NULL);
-    node_t *cur = tree->root;
+static node_t *tree_max_node(node_t *root) {
+    return_value_if_fail(root != NULL, NULL);
+    node_t *cur = root;
     while (cur && cur->right) {
         cur = cur->right;
     }
@@ -369,7 +369,7 @@ static node_t *tree_max_node(tree_t *tree) {
  */
 T tree_min(tree_t *tree) {
     return_value_if_fail(tree != NULL, NULL);
-    node_t *min_node = tree_min_node(tree);
+    node_t *min_node = tree_min_node(tree->root);
     return min_node ? min_node->data : NULL;
 }
 
@@ -384,7 +384,7 @@ T tree_min(tree_t *tree) {
  */
 T tree_max(tree_t *tree) {
     return_value_if_fail(tree != NULL, NULL);
-    node_t *max_node = tree_max_node(tree);
+    node_t *max_node = tree_max_node(tree->root);
     return max_node ? max_node->data : NULL;
 }
 
@@ -429,77 +429,26 @@ bool tree_contains(tree_t *tree, T data) {
                 cur = cur->right;
             }
         }
-    } else if (tree->data_type == DATA_TYPE_T) {
+    } else if (tree->data_type == DATA_TYPE_CHAR) {
+        wrapper_char_t *wrapper = (wrapper_char_t *)data;
+        char key_data = unwrap_char(wrapper);
+
         while (cur) {
-            int cmp = tree->compare(data, cur->data);
-            if (cmp == 0) {
+            wrapper_char_t *cur_wrapper = (wrapper_char_t *)cur->data;
+            char cur_data = cur_wrapper->data;
+            if (key_data == cur_data) {
                 return true;
-            } else if (cmp < 0) {
+            } else if (key_data < cur_data) {
                 cur = cur->left;
             } else {
                 cur = cur->right;
             }
         }
+    } else if (tree->data_type == DATA_TYPE_T) {
+        
     }
 
     return false;
-}
-
-/**
- * @brief   Get tree node by specific data.
- * @param tree  cino-tree
- * @param data  For primitive data, a wrapper type of that primitive is needed.
- * @return  Returns a pointer to the node found, or `NULL` if not found.
- */
-static node_t *tree_node_get(tree_t *tree, T data) {
-    return_value_if_fail(tree != NULL && data != NULL, NULL);
-
-    node_t *cur = tree->root;
-
-    if (tree->data_type == DATA_TYPE_INT) {
-        wrapper_int_t *wrapper = (wrapper_int_t *)data;
-        int key_data = unwrap_int(wrapper);
-
-        while (cur) {
-            wrapper_int_t *cur_wrapper = cur->data;
-            int cur_data = cur_wrapper->data;
-            if (key_data == cur_data) {
-                return cur;
-            } else if (key_data < cur_data) {
-                cur = cur->left;
-            } else {
-                cur = cur->right;
-            }
-        }
-    } else if (tree->data_type == DATA_TYPE_DOUBLE) {
-        wrapper_double_t *wrapper = (wrapper_double_t *)data;
-        double key_data = unwrap_double(wrapper);
-
-        while (cur) {
-            wrapper_double_t *cur_wrapper = cur->data;
-            double cur_data = cur_wrapper->data;
-            if (double_equal(key_data, cur_data)) {
-                return cur;
-            } else if (key_data < cur_data) {
-                cur = cur->left;
-            } else {
-                cur = cur->right;
-            }
-        }
-    } else if (tree->data_type == DATA_TYPE_T) {
-        while (cur) {
-            int cmp = tree->compare(data, cur->data);
-            if (cmp == 0) {
-                return cur;
-            } else if (cmp < 0) {
-                cur = cur->left;
-            } else {
-                cur = cur->right;
-            }
-        }
-    }
-
-    return NULL;
 }
 
 /**
@@ -580,6 +529,35 @@ tree_t *tree_insert(tree_t *tree, T data) {
             parent->right = node;
         }
         node->parent = parent;
+    } else if (tree->data_type == DATA_TYPE_CHAR) {
+        wrapper_char_t *wrapper = (wrapper_char_t *)data;
+        char key_data = wrapper->data;
+
+        while (cur) {
+            parent = cur;
+
+            wrapper_char_t *cur_wrapper = (wrapper_char_t *)cur->data;
+            char cur_data = cur_wrapper->data;
+            if (key_data == cur_data) {
+                tree->destroy(cur->data);
+                free(node);
+                node = NULL;
+                return tree;
+            } else if (key_data < cur_data) {
+                cur = cur->left;
+            } else {
+                cur = cur->right;
+            }
+        }
+
+        wrapper_char_t *parent_wrapper = (wrapper_char_t *)parent;
+        char parent_data = parent_wrapper->data;
+        if (key_data < parent_data) {
+            parent->left = node;
+        } else {
+            parent->right = node;
+        }
+        node->parent = parent;
     } else if (tree->data_type == DATA_TYPE_T) {
         while (cur) {
             parent = cur;
@@ -611,216 +589,122 @@ tree_t *tree_insert(tree_t *tree, T data) {
 /**
  * @brief   Removes the element from the cino-tree.
  * @param tree  cino-tree
- * @param data  - For primitive data, a wrapper type of that primitive is needed.
- *              This function will unwrap for you.
- *              - For T (generic) cino-tree, it is caller's responsibility to free
- *              the previous data before overwriting it.
- * @return  For primitive cino-array, this function returns a wrapper type of the removed
- *          primitive. It is caller's responsibility to unwrap to get the primitive.
+ * @param data  For primitive data, a wrapper type of that primitive is needed.
+ * @return  Returns the modified cino-tree.
  */
-T tree_remove(tree_t *tree, T data) {
+tree_t *tree_remove(tree_t *tree, T data) {
     return_value_if_fail(tree != NULL && data != NULL, tree);
 
-    wrapper_int_t *wrapper_int = NULL;
-    wrapper_double_t *wrapper_double = NULL;
-    if (tree->data_type == DATA_TYPE_INT) {
-        wrapper_int = (wrapper_int_t *)data;
-    } else if (tree->data_type == DATA_TYPE_DOUBLE) {
-        wrapper_double = (wrapper_double_t *)data;
-    }
-
-    if (tree_contains(tree, data)) {
-        if (tree->data_type == DATA_TYPE_INT) {
-            unwrap_int(wrapper_int);
-        } else if (tree->data_type == DATA_TYPE_DOUBLE) {
-            unwrap_double(wrapper_double);
-        }
-        return NULL;
-    }
+    node_t *cur = tree->root;
 
     if (tree->data_type == DATA_TYPE_INT) {
-        node_t *cur = tree_node_get(tree, data);
-        call_and_return_value_if_fail(cur != NULL, unwrap_int(wrapper_int), NULL);
+        wrapper_int_t *wrapper = (wrapper_int_t *)data;
+        int key_data = unwrap_int(wrapper);
 
-        // remove root
-        if (cur == tree->root) {
-            int removed = *(int *)cur->data;
-            free(cur->data);
-            cur->data = NULL;
-            free(cur);
-            cur = NULL;
-            tree->root = NULL;
-            return wrap_int(removed);
-        }
-        // remove leaf node
-        else if (!cur->left && !cur->right) {
-            node_t *parent = cur->parent;
-            if (parent->left == cur) {
-                parent->left = NULL;
+        while (cur) {
+            wrapper_int_t *cur_wrapper = cur->data;
+            int cur_data = cur_wrapper->data;
+            if (key_data == cur_data) {
+                break;
+            } else if (key_data < cur_data) {
+                cur = cur->left;
             } else {
-                parent->right = NULL;
+                cur = cur->right;
             }
-
-            int removed = *(int *)cur->data;
-            free(cur->data);
-            cur->data = NULL;
-            free(cur);
-            cur = NULL;
-            return wrap_int(removed);
-        }
-        // remove node with only one child
-        else if (cur->left || cur->right) {
-            node_t *child = NULL;
-            if (cur->left) {
-                child = cur->left;
-            } else {
-                child = cur->right;
-            }
-
-            int removed = *(int *)cur->data;
-            *(int *)cur->data = *(int *)child->data;
-            cur->left = NULL;
-            cur->right = NULL;
-
-            free(child->data);
-            child->data = NULL;
-            free(child);
-            child = NULL;
-            return wrap_int(removed);
-        }
-        // remove node with two children
-        else {
-            node_t *max = tree_max_node(tree);
-
-            int removed = *(int *)cur->data;
-            *(int *)cur->data = *(int *)max->data;
-            free(max->data);
-            max->data = NULL;
-            free(max);
-            max = NULL;
-
-            return wrap_int(removed);
         }
     } else if (tree->data_type == DATA_TYPE_DOUBLE) {
-        node_t *cur = tree_node_get(tree, data);
-        call_and_return_value_if_fail(cur != NULL, unwrap_double(wrapper_double), NULL);
+        wrapper_double_t *wrapper = (wrapper_double_t *)data;
+        double key_data = unwrap_double(wrapper);
 
-        // remove root
-        if (cur == tree->root) {
-            double removed = *(double *)cur->data;
-            free(cur->data);
-            cur->data = NULL;
-            free(cur);
-            cur = NULL;
-            tree->root = NULL;
-            return wrap_double(removed);
-        }
-        // remove leaf node
-        else if (!cur->left && !cur->right) {
-            node_t *parent = cur->parent;
-            if (parent->left == cur) {
-                parent->left = NULL;
+        while (cur) {
+            wrapper_double_t *cur_wrapper = cur->data;
+            double cur_data = cur_wrapper->data;
+            if (double_equal(key_data, cur_data)) {
+                break;
+            } else if (key_data < cur_data) {
+                cur = cur->left;
             } else {
-                parent->right = NULL;
+                cur = cur->right;
             }
-
-            double removed = *(double *)cur->data;
-            free(cur->data);
-            cur->data = NULL;
-            free(cur);
-            cur = NULL;
-            return wrap_double(removed);
         }
-        // remove node with only one child
-        else if (cur->left || cur->right) {
-            node_t *child = NULL;
-            if (cur->left) {
-                child = cur->left;
+    } else if (tree->data_type == DATA_TYPE_CHAR) {
+        wrapper_char_t *wrapper = (wrapper_char_t *)data;
+        char key_data = unwrap_char(wrapper);
+
+        while (cur) {
+            wrapper_char_t *cur_wrapper = cur->data;
+            char cur_data = cur_wrapper->data;
+            if (key_data == cur_data) {
+                break;
+            } else if (key_data < cur_data) {
+                cur = cur->left;
             } else {
-                child = cur->right;
+                cur = cur->right;
             }
-
-            double removed = *(double *)cur->data;
-            *(double *)cur->data = *(double *)child->data;
-            cur->left = NULL;
-            cur->right = NULL;
-
-            free(child->data);
-            child->data = NULL;
-            free(child);
-            child = NULL;
-            return wrap_double(removed);
-        }
-        // remove node with two children
-        else {
-            node_t *max = tree_max_node(tree);
-
-            double removed = *(double *)cur->data;
-            *(double *)cur->data = *(double *)max->data;
-            free(max->data);
-            max->data = NULL;
-            free(max);
-            max = NULL;
-
-            return wrap_double(removed);
         }
     } else if (tree->data_type == DATA_TYPE_T) {
-        node_t *cur = tree_node_get(tree, data);
-        return_value_if_fail(cur != NULL, NULL);
-
-        // remove root
-        if (cur == tree->root) {
-            T removed = cur->data;
-            free(cur->data);
-            cur->data = NULL;
-            free(cur);
-            cur = NULL;
-            tree->root = NULL;
-            return removed;
-        }
-        // remove leaf node
-        else if (!cur->left && !cur->right) {
-            node_t *parent = cur->parent;
-            if (parent->left == cur) {
-                parent->left = NULL;
+        while (cur) {
+            int cmp = tree->compare(data, cur->data);
+            if (cmp == 0) {
+                break;
+            } else if (cmp < 0) {
+                cur = cur->left;
             } else {
-                parent->right = NULL;
+                cur = cur->right;
             }
-
-            T removed = cur->data;
-            free(cur);
-            cur = NULL;
-            return removed;
         }
-        // remove node with only one child
-        else if (cur->left || cur->right) {
-            node_t *child = NULL;
-            if (cur->left) {
-                child = cur->left;
-            } else {
-                child = cur->right;
-            }
+    }
 
-            T removed = cur->data;
-            cur->data = child->data;
-            cur->left = NULL;
-            cur->right = NULL;
+    // not found
+    return_value_if_fail(cur != NULL, tree);
 
-            free(child);
-            child = NULL;
-            return removed;
+    // remove root
+    if (cur == tree->root) {
+        tree->destroy(cur->data);
+        free(cur);
+        cur = NULL;
+        tree->root = NULL;
+    }
+    // remove leaf node
+    else if (!cur->left && !cur->right) {
+        node_t *parent = cur->parent;
+        if (parent->left == cur) {
+            parent->left = NULL;
+        } else {
+            parent->right = NULL;
         }
-        // remove node with two children
-        else {
-            node_t *max = tree_max_node(tree);
 
-            T removed = cur->data;
-            cur->data = max->data;
-            free(max);
-            max = NULL;
-
-            return removed;
+        tree->destroy(cur->data);
+        free(cur);
+        cur = NULL;
+    }
+    // remove node with only one child
+    else if ((cur->left && !cur->right) || (!cur->left && cur->right)) {
+        node_t *child = NULL;
+        if (cur->left) {
+            child = cur->left;
+        } else {
+            child = cur->right;
         }
+
+        tree->destroy(cur->data);
+        cur->data = child->data;
+        cur->left = NULL;
+        cur->right = NULL;
+        child->parent = NULL;
+        free(child);
+        child = NULL;
+    }
+    // remove node with two children
+    else {
+        // get the min node of left subtree
+        node_t *min_node = tree_min_node(cur->right);
+
+        tree->destroy(cur->data);
+        cur->data = min_node->data;
+        min_node->parent = NULL;
+        free(min_node);
+        min_node = NULL;
     }
 
     return tree;
@@ -829,60 +713,75 @@ T tree_remove(tree_t *tree, T data) {
 /**
  * @brief   Update the element in the cino-tree.
  * @param tree      cino-tree
- * @param old_data  - For primitive data, a wrapper type of that primitive is needed.
- *                  This function will unwrap for you.
- *                  - For T (generic) cino-tree, it is caller's responsibility to free
- *                  the previous data before overwriting it.
- * @param new_data  - For primitive data, a wrapper type of that primitive is needed.
- *                  This function will unwrap for you.
- *                  - For T (generic) cino-tree, it is caller's responsibility to free
- *                  the previous data before overwriting it.
+ * @param old_data  For primitive data, a wrapper type of that primitive is needed.
+ * @param new_data  For primitive data, a wrapper type of that primitive is needed.
  */
 void tree_set(tree_t *tree, T old_data, T new_data) {
     return_if_fail(tree != NULL && old_data != NULL && new_data != NULL);
 
-    wrapper_int_t *old_wrapper_int = NULL;
-    wrapper_double_t *old_wrapper_double = NULL;
-    wrapper_int_t *new_wrapper_int = NULL;
-    wrapper_double_t *new_wrapper_double = NULL;
+    node_t *cur = tree->root;
 
     if (tree->data_type == DATA_TYPE_INT) {
-        old_wrapper_int = (wrapper_int_t *)old_data;
-        new_wrapper_int = (wrapper_int_t *)new_data;
-    } else if (tree->data_type == DATA_TYPE_DOUBLE) {
-        old_wrapper_double = (wrapper_double_t *)old_data;
-        new_wrapper_double = (wrapper_double_t *)new_data;
-    }
+        wrapper_int_t *old_wrapper = (wrapper_int_t *)old_data;
+        int key_old_data = unwrap_int(old_wrapper);
 
-    if (!tree_contains(tree, old_data)) {
-        if (tree->data_type == DATA_TYPE_INT) {
-            unwrap_int(old_wrapper_int);
-            unwrap_int(new_wrapper_int);
-        } else if (tree->data_type == DATA_TYPE_DOUBLE) {
-            unwrap_double(old_wrapper_double);
-            unwrap_double(new_wrapper_double);
+        while (cur) {
+            wrapper_int_t *cur_wrapper = cur->data;
+            int cur_data = cur_wrapper->data;
+            if (key_old_data == cur_data) {
+                break;
+            } else if (key_old_data < cur_data) {
+                cur = cur->left;
+            } else {
+                cur = cur->right;
+            }
         }
-        return;
-    }
-
-    if (tree->data_type == DATA_TYPE_INT) {
-        node_t *cur = tree_node_get(tree, old_data);
-        if (!cur) {
-            unwrap_int(old_wrapper_int);
-            unwrap_int(new_wrapper_int);
-            return;
-        }
-        *(int *)cur->data = new_wrapper_int->data;
     } else if (tree->data_type == DATA_TYPE_DOUBLE) {
-        node_t *cur = tree_node_get(tree, old_data);
-        if (!cur) {
-            unwrap_double(old_wrapper_double);
-            unwrap_double(new_wrapper_double);
-            return;
+        wrapper_double_t *old_wrapper = (wrapper_double_t *)old_data;
+        double key_old_data = unwrap_double(old_wrapper);
+
+        while (cur) {
+            wrapper_double_t *cur_wrapper = cur->data;
+            double cur_data = cur_wrapper->data;
+            if (double_equal(key_old_data, cur_data)) {
+                break;
+            } else if (key_old_data < cur_data) {
+                cur = cur->left;
+            } else {
+                cur = cur->right;
+            }
         }
-        *(double *)cur->data = new_wrapper_double->data;
+    } else if (tree->data_type == DATA_TYPE_CHAR) {
+        wrapper_char_t *old_wrapper = (wrapper_char_t *)old_data;
+        char key_old_data = unwrap_char(old_wrapper);
+
+        while (cur) {
+            wrapper_char_t *cur_wrapper = cur->data;
+            char cur_data = cur_wrapper->data;
+            if (key_old_data == cur_data) {
+                break;
+            } else if (key_old_data < cur_data) {
+                cur = cur->left;
+            } else {
+                cur = cur->right;
+            }
+        }
     } else if (tree->data_type == DATA_TYPE_T) {
-        node_t *cur = tree_node_get(tree, old_data);
-        cur->data = new_data;
+        while (cur) {
+            int cmp = tree->compare(old_data, cur->data);
+            if (cmp == 0) {
+                break;
+            } else if (cmp < 0) {
+                cur = cur->left;
+            } else {
+                cur = cur->right;
+            }
+        }
     }
+
+    // not found
+    return_if_fail(cur != NULL);
+
+    tree->destroy(cur->data);
+    cur->data = new_data;
 }
