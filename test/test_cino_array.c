@@ -95,27 +95,58 @@ void test_array_destroy() {
 
 void test_array_is_empty() {
     array_t *arr = array_create("int", NULL, NULL);
-    assert(arr);
+    assert(array_is_empty(arr));
+    assert(array_size(arr) == 0);
+    for (int i = 0; i < 5; i++) {
+        array_append(arr, wrap_int(i));
+    }
+    assert(!array_is_empty(arr));
+    assert(array_size(arr) == 5);
+    array_clear(arr);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
     array_destroy(arr);
 
     arr = array_create("double", NULL, NULL);
-    assert(arr);
+    assert(array_is_empty(arr));
+    assert(array_size(arr) == 0);
+    for (int i = 0; i < 5; i++) {
+        array_append(arr, wrap_double(i));
+    }
+    assert(!array_is_empty(arr));
+    assert(array_size(arr) == 5);
+    array_clear(arr);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
     array_destroy(arr);
 
     arr = array_create("char", NULL, NULL);
-    assert(arr);
+    assert(array_is_empty(arr));
+    assert(array_size(arr) == 0);
+    for (int i = 'A'; i < 'A' + 5; i++) {
+        array_append(arr, wrap_char(i));
+    }
+    assert(!array_is_empty(arr));
+    assert(array_size(arr) == 5);
+    array_clear(arr);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
     array_destroy(arr);
 
     arr = array_create("T", NULL, NULL);
-    assert(arr);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
+    test_t *test = (test_t *)calloc(5, sizeof(test_t));
+    for (int i = 0; i < 5; i++) {
+        array_append(arr, &test[i]);
+    }
+    assert(!array_is_empty(arr));
+    assert(array_size(arr) == 5);
+    array_clear(arr);
+    assert(array_is_empty(arr));
+    assert(array_size(arr) == 0);
+    free(test);
+    test = NULL;
     array_destroy(arr);
 }
 
@@ -642,7 +673,7 @@ void test_array_min() {
     assert(double_equal(wrapper_double->data, 1.1));
     array_destroy(arr);
 
-    char arr3[] = {'D', 'F', 'A', 'G', 'C', 'B', 'D', 'A' + 5, '\0'};
+    char arr3[] = {'D', 'F', 'A', 'G', 'C', 'B', 'D', 'E', '\0'};
     int len3 = str_length(arr3);
     arr = array_create("char", NULL, NULL);
     for (int i = 0; i < len3; i++) {
@@ -691,7 +722,7 @@ void test_array_max() {
     assert(double_equal(wrapper_double->data, 9.9));
     array_destroy(arr);
 
-    char arr3[] = {'D', 'F', 'A', 'G', 'C', 'B', 'D', 'A' + 5, '\0'};
+    char arr3[] = {'D', 'F', 'A', 'G', 'C', 'B', 'D', 'E', '\0'};
     int len3 = str_length(arr3);
     arr = array_create("char", NULL, NULL);
     for (int i = 0; i < len3; i++) {

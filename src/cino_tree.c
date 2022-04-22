@@ -246,7 +246,6 @@ static void tree_clear_post_order(tree_t *tree, node_t *node) {
     tree_clear_post_order(tree, node->right);
 
     tree->destroy(node->data);
-    free(node->data);
     node->data = NULL;
     node->parent = NULL;
     node->left = NULL;
@@ -441,7 +440,7 @@ tree_t *tree_insert(tree_t *tree, T data) {
 
         int cmp = tree->compare(node->data, cur->data);
         if (cmp == 0) {
-            tree->destroy(cur->data);
+            tree->destroy(data);
             free(node);
             node = NULL;
             return tree;
@@ -486,46 +485,29 @@ tree_t *tree_remove(tree_t *tree, T data) {
     // not found
     call_and_return_value_if_fail(cur != NULL, tree->destroy(data), tree);
 
-    // remove root
-    if (cur == tree->root) {
-        tree->destroy(cur->data);
-        free(cur);
-        cur = NULL;
-        tree->root = NULL;
-    }
     // remove leaf node
-    else if (!cur->left && !cur->right) {
+    if (!cur->left && !cur->right) {
+        LOGGER(DEBUG, "remove leaf node====");
         node_t *parent = cur->parent;
-        if (parent->left == cur) {
-            parent->left = NULL;
-        } else {
-            parent->right = NULL;
+        if (parent) {
+            if (parent->left == cur) {
+                parent->left = NULL;
+            } else {
+                parent->right = NULL;
+            }
         }
 
         tree->destroy(cur->data);
+        if (cur == tree->root) {
+            tree->root = NULL;
+        }
         free(cur);
         cur = NULL;
     }
-    // remove node with only one child
-    else if ((cur->left && !cur->right) || (!cur->left && cur->right)) {
-        node_t *child = NULL;
-        if (cur->left) {
-            child = cur->left;
-        } else {
-            child = cur->right;
-        }
-
-        tree->destroy(cur->data);
-        cur->data = child->data;
-        cur->left = NULL;
-        cur->right = NULL;
-        child->parent = NULL;
-        free(child);
-        child = NULL;
-    }
-    // remove node with two children
-    else {
-        // get the min node of left subtree
+    // remove node with right subtree
+    else if (cur->right) {
+        LOGGER(DEBUG, "remove node with right subtree===");
+        // get the min node of right subtree
         node_t *min_node = tree_min_node(cur->right);
 
         tree->destroy(cur->data);
@@ -534,7 +516,20 @@ tree_t *tree_remove(tree_t *tree, T data) {
         free(min_node);
         min_node = NULL;
     }
+    // remove node with only left subtree
+    else {
+        LOGGER(DEBUG, "remove node with two children====");
+        // get the max node of left subtree
+        node_t *max_node = tree_max_node(cur->right);
 
+        tree->destroy(cur->data);
+        cur->data = max_node->data;
+        max_node->parent = NULL;
+        free(max_node);
+        max_node = NULL;
+    }
+
+    tree->destroy(data);
     return tree;
 }
 
