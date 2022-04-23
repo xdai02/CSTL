@@ -3,4 +3,4 @@
 - [ ] cino-deque
 - [ ] cino-map
 - [ ] cino-set
-- [ ] cino-tree: rebalance()
+- [ ] cino-tree -> AVL

@@ -64,6 +64,7 @@ static bool is_valid_data_type(const str_t data_type) {
  *              - negative if the first value is less than the second value
  */
 static int compare_int(const T data1, const T data2) {
+    return_value_if_fail(data1 != NULL && data2 != NULL, STATUS_BAD_PARAMETERS);
     wrapper_int_t *wrapper1 = (wrapper_int_t *)data1;
     wrapper_int_t *wrapper2 = (wrapper_int_t *)data2;
     return wrapper1->data - wrapper2->data;
@@ -79,6 +80,7 @@ static int compare_int(const T data1, const T data2) {
  *              - negative if the first value is less than the second value
  */
 static int compare_double(const T data1, const T data2) {
+    return_value_if_fail(data1 != NULL && data2 != NULL, STATUS_BAD_PARAMETERS);
     wrapper_double_t *wrapper1 = (wrapper_double_t *)data1;
     wrapper_double_t *wrapper2 = (wrapper_double_t *)data2;
     if (double_equal(wrapper1->data, wrapper2->data)) {
@@ -97,6 +99,7 @@ static int compare_double(const T data1, const T data2) {
  *              - negative if the first value is less than the second value
  */
 static int compare_char(const T data1, const T data2) {
+    return_value_if_fail(data1 != NULL && data2 != NULL, STATUS_BAD_PARAMETERS);
     wrapper_char_t *wrapper1 = (wrapper_char_t *)data1;
     wrapper_char_t *wrapper2 = (wrapper_char_t *)data2;
     return wrapper1->data - wrapper2->data;
@@ -112,6 +115,7 @@ static int compare_char(const T data1, const T data2) {
  *              - negative if the first value is less than the second value
  */
 static int compare_default(const T data1, const T data2) {
+    return_value_if_fail(data1 != NULL && data2 != NULL, STATUS_BAD_PARAMETERS);
     return (byte_t *)data1 - (byte_t *)data2;
 }
 
@@ -120,6 +124,7 @@ static int compare_default(const T data1, const T data2) {
  * @param data  pointer to the element
  */
 static void destroy_int(T data) {
+    return_if_fail(data != NULL);
     wrapper_int_t *wrapper = (wrapper_int_t *)data;
     unwrap_int(wrapper);
 }
@@ -129,6 +134,7 @@ static void destroy_int(T data) {
  * @param data  pointer to the element
  */
 static void destroy_double(T data) {
+    return_if_fail(data != NULL);
     wrapper_double_t *wrapper = (wrapper_double_t *)data;
     unwrap_double(wrapper);
 }
@@ -138,6 +144,7 @@ static void destroy_double(T data) {
  * @param data  pointer to the element
  */
 static void destroy_char(T data) {
+    return_if_fail(data != NULL);
     wrapper_char_t *wrapper = (wrapper_char_t *)data;
     unwrap_char(wrapper);
 }
@@ -163,6 +170,21 @@ static node_t *tree_node_create(T data) {
     node->right = NULL;
     node->parent = NULL;
     return node;
+}
+
+/**
+ * @brief   Destroy the tree node.
+ * @param tree  cino-tree
+ * @param node  node to be destroyed
+ */
+static void tree_node_destroy(tree_t *tree, node_t *node) {
+    return_if_fail(tree != NULL && node != NULL);
+    tree->destroy(node->data);
+    node->parent = NULL;
+    node->left = NULL;
+    node->right = NULL;
+    free(node);
+    node = NULL;
 }
 
 /**
@@ -241,17 +263,9 @@ bool tree_is_empty(const tree_t *tree) {
  */
 static void tree_clear_post_order(tree_t *tree, node_t *node) {
     return_if_fail(tree != NULL && node != NULL);
-
     tree_clear_post_order(tree, node->left);
     tree_clear_post_order(tree, node->right);
-
-    tree->destroy(node->data);
-    node->data = NULL;
-    node->parent = NULL;
-    node->left = NULL;
-    node->right = NULL;
-    free(node);
-    node = NULL;
+    tree_node_destroy(tree, node);
 }
 
 /**
@@ -440,9 +454,7 @@ tree_t *tree_insert(tree_t *tree, T data) {
 
         int cmp = tree->compare(node->data, cur->data);
         if (cmp == 0) {
-            tree->destroy(data);
-            free(node);
-            node = NULL;
+            tree_node_destroy(tree, node);
             return tree;
         } else if (cmp < 0) {
             cur = cur->left;
@@ -481,15 +493,26 @@ tree_t *tree_remove(tree_t *tree, T data) {
             cur = cur->right;
         }
     }
+    tree->destroy(data);
 
     // not found
-    call_and_return_value_if_fail(cur != NULL, tree->destroy(data), tree);
+    return_value_if_fail(cur != NULL, tree);
+
+    // remove node with two children
+    if (cur->left && cur->right) {
+        node_t *min_node = tree_min_node(cur->right);
+        tree->destroy(cur->data);
+        cur->data = min_node->data;
+        min_node->data = NULL;
+        cur = min_node;
+    }
 
     // remove leaf node
     if (!cur->left && !cur->right) {
-        LOGGER(DEBUG, "remove leaf node====");
         node_t *parent = cur->parent;
-        if (parent) {
+        if (!parent) {
+            tree->root = NULL;
+        } else {
             if (parent->left == cur) {
                 parent->left = NULL;
             } else {
@@ -497,39 +520,32 @@ tree_t *tree_remove(tree_t *tree, T data) {
             }
         }
 
-        tree->destroy(cur->data);
-        if (cur == tree->root) {
-            tree->root = NULL;
+        tree_node_destroy(tree, cur);
+    }
+    // remove node with only one child
+    else if ((cur->left && !cur->right) || (!cur->left && cur->right)) {
+        node_t *child = NULL;
+        if (cur->left) {
+            child = cur->left;
+        } else {
+            child = cur->right;
         }
-        free(cur);
-        cur = NULL;
-    }
-    // remove node with right subtree
-    else if (cur->right) {
-        LOGGER(DEBUG, "remove node with right subtree===");
-        // get the min node of right subtree
-        node_t *min_node = tree_min_node(cur->right);
 
-        tree->destroy(cur->data);
-        cur->data = min_node->data;
-        min_node->parent = NULL;
-        free(min_node);
-        min_node = NULL;
-    }
-    // remove node with only left subtree
-    else {
-        LOGGER(DEBUG, "remove node with two children====");
-        // get the max node of left subtree
-        node_t *max_node = tree_max_node(cur->right);
+        node_t *parent = cur->parent;
+        if (!parent) {
+            tree->root = child;
+        } else {
+            if (parent->left == cur) {
+                parent->left = child;
+            } else {
+                parent->right = child;
+            }
+        }
 
-        tree->destroy(cur->data);
-        cur->data = max_node->data;
-        max_node->parent = NULL;
-        free(max_node);
-        max_node = NULL;
+        child->parent = parent;
+        tree_node_destroy(tree, cur);
     }
 
-    tree->destroy(data);
     return tree;
 }
 
@@ -555,11 +571,8 @@ void tree_set(tree_t *tree, T old_data, T new_data) {
     }
 
     // not found
-    if (!cur) {
-        tree->destroy(old_data);
-        tree->destroy(new_data);
-    }
+    call_and_return_if_fail(cur != NULL, tree->destroy(new_data));
 
-    tree->destroy(cur->data);
-    cur->data = new_data;
+    tree_remove(tree, old_data);
+    tree_insert(tree, new_data);
 }

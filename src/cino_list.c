@@ -59,6 +59,7 @@ static bool is_valid_data_type(const str_t data_type) {
  * @param data  pointer to the element
  */
 static void destroy_int(T data) {
+    return_if_fail(data != NULL);
     wrapper_int_t *wrapper = (wrapper_int_t *)data;
     unwrap_int(wrapper);
 }
@@ -68,6 +69,7 @@ static void destroy_int(T data) {
  * @param data  pointer to the element
  */
 static void destroy_double(T data) {
+    return_if_fail(data != NULL);
     wrapper_double_t *wrapper = (wrapper_double_t *)data;
     unwrap_double(wrapper);
 }
@@ -77,6 +79,7 @@ static void destroy_double(T data) {
  * @param data  pointer to the element
  */
 static void destroy_char(T data) {
+    return_if_fail(data != NULL);
     wrapper_char_t *wrapper = (wrapper_char_t *)data;
     unwrap_char(wrapper);
 }

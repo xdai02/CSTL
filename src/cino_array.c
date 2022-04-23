@@ -59,6 +59,7 @@ static bool is_valid_data_type(const str_t data_type) {
  *              - negative if the first value is less than the second value
  */
 static int compare_int(const T data1, const T data2) {
+    return_value_if_fail(data1 != NULL && data2 != NULL, STATUS_BAD_PARAMETERS);
     wrapper_int_t *wrapper1 = (wrapper_int_t *)data1;
     wrapper_int_t *wrapper2 = (wrapper_int_t *)data2;
     return wrapper1->data - wrapper2->data;
@@ -74,6 +75,7 @@ static int compare_int(const T data1, const T data2) {
  *              - negative if the first value is less than the second value
  */
 static int compare_double(const T data1, const T data2) {
+    return_value_if_fail(data1 != NULL && data2 != NULL, STATUS_BAD_PARAMETERS);
     wrapper_double_t *wrapper1 = (wrapper_double_t *)data1;
     wrapper_double_t *wrapper2 = (wrapper_double_t *)data2;
     if (double_equal(wrapper1->data, wrapper2->data)) {
@@ -92,6 +94,7 @@ static int compare_double(const T data1, const T data2) {
  *              - negative if the first value is less than the second value
  */
 static int compare_char(const T data1, const T data2) {
+    return_value_if_fail(data1 != NULL && data2 != NULL, STATUS_BAD_PARAMETERS);
     wrapper_char_t *wrapper1 = (wrapper_char_t *)data1;
     wrapper_char_t *wrapper2 = (wrapper_char_t *)data2;
     return wrapper1->data - wrapper2->data;
@@ -107,6 +110,7 @@ static int compare_char(const T data1, const T data2) {
  *              - negative if the first value is less than the second value
  */
 static int compare_default(const T data1, const T data2) {
+    return_value_if_fail(data1 != NULL && data2 != NULL, STATUS_BAD_PARAMETERS);
     return (byte_t *)data1 - (byte_t *)data2;
 }
 
@@ -115,6 +119,7 @@ static int compare_default(const T data1, const T data2) {
  * @param data  pointer to the element
  */
 static void destroy_int(T data) {
+    return_if_fail(data != NULL);
     wrapper_int_t *wrapper = (wrapper_int_t *)data;
     unwrap_int(wrapper);
 }
@@ -124,6 +129,7 @@ static void destroy_int(T data) {
  * @param data  pointer to the element
  */
 static void destroy_double(T data) {
+    return_if_fail(data != NULL);
     wrapper_double_t *wrapper = (wrapper_double_t *)data;
     unwrap_double(wrapper);
 }
@@ -133,6 +139,7 @@ static void destroy_double(T data) {
  * @param data  pointer to the element
  */
 static void destroy_char(T data) {
+    return_if_fail(data != NULL);
     wrapper_char_t *wrapper = (wrapper_char_t *)data;
     unwrap_char(wrapper);
 }
