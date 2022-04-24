@@ -145,19 +145,19 @@ void test_cino_list() {
 }
 
 void test_cino_tree() {
-    test_tree_create();
-    test_tree_destroy();
-    test_tree_is_empty();
-    test_tree_clear();
-    test_tree_pre_order();
-    test_tree_in_order();
-    test_tree_post_order();
-    test_tree_min();
-    test_tree_max();
-    test_tree_contains();
-    test_tree_insert();
-    test_tree_remove();
-    test_tree_set();
+    // test_tree_create();
+    // test_tree_destroy();
+    // test_tree_is_empty();
+    // test_tree_clear();
+    // test_tree_pre_order();
+    // test_tree_in_order();
+    // test_tree_post_order();
+    // test_tree_min();
+    // test_tree_max();
+    // test_tree_contains();
+    // test_tree_insert();
+    // test_tree_remove();
+    // test_tree_set();
 
     LOGGER(INFO, "[PASS] test_cino_tree");
 }

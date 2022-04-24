@@ -13,6 +13,7 @@ typedef enum data_type_t {
 
 typedef struct node_t {
     T data;
+    int height;
     struct node_t *left;
     struct node_t *right;
     struct node_t *parent;
@@ -169,6 +170,7 @@ static node_t *tree_node_create(T data) {
     node->left = NULL;
     node->right = NULL;
     node->parent = NULL;
+    node->height = 1;
     return node;
 }
 
@@ -183,6 +185,7 @@ static void tree_node_destroy(tree_t *tree, node_t *node) {
     node->parent = NULL;
     node->left = NULL;
     node->right = NULL;
+    node->height = 0;
     free(node);
     node = NULL;
 }
@@ -261,10 +264,10 @@ bool tree_is_empty(const tree_t *tree) {
  * @param tree  cino-tree
  * @param node  tree node
  */
-static void tree_clear_post_order(tree_t *tree, node_t *node) {
+static void tree_clear_handler(tree_t *tree, node_t *node) {
     return_if_fail(tree != NULL && node != NULL);
-    tree_clear_post_order(tree, node->left);
-    tree_clear_post_order(tree, node->right);
+    tree_clear_handler(tree, node->left);
+    tree_clear_handler(tree, node->right);
     tree_node_destroy(tree, node);
 }
 
@@ -275,7 +278,7 @@ static void tree_clear_post_order(tree_t *tree, node_t *node) {
  */
 tree_t *tree_clear(tree_t *tree) {
     return_value_if_fail(tree != NULL, NULL);
-    tree_clear_post_order(tree, tree->root);
+    tree_clear_handler(tree, tree->root);
     tree->root = NULL;
     return tree;
 }
@@ -405,19 +408,19 @@ T tree_max(tree_t *tree) {
 }
 
 /**
- * @brief   Determine if the data can be found in the cino-tree.
+ * @brief   Search specific tree node by given data.
  * @param tree  cino-tree
  * @param data  For primitive data, a wrapper type of that primitive is needed.
- * @return  Returns `true` if the data is found, otherwise returns `false`.
+ * @return  Returns a pointers to the node found, or `NULL` if not found.
  */
-bool tree_contains(tree_t *tree, T data) {
-    return_value_if_fail(tree != NULL && data != NULL, false);
+static node_t *tree_get_node(tree_t *tree, T data) {
+    return_value_if_fail(tree != NULL && data != NULL, NULL);
 
     node_t *cur = tree->root;
     while (cur) {
         int cmp = tree->compare(data, cur->data);
         if (cmp == 0) {
-            break;
+            return cur;
         } else if (cmp < 0) {
             cur = cur->left;
         } else {
@@ -425,8 +428,152 @@ bool tree_contains(tree_t *tree, T data) {
         }
     }
 
+    return NULL;
+}
+
+/**
+ * @brief   Helper function for determining if the data can be found in the cino-tree.
+ * @param tree  cino-tree
+ * @param data  For primitive data, a wrapper type of that primitive is needed.
+ * @return  Returns `true` if the data is found, otherwise returns `false`.
+ */
+static bool tree_contains_handler(tree_t *tree, T data) {
+    return_value_if_fail(tree != NULL && data != NULL, false);
+    return tree_get_node(tree, data) != NULL;
+}
+
+/**
+ * @brief   Determine if the data can be found in the cino-tree.
+ * @param tree  cino-tree
+ * @param data  For primitive data, a wrapper type of that primitive is needed.
+ * @return  Returns `true` if the data is found, otherwise returns `false`.
+ */
+bool tree_contains(tree_t *tree, T data) {
+    return_value_if_fail(tree != NULL && data != NULL, false);
+    bool found = tree_contains_handler(tree, data);
     tree->destroy(data);
-    return cur != NULL;
+    return found;
+}
+
+/**
+ * @brief   Get the balance factor of a cino-tree node.
+ * @param node  cino-tree node
+ * @return  Returns the balance factor of a cino-tree node.
+ */
+static int tree_get_balance_factor(node_t *node) {
+    return_value_if_fail(node != NULL && node->left != NULL && node->right != NULL, 0);
+    return node->left->height - node->right->height;
+}
+
+/**
+ * @brief   Left-left rotation.
+ * @param node  cino-tree node
+ * @return  Returns the root of the subtree after rotation.
+ */
+static node_t *ll_rotation(node_t *node) {
+    return_value_if_fail(node != NULL, NULL);
+
+    node_t *sub_node = node->left;
+    node->left = sub_node->right;
+    if (node->left) {
+        node->left->parent = node;
+    }
+    sub_node->right = node;
+    sub_node->parent = node->parent;
+    node->parent = sub_node;
+
+    node->height = max(node->left->height, node->right->height) + 1;
+    sub_node->height = max(sub_node->left->height, node->height) + 1;
+    return sub_node;
+}
+
+/**
+ * @brief   Right-right rotation.
+ * @param node  cino-tree node
+ * @return  Returns the root of the subtree after rotation.
+ */
+static node_t *rr_rotation(node_t *node) {
+    return_value_if_fail(node != NULL, NULL);
+
+    node_t *sub_node = node->right;
+    node->right = sub_node->left;
+    if (sub_node->left) {
+        sub_node->left->parent = node;
+    }
+    sub_node->left = node;
+    sub_node->parent = node->parent;
+    node->parent = sub_node;
+
+    node->height = max(node->left->height, node->right->height) + 1;
+    sub_node->height = max(node->height, sub_node->right->height) + 1;
+    return sub_node;
+}
+
+/**
+ * @brief   Left-right rotation.
+ * @param node  cino-tree node
+ * @return  Returns the root of the subtree after rotation.
+ */
+static node_t *lr_rotation(node_t *node) {
+    return_value_if_fail(node != NULL, NULL);
+    node->left = rr_rotation(node->left);
+    return ll_rotation(node);
+}
+
+/**
+ * @brief   Right-left rotation.
+ * @param node  cino-tree node
+ * @return  Returns the root of the subtree after rotation.
+ */
+static node_t *rl_rotation(node_t *node) {
+    return_value_if_fail(node != NULL, NULL);
+    node->right = ll_rotation(node->right);
+    return rr_rotation(node);
+}
+
+/**
+ * @brief   Helper function for inserting the specified element to the cino-tree.
+ * @param tree  cino-tree
+ * @param node  root node used for recursion
+ * @param data  For primitive data, a wrapper type of that primitive is needed.
+ * @return  Returns the modified cino-tree.
+ */
+static node_t *tree_insert_node(tree_t *tree, node_t *node, T data) {
+    return_value_if_fail(tree != NULL && data != NULL, node);
+
+    if (!node) {
+        node_t *node = tree_node_create(data);
+        if (!tree->root) {
+            tree->root = node;
+        }
+        return node;
+    }
+
+    int cmp = tree->compare(data, node->data);
+    if (cmp == 0) {
+        return node;
+    } else if (cmp < 0) {
+        node->left = tree_insert_node(tree, node->left, data);
+        if (tree_get_balance_factor(node) > 1) {
+            if (tree->compare(data, node->left->data) < 0) {
+                node = ll_rotation(node);
+            } else {
+                node = lr_rotation(node);
+            }
+        }
+    } else {
+        node->right = tree_insert_node(tree, node->right, data);
+        if (tree_get_balance_factor(node) < -1) {
+            if (tree->compare(data, node->right->data) > 0) {
+                node = rr_rotation(node);
+            } else {
+                node = rl_rotation(node);
+            }
+        }
+    }
+
+    node->height = max(node->left->height, node->right->height) + 1;
+    return node;
 }
 
 /**
@@ -438,38 +585,13 @@ bool tree_contains(tree_t *tree, T data) {
 tree_t *tree_insert(tree_t *tree, T data) {
     return_value_if_fail(tree != NULL && data != NULL, tree);
 
-    node_t *node = tree_node_create(data);
-    return_value_if_fail(node != NULL, tree);
-
-    if (!tree->root) {
-        tree->root = node;
+    // already exist
+    if (tree_contains_handler(tree, data)) {
+        tree->destroy(data);
         return tree;
     }
 
-    node_t *cur = tree->root;
-    node_t *parent = cur->parent;
-
-    while (cur) {
-        parent = cur;
-
-        int cmp = tree->compare(node->data, cur->data);
-        if (cmp == 0) {
-            tree_node_destroy(tree, node);
-            return tree;
-        } else if (cmp < 0) {
-            cur = cur->left;
-        } else {
-            cur = cur->right;
-        }
-    }
-
-    if (tree->compare(node->data, parent->data) < 0) {
-        parent->left = node;
-    } else {
-        parent->right = node;
-    }
-    node->parent = parent;
-
+    tree_insert_node(tree, tree->root, data);
     return tree;
 }
 
