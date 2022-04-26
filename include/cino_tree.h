@@ -1,8 +1,8 @@
 /**************************************************
- * Module   :   cino_map
- * Function :   Operations on cino-map
+ * Module   :   cino_tree
+ * Function :   Operations on cino-tree
  * Category :
- *              - map_t
+ *              - tree_t
  **************************************************/
 
 #ifndef _CINO_TREE_H_
