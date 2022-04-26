@@ -264,10 +264,10 @@ bool tree_is_empty(const tree_t *tree) {
  * @param tree  cino-tree
  * @param node  tree node
  */
-static void tree_clear_handler(tree_t *tree, node_t *node) {
+static void tree_node_clear(tree_t *tree, node_t *node) {
     return_if_fail(tree != NULL && node != NULL);
-    tree_clear_handler(tree, node->left);
-    tree_clear_handler(tree, node->right);
+    tree_node_clear(tree, node->left);
+    tree_node_clear(tree, node->right);
     tree_node_destroy(tree, node);
 }
 
@@ -278,7 +278,7 @@ static void tree_clear_handler(tree_t *tree, node_t *node) {
  */
 tree_t *tree_clear(tree_t *tree) {
     return_value_if_fail(tree != NULL, NULL);
-    tree_clear_handler(tree, tree->root);
+    tree_node_clear(tree, tree->root);
     tree->root = NULL;
     return tree;
 }
@@ -413,7 +413,7 @@ T tree_max(tree_t *tree) {
  * @param data  For primitive data, a wrapper type of that primitive is needed.
  * @return  Returns a pointers to the node found, or `NULL` if not found.
  */
-static node_t *tree_get_node(tree_t *tree, T data) {
+static node_t *tree_node_get(tree_t *tree, T data) {
     return_value_if_fail(tree != NULL && data != NULL, NULL);
 
     node_t *cur = tree->root;
@@ -427,7 +427,6 @@ static node_t *tree_get_node(tree_t *tree, T data) {
             cur = cur->right;
         }
     }
-
     return NULL;
 }
 
@@ -437,9 +436,9 @@ static node_t *tree_get_node(tree_t *tree, T data) {
  * @param data  For primitive data, a wrapper type of that primitive is needed.
  * @return  Returns `true` if the data is found, otherwise returns `false`.
  */
-static bool tree_contains_handler(tree_t *tree, T data) {
+static bool tree_node_contains(tree_t *tree, T data) {
     return_value_if_fail(tree != NULL && data != NULL, false);
-    return tree_get_node(tree, data) != NULL;
+    return tree_node_get(tree, data) != NULL;
 }
 
 /**
@@ -450,9 +449,14 @@ static bool tree_contains_handler(tree_t *tree, T data) {
  */
 bool tree_contains(tree_t *tree, T data) {
     return_value_if_fail(tree != NULL && data != NULL, false);
-    bool found = tree_contains_handler(tree, data);
+    bool found = tree_node_contains(tree, data);
     tree->destroy(data);
     return found;
+}
+
+static int tree_height(node_t *node) {
+    return_value_if_fail(node != NULL, 0);
+    return node->height;
 }
 
 /**
@@ -460,9 +464,9 @@ bool tree_contains(tree_t *tree, T data) {
  * @param node  cino-tree node
  * @return  Returns the balance factor of a cino-tree node.
  */
-static int tree_get_balance_factor(node_t *node) {
-    return_value_if_fail(node != NULL && node->left != NULL && node->right != NULL, 0);
-    return node->left->height - node->right->height;
+static int tree_node_balance_factor(node_t *node) {
+    return_value_if_fail(node != NULL, 0);
+    return tree_height(node->left) - tree_height(node->right);
 }
 
 /**
@@ -482,8 +486,8 @@ static node_t *ll_rotation(node_t *node) {
     sub_node->parent = node->parent;
     node->parent = sub_node;
 
-    node->height = max(node->left->height, node->right->height) + 1;
-    sub_node->height = max(sub_node->left->height, node->height) + 1;
+    node->height = max(tree_height(node->left), tree_height(node->right)) + 1;
+    sub_node->height = max(tree_height(sub_node->left), node->height) + 1;
     return sub_node;
 }
 
@@ -504,8 +508,8 @@ static node_t *rr_rotation(node_t *node) {
     sub_node->parent = node->parent;
     node->parent = sub_node;
 
-    node->height = max(node->left->height, node->right->height) + 1;
-    sub_node->height = max(node->height, sub_node->right->height) + 1;
+    node->height = max(tree_height(node->left), tree_height(node->right)) + 1;
+    sub_node->height = max(node->height, tree_height(sub_node->right)) + 1;
     return sub_node;
 }
 
@@ -536,25 +540,23 @@ static node_t *rl_rotation(node_t *node) {
  * @param tree  cino-tree
  * @param node  root node used for recursion
  * @param data  For primitive data, a wrapper type of that primitive is needed.
- * @return  Returns the modified cino-tree.
+ * @return  Returns the modified root node.
  */
-static node_t *tree_insert_node(tree_t *tree, node_t *node, T data) {
+static node_t *tree_node_insert(tree_t *tree, node_t *node, T data) {
     return_value_if_fail(tree != NULL && data != NULL, node);
 
     if (!node) {
-        node_t *node = tree_node_create(data);
-        if (!tree->root) {
-            tree->root = node;
-        }
-        return node;
+        return tree_node_create(data);
     }
 
     int cmp = tree->compare(data, node->data);
-    if (cmp == 0) {
-        return node;
-    } else if (cmp < 0) {
-        node->left = tree_insert_node(tree, node->left, data);
-        if (tree_get_balance_factor(node) > 1) {
+    return_value_if_fail(cmp != 0, node);
+
+    if (cmp < 0) {
+        node_t *sub_node = tree_node_insert(tree, node->left, data);
+        node->left = sub_node;
+        sub_node->parent = node;
+        if (tree_node_balance_factor(node) > 1) {
             if (tree->compare(data, node->left->data) < 0) {
                 node = ll_rotation(node);
             } else {
@@ -562,8 +564,10 @@ static node_t *tree_insert_node(tree_t *tree, node_t *node, T data) {
             }
         }
     } else {
-        node->right = tree_insert_node(tree, node->right, data);
-        if (tree_get_balance_factor(node) < -1) {
+        node_t *sub_node = tree_node_insert(tree, node->right, data);
+        node->right = sub_node;
+        sub_node->parent = node;
+        if (tree_node_balance_factor(node) < -1) {
             if (tree->compare(data, node->right->data) > 0) {
                 node = rr_rotation(node);
             } else {
@@ -572,7 +576,7 @@ static node_t *tree_insert_node(tree_t *tree, node_t *node, T data) {
         }
     }
 
-    node->height = max(node->left->height, node->right->height) + 1;
+    node->height = max(tree_height(node->left), tree_height(node->right)) + 1;
     return node;
 }
 
@@ -586,13 +590,87 @@ tree_t *tree_insert(tree_t *tree, T data) {
     return_value_if_fail(tree != NULL && data != NULL, tree);
 
     // already exist
-    if (tree_contains_handler(tree, data)) {
-        tree->destroy(data);
-        return tree;
+    call_and_return_value_if_fail(!tree_node_contains(tree, data), tree->destroy(data), tree);
+
+    tree->root = tree_node_insert(tree, tree->root, data);
+    return tree;
+}
+
+/**
+ * @brief   Helper function for removing the specified element from the cino-tree.
+ * @param tree  cino-tree
+ * @param node  root node used for recursion
+ * @param del   node to be removed
+ * @return  Returns the modified root node.
+ */
+static node_t *tree_node_remove(tree_t *tree, node_t *node, node_t *del) {
+    return_value_if_fail(tree != NULL && node != NULL && del != NULL, node);
+
+    int cmp = tree->compare(del->data, node->data);
+
+    if (cmp < 0) {
+        node->left = tree_node_remove(tree, node->left, del);
+        if (tree_node_balance_factor(node) < -1) {
+            node_t *right_node = node->right;
+            if (tree_height(right_node->left) > tree_height(right_node->right)) {
+                node = rl_rotation(node);
+            } else {
+                node = rr_rotation(node);
+            }
+        }
+    } else if (cmp > 0) {
+        node->right = tree_node_remove(tree, node->right, del);
+        if (tree_node_balance_factor(node) > 1) {
+            node_t *left_node = node->left;
+            if (tree_height(left_node->right) > tree_height(left_node->left)) {
+                node = lr_rotation(node);
+            } else {
+                node = ll_rotation(node);
+            }
+        }
+    } else {
+        if (node->left && node->right) {
+            if (tree_height(node->left) > tree_height(node->right)) {
+                node_t *max_node = tree_max_node(node->left);
+                tree->destroy(node->data);
+                node->data = max_node->data;
+                node->left = tree_node_remove(tree, node->left, max_node);
+            } else {
+                node_t *min_node = tree_min_node(node->right);
+                tree->destroy(node->data);
+                node->data = min_node->data;
+                node->right = tree_node_remove(tree, node->right, min_node);
+            }
+        } else {
+            node_t *removed = node;
+            node = node->left ? node->left : node->right;
+            if (node) {
+                node->parent = removed->parent;
+            }
+
+            // determine if current node has already copied to its ancestor
+            node_t *ancestor = removed->parent;
+            bool found = false;
+            while (ancestor) {
+                if (tree->compare(removed->data, ancestor->data) == 0) {
+                    found = true;
+                }
+                ancestor = ancestor->parent;
+            }
+
+            if (found) {
+                removed->data = NULL;
+            } else {
+                tree->destroy(removed->data);
+            }
+
+            removed->data = NULL;
+
+            tree_node_destroy(tree, removed);
+        }
     }
 
-    tree_insert_node(tree, tree->root, data);
-    return tree;
+    return node;
 }
 
 /**
@@ -602,72 +680,14 @@ tree_t *tree_insert(tree_t *tree, T data) {
  * @return  Returns the modified cino-tree.
  */
 tree_t *tree_remove(tree_t *tree, T data) {
-    return_value_if_fail(tree != NULL && data != NULL, tree);
+    return_value_if_fail(tree != NULL, NULL);
 
-    node_t *cur = tree->root;
-    while (cur) {
-        int cmp = tree->compare(data, cur->data);
-        if (cmp == 0) {
-            break;
-        } else if (cmp < 0) {
-            cur = cur->left;
-        } else {
-            cur = cur->right;
-        }
-    }
+    node_t *node = tree_node_get(tree, data);
+    // not exist
+    call_and_return_value_if_fail(node != NULL, tree->destroy(data), tree);
+
+    tree->root = tree_node_remove(tree, tree->root, node);
     tree->destroy(data);
-
-    // not found
-    return_value_if_fail(cur != NULL, tree);
-
-    // remove node with two children
-    if (cur->left && cur->right) {
-        node_t *min_node = tree_min_node(cur->right);
-        tree->destroy(cur->data);
-        cur->data = min_node->data;
-        min_node->data = NULL;
-        cur = min_node;
-    }
-
-    // remove leaf node
-    if (!cur->left && !cur->right) {
-        node_t *parent = cur->parent;
-        if (!parent) {
-            tree->root = NULL;
-        } else {
-            if (parent->left == cur) {
-                parent->left = NULL;
-            } else {
-                parent->right = NULL;
-            }
-        }
-
-        tree_node_destroy(tree, cur);
-    }
-    // remove node with only one child
-    else if ((cur->left && !cur->right) || (!cur->left && cur->right)) {
-        node_t *child = NULL;
-        if (cur->left) {
-            child = cur->left;
-        } else {
-            child = cur->right;
-        }
-
-        node_t *parent = cur->parent;
-        if (!parent) {
-            tree->root = child;
-        } else {
-            if (parent->left == cur) {
-                parent->left = child;
-            } else {
-                parent->right = child;
-            }
-        }
-
-        child->parent = parent;
-        tree_node_destroy(tree, cur);
-    }
-
     return tree;
 }
 
@@ -680,20 +700,10 @@ tree_t *tree_remove(tree_t *tree, T data) {
 void tree_set(tree_t *tree, T old_data, T new_data) {
     return_if_fail(tree != NULL && old_data != NULL && new_data != NULL);
 
-    node_t *cur = tree->root;
-    while (cur) {
-        int cmp = tree->compare(old_data, cur->data);
-        if (cmp == 0) {
-            break;
-        } else if (cmp < 0) {
-            cur = cur->left;
-        } else {
-            cur = cur->right;
-        }
-    }
+    node_t *node = tree_node_get(tree, old_data);
 
     // not found
-    call_and_return_if_fail(cur != NULL, tree->destroy(new_data));
+    call_and_return_if_fail(node != NULL, tree->destroy(new_data));
 
     tree_remove(tree, old_data);
     tree_insert(tree, new_data);

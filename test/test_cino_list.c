@@ -8,18 +8,21 @@ typedef struct test_t {
 static void visit_int(void *data) {
     wrapper_int_t *wrapper = (wrapper_int_t *)data;
     assert(wrapper);
+    LOGGER(NONE, "wrapper_int->data = %d", wrapper->data);
     assert(wrapper->data >= 0 && wrapper->data < 5);
 }
 
 static void visit_double(void *data) {
     wrapper_double_t *wrapper = (wrapper_double_t *)data;
     assert(wrapper);
+    LOGGER(NONE, "wrapper_double->data = %f", wrapper->data);
     assert(wrapper->data >= 0.0 && wrapper->data < 5.0);
 }
 
 static void visit_char(void *data) {
     wrapper_char_t *wrapper = (wrapper_char_t *)data;
     assert(wrapper);
+    LOGGER(NONE, "wrapper_char->data = %c", wrapper->data);
     assert(wrapper->data >= 'A' && wrapper->data < 'A' + 5);
 }
 
@@ -36,25 +39,25 @@ static bool match_test_int(const void *data) {
 }
 
 void test_list_create() {
-    list_t *list = list_create("int", NULL);
+    list_t *list = list_create("int", NULL, NULL);
     assert(list);
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
     list_destroy(list);
 
-    list = list_create("double", NULL);
+    list = list_create("double", NULL, NULL);
     assert(list);
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
     list_destroy(list);
 
-    list = list_create("char", NULL);
+    list = list_create("char", NULL, NULL);
     assert(list);
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
     list_destroy(list);
 
-    list = list_create("T", NULL);
+    list = list_create("T", NULL, NULL);
     assert(list);
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
@@ -62,25 +65,25 @@ void test_list_create() {
 }
 
 void test_list_destroy() {
-    list_t *list = list_create("int", NULL);
+    list_t *list = list_create("int", NULL, NULL);
     assert(list);
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
     list_destroy(list);
 
-    list = list_create("double", NULL);
+    list = list_create("double", NULL, NULL);
     assert(list);
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
     list_destroy(list);
 
-    list = list_create("char", NULL);
+    list = list_create("char", NULL, NULL);
     assert(list);
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
     list_destroy(list);
 
-    list = list_create("T", NULL);
+    list = list_create("T", NULL, NULL);
     assert(list);
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
@@ -88,25 +91,25 @@ void test_list_destroy() {
 }
 
 void test_list_is_empty() {
-    list_t *list = list_create("int", NULL);
+    list_t *list = list_create("int", NULL, NULL);
     assert(list);
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
     list_destroy(list);
 
-    list = list_create("double", NULL);
+    list = list_create("double", NULL, NULL);
     assert(list);
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
     list_destroy(list);
 
-    list = list_create("char", NULL);
+    list = list_create("char", NULL, NULL);
     assert(list);
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
     list_destroy(list);
 
-    list = list_create("T", NULL);
+    list = list_create("T", NULL, NULL);
     assert(list);
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
@@ -114,7 +117,7 @@ void test_list_is_empty() {
 }
 
 void test_list_size() {
-    list_t *list = list_create("int", NULL);
+    list_t *list = list_create("int", NULL, NULL);
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
     for (int i = 0; i < 5; i++) {
@@ -127,7 +130,7 @@ void test_list_size() {
     assert(list_size(list) == 0);
     list_destroy(list);
 
-    list = list_create("double", NULL);
+    list = list_create("double", NULL, NULL);
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
     for (int i = 0; i < 5; i++) {
@@ -140,7 +143,7 @@ void test_list_size() {
     assert(list_size(list) == 0);
     list_destroy(list);
 
-    list = list_create("char", NULL);
+    list = list_create("char", NULL, NULL);
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
     for (int i = 'A'; i < 'A' + 5; i++) {
@@ -153,7 +156,7 @@ void test_list_size() {
     assert(list_size(list) == 0);
     list_destroy(list);
 
-    list = list_create("T", NULL);
+    list = list_create("T", NULL, NULL);
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
@@ -175,7 +178,7 @@ void test_list_size() {
 }
 
 void test_list_clear() {
-    list_t *list = list_create("int", NULL);
+    list_t *list = list_create("int", NULL, NULL);
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
     for (int i = 0; i < 5; i++) {
@@ -188,7 +191,7 @@ void test_list_clear() {
     assert(list_size(list) == 0);
     list_destroy(list);
 
-    list = list_create("double", NULL);
+    list = list_create("double", NULL, NULL);
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
     for (int i = 0; i < 5; i++) {
@@ -201,7 +204,7 @@ void test_list_clear() {
     assert(list_size(list) == 0);
     list_destroy(list);
 
-    list = list_create("char", NULL);
+    list = list_create("char", NULL, NULL);
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
     for (int i = 'A'; i < 'A' + 5; i++) {
@@ -214,7 +217,7 @@ void test_list_clear() {
     assert(list_size(list) == 0);
     list_destroy(list);
 
-    list = list_create("T", NULL);
+    list = list_create("T", NULL, NULL);
     assert(list_is_empty(list));
     assert(list_size(list) == 0);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
@@ -236,28 +239,28 @@ void test_list_clear() {
 }
 
 void test_list_foreach() {
-    list_t *list = list_create("int", NULL);
+    list_t *list = list_create("int", NULL, NULL);
     for (int i = 0; i < 5; i++) {
         list_push_back(list, wrap_int(i));
     }
     list_foreach(list, visit_int, false);
     list_destroy(list);
 
-    list = list_create("double", NULL);
+    list = list_create("double", NULL, NULL);
     for (int i = 0; i < 5; i++) {
         list_push_back(list, wrap_double(i));
     }
     list_foreach(list, visit_double, true);
     list_destroy(list);
 
-    list = list_create("char", NULL);
+    list = list_create("char", NULL, NULL);
     for (int i = 'A'; i < 'A' + 5; i++) {
         list_push_back(list, wrap_char(i));
     }
     list_foreach(list, visit_char, true);
     list_destroy(list);
 
-    list = list_create("T", NULL);
+    list = list_create("T", NULL, NULL);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
     for (int i = 0; i < 5; i++) {
         test[i].i = i;
@@ -273,7 +276,7 @@ void test_list_foreach() {
 }
 
 void test_list_get_front() {
-    list_t *list = list_create("int", NULL);
+    list_t *list = list_create("int", NULL, NULL);
     assert(!list_get_front(list));
     for (int i = 0; i < 5; i++) {
         list_push_back(list, wrap_int(i));
@@ -282,7 +285,7 @@ void test_list_get_front() {
     assert(wrapper_int->data == 0);
     list_destroy(list);
 
-    list = list_create("double", NULL);
+    list = list_create("double", NULL, NULL);
     assert(!list_get_front(list));
     for (int i = 0; i < 5; i++) {
         list_push_back(list, wrap_double(i));
@@ -291,7 +294,7 @@ void test_list_get_front() {
     assert(double_equal(wrapper_double->data, 0.0));
     list_destroy(list);
 
-    list = list_create("char", NULL);
+    list = list_create("char", NULL, NULL);
     assert(!list_get_front(list));
     for (int i = 'A'; i < 'A' + 5; i++) {
         list_push_back(list, wrap_char(i));
@@ -300,7 +303,7 @@ void test_list_get_front() {
     assert(wrapper_char->data == 'A');
     list_destroy(list);
 
-    list = list_create("T", NULL);
+    list = list_create("T", NULL, NULL);
     assert(!list_get_front(list));
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
 
@@ -322,7 +325,7 @@ void test_list_get_front() {
 }
 
 void test_list_get_back() {
-    list_t *list = list_create("int", NULL);
+    list_t *list = list_create("int", NULL, NULL);
     assert(!list_get_back(list));
     for (int i = 0; i < 5; i++) {
         list_push_back(list, wrap_int(i));
@@ -331,7 +334,7 @@ void test_list_get_back() {
     assert(wrapper_int->data == 4);
     list_destroy(list);
 
-    list = list_create("double", NULL);
+    list = list_create("double", NULL, NULL);
     assert(!list_get_back(list));
     for (int i = 0; i < 5; i++) {
         list_push_back(list, wrap_double(i));
@@ -340,7 +343,7 @@ void test_list_get_back() {
     assert(double_equal(wrapper_double->data, 4.0));
     list_destroy(list);
 
-    list = list_create("char", NULL);
+    list = list_create("char", NULL, NULL);
     assert(!list_get_back(list));
     for (int i = 'A'; i < 'A' + 5; i++) {
         list_push_back(list, wrap_char(i));
@@ -349,7 +352,7 @@ void test_list_get_back() {
     assert(wrapper_char->data == 'E');
     list_destroy(list);
 
-    list = list_create("T", NULL);
+    list = list_create("T", NULL, NULL);
     assert(!list_get_back(list));
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
 
@@ -371,7 +374,7 @@ void test_list_get_back() {
 }
 
 void test_list_get() {
-    list_t *list = list_create("int", NULL);
+    list_t *list = list_create("int", NULL, NULL);
     assert(!list_get(list, 0));
     for (int i = 0; i < 5; i++) {
         list_push_back(list, wrap_int(i));
@@ -382,7 +385,7 @@ void test_list_get() {
     }
     list_destroy(list);
 
-    list = list_create("double", NULL);
+    list = list_create("double", NULL, NULL);
     assert(!list_get(list, 1));
     for (int i = 0; i < 5; i++) {
         list_push_back(list, wrap_double(i));
@@ -393,7 +396,7 @@ void test_list_get() {
     }
     list_destroy(list);
 
-    list = list_create("char", NULL);
+    list = list_create("char", NULL, NULL);
     assert(!list_get(list, 1));
     for (int i = 'A'; i < 'A' + 5; i++) {
         list_push_back(list, wrap_char(i));
@@ -404,7 +407,7 @@ void test_list_get() {
     }
     list_destroy(list);
 
-    list = list_create("T", NULL);
+    list = list_create("T", NULL, NULL);
     assert(!list_get(list, 0));
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
 
@@ -430,7 +433,7 @@ void test_list_get() {
 }
 
 void test_list_set() {
-    list_t *list = list_create("int", NULL);
+    list_t *list = list_create("int", NULL, NULL);
     for (int i = 0; i < 3; i++) {
         list_push_back(list, wrap_int(i));
     }
@@ -446,7 +449,7 @@ void test_list_set() {
     assert(wrapper_int->data == 7);
     list_destroy(list);
 
-    list = list_create("double", NULL);
+    list = list_create("double", NULL, NULL);
     for (int i = 0; i < 3; i++) {
         list_push_back(list, wrap_double(i));
     }
@@ -462,7 +465,7 @@ void test_list_set() {
     assert(double_equal(wrapper_double->data, 7.0));
     list_destroy(list);
 
-    list = list_create("char", NULL);
+    list = list_create("char", NULL, NULL);
     for (int i = 'A'; i < 'A' + 3; i++) {
         list_push_back(list, wrap_char(i));
     }
@@ -478,7 +481,7 @@ void test_list_set() {
     assert(wrapper_char->data == 'Y');
     list_destroy(list);
 
-    list = list_create("T", NULL);
+    list = list_create("T", NULL, NULL);
     test_t *test = (test_t *)calloc(3, sizeof(test_t));
 
     for (int i = 0; i < 3; i++) {
@@ -515,7 +518,7 @@ void test_list_index_of() {
     int arr1[] = {5, 4, 2, 2, 5, 4, 1};
     int len1 = arr_len(arr1);
 
-    list_t *list = list_create("int", NULL);
+    list_t *list = list_create("int", NULL, NULL);
     for (int i = 0; i < len1; i++) {
         list_push_back(list, wrap_int(arr1[i]));
     }
@@ -523,7 +526,7 @@ void test_list_index_of() {
     assert(list_index_of(list, wrap_int(10)) == -1);
     list_destroy(list);
 
-    list = list_create("double", NULL);
+    list = list_create("double", NULL, NULL);
     for (int i = 0; i < len1; i++) {
         list_push_back(list, wrap_double(arr1[i]));
     }
@@ -534,7 +537,7 @@ void test_list_index_of() {
     char arr2[] = {'D', 'C', 'B', 'B', 'D', 'C', 'A', '\0'};
     int len2 = str_length(arr2);
 
-    list = list_create("char", NULL);
+    list = list_create("char", NULL, NULL);
     for (int i = 0; i < len2; i++) {
         list_push_back(list, wrap_char(arr2[i]));
     }
@@ -542,7 +545,7 @@ void test_list_index_of() {
     assert(list_index_of(list, wrap_char('X')) == -1);
     list_destroy(list);
 
-    list = list_create("T", NULL);
+    list = list_create("T", NULL, NULL);
     test_t *test = (test_t *)calloc(len1, sizeof(test_t));
 
     for (int i = 0; i < len1; i++) {
@@ -561,7 +564,7 @@ void test_list_index_of() {
 }
 
 void test_list_push_front() {
-    list_t *list = list_create("int", NULL);
+    list_t *list = list_create("int", NULL, NULL);
     for (int i = 0; i < 5; i++) {
         list_push_front(list, wrap_int(i));
     }
@@ -571,7 +574,7 @@ void test_list_push_front() {
     }
     list_destroy(list);
 
-    list = list_create("double", NULL);
+    list = list_create("double", NULL, NULL);
     for (int i = 0; i < 5; i++) {
         list_push_front(list, wrap_double(i));
     }
@@ -581,7 +584,7 @@ void test_list_push_front() {
     }
     list_destroy(list);
 
-    list = list_create("char", NULL);
+    list = list_create("char", NULL, NULL);
     for (int i = 'A'; i < 'A' + 5; i++) {
         list_push_front(list, wrap_char(i));
     }
@@ -591,7 +594,7 @@ void test_list_push_front() {
     }
     list_destroy(list);
 
-    list = list_create("T", NULL);
+    list = list_create("T", NULL, NULL);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
 
     for (int i = 0; i < 5; i++) {
@@ -616,7 +619,7 @@ void test_list_push_front() {
 }
 
 void test_list_push_back() {
-    list_t *list = list_create("int", NULL);
+    list_t *list = list_create("int", NULL, NULL);
     for (int i = 0; i < 5; i++) {
         list_push_back(list, wrap_int(i));
     }
@@ -626,7 +629,7 @@ void test_list_push_back() {
     }
     list_destroy(list);
 
-    list = list_create("double", NULL);
+    list = list_create("double", NULL, NULL);
     for (int i = 0; i < 5; i++) {
         list_push_back(list, wrap_double(i));
     }
@@ -636,7 +639,7 @@ void test_list_push_back() {
     }
     list_destroy(list);
 
-    list = list_create("char", NULL);
+    list = list_create("char", NULL, NULL);
     for (int i = 'A'; i < 'A' + 5; i++) {
         list_push_back(list, wrap_char(i));
     }
@@ -646,7 +649,7 @@ void test_list_push_back() {
     }
     list_destroy(list);
 
-    list = list_create("T", NULL);
+    list = list_create("T", NULL, NULL);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
 
     for (int i = 0; i < 5; i++) {
@@ -671,7 +674,7 @@ void test_list_push_back() {
 }
 
 void test_list_pop_front() {
-    list_t *list = list_create("int", NULL);
+    list_t *list = list_create("int", NULL, NULL);
     for (int i = 0; i < 5; i++) {
         list_push_back(list, wrap_int(i));
     }
@@ -683,7 +686,7 @@ void test_list_pop_front() {
     assert(list_size(list) == 0);
     list_destroy(list);
 
-    list = list_create("double", NULL);
+    list = list_create("double", NULL, NULL);
     for (int i = 0; i < 5; i++) {
         list_push_back(list, wrap_double(i));
     }
@@ -695,7 +698,7 @@ void test_list_pop_front() {
     assert(list_size(list) == 0);
     list_destroy(list);
 
-    list = list_create("char", NULL);
+    list = list_create("char", NULL, NULL);
     for (int i = 'A'; i < 'A' + 5; i++) {
         list_push_back(list, wrap_char(i));
     }
@@ -707,7 +710,7 @@ void test_list_pop_front() {
     assert(list_size(list) == 0);
     list_destroy(list);
 
-    list = list_create("T", NULL);
+    list = list_create("T", NULL, NULL);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
 
     for (int i = 0; i < 5; i++) {
@@ -732,7 +735,7 @@ void test_list_pop_front() {
 }
 
 void test_list_pop_back() {
-    list_t *list = list_create("int", NULL);
+    list_t *list = list_create("int", NULL, NULL);
     for (int i = 0; i < 5; i++) {
         list_push_back(list, wrap_int(i));
     }
@@ -744,7 +747,7 @@ void test_list_pop_back() {
     assert(list_size(list) == 0);
     list_destroy(list);
 
-    list = list_create("double", NULL);
+    list = list_create("double", NULL, NULL);
     for (int i = 0; i < 5; i++) {
         list_push_back(list, wrap_double(i));
     }
@@ -756,7 +759,7 @@ void test_list_pop_back() {
     assert(list_size(list) == 0);
     list_destroy(list);
 
-    list = list_create("char", NULL);
+    list = list_create("char", NULL, NULL);
     for (int i = 'A'; i < 'A' + 5; i++) {
         list_push_back(list, wrap_char(i));
     }
@@ -768,7 +771,7 @@ void test_list_pop_back() {
     assert(list_size(list) == 0);
     list_destroy(list);
 
-    list = list_create("T", NULL);
+    list = list_create("T", NULL, NULL);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
 
     for (int i = 0; i < 5; i++) {
@@ -796,7 +799,7 @@ void test_list_insert() {
     int arr1[] = {5, 6, 3, 2};
     int len1 = arr_len(arr1);
 
-    list_t *list = list_create("int", NULL);
+    list_t *list = list_create("int", NULL, NULL);
     list_insert(list, 0, wrap_int(3));
     list_insert(list, 0, wrap_int(5));
     list_insert(list, 1, wrap_int(6));
@@ -808,7 +811,7 @@ void test_list_insert() {
     }
     list_destroy(list);
 
-    list = list_create("double", NULL);
+    list = list_create("double", NULL, NULL);
     list_insert(list, 0, wrap_double(3));
     list_insert(list, 0, wrap_double(5));
     list_insert(list, 1, wrap_double(6));
@@ -823,7 +826,7 @@ void test_list_insert() {
     char arr2[] = {'C', 'D', 'B', 'A', '\0'};
     int len2 = str_length(arr2);
 
-    list = list_create("char", NULL);
+    list = list_create("char", NULL, NULL);
     list_insert(list, 0, wrap_char('B'));
     list_insert(list, 0, wrap_char('C'));
     list_insert(list, 1, wrap_char('D'));
@@ -835,7 +838,7 @@ void test_list_insert() {
     }
     list_destroy(list);
 
-    list = list_create("T", NULL);
+    list = list_create("T", NULL, NULL);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
 
     test[0].i = 3;
@@ -865,7 +868,7 @@ void test_list_insert() {
 }
 
 void test_list_remove() {
-    list_t *list = list_create("int", NULL);
+    list_t *list = list_create("int", NULL, NULL);
     for (int i = 0; i < 5; i++) {
         list_push_back(list, wrap_int(i));
     }
@@ -884,7 +887,7 @@ void test_list_remove() {
     }
     list_destroy(list);
 
-    list = list_create("double", NULL);
+    list = list_create("double", NULL, NULL);
     for (int i = 0; i < 5; i++) {
         list_push_back(list, wrap_double(i));
     }
@@ -903,7 +906,7 @@ void test_list_remove() {
     }
     list_destroy(list);
 
-    list = list_create("char", NULL);
+    list = list_create("char", NULL, NULL);
     for (int i = 'A'; i < 'A' + 5; i++) {
         list_push_back(list, wrap_char(i));
     }
@@ -922,7 +925,7 @@ void test_list_remove() {
     }
     list_destroy(list);
 
-    list = list_create("T", NULL);
+    list = list_create("T", NULL, NULL);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
 
     for (int i = 0; i < 5; i++) {

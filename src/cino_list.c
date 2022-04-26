@@ -22,6 +22,7 @@ typedef struct list_t {
     node_t *tail;
     data_type_t data_type;
     size_t size;
+    compare_t compare;
     destroy_t destroy;
 } list_t;
 
@@ -52,6 +53,71 @@ static bool is_valid_data_type(const str_t data_type) {
         }
     }
     return false;
+}
+
+/**
+ * @brief   Specify the rules for comparing two int values.
+ * @param data1 pointer to the first value
+ * @param data2 pointer to the second value
+ * @return  Returns
+ *              - 0 if two values are equal
+ *              - positive if the first value is greater than the second value
+ *              - negative if the first value is less than the second value
+ */
+static int compare_int(const T data1, const T data2) {
+    return_value_if_fail(data1 != NULL && data2 != NULL, STATUS_BAD_PARAMETERS);
+    wrapper_int_t *wrapper1 = (wrapper_int_t *)data1;
+    wrapper_int_t *wrapper2 = (wrapper_int_t *)data2;
+    return wrapper1->data - wrapper2->data;
+}
+
+/**
+ * @brief   Specify the rules for comparing two double values.
+ * @param data1 pointer to the first value
+ * @param data2 pointer to the second value
+ * @return  Returns
+ *              - 0 if two values are equal
+ *              - positive if the first value is greater than the second value
+ *              - negative if the first value is less than the second value
+ */
+static int compare_double(const T data1, const T data2) {
+    return_value_if_fail(data1 != NULL && data2 != NULL, STATUS_BAD_PARAMETERS);
+    wrapper_double_t *wrapper1 = (wrapper_double_t *)data1;
+    wrapper_double_t *wrapper2 = (wrapper_double_t *)data2;
+    if (double_equal(wrapper1->data, wrapper2->data)) {
+        return 0;
+    }
+    return wrapper1->data > wrapper2->data ? 1 : -1;
+}
+
+/**
+ * @brief   Specify the rules for comparing two int values.
+ * @param data1 pointer to the first value
+ * @param data2 pointer to the second value
+ * @return  Returns
+ *              - 0 if two values are equal
+ *              - positive if the first value is greater than the second value
+ *              - negative if the first value is less than the second value
+ */
+static int compare_char(const T data1, const T data2) {
+    return_value_if_fail(data1 != NULL && data2 != NULL, STATUS_BAD_PARAMETERS);
+    wrapper_char_t *wrapper1 = (wrapper_char_t *)data1;
+    wrapper_char_t *wrapper2 = (wrapper_char_t *)data2;
+    return wrapper1->data - wrapper2->data;
+}
+
+/**
+ * @brief   Specify the default rules for comparing two values.
+ * @param data1 pointer to the first value
+ * @param data2 pointer to the second value
+ * @return  Returns
+ *              - 0 if two values are equal
+ *              - positive if the first value is greater than the second value
+ *              - negative if the first value is less than the second value
+ */
+static int compare_default(const T data1, const T data2) {
+    return_value_if_fail(data1 != NULL && data2 != NULL, STATUS_BAD_PARAMETERS);
+    return (byte_t *)data1 - (byte_t *)data2;
 }
 
 /**
@@ -114,11 +180,13 @@ static node_t *list_node_create(T data) {
  *                      - double
  *                      - char
  *                      - T (generic)
+ * @param compare   User-defined callback function for comparison, only for T (generic)
+ *                  cino-list. Set to `NULL` if it is a primitive cino-list.
  * @param destroy   User-defined callback function for destroying, only for T (generic)
  *                  cino-list. Set to `NULL` if it is a primitive cino-list.
  * @return  Returns the pointer to cino-list, or `NULL` if creation failed.
  */
-list_t *list_create(const str_t data_type, destroy_t destroy) {
+list_t *list_create(const str_t data_type, compare_t compare, destroy_t destroy) {
     return_value_if_fail(is_valid_data_type(data_type), NULL);
 
     list_t *list = (list_t *)calloc(1, sizeof(list_t));
@@ -128,15 +196,19 @@ list_t *list_create(const str_t data_type, destroy_t destroy) {
 
     if (str_equal(data_type, "int")) {
         list->data_type = DATA_TYPE_INT;
+        list->compare = compare_int;
         list->destroy = destroy_int;
     } else if (str_equal(data_type, "double")) {
         list->data_type = DATA_TYPE_DOUBLE;
+        list->compare = compare_double;
         list->destroy = destroy_double;
     } else if (str_equal(data_type, "char")) {
         list->data_type = DATA_TYPE_CHAR;
+        list->compare = compare_char;
         list->destroy = destroy_char;
     } else if (str_equal(data_type, "T")) {
         list->data_type = DATA_TYPE_T;
+        list->compare = compare ? compare : compare_default;
         list->destroy = destroy ? destroy : destroy_default;
     }
 
@@ -196,13 +268,7 @@ list_t *list_clear(list_t *list) {
 
     while (!list_is_empty(list)) {
         T data = list_pop_front(list);
-        if (list->data_type == DATA_TYPE_INT) {
-            unwrap_int(data);
-        } else if (list->data_type == DATA_TYPE_DOUBLE) {
-            unwrap_double(data);
-        } else if (list->data_type == DATA_TYPE_CHAR) {
-            unwrap_char(data);
-        }
+        list->destroy(data);
     }
 
     list->size = 0;
@@ -335,63 +401,34 @@ void list_set(list_t *list, int index, T data) {
 int list_index_of(const list_t *list, void *context) {
     return_value_if_fail(list != NULL && context != NULL, -1);
 
-    if (list->data_type == DATA_TYPE_INT) {
-        wrapper_int_t *wrapper = (wrapper_int_t *)context;
-        int data = unwrap_int(wrapper);
+    int index = -1;
+    int i = 0;
 
-        int i = 0;
-        node_t *cur = list->head;
-        while (cur && cur->next && cur->next != list->tail) {
-            cur = cur->next;
-            wrapper_int_t *cur_wrapper = (wrapper_int_t *)cur->data;
-            if (cur_wrapper->data == data) {
-                return i;
-            }
-            i++;
-        }
-    } else if (list->data_type == DATA_TYPE_DOUBLE) {
-        wrapper_double_t *wrapper = (wrapper_double_t *)context;
-        double data = unwrap_double(wrapper);
-
-        int i = 0;
-        node_t *cur = list->head;
-        while (cur && cur->next && cur->next != list->tail) {
-            cur = cur->next;
-            wrapper_double_t *cur_wrapper = (wrapper_double_t *)cur->data;
-            if (double_equal(cur_wrapper->data, data)) {
-                return i;
-            }
-            i++;
-        }
-    } else if (list->data_type == DATA_TYPE_CHAR) {
-        wrapper_char_t *wrapper = (wrapper_char_t *)context;
-        char data = unwrap_char(wrapper);
-
-        int i = 0;
-        node_t *cur = list->head;
-        while (cur && cur->next && cur->next != list->tail) {
-            cur = cur->next;
-            wrapper_char_t *cur_wrapper = (wrapper_char_t *)cur->data;
-            if (cur_wrapper->data == data) {
-                return i;
-            }
-            i++;
-        }
-    } else if (list->data_type == DATA_TYPE_T) {
+    if (list->data_type == DATA_TYPE_T) {
         match_t match = (match_t)context;
-
-        int i = 0;
         node_t *cur = list->head;
         while (cur && cur->next && cur->next != list->tail) {
             cur = cur->next;
             if (match(cur->data)) {
-                return i;
+                index = i;
+                break;
             }
             i++;
         }
+    } else {
+        node_t *cur = list->head;
+        while (cur && cur->next && cur->next != list->tail) {
+            cur = cur->next;
+            if (list->compare(cur->data, context) == 0) {
+                index = i;
+                break;
+            }
+            i++;
+        }
+        list->destroy(context);
     }
 
-    return -1;
+    return index;
 }
 
 /**

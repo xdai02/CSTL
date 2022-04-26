@@ -22,12 +22,15 @@ typedef struct list_t list_t;
  *                  valid data type includes:
  *                      - int
  *                      - double
+ *                      - char
  *                      - T (generic)
+ * @param compare   User-defined callback function for comparison, only for T (generic)
+ *                  cino-list. Set to `NULL` if it is a primitive cino-list.
  * @param destroy   User-defined callback function for destroying, only for T (generic)
  *                  cino-list. Set to `NULL` if it is a primitive cino-list.
  * @return  Returns the pointer to cino-list, or `NULL` if creation failed.
  */
-list_t *list_create(const str_t data_type, destroy_t destroy);
+list_t *list_create(const str_t data_type, compare_t compare, destroy_t destroy);
 
 /**
  * @brief   Destroy cino-list.

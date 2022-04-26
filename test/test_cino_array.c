@@ -8,18 +8,21 @@ typedef struct test_t {
 static void visit_int(void *data) {
     wrapper_int_t *wrapper = (wrapper_int_t *)data;
     assert(wrapper);
+    LOGGER(NONE, "wrapper_int->data = %d", wrapper->data);
     assert(wrapper->data >= 0 && wrapper->data < 5);
 }
 
 static void visit_double(void *data) {
     wrapper_double_t *wrapper = (wrapper_double_t *)data;
     assert(wrapper);
+    LOGGER(NONE, "wrapper_double->data = %f", wrapper->data);
     assert(wrapper->data >= 0.0 && wrapper->data < 5.0);
 }
 
 static void visit_char(void *data) {
     wrapper_char_t *wrapper = (wrapper_char_t *)data;
     assert(wrapper);
+    LOGGER(NONE, "wrapper_char->data = %c", wrapper->data);
     assert(wrapper->data >= 'A' && wrapper->data < 'A' + 5);
 }
 
