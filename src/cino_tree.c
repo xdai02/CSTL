@@ -201,7 +201,7 @@ static void tree_node_destroy(tree_t *tree, node_t *node) {
  * @param compare   User-defined callback function for comparison, only for T (generic)
  *                  cino-tree. Set to `NULL` if it is a primitive cino-tree.
  * @param destroy   User-defined callback function for destroying, only for T (generic)
- *                  cino-array. Set to `NULL` if it is a primitive cino-array.
+ *                  cino-tree. Set to `NULL` if it is a primitive cino-tree.
  * @return  Returns the pointer to cino-tree, or `NULL` if creation failed.
  */
 tree_t *tree_create(const str_t data_type, compare_t compare, destroy_t destroy) {
@@ -257,6 +257,25 @@ void tree_destroy(tree_t *tree) {
  */
 bool tree_is_empty(const tree_t *tree) {
     return !tree || !tree->root;
+}
+
+/**
+ * @brief   Helper function for counting the number of elments in the cino-tree.
+ * @param node  tree node
+ */
+static size_t tree_size_count(const node_t *node) {
+    return_value_if_fail(node != NULL, 0);
+    return tree_size_count(node->left) + tree_size_count(node->right) + 1;
+}
+
+/**
+ * @brief   Get the number of elements in the cino-tree.
+ * @param tree  cino-tree
+ * @return  Returns the number of elements in the cino-tree.
+ */
+size_t tree_size(const tree_t *tree) {
+    return_value_if_fail(tree != NULL, 0);
+    return tree_size_count(tree->root);
 }
 
 /**

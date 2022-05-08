@@ -140,6 +140,64 @@ void test_tree_is_empty() {
     tree_destroy(tree);
 }
 
+void test_tree_size() {
+    tree_t *tree = tree_create("int", NULL, NULL);
+    assert(tree_is_empty(tree));
+    for (int i = 0; i < 5; i++) {
+        tree_insert(tree, wrap_int(i));
+    }
+    assert(!tree_is_empty(tree));
+    assert(tree_size(tree) == 5);
+    tree_clear(tree);
+    assert(tree_is_empty(tree));
+    tree_destroy(tree);
+
+    tree = tree_create("double", NULL, NULL);
+    assert(tree_is_empty(tree));
+    for (int i = 0; i < 5; i++) {
+        tree_insert(tree, wrap_double(i));
+    }
+    assert(!tree_is_empty(tree));
+    assert(tree_size(tree) == 5);
+    tree_clear(tree);
+    assert(tree_is_empty(tree));
+    tree_destroy(tree);
+
+    char arr1[] = {'F', 'A', 'C', 'C', 'A', '\0'};
+    int len1 = str_length(arr1);
+
+    tree = tree_create("char", NULL, NULL);
+    assert(tree_is_empty(tree));
+    for (int i = 0; i < len1; i++) {
+        tree_insert(tree, wrap_char(arr1[i]));
+    }
+    assert(!tree_is_empty(tree));
+    assert(tree_size(tree) == 3);
+    tree_clear(tree);
+    assert(tree_is_empty(tree));
+    tree_destroy(tree);
+
+    tree = tree_create("T", NULL, NULL);
+    assert(tree_is_empty(tree));
+    test_t *test = (test_t *)calloc(5, sizeof(test_t));
+
+    for (int i = 0; i < 5; i++) {
+        test[i].i = i;
+        char str[8] = {0};
+        int_to_str(i, str, sizeof(str));
+        str_copy(test[i].str, str);
+        tree_insert(tree, &test[i]);
+    }
+
+    assert(!tree_is_empty(tree));
+    assert(tree_size(tree) == 5);
+    tree_clear(tree);
+    assert(tree_is_empty(tree));
+    free(test);
+    test = NULL;
+    tree_destroy(tree);
+}
+
 void test_tree_clear() {
     int arr1[] = {5, 2, 8, 0, 5, 6, 2, 2, 12, 57, 23, 63, 18, 84, 55};
     int len1 = arr_len(arr1);

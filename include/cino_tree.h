@@ -27,7 +27,7 @@ typedef struct tree_t tree_t;
  * @param compare   User-defined callback function for comparison, only for T (generic)
  *                  cino-tree. Set to `NULL` if it is a primitive cino-tree.
  * @param destroy   User-defined callback function for destroying, only for T (generic)
- *                  cino-array. Set to `NULL` if it is a primitive cino-array.
+ *                  cino-tree. Set to `NULL` if it is a primitive cino-tree.
  * @return  Returns the pointer to cino-tree, or `NULL` if creation failed.
  */
 tree_t *tree_create(const str_t data_type, compare_t compare, destroy_t destroy);
@@ -44,6 +44,13 @@ void tree_destroy(tree_t *tree);
  * @return  Returns `true` if the cino-tree is empty, otherwise returns `false`.
  */
 bool tree_is_empty(const tree_t *tree);
+
+/**
+ * @brief   Get the number of elements in the cino-tree.
+ * @param tree  cino-tree
+ * @return  Returns the number of elements in the cino-tree.
+ */
+size_t tree_size(const tree_t *tree);
 
 /**
  * @brief   Clear all the elments in the cino-tree.

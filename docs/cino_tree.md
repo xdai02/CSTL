@@ -67,6 +67,25 @@ bool tree_is_empty(const tree_t *tree);
 
 ---
 
+#### tree_size()
+
+- 函数原型：
+
+```c
+size_t tree_size(const tree_t *tree);
+```
+
+- 功能：获取cino-tree元素个数。
+- 参数：
+
+| 参数 | 说明      |
+| ---- | --------- |
+| tree | cino-tree |
+
+- 返回值：cino-tree元素个数。
+
+---
+
 #### tree_clear()
 
 - 函数原型：

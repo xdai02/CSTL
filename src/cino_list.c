@@ -457,8 +457,7 @@ list_t *list_push_back(list_t *list, T data) {
  * @brief   Removes the first element from the cino-list.
  * @param list  cino-list
  * @return  For primitive cino-list, this function returns a wrapper type of the removed
- *          primitive. Caller should use `->data` to get the primitive value, instead
- *          of unwrapping it.
+ *          primitive. It is caller's responsibility to unwrap or free.
  */
 T list_pop_front(list_t *list) {
     return_value_if_fail(list != NULL && list->size > 0, NULL);
@@ -469,8 +468,7 @@ T list_pop_front(list_t *list) {
  * @brief   Removes the last element from the cino-list.
  * @param list  cino-list
  * @return  For primitive cino-list, this function returns a wrapper type of the removed
- *          primitive. Caller should use `->data` to get the primitive value, instead
- *          of unwrapping it.
+ *          primitive. It is caller's responsibility to unwrap or free.
  */
 T list_pop_back(list_t *list) {
     return_value_if_fail(list != NULL && list->size > 0, NULL);

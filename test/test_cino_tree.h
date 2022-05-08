@@ -7,6 +7,7 @@
 void test_tree_create();
 void test_tree_destroy();
 void test_tree_is_empty();
+void test_tree_size();
 void test_tree_clear();
 void test_tree_pre_order();
 void test_tree_in_order();

@@ -148,6 +148,7 @@ void test_cino_tree() {
     test_tree_create();
     test_tree_destroy();
     test_tree_is_empty();
+    test_tree_size();
     test_tree_clear();
     test_tree_pre_order();
     test_tree_in_order();
