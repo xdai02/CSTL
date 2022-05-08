@@ -1,6 +1,4 @@
-- [ ] cino-stack
 - [ ] cino-queue
 - [ ] cino-deque
 - [ ] cino-map
 - [ ] cino-set
-- [ ] 更新cino-tree文档

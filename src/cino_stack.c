@@ -18,7 +18,7 @@ typedef struct stack_t {
     size_t size;
     compare_t compare;
     destroy_t destroy;
-} array_t;
+} stack_t;
 
 /**
  * @brief   Determine if the data type is supported by cino-stack.

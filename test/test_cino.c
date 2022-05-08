@@ -2,6 +2,7 @@
 #include "test_cino_string.h"
 #include "test_cino_array.h"
 #include "test_cino_list.h"
+#include "test_cino_stack.h"
 #include "test_cino_tree.h"
 
 void test_cino_utils() {
@@ -144,6 +145,19 @@ void test_cino_list() {
     LOGGER(INFO, "[PASS] test_cino_list");
 }
 
+void test_cino_stack() {
+    test_stack_create();
+    test_stack_destroy();
+    test_stack_is_empty();
+    test_stack_size();
+    test_stack_clear();
+    test_stack_push();
+    test_stack_pop();
+    test_stack_peek();
+
+    LOGGER(INFO, "[PASS] test_cino_stack");
+}
+
 void test_cino_tree() {
     test_tree_create();
     test_tree_destroy();
@@ -168,6 +182,7 @@ int main(int argc, char *argv[]) {
     test_cino_string();
     test_cino_array();
     test_cino_list();
+    test_cino_stack();
     test_cino_tree();
 
     return 0;
