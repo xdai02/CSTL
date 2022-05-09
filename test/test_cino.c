@@ -4,6 +4,7 @@
 #include "test_cino_list.h"
 #include "test_cino_stack.h"
 #include "test_cino_queue.h"
+#include "test_cino_deque.h"
 #include "test_cino_tree.h"
 
 void test_cino_utils() {
@@ -172,6 +173,22 @@ void test_cino_queue() {
     LOGGER(INFO, "[PASS] test_cino_queue");
 }
 
+void test_cino_deque() {
+    test_deque_create();
+    test_deque_destroy();
+    test_deque_is_empty();
+    test_deque_size();
+    test_deque_clear();
+    test_deque_push_front();
+    test_deque_pop_front();
+    test_deque_get_front();
+    test_deque_push_back();
+    test_deque_pop_back();
+    test_deque_get_back();
+
+    LOGGER(INFO, "[PASS] test_cino_deque");
+}
+
 void test_cino_tree() {
     test_tree_create();
     test_tree_destroy();
@@ -198,6 +215,7 @@ int main(int argc, char *argv[]) {
     test_cino_list();
     test_cino_stack();
     test_cino_queue();
+    test_cino_deque();
     test_cino_tree();
 
     return 0;

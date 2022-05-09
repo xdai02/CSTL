@@ -75,7 +75,7 @@ bool stack_is_empty(const stack_t *stack);
 size_t stack_size(const stack_t *stackarray);
 ```
 
-- 功能：获取cino-array元素个数。
+- 功能：获取cino-stack元素个数。
 - 参数：
 
 | 参数  | 说明       |

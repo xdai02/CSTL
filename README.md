@@ -1,4 +1,4 @@
-# CINO (v0.5.0)
+# CINO (v0.6.0)
 
 `CINO` = `CINO Is Not OOP`
 
@@ -8,7 +8,7 @@
 - [x] cino-list
 - [x] cino-stack
 - [x] cino-queue
-- [ ] cino-deque
+- [x] cino-deque
 - [x] cino-tree
 - [ ] cino-set
 - [ ] cino-map

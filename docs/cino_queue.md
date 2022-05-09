@@ -75,7 +75,7 @@ bool queue_is_empty(const queue_t *queue);
 size_t queue_size(const queue_t *queuearray);
 ```
 
-- 功能：获取cino-array元素个数。
+- 功能：获取cino-queue元素个数。
 - 参数：
 
 | 参数  | 说明       |
