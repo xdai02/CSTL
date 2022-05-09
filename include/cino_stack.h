@@ -76,7 +76,7 @@ stack_t *stack_push(stack_t *stack, T data);
 T stack_pop(stack_t *stack);
 
 /**
- * @brief   Pop an elment from the cino-stack.
+ * @brief   Peek the top elment in the cino-stack.
  * @param stack cino-stack
  * @return  For primitive cino-stack, this function returns a wrapper type of the first
  *          primitive. Caller should use `->data` to get the primitive value, instead

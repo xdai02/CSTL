@@ -3,6 +3,7 @@
 #include "test_cino_array.h"
 #include "test_cino_list.h"
 #include "test_cino_stack.h"
+#include "test_cino_queue.h"
 #include "test_cino_tree.h"
 
 void test_cino_utils() {
@@ -158,6 +159,19 @@ void test_cino_stack() {
     LOGGER(INFO, "[PASS] test_cino_stack");
 }
 
+void test_cino_queue() {
+    test_queue_create();
+    test_queue_destroy();
+    test_queue_is_empty();
+    test_queue_size();
+    test_queue_clear();
+    test_queue_enqueue();
+    test_queue_dequeue();
+    test_queue_get_front();
+
+    LOGGER(INFO, "[PASS] test_cino_queue");
+}
+
 void test_cino_tree() {
     test_tree_create();
     test_tree_destroy();
@@ -183,6 +197,7 @@ int main(int argc, char *argv[]) {
     test_cino_array();
     test_cino_list();
     test_cino_stack();
+    test_cino_queue();
     test_cino_tree();
 
     return 0;

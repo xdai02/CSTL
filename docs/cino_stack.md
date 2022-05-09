@@ -143,7 +143,7 @@ T stack_pop(stack_t *stack);
 | ----- | ---------- |
 | stack | cino-stack |
 
-- 返回值：被删除的元素。
+- 返回值：被删除的元素，如果栈为空返回`NULL`。
 
 > 对于基本数据类型，此函数会返回该数据类型的包装类型，调用者需要拆箱/释放。
 
@@ -157,7 +157,7 @@ T stack_pop(stack_t *stack);
 T stack_peek(stack_t *stack);
 ```
 
-- 功能：cino-stack栈顶元素。
+- 功能：获取cino-stack栈顶元素。
 
 - 参数：
 
@@ -165,6 +165,6 @@ T stack_peek(stack_t *stack);
 | ----- | ---------- |
 | stack | cino-stack |
 
-- 返回值：被删除的元素。
+- 返回值：返回栈顶元素，如果栈为空返回`NULL`。
 
 > 对于基本数据类型cino-stack，此函数会返回该数据类型的包装类型，调用者应该使用`->data`访问基本元素，而不是拆箱。
