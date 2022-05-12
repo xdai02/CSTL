@@ -526,18 +526,6 @@ typedef struct wrapper_int_t {
 
 ---
 
-##### wrapper_double_t
-
-```c
-typedef struct wrapper_double_t {
-    double data;
-} wrapper_double_t;
-```
-
-- 功能：包装double类型。
-
----
-
 ##### wrap_int()
 
 - 函数原型：
@@ -573,6 +561,58 @@ int unwrap_int(wrapper_int_t *wrapper);
 | wrapper | wrapper_int_t |
 
 - 返回值：原始int值。
+
+---
+
+##### compare_int()
+
+- 函数原型：
+
+```c
+int compare_int(const T data1, const T data2);
+```
+
+- 功能：用于比较两个wrapper_int_t元素的接口函数。
+- 参数：
+
+| 参数  | 说明          |
+| ----- | ------------- |
+| data1 | wrapper_int_t |
+| data2 | wrapper_int_t |
+
+- 返回值：
+    - 返回0：相等
+    - 返回正数：data1 > data2
+    - 返回复数：data1 < data2
+
+---
+
+##### destroy_int()
+
+- 函数原型：
+
+```c
+void destroy_int(T data);
+```
+
+- 功能：用于销毁一个wrapper_int_t元素的接口函数。
+- 参数：
+
+| 参数  | 说明          |
+| ----- | ------------- |
+| data  | wrapper_int_t |
+
+---
+
+##### wrapper_double_t
+
+```c
+typedef struct wrapper_double_t {
+    double data;
+} wrapper_double_t;
+```
+
+- 功能：包装double类型。
 
 ---
 
@@ -614,6 +654,58 @@ double unwrap_double(wrapper_double_t *wrapper);
 
 ---
 
+##### compare_double()
+
+- 函数原型：
+
+```c
+int compare_double(const T data1, const T data2);
+```
+
+- 功能：用于比较两个wrapper_double_t元素的接口函数。
+- 参数：
+
+| 参数  | 说明             |
+| ----- | ---------------- |
+| data1 | wrapper_double_t |
+| data2 | wrapper_double_t |
+
+- 返回值：
+    - 返回0：相等
+    - 返回正数：data1 > data2
+    - 返回复数：data1 < data2
+
+---
+
+##### destroy_double()
+
+- 函数原型：
+
+```c
+void destroy_double(T data);
+```
+
+- 功能：用于销毁一个wrapper_double_t元素的接口函数。
+- 参数：
+
+| 参数 | 说明             |
+| ---- | ---------------- |
+| data | wrapper_double_t |
+
+---
+
+##### wrapper_char_t
+
+```c
+typedef struct wrapper_char_t {
+    char data;
+} wrapper_char_t;
+```
+
+- 功能：包装char类型。
+
+---
+
 ##### wrap_char()
 
 - 函数原型：
@@ -649,6 +741,86 @@ char unwrap_char(wrapper_char_t *wrapper);
 | wrapper | wrapper_char_t |
 
 - 返回值：原始char值。
+
+---
+
+##### compare_char()
+
+- 函数原型：
+
+```c
+int compare_char(const T data1, const T data2);
+```
+
+- 功能：用于比较两个wrapper_char_t元素的接口函数。
+- 参数：
+
+| 参数  | 说明           |
+| ----- | -------------- |
+| data1 | wrapper_char_t |
+| data2 | wrapper_char_t |
+
+- 返回值：
+    - 返回0：相等
+    - 返回正数：data1 > data2
+    - 返回复数：data1 < data2
+
+---
+
+##### destroy_double()
+
+- 函数原型：
+
+```c
+void destroy_char(T data);
+```
+
+- 功能：用于销毁一个wrapper_char_t元素的接口函数。
+- 参数：
+
+| 参数 | 说明           |
+| ---- | -------------- |
+| data | wrapper_char_t |
+
+---
+
+##### compare_T()
+
+- 函数原型：
+
+```c
+int compare_T(const T data1, const T data2);
+```
+
+- 功能：用于比较两个T（泛型）元素的接口函数。
+- 参数：
+
+| 参数  | 说明      |
+| ----- | --------- |
+| data1 | T（泛型） |
+| data2 | T（泛型） |
+
+- 返回值：
+    - 返回0：相等
+    - 返回正数：data1 > data2
+    - 返回复数：data1 < data2
+
+---
+
+##### destroy_T()
+
+- 函数原型：
+
+```c
+void destroy_T(T data);
+```
+
+- 功能：用于销毁一个T（泛型）元素的接口函数。
+- 参数：
+
+| 参数 | 说明      |
+| ---- | --------- |
+| data | T（泛型） |
 
 <div style="page-break-after: always;"></div>
 

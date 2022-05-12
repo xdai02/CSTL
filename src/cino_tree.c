@@ -20,109 +20,6 @@ typedef struct tree_t {
 } tree_t;
 
 /**
- * @brief   Specify the rules for comparing two int values.
- * @param data1 pointer to the first value
- * @param data2 pointer to the second value
- * @return  Returns
- *              - 0 if two values are equal
- *              - positive if the first value is greater than the second value
- *              - negative if the first value is less than the second value
- */
-static int compare_int(const T data1, const T data2) {
-    return_value_if_fail(data1 != NULL && data2 != NULL, STATUS_BAD_PARAMETERS);
-    wrapper_int_t *wrapper1 = (wrapper_int_t *)data1;
-    wrapper_int_t *wrapper2 = (wrapper_int_t *)data2;
-    return wrapper1->data - wrapper2->data;
-}
-
-/**
- * @brief   Specify the rules for comparing two double values.
- * @param data1 pointer to the first value
- * @param data2 pointer to the second value
- * @return  Returns
- *              - 0 if two values are equal
- *              - positive if the first value is greater than the second value
- *              - negative if the first value is less than the second value
- */
-static int compare_double(const T data1, const T data2) {
-    return_value_if_fail(data1 != NULL && data2 != NULL, STATUS_BAD_PARAMETERS);
-    wrapper_double_t *wrapper1 = (wrapper_double_t *)data1;
-    wrapper_double_t *wrapper2 = (wrapper_double_t *)data2;
-    if (double_equal(wrapper1->data, wrapper2->data)) {
-        return 0;
-    }
-    return wrapper1->data > wrapper2->data ? 1 : -1;
-}
-
-/**
- * @brief   Specify the rules for comparing two int values.
- * @param data1 pointer to the first value
- * @param data2 pointer to the second value
- * @return  Returns
- *              - 0 if two values are equal
- *              - positive if the first value is greater than the second value
- *              - negative if the first value is less than the second value
- */
-static int compare_char(const T data1, const T data2) {
-    return_value_if_fail(data1 != NULL && data2 != NULL, STATUS_BAD_PARAMETERS);
-    wrapper_char_t *wrapper1 = (wrapper_char_t *)data1;
-    wrapper_char_t *wrapper2 = (wrapper_char_t *)data2;
-    return wrapper1->data - wrapper2->data;
-}
-
-/**
- * @brief   Specify the default rules for comparing two values.
- * @param data1 pointer to the first value
- * @param data2 pointer to the second value
- * @return  Returns
- *              - 0 if two values are equal
- *              - positive if the first value is greater than the second value
- *              - negative if the first value is less than the second value
- */
-static int compare_default(const T data1, const T data2) {
-    return_value_if_fail(data1 != NULL && data2 != NULL, STATUS_BAD_PARAMETERS);
-    return (byte_t *)data1 - (byte_t *)data2;
-}
-
-/**
- * @brief   Specify the rules for destroying a single int element.
- * @param data  pointer to the element
- */
-static void destroy_int(T data) {
-    return_if_fail(data != NULL);
-    wrapper_int_t *wrapper = (wrapper_int_t *)data;
-    unwrap_int(wrapper);
-}
-
-/**
- * @brief   Specify the rules for destroying a single double element.
- * @param data  pointer to the element
- */
-static void destroy_double(T data) {
-    return_if_fail(data != NULL);
-    wrapper_double_t *wrapper = (wrapper_double_t *)data;
-    unwrap_double(wrapper);
-}
-
-/**
- * @brief   Specify the rules for destroying a single char element.
- * @param data  pointer to the element
- */
-static void destroy_char(T data) {
-    return_if_fail(data != NULL);
-    wrapper_char_t *wrapper = (wrapper_char_t *)data;
-    unwrap_char(wrapper);
-}
-
-/**
- * @brief   Specify the rules for destroying a single element.
- * @param data  pointer to the element
- */
-static void destroy_default(T data) {
-    return;
-}
-
-/**
  * @brief   Create a tree node.
  * @param data  data stored in the node
  * @return  Returns a pointer to the node, or `NULL` if it fails.
@@ -189,8 +86,8 @@ tree_t *tree_create(data_type_t data_type, compare_t compare, destroy_t destroy)
         tree->destroy = destroy_char;
     } else if (data_type == DATA_TYPE_T) {
         tree->data_type = DATA_TYPE_T;
-        tree->compare = compare ? compare : compare_default;
-        tree->destroy = destroy ? destroy : destroy_default;
+        tree->compare = compare ? compare : compare_T;
+        tree->destroy = destroy ? destroy : destroy_T;
     }
 
     return tree;
