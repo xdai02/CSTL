@@ -4,13 +4,6 @@
  *               array_t
  ****************************************/
 
-typedef enum data_type_t {
-    DATA_TYPE_INT,
-    DATA_TYPE_DOUBLE,
-    DATA_TYPE_CHAR,
-    DATA_TYPE_T,
-} data_type_t;
-
 typedef struct array_t {
     T *arr;
     data_type_t data_type;
@@ -19,35 +12,6 @@ typedef struct array_t {
     compare_t compare;
     destroy_t destroy;
 } array_t;
-
-/**
- * @brief   Determine if the data type is supported by cino-array.
- * @param data_type data type
- *                  valid data type includes:
- *                      - int
- *                      - double
- *                      - char
- *                      - T (generic)
- * @return  Returns the `true` if it is valid, otherwise returns `false`.
- */
-static bool is_valid_data_type(const str_t data_type) {
-    return_value_if_fail(data_type != NULL, false);
-
-    const str_t data_types[] = {
-        "int",
-        "double",
-        "char",
-        "T",  // generic
-    };
-
-    int data_types_len = arr_len(data_types);
-    for (int i = 0; i < data_types_len; i++) {
-        if (str_equal(data_types[i], data_type)) {
-            return true;
-        }
-    }
-    return false;
-}
 
 /**
  * @brief   Specify the rules for comparing two int values.
@@ -154,20 +118,20 @@ static void destroy_default(T data) {
 
 /**
  * @brief   Create cino-array.
- * @param data_type data type of each element
+ * @param data_type data type
  *                  valid data type includes:
- *                      - int
- *                      - double
- *                      - char
- *                      - T (generic)
+ *                      - DATA_TYPE_INT
+ *                      - DATA_TYPE_DOUBLE
+ *                      - DATA_TYPE_CHAR
+ *                      - DATA_TYPE_T (generic)
  * @param compare   User-defined callback function for comparison, only for T (generic)
  *                  cino-array. Set to `NULL` if it is a primitive cino-array.
  * @param destroy   User-defined callback function for destroying, only for T (generic)
  *                  cino-array. Set to `NULL` if it is a primitive cino-array.
  * @return  Returns the pointer to cino-array, or `NULL` if creation failed.
  */
-array_t *array_create(const str_t data_type, compare_t compare, destroy_t destroy) {
-    return_value_if_fail(is_valid_data_type(data_type), NULL);
+array_t *array_create(data_type_t data_type, compare_t compare, destroy_t destroy) {
+    return_value_if_fail(is_valid_cino_data_type(data_type), NULL);
 
     array_t *array = (array_t *)calloc(1, sizeof(array_t));
     return_value_if_fail(array != NULL, NULL);
@@ -175,19 +139,19 @@ array_t *array_create(const str_t data_type, compare_t compare, destroy_t destro
     array->size = 0;
     array->capacity = 0;
 
-    if (str_equal(data_type, "int")) {
+    if (data_type == DATA_TYPE_INT) {
         array->data_type = DATA_TYPE_INT;
         array->compare = compare_int;
         array->destroy = destroy_int;
-    } else if (str_equal(data_type, "double")) {
+    } else if (data_type == DATA_TYPE_DOUBLE) {
         array->data_type = DATA_TYPE_DOUBLE;
         array->compare = compare_double;
         array->destroy = destroy_double;
-    } else if (str_equal(data_type, "char")) {
+    } else if (data_type == DATA_TYPE_CHAR) {
         array->data_type = DATA_TYPE_CHAR;
         array->compare = compare_char;
         array->destroy = destroy_char;
-    } else if (str_equal(data_type, "T")) {
+    } else if (data_type == DATA_TYPE_T) {
         array->data_type = DATA_TYPE_T;
         array->compare = compare ? compare : compare_default;
         array->destroy = destroy ? destroy : destroy_default;

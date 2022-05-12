@@ -6,25 +6,25 @@ typedef struct test_t {
 } test_t;
 
 void test_queue_create() {
-    queue_t *queue = queue_create("int", NULL, NULL);
+    queue_t *queue = queue_create(DATA_TYPE_INT, NULL, NULL);
     assert(queue);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
     queue_destroy(queue);
 
-    queue = queue_create("double", NULL, NULL);
+    queue = queue_create(DATA_TYPE_DOUBLE, NULL, NULL);
     assert(queue);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
     queue_destroy(queue);
 
-    queue = queue_create("char", NULL, NULL);
+    queue = queue_create(DATA_TYPE_CHAR, NULL, NULL);
     assert(queue);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
     queue_destroy(queue);
 
-    queue = queue_create("T", NULL, NULL);
+    queue = queue_create(DATA_TYPE_T, NULL, NULL);
     assert(queue);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
@@ -32,25 +32,25 @@ void test_queue_create() {
 }
 
 void test_queue_destroy() {
-    queue_t *queue = queue_create("int", NULL, NULL);
+    queue_t *queue = queue_create(DATA_TYPE_INT, NULL, NULL);
     assert(queue);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
     queue_destroy(queue);
 
-    queue = queue_create("double", NULL, NULL);
+    queue = queue_create(DATA_TYPE_DOUBLE, NULL, NULL);
     assert(queue);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
     queue_destroy(queue);
 
-    queue = queue_create("char", NULL, NULL);
+    queue = queue_create(DATA_TYPE_CHAR, NULL, NULL);
     assert(queue);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
     queue_destroy(queue);
 
-    queue = queue_create("T", NULL, NULL);
+    queue = queue_create(DATA_TYPE_T, NULL, NULL);
     assert(queue);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
@@ -58,7 +58,7 @@ void test_queue_destroy() {
 }
 
 void test_queue_is_empty() {
-    queue_t *queue = queue_create("int", NULL, NULL);
+    queue_t *queue = queue_create(DATA_TYPE_INT, NULL, NULL);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
     for (int i = 0; i < 5; i++) {
@@ -71,7 +71,7 @@ void test_queue_is_empty() {
     assert(queue_size(queue) == 0);
     queue_destroy(queue);
 
-    queue = queue_create("double", NULL, NULL);
+    queue = queue_create(DATA_TYPE_DOUBLE, NULL, NULL);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
     for (int i = 0; i < 5; i++) {
@@ -84,7 +84,7 @@ void test_queue_is_empty() {
     assert(queue_size(queue) == 0);
     queue_destroy(queue);
 
-    queue = queue_create("char", NULL, NULL);
+    queue = queue_create(DATA_TYPE_CHAR, NULL, NULL);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
     for (int i = 'A'; i < 'A' + 5; i++) {
@@ -97,7 +97,7 @@ void test_queue_is_empty() {
     assert(queue_size(queue) == 0);
     queue_destroy(queue);
 
-    queue = queue_create("T", NULL, NULL);
+    queue = queue_create(DATA_TYPE_T, NULL, NULL);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
@@ -115,7 +115,7 @@ void test_queue_is_empty() {
 }
 
 void test_queue_size() {
-    queue_t *queue = queue_create("int", NULL, NULL);
+    queue_t *queue = queue_create(DATA_TYPE_INT, NULL, NULL);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
     for (int i = 0; i < 5; i++) {
@@ -128,7 +128,7 @@ void test_queue_size() {
     assert(queue_size(queue) == 0);
     queue_destroy(queue);
 
-    queue = queue_create("double", NULL, NULL);
+    queue = queue_create(DATA_TYPE_DOUBLE, NULL, NULL);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
     for (int i = 0; i < 5; i++) {
@@ -141,7 +141,7 @@ void test_queue_size() {
     assert(queue_size(queue) == 0);
     queue_destroy(queue);
 
-    queue = queue_create("char", NULL, NULL);
+    queue = queue_create(DATA_TYPE_CHAR, NULL, NULL);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
     for (int i = 'A'; i < 'A' + 5; i++) {
@@ -154,7 +154,7 @@ void test_queue_size() {
     assert(queue_size(queue) == 0);
     queue_destroy(queue);
 
-    queue = queue_create("T", NULL, NULL);
+    queue = queue_create(DATA_TYPE_T, NULL, NULL);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
@@ -172,7 +172,7 @@ void test_queue_size() {
 }
 
 void test_queue_clear() {
-    queue_t *queue = queue_create("int", NULL, NULL);
+    queue_t *queue = queue_create(DATA_TYPE_INT, NULL, NULL);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
     for (int i = 0; i < 5; i++) {
@@ -185,7 +185,7 @@ void test_queue_clear() {
     assert(queue_size(queue) == 0);
     queue_destroy(queue);
 
-    queue = queue_create("double", NULL, NULL);
+    queue = queue_create(DATA_TYPE_DOUBLE, NULL, NULL);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
     for (int i = 0; i < 5; i++) {
@@ -198,7 +198,7 @@ void test_queue_clear() {
     assert(queue_size(queue) == 0);
     queue_destroy(queue);
 
-    queue = queue_create("char", NULL, NULL);
+    queue = queue_create(DATA_TYPE_CHAR, NULL, NULL);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
     for (int i = 'A'; i < 'A' + 5; i++) {
@@ -211,7 +211,7 @@ void test_queue_clear() {
     assert(queue_size(queue) == 0);
     queue_destroy(queue);
 
-    queue = queue_create("T", NULL, NULL);
+    queue = queue_create(DATA_TYPE_T, NULL, NULL);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
@@ -229,7 +229,7 @@ void test_queue_clear() {
 }
 
 void test_queue_enqueue() {
-    queue_t *queue = queue_create("int", NULL, NULL);
+    queue_t *queue = queue_create(DATA_TYPE_INT, NULL, NULL);
     for (int i = 0; i < 5; i++) {
         queue_enqueue(queue, wrap_int(i));
     }
@@ -243,7 +243,7 @@ void test_queue_enqueue() {
     assert(queue_is_empty(queue));
     queue_destroy(queue);
 
-    queue = queue_create("double", NULL, NULL);
+    queue = queue_create(DATA_TYPE_DOUBLE, NULL, NULL);
     for (int i = 0; i < 5; i++) {
         queue_enqueue(queue, wrap_double(i));
     }
@@ -257,7 +257,7 @@ void test_queue_enqueue() {
     assert(queue_is_empty(queue));
     queue_destroy(queue);
 
-    queue = queue_create("char", NULL, NULL);
+    queue = queue_create(DATA_TYPE_CHAR, NULL, NULL);
     for (int i = 'A'; i < 'A' + 5; i++) {
         queue_enqueue(queue, wrap_char(i));
     }
@@ -271,7 +271,7 @@ void test_queue_enqueue() {
     assert(queue_is_empty(queue));
     queue_destroy(queue);
 
-    queue = queue_create("T", NULL, NULL);
+    queue = queue_create(DATA_TYPE_T, NULL, NULL);
     test_t *test = (test_t *)calloc(10, sizeof(test_t));
 
     for (int i = 0; i < 5; i++) {
@@ -303,7 +303,7 @@ void test_queue_enqueue() {
 }
 
 void test_queue_dequeue() {
-    queue_t *queue = queue_create("int", NULL, NULL);
+    queue_t *queue = queue_create(DATA_TYPE_INT, NULL, NULL);
     for (int i = 0; i < 5; i++) {
         queue_enqueue(queue, wrap_int(i));
     }
@@ -317,7 +317,7 @@ void test_queue_dequeue() {
     assert(queue_is_empty(queue));
     queue_destroy(queue);
 
-    queue = queue_create("double", NULL, NULL);
+    queue = queue_create(DATA_TYPE_DOUBLE, NULL, NULL);
     for (int i = 0; i < 5; i++) {
         queue_enqueue(queue, wrap_double(i));
     }
@@ -331,7 +331,7 @@ void test_queue_dequeue() {
     assert(queue_is_empty(queue));
     queue_destroy(queue);
 
-    queue = queue_create("char", NULL, NULL);
+    queue = queue_create(DATA_TYPE_CHAR, NULL, NULL);
     for (int i = 'A'; i < 'A' + 5; i++) {
         queue_enqueue(queue, wrap_char(i));
     }
@@ -345,7 +345,7 @@ void test_queue_dequeue() {
     assert(queue_is_empty(queue));
     queue_destroy(queue);
 
-    queue = queue_create("T", NULL, NULL);
+    queue = queue_create(DATA_TYPE_T, NULL, NULL);
     test_t *test = (test_t *)calloc(10, sizeof(test_t));
 
     for (int i = 0; i < 5; i++) {
@@ -377,7 +377,7 @@ void test_queue_dequeue() {
 }
 
 void test_queue_get_front() {
-    queue_t *queue = queue_create("int", NULL, NULL);
+    queue_t *queue = queue_create(DATA_TYPE_INT, NULL, NULL);
     for (int i = 0; i < 5; i++) {
         queue_enqueue(queue, wrap_int(i));
     }
@@ -391,7 +391,7 @@ void test_queue_get_front() {
     assert(queue_is_empty(queue));
     queue_destroy(queue);
 
-    queue = queue_create("double", NULL, NULL);
+    queue = queue_create(DATA_TYPE_DOUBLE, NULL, NULL);
     for (int i = 0; i < 5; i++) {
         queue_enqueue(queue, wrap_double(i));
     }
@@ -405,7 +405,7 @@ void test_queue_get_front() {
     assert(queue_is_empty(queue));
     queue_destroy(queue);
 
-    queue = queue_create("char", NULL, NULL);
+    queue = queue_create(DATA_TYPE_CHAR, NULL, NULL);
     for (int i = 'A'; i < 'A' + 5; i++) {
         queue_enqueue(queue, wrap_char(i));
     }
@@ -419,7 +419,7 @@ void test_queue_get_front() {
     assert(queue_is_empty(queue));
     queue_destroy(queue);
 
-    queue = queue_create("T", NULL, NULL);
+    queue = queue_create(DATA_TYPE_T, NULL, NULL);
     test_t *test = (test_t *)calloc(10, sizeof(test_t));
 
     for (int i = 0; i < 5; i++) {

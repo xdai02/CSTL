@@ -5,13 +5,6 @@
  *               set_t
  ****************************************/
 
-typedef enum data_type_t {
-    DATA_TYPE_INT,
-    DATA_TYPE_DOUBLE,
-    DATA_TYPE_CHAR,
-    DATA_TYPE_T,
-} data_type_t;
-
 typedef struct set_t {
     tree_t *tree;
     data_type_t data_type;
@@ -19,35 +12,6 @@ typedef struct set_t {
     compare_t compare;
     destroy_t destroy;
 } set_t;
-
-/**
- * @brief   Determine if the data type is support by cino-tree.
- * @param data_type data type
- *                  valid data type includes:
- *                      - int
- *                      - double
- *                      - char
- *                      - T (generic)
- * @return  Returns the `true` if it is valid, otherwise returns `false`.
- */
-static bool is_valid_data_type(const str_t data_type) {
-    return_value_if_fail(data_type != NULL, false);
-
-    const str_t data_types[] = {
-        "int",
-        "double",
-        "char",
-        "T",  // generic
-    };
-
-    int data_types_len = arr_len(data_types);
-    for (int i = 0; i < data_types_len; i++) {
-        if (str_equal(data_types[i], data_type)) {
-            return true;
-        }
-    }
-    return false;
-}
 
 /**
  * @brief   Specify the rules for comparing two int values.
@@ -154,20 +118,20 @@ static void destroy_default(T data) {
 
 /**
  * @brief   Create cino-set.
- * @param data_type data type of each element
+ * @param data_type data type
  *                  valid data type includes:
- *                      - int
- *                      - double
- *                      - char
- *                      - T (generic)
+ *                      - DATA_TYPE_INT
+ *                      - DATA_TYPE_DOUBLE
+ *                      - DATA_TYPE_CHAR
+ *                      - DATA_TYPE_T (generic)
  * @param compare   User-defined callback function for comparison, only for T (generic)
  *                  cino-set. Set to `NULL` if it is a primitive cino-set.
  * @param destroy   User-defined callback function for destroying, only for T (generic)
  *                  cino-set. Set to `NULL` if it is a primitive cino-set.
  * @return  Returns the pointer to cino-set, or `NULL` if creation failed.
  */
-set_t *set_create(const str_t data_type, compare_t compare, destroy_t destroy) {
-    return_value_if_fail(is_valid_data_type(data_type), NULL);
+set_t *set_create(data_type_t data_type, compare_t compare, destroy_t destroy) {
+    return_value_if_fail(is_valid_cino_data_type(data_type), NULL);
 
     set_t *set = (set_t *)calloc(1, sizeof(set_t));
     return_value_if_fail(set != NULL, NULL);
@@ -177,19 +141,19 @@ set_t *set_create(const str_t data_type, compare_t compare, destroy_t destroy) {
 
     set->size = 0;
 
-    if (str_equal(data_type, "int")) {
+    if (data_type == DATA_TYPE_INT) {
         set->data_type = DATA_TYPE_INT;
         set->compare = compare_int;
         set->destroy = destroy_int;
-    } else if (str_equal(data_type, "double")) {
+    } else if (data_type == DATA_TYPE_DOUBLE) {
         set->data_type = DATA_TYPE_DOUBLE;
         set->compare = compare_double;
         set->destroy = destroy_double;
-    } else if (str_equal(data_type, "char")) {
+    } else if (data_type == DATA_TYPE_CHAR) {
         set->data_type = DATA_TYPE_CHAR;
         set->compare = compare_char;
         set->destroy = destroy_char;
-    } else if (str_equal(data_type, "T")) {
+    } else if (data_type == DATA_TYPE_T) {
         set->data_type = DATA_TYPE_T;
         set->compare = compare ? compare : compare_default;
         set->destroy = destroy ? destroy : destroy_default;
@@ -265,7 +229,6 @@ set_t *set_intersection(set_t *set1, set_t *set2) {
     return_value_if_fail(set1->data_type == set2->data_type, NULL);
 
     set_t *intersection = set_create(set1->data_type, set1->compare, NULL);
-    
 
     return intersection;
 }

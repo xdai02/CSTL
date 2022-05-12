@@ -5,13 +5,6 @@
  *               queue_t
  ****************************************/
 
-typedef enum data_type_t {
-    DATA_TYPE_INT,
-    DATA_TYPE_DOUBLE,
-    DATA_TYPE_CHAR,
-    DATA_TYPE_T,
-} data_type_t;
-
 typedef struct queue_t {
     list_t *list;
     data_type_t data_type;
@@ -19,50 +12,21 @@ typedef struct queue_t {
 } queue_t;
 
 /**
- * @brief   Determine if the data type is supported by cino-queue.
+ * @brief   Create cino-queue.
  * @param data_type data type
  *                  valid data type includes:
- *                      - int
- *                      - double
- *                      - char
- *                      - T (generic)
- * @return  Returns the `true` if it is valid, otherwise returns `false`.
- */
-static bool is_valid_data_type(const str_t data_type) {
-    return_value_if_fail(data_type != NULL, false);
-
-    const str_t data_types[] = {
-        "int",
-        "double",
-        "char",
-        "T",  // generic
-    };
-
-    int data_types_len = arr_len(data_types);
-    for (int i = 0; i < data_types_len; i++) {
-        if (str_equal(data_types[i], data_type)) {
-            return true;
-        }
-    }
-    return false;
-}
-
-/**
- * @brief   Create cino-queue.
- * @param data_type data type of each element
- *                  valid data type includes:
- *                      - int
- *                      - double
- *                      - char
- *                      - T (generic)
+ *                      - DATA_TYPE_INT
+ *                      - DATA_TYPE_DOUBLE
+ *                      - DATA_TYPE_CHAR
+ *                      - DATA_TYPE_T (generic)
  * @param compare   User-defined callback function for comparison, only for T (generic)
  *                  cino-queue. Set to `NULL` if it is a primitive cino-queue.
  * @param destroy   User-defined callback function for destroying, only for T (generic)
  *                  cino-queue. Set to `NULL` if it is a primitive cino-queue.
  * @return  Returns the pointer to cino-queue, or `NULL` if creation failed.
  */
-queue_t *queue_create(const str_t data_type, compare_t compare, destroy_t destroy) {
-    return_value_if_fail(is_valid_data_type(data_type), NULL);
+queue_t *queue_create(data_type_t data_type, compare_t compare, destroy_t destroy) {
+    return_value_if_fail(is_valid_cino_data_type(data_type), NULL);
 
     queue_t *queue = (queue_t *)calloc(1, sizeof(queue_t));
     return_value_if_fail(queue != NULL, NULL);
@@ -72,13 +36,13 @@ queue_t *queue_create(const str_t data_type, compare_t compare, destroy_t destro
 
     queue->size = 0;
 
-    if (str_equal(data_type, "int")) {
+    if (data_type == DATA_TYPE_INT) {
         queue->data_type = DATA_TYPE_INT;
-    } else if (str_equal(data_type, "double")) {
+    } else if (data_type == DATA_TYPE_DOUBLE) {
         queue->data_type = DATA_TYPE_DOUBLE;
-    } else if (str_equal(data_type, "char")) {
+    } else if (data_type == DATA_TYPE_CHAR) {
         queue->data_type = DATA_TYPE_CHAR;
-    } else if (str_equal(data_type, "T")) {
+    } else if (data_type == DATA_TYPE_T) {
         queue->data_type = DATA_TYPE_T;
     }
 

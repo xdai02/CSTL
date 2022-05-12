@@ -1,6 +1,37 @@
 #include "cino_utils_basic.h"
 
 /****************************************
+ *            Type Definition
+ ****************************************/
+
+/**
+ * @brief   Determine if the data type is supported by CINO.
+ * @param data_type data type
+ *                  valid data type includes:
+ *                      - DATA_TYPE_INT
+ *                      - DATA_TYPE_DOUBLE
+ *                      - DATA_TYPE_CHAR
+ *                      - DATA_TYPE_T (generic)
+ * @return  Returns the `true` if it is valid, otherwise returns `false`.
+ */
+bool is_valid_cino_data_type(data_type_t data_type) {
+    data_type_t data_types[] = {
+        DATA_TYPE_INT,
+        DATA_TYPE_DOUBLE,
+        DATA_TYPE_CHAR,
+        DATA_TYPE_T,  // generic
+    };
+
+    int data_types_len = arr_len(data_types);
+    for (int i = 0; i < data_types_len; i++) {
+        if (data_types[i] == data_type) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/****************************************
  *          Numeric Operation
  ****************************************/
 

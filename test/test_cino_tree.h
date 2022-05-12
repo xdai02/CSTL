@@ -18,5 +18,7 @@ void test_tree_contains();
 void test_tree_insert();
 void test_tree_remove();
 void test_tree_set();
+void test_tree_node_array_create();
+void test_tree_node_array_destroy();
 
 #endif

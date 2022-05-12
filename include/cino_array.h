@@ -18,19 +18,19 @@ typedef struct array_t array_t;
 
 /**
  * @brief   Create cino-array.
- * @param data_type data type of each element
+ * @param data_type data type
  *                  valid data type includes:
- *                      - int
- *                      - double
- *                      - char
- *                      - T (generic)
+ *                      - DATA_TYPE_INT
+ *                      - DATA_TYPE_DOUBLE
+ *                      - DATA_TYPE_CHAR
+ *                      - DATA_TYPE_T (generic)
  * @param compare   User-defined callback function for comparison, only for T (generic)
  *                  cino-array. Set to `NULL` if it is a primitive cino-array.
  * @param destroy   User-defined callback function for destroying, only for T (generic)
  *                  cino-array. Set to `NULL` if it is a primitive cino-array.
  * @return  Returns the pointer to cino-array, or `NULL` if creation failed.
  */
-array_t *array_create(const str_t data_type, compare_t compare, destroy_t destroy);
+array_t *array_create(data_type_t data_type, compare_t compare, destroy_t destroy);
 
 /**
  * @brief   Destroy cino-array.
@@ -114,10 +114,10 @@ T array_remove(array_t *array, int index);
 /**
  * @brief   Get the minimum value in the cino-array.
  * @param array cino-array
- * @return  Returns the minimum value in the cino-array, or `NULL` if the cino-array 
+ * @return  Returns the minimum value in the cino-array, or `NULL` if the cino-array
  *          is empty.
- *          For primitive cino-array, a wrapper type of that primitive is returned. 
- *          Caller should use `->data` to get the primitive value, instead of unwrapping 
+ *          For primitive cino-array, a wrapper type of that primitive is returned.
+ *          Caller should use `->data` to get the primitive value, instead of unwrapping
  *          it.
  */
 T array_min(const array_t *array);
@@ -125,10 +125,10 @@ T array_min(const array_t *array);
 /**
  * @brief   Get the maximum value in the cino-array.
  * @param array cino-array
- * @return  Returns the maximum value in the cino-array, or `NULL` if the cino-array 
+ * @return  Returns the maximum value in the cino-array, or `NULL` if the cino-array
  *          is empty.
- *          For primitive cino-array, a wrapper type of that primitive is returned. 
- *          Caller should use `->data` to get the primitive value, instead of unwrapping 
+ *          For primitive cino-array, a wrapper type of that primitive is returned.
+ *          Caller should use `->data` to get the primitive value, instead of unwrapping
  *          it.
  */
 T array_max(const array_t *array);

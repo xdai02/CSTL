@@ -70,6 +70,25 @@ typedef char byte_t;  // byte_t == char
 
 #define T void*  // T == void *
 
+typedef enum data_type_t {
+    DATA_TYPE_INT,
+    DATA_TYPE_DOUBLE,
+    DATA_TYPE_CHAR,
+    DATA_TYPE_T,
+} data_type_t;
+
+/**
+ * @brief   Determine if the data type is supported by CINO.
+ * @param data_type data type
+ *                  valid data type includes:
+ *                      - DATA_TYPE_INT
+ *                      - DATA_TYPE_DOUBLE
+ *                      - DATA_TYPE_CHAR
+ *                      - DATA_TYPE_T (generic)
+ * @return  Returns the `true` if it is valid, otherwise returns `false`.
+ */
+bool is_valid_cino_data_type(data_type_t data_type);
+
 /****************************************
  *          Numeric Operation
  ****************************************/

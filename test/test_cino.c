@@ -204,6 +204,8 @@ void test_cino_tree() {
     test_tree_insert();
     test_tree_remove();
     test_tree_set();
+    // test_tree_node_array_create();
+    // test_tree_node_array_destroy();
 
     LOGGER(INFO, "[PASS] test_cino_tree");
 }
@@ -216,7 +218,7 @@ int main(int argc, char *argv[]) {
     test_cino_stack();
     test_cino_queue();
     test_cino_deque();
-    test_cino_tree();
+    // test_cino_tree();
 
     return 0;
 }

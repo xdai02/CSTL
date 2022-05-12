@@ -103,6 +103,49 @@ call_and_return_value_if_fail(expr, func, ret)
 
 ---
 
+##### DATA_TYPE_INT
+
+- 功能：int类型。
+
+---
+
+##### DATA_TYPE_DOUBLE
+
+- 功能：double类型。
+
+---
+
+##### DATA_TYPE_CHAR
+
+- 功能：char类型。
+
+---
+
+##### DATA_TYPE_T
+
+- 功能：泛型类型。
+
+---
+
+##### is_valid_cino_data_type()
+
+- 函数原型：
+
+```c
+bool is_valid_cino_data_type(data_type_t data_type);
+```
+
+- 功能：判断类型是否为CINO支持的类型。
+- 参数：
+
+| 参数      | 说明 |
+| --------- | ---- |
+| data_type | 类型 |
+
+- 返回值：如果CINO支持该类型，返回`true`，否则返回`false`。
+
+---
+
 <div style="page-break-after: always;"></div>
 
 #### 数值操作

@@ -15,7 +15,7 @@
 - 函数原型：
 
 ```c
-tree_t *tree_create(const str_t data_type, compare_t compare, destroy_t destroy);
+tree_t *tree_create(data_type_t data_type, compare_t compare, destroy_t destroy);
 ```
 
 - 功能：创建cino-tree。
@@ -23,7 +23,7 @@ tree_t *tree_create(const str_t data_type, compare_t compare, destroy_t destroy)
 
 | 参数      | 说明                                                         |
 | --------- | ------------------------------------------------------------ |
-| data_type | cino-tree的元素类型，支持"int"、“double”、"char"、“T”（泛型） |
+| data_type | cino-tree的元素类型，支持DATA_TYPE_INT、DATA_TYPE_DOUBLE、DATA_TYPE_CHAR、DATA_TYPE_T（泛型） |
 | compare   | 用于比较的回调函数，仅针对T（泛型）cino-tree，基本数据类型cino-tree设置为`NULL`即可 |
 | destroy   | 用于销毁的回调函数，仅针对T（泛型）cino-tree，基本数据类型cino-tree设置为`NULL`即可 |
 
@@ -219,7 +219,7 @@ bool tree_contains(tree_t *tree, T data);
 
 - 返回值：元素存在返回`true`，不存在返回`false`。
 
-> 对于基本数据类型，调用者需要传入该基本数据类型的包装类型。
+> 对于基本数据类型，调用者需要传入该基本数据类型的包装类型。调用者需要拆箱/释放。
 
 ---
 
@@ -287,3 +287,39 @@ void tree_set(tree_t *tree, T old_data, T new_data);
 - 返回值：修改后的cino-tree。
 
 > 对于基本数据类型，调用者需要传入该基本数据类型的包装类型。
+
+---
+
+#### tree_node_array_create()
+
+- 函数原型：
+
+```c
+array_t *tree_node_array_create(tree_t *tree);
+```
+
+- 功能：将cino-tree结点的引用构建成cino-array。
+- 参数：
+
+| 参数     | 说明      |
+| -------- | --------- |
+| tree     | cino-tree |
+
+- 返回值：包含cino-tree结点的引用的cino-array。
+
+---
+
+#### tree_node_array_destroy()
+
+- 函数原型：
+
+```c
+void tree_node_array_destroy(array_t *array);
+```
+
+- 功能：销毁包含cino-tree结点的引用构建成的cino-array。
+- 参数：
+
+| 参数  | 说明       |
+| ----- | ---------- |
+| array | cino-array |

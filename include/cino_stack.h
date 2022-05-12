@@ -18,19 +18,19 @@ typedef struct stack_t stack_t;
 
 /**
  * @brief   Create cino-stack.
- * @param data_type data type of each element
+ * @param data_type data type
  *                  valid data type includes:
- *                      - int
- *                      - double
- *                      - char
- *                      - T (generic)
+ *                      - DATA_TYPE_INT
+ *                      - DATA_TYPE_DOUBLE
+ *                      - DATA_TYPE_CHAR
+ *                      - DATA_TYPE_T (generic)
  * @param compare   User-defined callback function for comparison, only for T (generic)
  *                  cino-stack. Set to `NULL` if it is a primitive cino-stack.
  * @param destroy   User-defined callback function for destroying, only for T (generic)
  *                  cino-stack. Set to `NULL` if it is a primitive cino-stack.
  * @return  Returns the pointer to cino-stack, or `NULL` if creation failed.
  */
-stack_t *stack_create(const str_t data_type, compare_t compare, destroy_t destroy);
+stack_t *stack_create(data_type_t data_type, compare_t compare, destroy_t destroy);
 
 /**
  * @brief   Destroy cino-stack.

@@ -4,13 +4,6 @@
  *               tree_t
  ****************************************/
 
-typedef enum data_type_t {
-    DATA_TYPE_INT,
-    DATA_TYPE_DOUBLE,
-    DATA_TYPE_CHAR,
-    DATA_TYPE_T,
-} data_type_t;
-
 typedef struct node_t {
     T data;
     int height;
@@ -25,35 +18,6 @@ typedef struct tree_t {
     compare_t compare;
     destroy_t destroy;
 } tree_t;
-
-/**
- * @brief   Determine if the data type is support by cino-tree.
- * @param data_type data type
- *                  valid data type includes:
- *                      - int
- *                      - double
- *                      - char
- *                      - T (generic)
- * @return  Returns the `true` if it is valid, otherwise returns `false`.
- */
-static bool is_valid_data_type(const str_t data_type) {
-    return_value_if_fail(data_type != NULL, false);
-
-    const str_t data_types[] = {
-        "int",
-        "double",
-        "char",
-        "T",  // generic
-    };
-
-    int data_types_len = arr_len(data_types);
-    for (int i = 0; i < data_types_len; i++) {
-        if (str_equal(data_types[i], data_type)) {
-            return true;
-        }
-    }
-    return false;
-}
 
 /**
  * @brief   Specify the rules for comparing two int values.
@@ -192,38 +156,38 @@ static void tree_node_destroy(tree_t *tree, node_t *node) {
 
 /**
  * @brief   Create cino-tree.
- * @param data_type data type of each element
+ * @param data_type data type
  *                  valid data type includes:
- *                      - int
- *                      - double
- *                      - char
- *                      - T (generic)
+ *                      - DATA_TYPE_INT
+ *                      - DATA_TYPE_DOUBLE
+ *                      - DATA_TYPE_CHAR
+ *                      - DATA_TYPE_T (generic)
  * @param compare   User-defined callback function for comparison, only for T (generic)
  *                  cino-tree. Set to `NULL` if it is a primitive cino-tree.
  * @param destroy   User-defined callback function for destroying, only for T (generic)
  *                  cino-tree. Set to `NULL` if it is a primitive cino-tree.
  * @return  Returns the pointer to cino-tree, or `NULL` if creation failed.
  */
-tree_t *tree_create(const str_t data_type, compare_t compare, destroy_t destroy) {
-    return_value_if_fail(is_valid_data_type(data_type), NULL);
+tree_t *tree_create(data_type_t data_type, compare_t compare, destroy_t destroy) {
+    return_value_if_fail(is_valid_cino_data_type(data_type), NULL);
 
     tree_t *tree = (tree_t *)calloc(1, sizeof(tree_t));
     return_value_if_fail(tree != NULL, NULL);
     tree->root = NULL;
 
-    if (str_equal(data_type, "int")) {
+    if (data_type == DATA_TYPE_INT) {
         tree->data_type = DATA_TYPE_INT;
         tree->compare = compare_int;
         tree->destroy = destroy_int;
-    } else if (str_equal(data_type, "double")) {
+    } else if (data_type == DATA_TYPE_DOUBLE) {
         tree->data_type = DATA_TYPE_DOUBLE;
         tree->compare = compare_double;
         tree->destroy = destroy_double;
-    } else if (str_equal(data_type, "char")) {
+    } else if (data_type == DATA_TYPE_CHAR) {
         tree->data_type = DATA_TYPE_CHAR;
         tree->compare = compare_char;
         tree->destroy = destroy_char;
-    } else if (str_equal(data_type, "T")) {
+    } else if (data_type == DATA_TYPE_T) {
         tree->data_type = DATA_TYPE_T;
         tree->compare = compare ? compare : compare_default;
         tree->destroy = destroy ? destroy : destroy_default;
@@ -450,27 +414,15 @@ static node_t *tree_node_get(tree_t *tree, T data) {
 }
 
 /**
- * @brief   Helper function for determining if the data can be found in the cino-tree.
- * @param tree  cino-tree
- * @param data  For primitive data, a wrapper type of that primitive is needed.
- * @return  Returns `true` if the data is found, otherwise returns `false`.
- */
-static bool tree_node_contains(tree_t *tree, T data) {
-    return_value_if_fail(tree != NULL && data != NULL, false);
-    return tree_node_get(tree, data) != NULL;
-}
-
-/**
  * @brief   Determine if the data can be found in the cino-tree.
  * @param tree  cino-tree
  * @param data  For primitive data, a wrapper type of that primitive is needed.
- * @return  Returns `true` if the data is found, otherwise returns `false`.
+ * @return  Returns `true` if the data is found, otherwise returns `false`. It is
+ *          caller's responsibility to unwrap or free.
  */
 bool tree_contains(tree_t *tree, T data) {
     return_value_if_fail(tree != NULL && data != NULL, false);
-    bool found = tree_node_contains(tree, data);
-    tree->destroy(data);
-    return found;
+    return tree_node_get(tree, data) != NULL;
 }
 
 static int tree_height(node_t *node) {
@@ -609,7 +561,7 @@ tree_t *tree_insert(tree_t *tree, T data) {
     return_value_if_fail(tree != NULL && data != NULL, tree);
 
     // already exist
-    call_and_return_value_if_fail(!tree_node_contains(tree, data), tree->destroy(data), tree);
+    call_and_return_value_if_fail(!tree_contains(tree, data), tree->destroy(data), tree);
 
     tree->root = tree_node_insert(tree, tree->root, data);
     return tree;
@@ -726,4 +678,40 @@ void tree_set(tree_t *tree, T old_data, T new_data) {
 
     tree_remove(tree, old_data);
     tree_insert(tree, new_data);
+}
+
+/**
+ * @brief   Helper function for inserting node into array by in-order trasersal.
+ * @param array cino-array
+ * @param node  tree node
+ */
+static void tree_node_array_insert(array_t *array, node_t *node) {
+    return_if_fail(array != NULL && node != NULL);
+    array_append(array, node->data);
+    tree_node_array_insert(array, node->left);
+    tree_node_array_insert(array, node->right);
+}
+
+/**
+ * @brief   Create a cino-array containing all the references of nodes in the cino-tree.
+ * @param tree  cino-tree
+ * @return  Returns a cino-array containing all the references of nodes.
+ */
+array_t *tree_node_array_create(tree_t *tree) {
+    return_value_if_fail(tree != NULL, NULL);
+
+    array_t *array = array_create(tree->data_type, tree->compare, NULL);
+    return_value_if_fail(array != NULL, NULL);
+
+    tree_node_array_insert(array, tree->root);
+    return array;
+}
+
+/**
+ * @brief   Destroy the cino-array containing tree node references.
+ * @param array cino-array
+ */
+void tree_node_array_destroy(array_t *array) {
+    return_if_fail(array != NULL);
+    array_destroy(array);
 }

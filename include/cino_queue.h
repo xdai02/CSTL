@@ -18,19 +18,19 @@ typedef struct queue_t queue_t;
 
 /**
  * @brief   Create cino-queue.
- * @param data_type data type of each element
+ * @param data_type data type
  *                  valid data type includes:
- *                      - int
- *                      - double
- *                      - char
- *                      - T (generic)
+ *                      - DATA_TYPE_INT
+ *                      - DATA_TYPE_DOUBLE
+ *                      - DATA_TYPE_CHAR
+ *                      - DATA_TYPE_T (generic)
  * @param compare   User-defined callback function for comparison, only for T (generic)
  *                  cino-queue. Set to `NULL` if it is a primitive cino-queue.
  * @param destroy   User-defined callback function for destroying, only for T (generic)
  *                  cino-queue. Set to `NULL` if it is a primitive cino-queue.
  * @return  Returns the pointer to cino-queue, or `NULL` if creation failed.
  */
-queue_t *queue_create(const str_t data_type, compare_t compare, destroy_t destroy);
+queue_t *queue_create(data_type_t data_type, compare_t compare, destroy_t destroy);
 
 /**
  * @brief   Destroy cino-queue.

@@ -4,13 +4,6 @@
  *               list_t
  ****************************************/
 
-typedef enum data_type_t {
-    DATA_TYPE_INT,
-    DATA_TYPE_DOUBLE,
-    DATA_TYPE_CHAR,
-    DATA_TYPE_T,
-} data_type_t;
-
 typedef struct node_t {
     T data;
     struct node_t *prev;
@@ -25,35 +18,6 @@ typedef struct list_t {
     compare_t compare;
     destroy_t destroy;
 } list_t;
-
-/**
- * @brief   Determine if the data type is support by cino-list.
- * @param data_type data type
- *                  valid data type includes:
- *                      - int
- *                      - double
- *                      - char
- *                      - T (generic)
- * @return  Returns the `true` if it is valid, otherwise returns `false`.
- */
-static bool is_valid_data_type(const str_t data_type) {
-    return_value_if_fail(data_type != NULL, false);
-
-    const str_t data_types[] = {
-        "int",
-        "double",
-        "char",
-        "T",  // generic
-    };
-
-    int data_types_len = arr_len(data_types);
-    for (int i = 0; i < data_types_len; i++) {
-        if (str_equal(data_types[i], data_type)) {
-            return true;
-        }
-    }
-    return false;
-}
 
 /**
  * @brief   Specify the rules for comparing two int values.
@@ -174,39 +138,39 @@ static node_t *list_node_create(T data) {
 
 /**
  * @brief   Create cino-list.
- * @param data_type data type of each element
+ * @param data_type data type
  *                  valid data type includes:
- *                      - int
- *                      - double
- *                      - char
- *                      - T (generic)
+ *                      - DATA_TYPE_INT
+ *                      - DATA_TYPE_DOUBLE
+ *                      - DATA_TYPE_CHAR
+ *                      - DATA_TYPE_T (generic)
  * @param compare   User-defined callback function for comparison, only for T (generic)
  *                  cino-list. Set to `NULL` if it is a primitive cino-list.
  * @param destroy   User-defined callback function for destroying, only for T (generic)
  *                  cino-list. Set to `NULL` if it is a primitive cino-list.
  * @return  Returns the pointer to cino-list, or `NULL` if creation failed.
  */
-list_t *list_create(const str_t data_type, compare_t compare, destroy_t destroy) {
-    return_value_if_fail(is_valid_data_type(data_type), NULL);
+list_t *list_create(data_type_t data_type, compare_t compare, destroy_t destroy) {
+    return_value_if_fail(is_valid_cino_data_type(data_type), NULL);
 
     list_t *list = (list_t *)calloc(1, sizeof(list_t));
     return_value_if_fail(list != NULL, NULL);
 
     list->size = 0;
 
-    if (str_equal(data_type, "int")) {
+    if (data_type == DATA_TYPE_INT) {
         list->data_type = DATA_TYPE_INT;
         list->compare = compare_int;
         list->destroy = destroy_int;
-    } else if (str_equal(data_type, "double")) {
+    } else if (data_type == DATA_TYPE_DOUBLE) {
         list->data_type = DATA_TYPE_DOUBLE;
         list->compare = compare_double;
         list->destroy = destroy_double;
-    } else if (str_equal(data_type, "char")) {
+    } else if (data_type == DATA_TYPE_CHAR) {
         list->data_type = DATA_TYPE_CHAR;
         list->compare = compare_char;
         list->destroy = destroy_char;
-    } else if (str_equal(data_type, "T")) {
+    } else if (data_type == DATA_TYPE_T) {
         list->data_type = DATA_TYPE_T;
         list->compare = compare ? compare : compare_default;
         list->destroy = destroy ? destroy : destroy_default;
