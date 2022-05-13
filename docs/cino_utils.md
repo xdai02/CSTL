@@ -784,15 +784,15 @@ void destroy_char(T data);
 
 ---
 
-##### compare_T()
+##### compare_default()
 
 - 函数原型：
 
 ```c
-int compare_T(const T data1, const T data2);
+int compare_default(const T data1, const T data2);
 ```
 
-- 功能：用于比较两个T（泛型）元素的接口函数。
+- 功能：用于比较两个元素的默认接口函数。
 - 参数：
 
 | 参数  | 说明      |
@@ -801,21 +801,21 @@ int compare_T(const T data1, const T data2);
 | data2 | T（泛型） |
 
 - 返回值：
-    - 返回0：相等
-    - 返回正数：data1 > data2
-    - 返回复数：data1 < data2
+    - 返回0：地址相等
+    - 返回正数：data1地址 < data2地址
+    - 返回负数：data1地址 > data2地址
 
 ---
 
-##### destroy_T()
+##### destroy_default()
 
 - 函数原型：
 
 ```c
-void destroy_T(T data);
+void destroy_default(T data);
 ```
 
-- 功能：用于销毁一个T（泛型）元素的接口函数。
+- 功能：用于销毁一个元素的默认接口函数。
 - 参数：
 
 | 参数 | 说明      |

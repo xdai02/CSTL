@@ -35,16 +35,7 @@ deque_t *deque_create(data_type_t data_type, compare_t compare, destroy_t destro
     call_and_return_value_if_fail(deque->list != NULL, free(deque), NULL);
 
     deque->size = 0;
-
-    if (data_type == DATA_TYPE_INT) {
-        deque->data_type = DATA_TYPE_INT;
-    } else if (data_type == DATA_TYPE_DOUBLE) {
-        deque->data_type = DATA_TYPE_DOUBLE;
-    } else if (data_type == DATA_TYPE_CHAR) {
-        deque->data_type = DATA_TYPE_CHAR;
-    } else if (data_type == DATA_TYPE_T) {
-        deque->data_type = DATA_TYPE_T;
-    }
+    deque->data_type = data_type;
 
     return deque;
 }

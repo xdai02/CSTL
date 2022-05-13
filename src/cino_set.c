@@ -38,23 +38,9 @@ set_t *set_create(data_type_t data_type, compare_t compare, destroy_t destroy) {
 
     set->size = 0;
 
-    if (data_type == DATA_TYPE_INT) {
-        set->data_type = DATA_TYPE_INT;
-        set->compare = compare_int;
-        set->destroy = destroy_int;
-    } else if (data_type == DATA_TYPE_DOUBLE) {
-        set->data_type = DATA_TYPE_DOUBLE;
-        set->compare = compare_double;
-        set->destroy = destroy_double;
-    } else if (data_type == DATA_TYPE_CHAR) {
-        set->data_type = DATA_TYPE_CHAR;
-        set->compare = compare_char;
-        set->destroy = destroy_char;
-    } else if (data_type == DATA_TYPE_T) {
-        set->data_type = DATA_TYPE_T;
-        set->compare = compare ? compare : compare_T;
-        set->destroy = destroy ? destroy : destroy_T;
-    }
+    set->data_type = data_type;
+    set->compare = compare ? compare : compare_default;
+    set->destroy = destroy ? destroy : destroy_default;
 
     return set;
 }

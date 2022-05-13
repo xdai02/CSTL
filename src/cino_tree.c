@@ -72,23 +72,9 @@ tree_t *tree_create(data_type_t data_type, compare_t compare, destroy_t destroy)
     return_value_if_fail(tree != NULL, NULL);
     tree->root = NULL;
 
-    if (data_type == DATA_TYPE_INT) {
-        tree->data_type = DATA_TYPE_INT;
-        tree->compare = compare_int;
-        tree->destroy = destroy_int;
-    } else if (data_type == DATA_TYPE_DOUBLE) {
-        tree->data_type = DATA_TYPE_DOUBLE;
-        tree->compare = compare_double;
-        tree->destroy = destroy_double;
-    } else if (data_type == DATA_TYPE_CHAR) {
-        tree->data_type = DATA_TYPE_CHAR;
-        tree->compare = compare_char;
-        tree->destroy = destroy_char;
-    } else if (data_type == DATA_TYPE_T) {
-        tree->data_type = DATA_TYPE_T;
-        tree->compare = compare ? compare : compare_T;
-        tree->destroy = destroy ? destroy : destroy_T;
-    }
+    tree->data_type = data_type;
+    tree->compare = compare ? compare : compare_default;
+    tree->destroy = destroy ? destroy : destroy_default;
 
     return tree;
 }

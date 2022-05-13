@@ -55,23 +55,9 @@ list_t *list_create(data_type_t data_type, compare_t compare, destroy_t destroy)
 
     list->size = 0;
 
-    if (data_type == DATA_TYPE_INT) {
-        list->data_type = DATA_TYPE_INT;
-        list->compare = compare_int;
-        list->destroy = destroy_int;
-    } else if (data_type == DATA_TYPE_DOUBLE) {
-        list->data_type = DATA_TYPE_DOUBLE;
-        list->compare = compare_double;
-        list->destroy = destroy_double;
-    } else if (data_type == DATA_TYPE_CHAR) {
-        list->data_type = DATA_TYPE_CHAR;
-        list->compare = compare_char;
-        list->destroy = destroy_char;
-    } else if (data_type == DATA_TYPE_T) {
-        list->data_type = DATA_TYPE_T;
-        list->compare = compare ? compare : compare_T;
-        list->destroy = destroy ? destroy : destroy_T;
-    }
+    list->data_type = data_type;
+    list->compare = compare ? compare : compare_default;
+    list->destroy = destroy ? destroy : destroy_default;
 
     list->head = list_node_create(NULL);
     call_and_return_value_if_fail(list->head != NULL, list_destroy(list), NULL);

@@ -36,23 +36,9 @@ array_t *array_create(data_type_t data_type, compare_t compare, destroy_t destro
     array->size = 0;
     array->capacity = 0;
 
-    if (data_type == DATA_TYPE_INT) {
-        array->data_type = DATA_TYPE_INT;
-        array->compare = compare_int;
-        array->destroy = destroy_int;
-    } else if (data_type == DATA_TYPE_DOUBLE) {
-        array->data_type = DATA_TYPE_DOUBLE;
-        array->compare = compare_double;
-        array->destroy = destroy_double;
-    } else if (data_type == DATA_TYPE_CHAR) {
-        array->data_type = DATA_TYPE_CHAR;
-        array->compare = compare_char;
-        array->destroy = destroy_char;
-    } else if (data_type == DATA_TYPE_T) {
-        array->data_type = DATA_TYPE_T;
-        array->compare = compare ? compare : compare_T;
-        array->destroy = destroy ? destroy : destroy_T;
-    }
+    array->data_type = data_type;
+    array->compare = compare ? compare : compare_default;
+    array->destroy = destroy ? destroy : destroy_default;
 
     return array;
 }

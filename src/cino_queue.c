@@ -35,16 +35,7 @@ queue_t *queue_create(data_type_t data_type, compare_t compare, destroy_t destro
     call_and_return_value_if_fail(queue->list != NULL, free(queue), NULL);
 
     queue->size = 0;
-
-    if (data_type == DATA_TYPE_INT) {
-        queue->data_type = DATA_TYPE_INT;
-    } else if (data_type == DATA_TYPE_DOUBLE) {
-        queue->data_type = DATA_TYPE_DOUBLE;
-    } else if (data_type == DATA_TYPE_CHAR) {
-        queue->data_type = DATA_TYPE_CHAR;
-    } else if (data_type == DATA_TYPE_T) {
-        queue->data_type = DATA_TYPE_T;
-    }
+    queue->data_type = data_type;
 
     return queue;
 }

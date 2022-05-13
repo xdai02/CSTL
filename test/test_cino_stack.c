@@ -6,25 +6,25 @@ typedef struct test_t {
 } test_t;
 
 void test_stack_create() {
-    stack_t *stack = stack_create(DATA_TYPE_INT, NULL, NULL);
+    stack_t *stack = stack_create(DATA_TYPE_INT, compare_int, destroy_int);
     assert(stack);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    stack = stack_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     assert(stack);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_CHAR, NULL, NULL);
+    stack = stack_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(stack);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_T, NULL, NULL);
+    stack = stack_create(DATA_TYPE_T, compare_default, destroy_default);
     assert(stack);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
@@ -32,25 +32,25 @@ void test_stack_create() {
 }
 
 void test_stack_destroy() {
-    stack_t *stack = stack_create(DATA_TYPE_INT, NULL, NULL);
+    stack_t *stack = stack_create(DATA_TYPE_INT, compare_int, destroy_int);
     assert(stack);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    stack = stack_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     assert(stack);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_CHAR, NULL, NULL);
+    stack = stack_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(stack);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_T, NULL, NULL);
+    stack = stack_create(DATA_TYPE_T, compare_default, destroy_default);
     assert(stack);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
@@ -58,7 +58,7 @@ void test_stack_destroy() {
 }
 
 void test_stack_is_empty() {
-    stack_t *stack = stack_create(DATA_TYPE_INT, NULL, NULL);
+    stack_t *stack = stack_create(DATA_TYPE_INT, compare_int, destroy_int);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
     for (int i = 0; i < 5; i++) {
@@ -71,7 +71,7 @@ void test_stack_is_empty() {
     assert(stack_size(stack) == 0);
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    stack = stack_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
     for (int i = 0; i < 5; i++) {
@@ -84,7 +84,7 @@ void test_stack_is_empty() {
     assert(stack_size(stack) == 0);
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_CHAR, NULL, NULL);
+    stack = stack_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
     for (int i = 'A'; i < 'A' + 5; i++) {
@@ -97,7 +97,7 @@ void test_stack_is_empty() {
     assert(stack_size(stack) == 0);
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_T, NULL, NULL);
+    stack = stack_create(DATA_TYPE_T, compare_default, destroy_default);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
@@ -115,7 +115,7 @@ void test_stack_is_empty() {
 }
 
 void test_stack_size() {
-    stack_t *stack = stack_create(DATA_TYPE_INT, NULL, NULL);
+    stack_t *stack = stack_create(DATA_TYPE_INT, compare_int, destroy_int);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
     for (int i = 0; i < 5; i++) {
@@ -128,7 +128,7 @@ void test_stack_size() {
     assert(stack_size(stack) == 0);
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    stack = stack_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
     for (int i = 0; i < 5; i++) {
@@ -141,7 +141,7 @@ void test_stack_size() {
     assert(stack_size(stack) == 0);
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_CHAR, NULL, NULL);
+    stack = stack_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
     for (int i = 'A'; i < 'A' + 5; i++) {
@@ -154,7 +154,7 @@ void test_stack_size() {
     assert(stack_size(stack) == 0);
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_T, NULL, NULL);
+    stack = stack_create(DATA_TYPE_T, compare_default, destroy_default);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
@@ -172,7 +172,7 @@ void test_stack_size() {
 }
 
 void test_stack_clear() {
-    stack_t *stack = stack_create(DATA_TYPE_INT, NULL, NULL);
+    stack_t *stack = stack_create(DATA_TYPE_INT, compare_int, destroy_int);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
     for (int i = 0; i < 5; i++) {
@@ -185,7 +185,7 @@ void test_stack_clear() {
     assert(stack_size(stack) == 0);
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    stack = stack_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
     for (int i = 0; i < 5; i++) {
@@ -198,7 +198,7 @@ void test_stack_clear() {
     assert(stack_size(stack) == 0);
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_CHAR, NULL, NULL);
+    stack = stack_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
     for (int i = 'A'; i < 'A' + 5; i++) {
@@ -211,7 +211,7 @@ void test_stack_clear() {
     assert(stack_size(stack) == 0);
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_T, NULL, NULL);
+    stack = stack_create(DATA_TYPE_T, compare_default, destroy_default);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
@@ -229,7 +229,7 @@ void test_stack_clear() {
 }
 
 void test_stack_push() {
-    stack_t *stack = stack_create(DATA_TYPE_INT, NULL, NULL);
+    stack_t *stack = stack_create(DATA_TYPE_INT, compare_int, destroy_int);
     for (int i = 0; i < 5; i++) {
         stack_push(stack, wrap_int(i));
     }
@@ -243,7 +243,7 @@ void test_stack_push() {
     assert(stack_is_empty(stack));
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    stack = stack_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     for (int i = 0; i < 5; i++) {
         stack_push(stack, wrap_double(i));
     }
@@ -257,7 +257,7 @@ void test_stack_push() {
     assert(stack_is_empty(stack));
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_CHAR, NULL, NULL);
+    stack = stack_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     for (int i = 'A'; i < 'A' + 5; i++) {
         stack_push(stack, wrap_char(i));
     }
@@ -271,7 +271,7 @@ void test_stack_push() {
     assert(stack_is_empty(stack));
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_T, NULL, NULL);
+    stack = stack_create(DATA_TYPE_T, compare_default, destroy_default);
     test_t *test = (test_t *)calloc(10, sizeof(test_t));
 
     for (int i = 0; i < 5; i++) {
@@ -303,7 +303,7 @@ void test_stack_push() {
 }
 
 void test_stack_pop() {
-    stack_t *stack = stack_create(DATA_TYPE_INT, NULL, NULL);
+    stack_t *stack = stack_create(DATA_TYPE_INT, compare_int, destroy_int);
     for (int i = 0; i < 5; i++) {
         stack_push(stack, wrap_int(i));
     }
@@ -317,7 +317,7 @@ void test_stack_pop() {
     assert(stack_is_empty(stack));
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    stack = stack_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     for (int i = 0; i < 5; i++) {
         stack_push(stack, wrap_double(i));
     }
@@ -331,7 +331,7 @@ void test_stack_pop() {
     assert(stack_is_empty(stack));
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_CHAR, NULL, NULL);
+    stack = stack_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     for (int i = 'A'; i < 'A' + 5; i++) {
         stack_push(stack, wrap_char(i));
     }
@@ -345,7 +345,7 @@ void test_stack_pop() {
     assert(stack_is_empty(stack));
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_T, NULL, NULL);
+    stack = stack_create(DATA_TYPE_T, compare_default, destroy_default);
     test_t *test = (test_t *)calloc(10, sizeof(test_t));
 
     for (int i = 0; i < 5; i++) {
@@ -377,7 +377,7 @@ void test_stack_pop() {
 }
 
 void test_stack_peek() {
-    stack_t *stack = stack_create(DATA_TYPE_INT, NULL, NULL);
+    stack_t *stack = stack_create(DATA_TYPE_INT, compare_int, destroy_int);
     for (int i = 0; i < 5; i++) {
         stack_push(stack, wrap_int(i));
     }
@@ -391,7 +391,7 @@ void test_stack_peek() {
     assert(stack_is_empty(stack));
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    stack = stack_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     for (int i = 0; i < 5; i++) {
         stack_push(stack, wrap_double(i));
     }
@@ -405,7 +405,7 @@ void test_stack_peek() {
     assert(stack_is_empty(stack));
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_CHAR, NULL, NULL);
+    stack = stack_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     for (int i = 'A'; i < 'A' + 5; i++) {
         stack_push(stack, wrap_char(i));
     }
@@ -419,7 +419,7 @@ void test_stack_peek() {
     assert(stack_is_empty(stack));
     stack_destroy(stack);
 
-    stack = stack_create(DATA_TYPE_T, NULL, NULL);
+    stack = stack_create(DATA_TYPE_T, compare_default, destroy_default);
     test_t *test = (test_t *)calloc(10, sizeof(test_t));
 
     for (int i = 0; i < 5; i++) {

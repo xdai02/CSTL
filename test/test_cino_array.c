@@ -45,25 +45,25 @@ static bool match_test_by_int(const void *data) {
 }
 
 void test_array_create() {
-    array_t *arr = array_create(DATA_TYPE_INT, NULL, NULL);
+    array_t *arr = array_create(DATA_TYPE_INT, compare_int, destroy_int);
     assert(arr);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    arr = array_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     assert(arr);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_CHAR, NULL, NULL);
+    arr = array_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(arr);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_T, NULL, NULL);
+    arr = array_create(DATA_TYPE_T, compare_default, destroy_default);
     assert(arr);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
@@ -71,25 +71,25 @@ void test_array_create() {
 }
 
 void test_array_destroy() {
-    array_t *arr = array_create(DATA_TYPE_INT, NULL, NULL);
+    array_t *arr = array_create(DATA_TYPE_INT, compare_int, destroy_int);
     assert(arr);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    arr = array_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     assert(arr);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_CHAR, NULL, NULL);
+    arr = array_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(arr);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_T, NULL, NULL);
+    arr = array_create(DATA_TYPE_T, compare_default, destroy_default);
     assert(arr);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
@@ -97,7 +97,7 @@ void test_array_destroy() {
 }
 
 void test_array_is_empty() {
-    array_t *arr = array_create(DATA_TYPE_INT, NULL, NULL);
+    array_t *arr = array_create(DATA_TYPE_INT, compare_int, destroy_int);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
     for (int i = 0; i < 5; i++) {
@@ -110,7 +110,7 @@ void test_array_is_empty() {
     assert(array_size(arr) == 0);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    arr = array_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
     for (int i = 0; i < 5; i++) {
@@ -123,7 +123,7 @@ void test_array_is_empty() {
     assert(array_size(arr) == 0);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_CHAR, NULL, NULL);
+    arr = array_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
     for (int i = 'A'; i < 'A' + 5; i++) {
@@ -136,7 +136,7 @@ void test_array_is_empty() {
     assert(array_size(arr) == 0);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_T, NULL, NULL);
+    arr = array_create(DATA_TYPE_T, compare_default, destroy_default);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
@@ -154,7 +154,7 @@ void test_array_is_empty() {
 }
 
 void test_array_size() {
-    array_t *arr = array_create(DATA_TYPE_INT, NULL, NULL);
+    array_t *arr = array_create(DATA_TYPE_INT, compare_int, destroy_int);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
     for (int i = 0; i < 5; i++) {
@@ -167,7 +167,7 @@ void test_array_size() {
     assert(array_size(arr) == 0);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    arr = array_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
     for (int i = 0; i < 5; i++) {
@@ -180,7 +180,7 @@ void test_array_size() {
     assert(array_size(arr) == 0);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_CHAR, NULL, NULL);
+    arr = array_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
     for (int i = 'A'; i < 'A' + 5; i++) {
@@ -193,7 +193,7 @@ void test_array_size() {
     assert(array_size(arr) == 0);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_T, NULL, NULL);
+    arr = array_create(DATA_TYPE_T, compare_default, destroy_default);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
@@ -211,7 +211,7 @@ void test_array_size() {
 }
 
 void test_array_clear() {
-    array_t *arr = array_create(DATA_TYPE_INT, NULL, NULL);
+    array_t *arr = array_create(DATA_TYPE_INT, compare_int, destroy_int);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
     for (int i = 0; i < 5; i++) {
@@ -224,7 +224,7 @@ void test_array_clear() {
     assert(array_size(arr) == 0);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    arr = array_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
     for (int i = 0; i < 5; i++) {
@@ -237,7 +237,7 @@ void test_array_clear() {
     assert(array_size(arr) == 0);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_CHAR, NULL, NULL);
+    arr = array_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
     for (int i = 'A'; i < 'A' + 5; i++) {
@@ -250,7 +250,7 @@ void test_array_clear() {
     assert(array_size(arr) == 0);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_T, NULL, NULL);
+    arr = array_create(DATA_TYPE_T, compare_default, destroy_default);
     assert(array_is_empty(arr));
     assert(array_size(arr) == 0);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
@@ -268,28 +268,28 @@ void test_array_clear() {
 }
 
 void test_array_foreach() {
-    array_t *arr = array_create(DATA_TYPE_INT, NULL, NULL);
+    array_t *arr = array_create(DATA_TYPE_INT, compare_int, destroy_int);
     for (int i = 0; i < 5; i++) {
         array_append(arr, wrap_int(i));
     }
     array_foreach(arr, visit_int, false);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    arr = array_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     for (int i = 0; i < 5; i++) {
         array_append(arr, wrap_double(i));
     }
     array_foreach(arr, visit_double, true);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_CHAR, NULL, NULL);
+    arr = array_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     for (int i = 'A'; i < 'A' + 5; i++) {
         array_append(arr, wrap_char(i));
     }
     array_foreach(arr, visit_char, false);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_T, NULL, NULL);
+    arr = array_create(DATA_TYPE_T, compare_default, destroy_default);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
     for (int i = 0; i < 5; i++) {
         test[i].i = i;
@@ -305,7 +305,7 @@ void test_array_foreach() {
 }
 
 void test_array_get() {
-    array_t *arr = array_create(DATA_TYPE_INT, NULL, NULL);
+    array_t *arr = array_create(DATA_TYPE_INT, compare_int, destroy_int);
     for (int i = 0; i < 5; i++) {
         array_append(arr, wrap_int(i));
     }
@@ -315,7 +315,7 @@ void test_array_get() {
     }
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    arr = array_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     for (int i = 0; i < 5; i++) {
         array_append(arr, wrap_double(i));
     }
@@ -325,7 +325,7 @@ void test_array_get() {
     }
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_CHAR, NULL, NULL);
+    arr = array_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     for (int i = 'A'; i < 'A' + 5; i++) {
         array_append(arr, wrap_char(i));
     }
@@ -335,7 +335,7 @@ void test_array_get() {
     }
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_T, NULL, NULL);
+    arr = array_create(DATA_TYPE_T, compare_default, destroy_default);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
 
     for (int i = 0; i < 5; i++) {
@@ -360,7 +360,7 @@ void test_array_get() {
 }
 
 void test_array_set() {
-    array_t *arr = array_create(DATA_TYPE_INT, NULL, NULL);
+    array_t *arr = array_create(DATA_TYPE_INT, compare_int, destroy_int);
     for (int i = 0; i < 3; i++) {
         array_append(arr, wrap_int(i));
     }
@@ -375,7 +375,7 @@ void test_array_set() {
     assert(wrapper_int->data == 7);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    arr = array_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     for (int i = 0; i < 3; i++) {
         array_append(arr, wrap_double(i));
     }
@@ -390,7 +390,7 @@ void test_array_set() {
     assert(double_equal(wrapper_double->data, 7.7));
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_CHAR, NULL, NULL);
+    arr = array_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     for (int i = 'A'; i <= 'C'; i++) {
         array_append(arr, wrap_char(i));
     }
@@ -405,7 +405,7 @@ void test_array_set() {
     assert(wrapper_char->data == 'Y');
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_T, NULL, NULL);
+    arr = array_create(DATA_TYPE_T, compare_default, destroy_default);
     test_t *test = (test_t *)calloc(3, sizeof(test_t));
 
     for (int i = 0; i < 3; i++) {
@@ -439,7 +439,7 @@ void test_array_set() {
 }
 
 void test_array_append() {
-    array_t *arr = array_create(DATA_TYPE_INT, NULL, NULL);
+    array_t *arr = array_create(DATA_TYPE_INT, compare_int, destroy_int);
     for (int i = 0; i < 5; i++) {
         array_append(arr, wrap_int(i));
     }
@@ -449,7 +449,7 @@ void test_array_append() {
     }
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    arr = array_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     for (int i = 0; i < 5; i++) {
         array_append(arr, wrap_double(i));
     }
@@ -459,7 +459,7 @@ void test_array_append() {
     }
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_CHAR, NULL, NULL);
+    arr = array_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     for (int i = 'A'; i < 'A' + 5; i++) {
         array_append(arr, wrap_char(i));
     }
@@ -469,7 +469,7 @@ void test_array_append() {
     }
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_T, NULL, NULL);
+    arr = array_create(DATA_TYPE_T, compare_default, destroy_default);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
 
     for (int i = 0; i < 5; i++) {
@@ -496,7 +496,7 @@ void test_array_append() {
 void test_array_insert() {
     int arr1[] = {5, 1, 9, 7, 4};
     int len1 = arr_len(arr1);
-    array_t *arr = array_create(DATA_TYPE_INT, NULL, NULL);
+    array_t *arr = array_create(DATA_TYPE_INT, compare_int, destroy_int);
 
     array_insert(arr, 0, wrap_int(1));
     array_insert(arr, 0, wrap_int(5));
@@ -512,7 +512,7 @@ void test_array_insert() {
 
     double arr2[] = {5.5, 1.1, 9.9, 7.7, 4.4};
     int len2 = arr_len(arr2);
-    arr = array_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    arr = array_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
 
     array_insert(arr, 0, wrap_double(1.1));
     array_insert(arr, 0, wrap_double(5.5));
@@ -528,7 +528,7 @@ void test_array_insert() {
 
     char arr3[] = {'C', 'A', 'A' + 5, 'D', 'B', '\0'};
     int len3 = str_length(arr3);
-    arr = array_create(DATA_TYPE_CHAR, NULL, NULL);
+    arr = array_create(DATA_TYPE_CHAR, compare_char, destroy_char);
 
     array_insert(arr, 0, wrap_char('A'));
     array_insert(arr, 0, wrap_char('C'));
@@ -542,7 +542,7 @@ void test_array_insert() {
     }
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_T, NULL, NULL);
+    arr = array_create(DATA_TYPE_T, compare_default, destroy_default);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
     int arr4[] = {1, 4, 3, 2, 0};
     int len4 = arr_len(arr4);
@@ -574,7 +574,7 @@ void test_array_insert() {
 }
 
 void test_array_remove() {
-    array_t *arr = array_create(DATA_TYPE_INT, NULL, NULL);
+    array_t *arr = array_create(DATA_TYPE_INT, compare_int, destroy_int);
     for (int i = 0; i < 10; i++) {
         array_append(arr, wrap_int(i));
     }
@@ -591,7 +591,7 @@ void test_array_remove() {
     }
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    arr = array_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     for (int i = 0; i < 10; i++) {
         array_append(arr, wrap_double(i));
     }
@@ -608,7 +608,7 @@ void test_array_remove() {
     }
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_CHAR, NULL, NULL);
+    arr = array_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     for (int i = 'A'; i < 'A' + 10; i++) {
         array_append(arr, wrap_char(i));
     }
@@ -625,7 +625,7 @@ void test_array_remove() {
     }
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_T, NULL, NULL);
+    arr = array_create(DATA_TYPE_T, compare_default, destroy_default);
     test_t *test = (test_t *)calloc(10, sizeof(test_t));
 
     for (int i = 0; i < 10; i++) {
@@ -658,7 +658,7 @@ void test_array_remove() {
 void test_array_min() {
     int arr1[] = {5, 7, 1, 9, 4, 2, 5, 6};
     int len1 = arr_len(arr1);
-    array_t *arr = array_create(DATA_TYPE_INT, NULL, NULL);
+    array_t *arr = array_create(DATA_TYPE_INT, compare_int, destroy_int);
     for (int i = 0; i < len1; i++) {
         array_append(arr, wrap_int(arr1[i]));
     }
@@ -668,7 +668,7 @@ void test_array_min() {
 
     double arr2[] = {5.5, 7.7, 1.1, 9.9, 4.4, 2.2, 5.5, 6.6};
     int len2 = arr_len(arr2);
-    arr = array_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    arr = array_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     for (int i = 0; i < len2; i++) {
         array_append(arr, wrap_double(arr2[i]));
     }
@@ -678,7 +678,7 @@ void test_array_min() {
 
     char arr3[] = {'D', 'F', 'A', 'G', 'C', 'B', 'D', 'E', '\0'};
     int len3 = str_length(arr3);
-    arr = array_create(DATA_TYPE_CHAR, NULL, NULL);
+    arr = array_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     for (int i = 0; i < len3; i++) {
         array_append(arr, wrap_char(arr3[i]));
     }
@@ -686,7 +686,7 @@ void test_array_min() {
     assert(wrapper_char->data == 'A');
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_T, compare_test_by_int, NULL);
+    arr = array_create(DATA_TYPE_T, compare_test_by_int, destroy_default);
     test_t *test = (test_t *)calloc(len1, sizeof(test_t));
 
     for (int i = 0; i < len1; i++) {
@@ -707,7 +707,7 @@ void test_array_min() {
 void test_array_max() {
     int arr1[] = {5, 7, 1, 9, 4, 2, 5, 6};
     int len1 = arr_len(arr1);
-    array_t *arr = array_create(DATA_TYPE_INT, NULL, NULL);
+    array_t *arr = array_create(DATA_TYPE_INT, compare_int, destroy_int);
     for (int i = 0; i < len1; i++) {
         array_append(arr, wrap_int(arr1[i]));
     }
@@ -717,7 +717,7 @@ void test_array_max() {
 
     double arr2[] = {5.5, 7.7, 1.1, 9.9, 4.4, 2.2, 5.5, 6.6};
     int len2 = arr_len(arr2);
-    arr = array_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    arr = array_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     for (int i = 0; i < len2; i++) {
         array_append(arr, wrap_double(arr2[i]));
     }
@@ -727,7 +727,7 @@ void test_array_max() {
 
     char arr3[] = {'D', 'F', 'A', 'G', 'C', 'B', 'D', 'E', '\0'};
     int len3 = str_length(arr3);
-    arr = array_create(DATA_TYPE_CHAR, NULL, NULL);
+    arr = array_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     for (int i = 0; i < len3; i++) {
         array_append(arr, wrap_char(arr3[i]));
     }
@@ -735,7 +735,7 @@ void test_array_max() {
     assert(wrapper_char->data == 'G');
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_T, compare_test_by_int, NULL);
+    arr = array_create(DATA_TYPE_T, compare_test_by_int, destroy_default);
     test_t *test = (test_t *)calloc(len1, sizeof(test_t));
 
     for (int i = 0; i < len1; i++) {
@@ -757,7 +757,7 @@ void test_array_index_of() {
     int arr1[] = {5, 4, 2, 2, 5, 4, 1};
     int len1 = arr_len(arr1);
 
-    array_t *arr = array_create(DATA_TYPE_INT, NULL, NULL);
+    array_t *arr = array_create(DATA_TYPE_INT, compare_int, destroy_int);
     for (int i = 0; i < len1; i++) {
         array_append(arr, wrap_int(arr1[i]));
     }
@@ -765,7 +765,7 @@ void test_array_index_of() {
     assert(array_index_of(arr, wrap_int(10)) == -1);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    arr = array_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     for (int i = 0; i < len1; i++) {
         array_append(arr, wrap_double(arr1[i]));
     }
@@ -776,7 +776,7 @@ void test_array_index_of() {
     char arr2[] = {'D', 'A', 'A' + 5, 'D', 'B', '\0'};
     int len2 = str_length(arr2);
 
-    arr = array_create(DATA_TYPE_CHAR, NULL, NULL);
+    arr = array_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     for (int i = 0; i < len2; i++) {
         array_append(arr, wrap_char(arr2[i]));
     }
@@ -784,7 +784,7 @@ void test_array_index_of() {
     assert(array_index_of(arr, wrap_char('X')) == -1);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_T, NULL, NULL);
+    arr = array_create(DATA_TYPE_T, compare_default, destroy_default);
     test_t *test = (test_t *)calloc(len1, sizeof(test_t));
 
     for (int i = 0; i < len1; i++) {
@@ -805,7 +805,7 @@ void test_array_last_index_of() {
     int arr1[] = {5, 4, 2, 2, 5, 4, 1};
     int len1 = arr_len(arr1);
 
-    array_t *arr = array_create(DATA_TYPE_INT, NULL, NULL);
+    array_t *arr = array_create(DATA_TYPE_INT, compare_int, destroy_int);
     for (int i = 0; i < len1; i++) {
         array_append(arr, wrap_int(arr1[i]));
     }
@@ -813,7 +813,7 @@ void test_array_last_index_of() {
     assert(array_last_index_of(arr, wrap_int(10)) == -1);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    arr = array_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     for (int i = 0; i < len1; i++) {
         array_append(arr, wrap_double(arr1[i]));
     }
@@ -824,7 +824,7 @@ void test_array_last_index_of() {
     char arr2[] = {'D', 'A', 'A' + 5, 'D', 'B', '\0'};
     int len2 = str_length(arr2);
 
-    arr = array_create(DATA_TYPE_CHAR, NULL, NULL);
+    arr = array_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     for (int i = 0; i < len2; i++) {
         array_append(arr, wrap_char(arr2[i]));
     }
@@ -832,7 +832,7 @@ void test_array_last_index_of() {
     assert(array_last_index_of(arr, wrap_char('X')) == -1);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_T, NULL, NULL);
+    arr = array_create(DATA_TYPE_T, compare_default, destroy_default);
     test_t *test = (test_t *)calloc(len1, sizeof(test_t));
 
     for (int i = 0; i < len1; i++) {
@@ -853,7 +853,7 @@ void test_array_count() {
     int arr1[] = {5, 4, 2, 2, 5, 4, 1};
     int len1 = arr_len(arr1);
 
-    array_t *arr = array_create(DATA_TYPE_INT, NULL, NULL);
+    array_t *arr = array_create(DATA_TYPE_INT, compare_int, destroy_int);
     for (int i = 0; i < len1; i++) {
         array_append(arr, wrap_int(arr1[i]));
     }
@@ -861,7 +861,7 @@ void test_array_count() {
     assert(array_count(arr, wrap_int(10)) == 0);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    arr = array_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     for (int i = 0; i < len1; i++) {
         array_append(arr, wrap_double(arr1[i]));
     }
@@ -872,7 +872,7 @@ void test_array_count() {
     char arr2[] = {'D', 'A', 'A' + 5, 'D', 'B', '\0'};
     int len2 = str_length(arr2);
 
-    arr = array_create(DATA_TYPE_CHAR, NULL, NULL);
+    arr = array_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     for (int i = 0; i < len2; i++) {
         array_append(arr, wrap_char(arr2[i]));
     }
@@ -880,7 +880,7 @@ void test_array_count() {
     assert(array_count(arr, wrap_char('X')) == 0);
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_T, NULL, NULL);
+    arr = array_create(DATA_TYPE_T, compare_default, destroy_default);
     test_t *test = (test_t *)calloc(len1, sizeof(test_t));
 
     for (int i = 0; i < len1; i++) {
@@ -898,7 +898,7 @@ void test_array_count() {
 }
 
 void test_array_reverse() {
-    array_t *arr = array_create(DATA_TYPE_INT, NULL, NULL);
+    array_t *arr = array_create(DATA_TYPE_INT, compare_int, destroy_int);
     for (int i = 0; i < 10; i++) {
         array_append(arr, wrap_int(i));
     }
@@ -911,7 +911,7 @@ void test_array_reverse() {
     }
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    arr = array_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     for (int i = 0; i < 10; i++) {
         array_append(arr, wrap_double(i));
     }
@@ -924,7 +924,7 @@ void test_array_reverse() {
     }
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_CHAR, NULL, NULL);
+    arr = array_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     for (int i = 'A'; i < 'A' + 10; i++) {
         array_append(arr, wrap_char(i));
     }
@@ -937,7 +937,7 @@ void test_array_reverse() {
     }
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_T, NULL, NULL);
+    arr = array_create(DATA_TYPE_T, compare_default, destroy_default);
     test_t *test = (test_t *)calloc(10, sizeof(test_t));
 
     for (int i = 0; i < 10; i++) {
@@ -964,7 +964,7 @@ void test_array_reverse() {
 }
 
 void test_array_swap() {
-    array_t *arr = array_create(DATA_TYPE_INT, NULL, NULL);
+    array_t *arr = array_create(DATA_TYPE_INT, compare_int, destroy_int);
     for (int i = 0; i < 10; i++) {
         array_append(arr, wrap_int(i));
     }
@@ -983,7 +983,7 @@ void test_array_swap() {
     }
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    arr = array_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     for (int i = 0; i < 10; i++) {
         array_append(arr, wrap_double(i));
     }
@@ -1002,7 +1002,7 @@ void test_array_swap() {
     }
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_CHAR, NULL, NULL);
+    arr = array_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     for (int i = 'A'; i < 'A' + 10; i++) {
         array_append(arr, wrap_char(i));
     }
@@ -1021,7 +1021,7 @@ void test_array_swap() {
     }
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_T, NULL, NULL);
+    arr = array_create(DATA_TYPE_T, compare_default, destroy_default);
     test_t *test = (test_t *)calloc(10, sizeof(test_t));
 
     for (int i = 0; i < 10; i++) {
@@ -1060,7 +1060,7 @@ void test_array_sort() {
     int arr2[] = {1, 2, 2, 4, 4, 5, 5};
     int len2 = arr_len(arr2);
 
-    array_t *arr = array_create(DATA_TYPE_INT, NULL, NULL);
+    array_t *arr = array_create(DATA_TYPE_INT, compare_int, destroy_int);
     for (int i = 0; i < len1; i++) {
         array_append(arr, wrap_int(arr1[i]));
     }
@@ -1085,7 +1085,7 @@ void test_array_sort() {
     }
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    arr = array_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     for (int i = 0; i < len1; i++) {
         array_append(arr, wrap_double(arr1[i]));
     }
@@ -1116,7 +1116,7 @@ void test_array_sort() {
     char arr4[] = {'A', 'B', 'B', 'D', 'D', 'E', 'E', '\0'};
     int len4 = str_length(arr4);
 
-    arr = array_create(DATA_TYPE_CHAR, NULL, NULL);
+    arr = array_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     for (int i = 0; i < len3; i++) {
         array_append(arr, wrap_char(arr3[i]));
     }
@@ -1141,7 +1141,7 @@ void test_array_sort() {
     }
     array_destroy(arr);
 
-    arr = array_create(DATA_TYPE_T, compare_test_by_int, NULL);
+    arr = array_create(DATA_TYPE_T, compare_test_by_int, destroy_default);
     test_t *test = (test_t *)calloc(len1, sizeof(test_t));
 
     for (int i = 0; i < len1; i++) {

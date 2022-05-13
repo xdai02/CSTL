@@ -130,7 +130,7 @@ int compare_char(const T data1, const T data2);
 void destroy_char(T data);
 
 /**
- * @brief   Specify the default rules for comparing two T values.
+ * @brief   Specify the default rule for comparing two values.
  * @param data1 pointer to the first value
  * @param data2 pointer to the second value
  * @return  Returns
@@ -138,12 +138,12 @@ void destroy_char(T data);
  *              - positive if the first value is greater than the second value
  *              - negative if the first value is less than the second value
  */
-int compare_T(const T data1, const T data2);
+int compare_default(const T data1, const T data2);
 
 /**
- * @brief   Specify the rules for destroying a single T element.
+ * @brief   Specify the default rule for destroying a element.
  * @param data  pointer to the element
  */
-void destroy_T(T data);
+void destroy_default(T data);
 
 #endif

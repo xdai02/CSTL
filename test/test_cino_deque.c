@@ -6,25 +6,25 @@ typedef struct test_t {
 } test_t;
 
 void test_deque_create() {
-    deque_t *deque = deque_create(DATA_TYPE_INT, NULL, NULL);
+    deque_t *deque = deque_create(DATA_TYPE_INT, compare_int, destroy_int);
     assert(deque);
     assert(deque_is_empty(deque));
     assert(deque_size(deque) == 0);
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    deque = deque_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     assert(deque);
     assert(deque_is_empty(deque));
     assert(deque_size(deque) == 0);
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_CHAR, NULL, NULL);
+    deque = deque_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(deque);
     assert(deque_is_empty(deque));
     assert(deque_size(deque) == 0);
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_T, NULL, NULL);
+    deque = deque_create(DATA_TYPE_T, compare_default, destroy_default);
     assert(deque);
     assert(deque_is_empty(deque));
     assert(deque_size(deque) == 0);
@@ -32,25 +32,25 @@ void test_deque_create() {
 }
 
 void test_deque_destroy() {
-    deque_t *deque = deque_create(DATA_TYPE_INT, NULL, NULL);
+    deque_t *deque = deque_create(DATA_TYPE_INT, compare_int, destroy_int);
     assert(deque);
     assert(deque_is_empty(deque));
     assert(deque_size(deque) == 0);
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    deque = deque_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     assert(deque);
     assert(deque_is_empty(deque));
     assert(deque_size(deque) == 0);
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_CHAR, NULL, NULL);
+    deque = deque_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(deque);
     assert(deque_is_empty(deque));
     assert(deque_size(deque) == 0);
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_T, NULL, NULL);
+    deque = deque_create(DATA_TYPE_T, compare_default, destroy_default);
     assert(deque);
     assert(deque_is_empty(deque));
     assert(deque_size(deque) == 0);
@@ -58,7 +58,7 @@ void test_deque_destroy() {
 }
 
 void test_deque_is_empty() {
-    deque_t *deque = deque_create(DATA_TYPE_INT, NULL, NULL);
+    deque_t *deque = deque_create(DATA_TYPE_INT, compare_int, destroy_int);
     assert(deque_is_empty(deque));
     assert(deque_size(deque) == 0);
     for (int i = 0; i < 5; i++) {
@@ -71,7 +71,7 @@ void test_deque_is_empty() {
     assert(deque_size(deque) == 0);
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    deque = deque_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     assert(deque_is_empty(deque));
     assert(deque_size(deque) == 0);
     for (int i = 0; i < 5; i++) {
@@ -84,7 +84,7 @@ void test_deque_is_empty() {
     assert(deque_size(deque) == 0);
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_CHAR, NULL, NULL);
+    deque = deque_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(deque_is_empty(deque));
     assert(deque_size(deque) == 0);
     for (int i = 'A'; i < 'A' + 5; i++) {
@@ -97,7 +97,7 @@ void test_deque_is_empty() {
     assert(deque_size(deque) == 0);
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_T, NULL, NULL);
+    deque = deque_create(DATA_TYPE_T, compare_default, destroy_default);
     assert(deque_is_empty(deque));
     assert(deque_size(deque) == 0);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
@@ -115,7 +115,7 @@ void test_deque_is_empty() {
 }
 
 void test_deque_size() {
-    deque_t *deque = deque_create(DATA_TYPE_INT, NULL, NULL);
+    deque_t *deque = deque_create(DATA_TYPE_INT, compare_int, destroy_int);
     assert(deque_is_empty(deque));
     assert(deque_size(deque) == 0);
     for (int i = 0; i < 5; i++) {
@@ -128,7 +128,7 @@ void test_deque_size() {
     assert(deque_size(deque) == 0);
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    deque = deque_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     assert(deque_is_empty(deque));
     assert(deque_size(deque) == 0);
     for (int i = 0; i < 5; i++) {
@@ -141,7 +141,7 @@ void test_deque_size() {
     assert(deque_size(deque) == 0);
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_CHAR, NULL, NULL);
+    deque = deque_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(deque_is_empty(deque));
     assert(deque_size(deque) == 0);
     for (int i = 'A'; i < 'A' + 5; i++) {
@@ -154,7 +154,7 @@ void test_deque_size() {
     assert(deque_size(deque) == 0);
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_T, NULL, NULL);
+    deque = deque_create(DATA_TYPE_T, compare_default, destroy_default);
     assert(deque_is_empty(deque));
     assert(deque_size(deque) == 0);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
@@ -172,7 +172,7 @@ void test_deque_size() {
 }
 
 void test_deque_clear() {
-    deque_t *deque = deque_create(DATA_TYPE_INT, NULL, NULL);
+    deque_t *deque = deque_create(DATA_TYPE_INT, compare_int, destroy_int);
     assert(deque_is_empty(deque));
     assert(deque_size(deque) == 0);
     for (int i = 0; i < 5; i++) {
@@ -185,7 +185,7 @@ void test_deque_clear() {
     assert(deque_size(deque) == 0);
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    deque = deque_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     assert(deque_is_empty(deque));
     assert(deque_size(deque) == 0);
     for (int i = 0; i < 5; i++) {
@@ -198,7 +198,7 @@ void test_deque_clear() {
     assert(deque_size(deque) == 0);
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_CHAR, NULL, NULL);
+    deque = deque_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(deque_is_empty(deque));
     assert(deque_size(deque) == 0);
     for (int i = 'A'; i < 'A' + 5; i++) {
@@ -211,7 +211,7 @@ void test_deque_clear() {
     assert(deque_size(deque) == 0);
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_T, NULL, NULL);
+    deque = deque_create(DATA_TYPE_T, compare_default, destroy_default);
     assert(deque_is_empty(deque));
     assert(deque_size(deque) == 0);
     test_t *test = (test_t *)calloc(5, sizeof(test_t));
@@ -229,7 +229,7 @@ void test_deque_clear() {
 }
 
 void test_deque_push_front() {
-    deque_t *deque = deque_create(DATA_TYPE_INT, NULL, NULL);
+    deque_t *deque = deque_create(DATA_TYPE_INT, compare_int, destroy_int);
     for (int i = 0; i < 5; i++) {
         deque_push_front(deque, wrap_int(i));
     }
@@ -243,7 +243,7 @@ void test_deque_push_front() {
     assert(deque_is_empty(deque));
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    deque = deque_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     for (int i = 0; i < 5; i++) {
         deque_push_front(deque, wrap_double(i));
     }
@@ -257,7 +257,7 @@ void test_deque_push_front() {
     assert(deque_is_empty(deque));
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_CHAR, NULL, NULL);
+    deque = deque_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     for (int i = 'A'; i < 'A' + 5; i++) {
         deque_push_front(deque, wrap_char(i));
     }
@@ -271,7 +271,7 @@ void test_deque_push_front() {
     assert(deque_is_empty(deque));
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_T, NULL, NULL);
+    deque = deque_create(DATA_TYPE_T, compare_default, destroy_default);
     test_t *test = (test_t *)calloc(10, sizeof(test_t));
 
     for (int i = 0; i < 5; i++) {
@@ -303,7 +303,7 @@ void test_deque_push_front() {
 }
 
 void test_deque_pop_front() {
-    deque_t *deque = deque_create(DATA_TYPE_INT, NULL, NULL);
+    deque_t *deque = deque_create(DATA_TYPE_INT, compare_int, destroy_int);
     for (int i = 0; i < 5; i++) {
         deque_push_front(deque, wrap_int(i));
     }
@@ -317,7 +317,7 @@ void test_deque_pop_front() {
     assert(deque_is_empty(deque));
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    deque = deque_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     for (int i = 0; i < 5; i++) {
         deque_push_front(deque, wrap_double(i));
     }
@@ -331,7 +331,7 @@ void test_deque_pop_front() {
     assert(deque_is_empty(deque));
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_CHAR, NULL, NULL);
+    deque = deque_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     for (int i = 'A'; i < 'A' + 5; i++) {
         deque_push_front(deque, wrap_char(i));
     }
@@ -345,7 +345,7 @@ void test_deque_pop_front() {
     assert(deque_is_empty(deque));
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_T, NULL, NULL);
+    deque = deque_create(DATA_TYPE_T, compare_default, destroy_default);
     test_t *test = (test_t *)calloc(10, sizeof(test_t));
 
     for (int i = 0; i < 5; i++) {
@@ -377,7 +377,7 @@ void test_deque_pop_front() {
 }
 
 void test_deque_get_front() {
-    deque_t *deque = deque_create(DATA_TYPE_INT, NULL, NULL);
+    deque_t *deque = deque_create(DATA_TYPE_INT, compare_int, destroy_int);
     for (int i = 0; i < 5; i++) {
         deque_push_front(deque, wrap_int(i));
     }
@@ -391,7 +391,7 @@ void test_deque_get_front() {
     assert(deque_is_empty(deque));
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    deque = deque_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     for (int i = 0; i < 5; i++) {
         deque_push_front(deque, wrap_double(i));
     }
@@ -405,7 +405,7 @@ void test_deque_get_front() {
     assert(deque_is_empty(deque));
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_CHAR, NULL, NULL);
+    deque = deque_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     for (int i = 'A'; i < 'A' + 5; i++) {
         deque_push_front(deque, wrap_char(i));
     }
@@ -419,7 +419,7 @@ void test_deque_get_front() {
     assert(deque_is_empty(deque));
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_T, NULL, NULL);
+    deque = deque_create(DATA_TYPE_T, compare_default, destroy_default);
     test_t *test = (test_t *)calloc(10, sizeof(test_t));
 
     for (int i = 0; i < 5; i++) {
@@ -451,7 +451,7 @@ void test_deque_get_front() {
 }
 
 void test_deque_push_back() {
-    deque_t *deque = deque_create(DATA_TYPE_INT, NULL, NULL);
+    deque_t *deque = deque_create(DATA_TYPE_INT, compare_int, destroy_int);
     for (int i = 0; i < 5; i++) {
         deque_push_back(deque, wrap_int(i));
     }
@@ -465,7 +465,7 @@ void test_deque_push_back() {
     assert(deque_is_empty(deque));
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    deque = deque_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     for (int i = 0; i < 5; i++) {
         deque_push_back(deque, wrap_double(i));
     }
@@ -479,7 +479,7 @@ void test_deque_push_back() {
     assert(deque_is_empty(deque));
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_CHAR, NULL, NULL);
+    deque = deque_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     for (int i = 'A'; i < 'A' + 5; i++) {
         deque_push_back(deque, wrap_char(i));
     }
@@ -493,7 +493,7 @@ void test_deque_push_back() {
     assert(deque_is_empty(deque));
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_T, NULL, NULL);
+    deque = deque_create(DATA_TYPE_T, compare_default, destroy_default);
     test_t *test = (test_t *)calloc(10, sizeof(test_t));
 
     for (int i = 0; i < 5; i++) {
@@ -525,7 +525,7 @@ void test_deque_push_back() {
 }
 
 void test_deque_pop_back() {
-    deque_t *deque = deque_create(DATA_TYPE_INT, NULL, NULL);
+    deque_t *deque = deque_create(DATA_TYPE_INT, compare_int, destroy_int);
     for (int i = 0; i < 5; i++) {
         deque_push_back(deque, wrap_int(i));
     }
@@ -539,7 +539,7 @@ void test_deque_pop_back() {
     assert(deque_is_empty(deque));
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    deque = deque_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     for (int i = 0; i < 5; i++) {
         deque_push_back(deque, wrap_double(i));
     }
@@ -553,7 +553,7 @@ void test_deque_pop_back() {
     assert(deque_is_empty(deque));
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_CHAR, NULL, NULL);
+    deque = deque_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     for (int i = 'A'; i < 'A' + 5; i++) {
         deque_push_back(deque, wrap_char(i));
     }
@@ -567,7 +567,7 @@ void test_deque_pop_back() {
     assert(deque_is_empty(deque));
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_T, NULL, NULL);
+    deque = deque_create(DATA_TYPE_T, compare_default, destroy_default);
     test_t *test = (test_t *)calloc(10, sizeof(test_t));
 
     for (int i = 0; i < 5; i++) {
@@ -599,7 +599,7 @@ void test_deque_pop_back() {
 }
 
 void test_deque_get_back() {
-    deque_t *deque = deque_create(DATA_TYPE_INT, NULL, NULL);
+    deque_t *deque = deque_create(DATA_TYPE_INT, compare_int, destroy_int);
     for (int i = 0; i < 5; i++) {
         deque_push_back(deque, wrap_int(i));
     }
@@ -613,7 +613,7 @@ void test_deque_get_back() {
     assert(deque_is_empty(deque));
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_DOUBLE, NULL, NULL);
+    deque = deque_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     for (int i = 0; i < 5; i++) {
         deque_push_back(deque, wrap_double(i));
     }
@@ -627,7 +627,7 @@ void test_deque_get_back() {
     assert(deque_is_empty(deque));
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_CHAR, NULL, NULL);
+    deque = deque_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     for (int i = 'A'; i < 'A' + 5; i++) {
         deque_push_back(deque, wrap_char(i));
     }
@@ -641,7 +641,7 @@ void test_deque_get_back() {
     assert(deque_is_empty(deque));
     deque_destroy(deque);
 
-    deque = deque_create(DATA_TYPE_T, NULL, NULL);
+    deque = deque_create(DATA_TYPE_T, compare_default, destroy_default);
     test_t *test = (test_t *)calloc(10, sizeof(test_t));
 
     for (int i = 0; i < 5; i++) {

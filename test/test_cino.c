@@ -218,7 +218,7 @@ int main(int argc, char *argv[]) {
     test_cino_stack();
     test_cino_queue();
     test_cino_deque();
-    // test_cino_tree();
+    test_cino_tree();
 
     return 0;
 }
