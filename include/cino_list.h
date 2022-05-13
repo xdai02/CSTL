@@ -24,10 +24,20 @@ typedef struct list_t list_t;
  *                      - DATA_TYPE_DOUBLE
  *                      - DATA_TYPE_CHAR
  *                      - DATA_TYPE_T (generic)
- * @param compare   User-defined callback function for comparison, only for T (generic)
- *                  cino-list. Set to `NULL` if it is a primitive cino-list.
- * @param destroy   User-defined callback function for destroying, only for T (generic)
- *                  cino-list. Set to `NULL` if it is a primitive cino-list.
+ * @param compare   User-defined callback function for comparison.
+ *                  Set to:
+ *                      - `compare_int` if the data type is DATA_TYPE_INT
+ *                      - `compare_double` if the data type is DATA_TYPE_DOUBLE
+ *                      - `compare_char` if the data type is DATA_TYPE_CHAR
+ *                      - `compare_t` interface if the data type is DATA_TYPE_T, 
+ *                         otherwise a default `compare_default` is applied.
+ * @param destroy   User-defined callback function for destroying.
+ *                  Set to:
+ *                      - `compare_int` if the data type is DATA_TYPE_INT
+ *                      - `compare_double` if the data type is DATA_TYPE_DOUBLE
+ *                      - `compare_char` if the data type is DATA_TYPE_CHAR
+ *                      - `compare_t` interface if the data type is DATA_TYPE_T, 
+ *                         otherwise a default `compare_default` is applied.
  * @return  Returns the pointer to cino-list, or `NULL` if creation failed.
  */
 list_t *list_create(data_type_t data_type, compare_t compare, destroy_t destroy);

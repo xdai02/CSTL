@@ -24,8 +24,8 @@ deque_t *deque_create(data_type_t data_type, compare_t compare, destroy_t destro
 | 参数      | 说明                                                         |
 | --------- | ------------------------------------------------------------ |
 | data_type | cino-deque的元素类型，支持DATA_TYPE_INT、DATA_TYPE_DOUBLE、DATA_TYPE_CHAR、DATA_TYPE_T（泛型） |
-| compare   | 用于比较的回调函数，仅针对T（泛型）cino-deque，基本数据类型cino-deque设置为`NULL`即可 |
-| destroy   | 用于销毁的回调函数，仅针对T（泛型）cino-deque，基本数据类型cino-deque设置为`NULL`即可 |
+| compare   | 用于比较的回调函数，<br />DATA_TYPE_INT类型使用compare_int，<br />DATA_TYPE_DOUBLE类型使用compare_double，<br />DATA_TYPE_CHAR类型使用compare_char，<br />DATA_TYPE_T类型可使用自定义compare_t函数接口，使用`NULL`使用默认方式 |
+| destroy   | 用于销毁的回调函数，<br />DATA_TYPE_INT类型使用compare_int，<br />DATA_TYPE_DOUBLE类型使用compare_double，<br />DATA_TYPE_CHAR类型使用compare_char，<br />DATA_TYPE_T类型可使用自定义compare_t函数接口，使用`NULL`使用默认方式 |
 
 - 返回值：返回cino-deque指针，创建失败返回`NULL`。
 
