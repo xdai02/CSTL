@@ -26,14 +26,14 @@ typedef struct set_t {
  *                      - `compare_int` if the data type is DATA_TYPE_INT
  *                      - `compare_double` if the data type is DATA_TYPE_DOUBLE
  *                      - `compare_char` if the data type is DATA_TYPE_CHAR
- *                      - `compare_t` interface if the data type is DATA_TYPE_T, 
+ *                      - `compare_t` interface if the data type is DATA_TYPE_T,
  *                         otherwise a default `compare_default` is applied.
  * @param destroy   User-defined callback function for destroying.
  *                  Set to:
  *                      - `compare_int` if the data type is DATA_TYPE_INT
  *                      - `compare_double` if the data type is DATA_TYPE_DOUBLE
  *                      - `compare_char` if the data type is DATA_TYPE_CHAR
- *                      - `compare_t` interface if the data type is DATA_TYPE_T, 
+ *                      - `compare_t` interface if the data type is DATA_TYPE_T,
  *                         otherwise a default `compare_default` is applied.
  * @return  Returns the pointer to cino-set, or `NULL` if creation failed.
  */
@@ -63,6 +63,7 @@ void set_destroy(set_t *set) {
     return_if_fail(set != NULL);
 
     set_clear(set);
+    tree_destroy(set->tree);
 
     set->compare = NULL;
     set->destroy = NULL;
@@ -83,6 +84,16 @@ bool set_is_empty(const set_t *set) {
 }
 
 /**
+ * @brief   Get the number of elements in the cino-set.
+ * @param set   cino-set
+ * @return  Returns the number of elements in the cino-set.
+ */
+size_t set_size(const set_t *set) {
+    return_value_if_fail(set != NULL, 0);
+    return set->size;
+}
+
+/**
  * @brief   Clear all the elments in the cino-set.
  * @param set   cino-set
  * @return  Returns the modified cino-set.
@@ -92,6 +103,16 @@ set_t *set_clear(set_t *set) {
     tree_clear(set->tree);
     set->size = 0;
     return set;
+}
+
+/**
+ * @brief   Traverse cino-set.
+ * @param set   cino-set
+ * @param visit user-defined callback function for visiting a single element
+ */
+void set_foreach(set_t *set, visit_t visit) {
+    return_if_fail(set != NULL && visit != NULL);
+    tree_pre_order(set->tree, visit);
 }
 
 /**
@@ -118,15 +139,80 @@ set_t *set_remove(set_t *set, T data) {
     return set;
 }
 
+/**
+ * @brief   Get the intersection of two cino-sets.
+ * @param set1  cino-set
+ * @param set2  cino-set
+ * @return  Returns the the intersection cino-set, with all the element references.
+ */
 set_t *set_intersection(set_t *set1, set_t *set2) {
     return_value_if_fail(set1->data_type == set2->data_type, NULL);
 
-    set_t *intersection = set_create(set1->data_type, set1->compare, NULL);
+    set_t *intersection_set = set_create(set1->data_type, set1->compare, NULL);
 
-    return intersection;
+    array_t *array_set1 = tree_node_array_create(set1->tree);
+
+    for (int i = 0; i < array_size(array_set1); i++) {
+        T data = array_get(array_set1, i);
+        if (tree_contains(set1->tree, data) && tree_contains(set2->tree, data)) {
+            set_add(intersection_set, data);
+        }
+    }
+
+    tree_node_array_destroy(array_set1);
+    return intersection_set;
 }
 
-// 交集
-// 并集
-// 差集
-// 补集
+/**
+ * @brief   Get the union of two cino-sets.
+ * @param set1  cino-set
+ * @param set2  cino-set
+ * @return  Returns the the union cino-set, with all the element references.
+ */
+set_t *set_union(set_t *set1, set_t *set2) {
+    return_value_if_fail(set1->data_type == set2->data_type, NULL);
+
+    set_t *union_set = set_create(set1->data_type, set1->compare, NULL);
+
+    array_t *array_set1 = tree_node_array_create(set1->tree);
+    array_t *array_set2 = tree_node_array_create(set2->tree);
+
+    for (int i = 0; i < array_size(array_set1); i++) {
+        set_add(union_set, array_get(array_set1, i));
+    }
+    for (int i = 0; i < array_size(array_set2); i++) {
+        set_add(union_set, array_get(array_set2, i));
+    }
+
+    tree_node_array_destroy(array_set1);
+    tree_node_array_destroy(array_set2);
+
+    return union_set;
+}
+
+/**
+ * @brief   Get the difference of two cino-sets.
+ * @param set1  cino-set
+ * @param set2  cino-set
+ * @return  Returns the the difference cino-set, with all the element references.
+ */
+set_t *set_difference(set_t *set1, set_t *set2) {
+    return_value_if_fail(set1->data_type == set2->data_type, NULL);
+
+    set_t *difference_set = set_create(set1->data_type, set1->compare, NULL);
+
+    array_t *array_set1 = tree_node_array_create(set1->tree);
+    array_t *array_set2 = tree_node_array_create(set2->tree);
+
+    for (int i = 0; i < array_size(array_set1); i++) {
+        set_add(difference_set, array_get(array_set1, i));
+    }
+    for (int i = 0; i < array_size(array_set2); i++) {
+        set_remove(difference_set, array_get(array_set2, i));
+    }
+
+    tree_node_array_destroy(array_set1);
+    tree_node_array_destroy(array_set2);
+
+    return difference_set;
+}

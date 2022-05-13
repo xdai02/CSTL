@@ -29,14 +29,14 @@ typedef struct set_t set_t;
  *                      - `compare_int` if the data type is DATA_TYPE_INT
  *                      - `compare_double` if the data type is DATA_TYPE_DOUBLE
  *                      - `compare_char` if the data type is DATA_TYPE_CHAR
- *                      - `compare_t` interface if the data type is DATA_TYPE_T, 
+ *                      - `compare_t` interface if the data type is DATA_TYPE_T,
  *                         otherwise a default `compare_default` is applied.
  * @param destroy   User-defined callback function for destroying.
  *                  Set to:
  *                      - `compare_int` if the data type is DATA_TYPE_INT
  *                      - `compare_double` if the data type is DATA_TYPE_DOUBLE
  *                      - `compare_char` if the data type is DATA_TYPE_CHAR
- *                      - `compare_t` interface if the data type is DATA_TYPE_T, 
+ *                      - `compare_t` interface if the data type is DATA_TYPE_T,
  *                         otherwise a default `compare_default` is applied.
  * @return  Returns the pointer to cino-set, or `NULL` if creation failed.
  */
@@ -56,11 +56,25 @@ void set_destroy(set_t *set);
 bool set_is_empty(const set_t *set);
 
 /**
+ * @brief   Get the number of elements in the cino-set.
+ * @param set   cino-set
+ * @return  Returns the number of elements in the cino-set.
+ */
+size_t set_size(const set_t *set);
+
+/**
  * @brief   Clear all the elments in the cino-set.
  * @param set   cino-set
  * @return  Returns the modified cino-set.
  */
 set_t *set_clear(set_t *set);
+
+/**
+ * @brief   Traverse cino-set.
+ * @param set   cino-set
+ * @param visit user-defined callback function for visiting a single element
+ */
+void set_foreach(set_t *set, visit_t visit);
 
 /**
  * @brief   Add an element to the cino-set.
@@ -75,5 +89,29 @@ set_t *set_add(set_t *set, T data);
  * @return  Returns the modified cino-set.
  */
 set_t *set_remove(set_t *set, T data);
+
+/**
+ * @brief   Get the intersection of two cino-sets.
+ * @param set1  cino-set
+ * @param set2  cino-set
+ * @return  Returns the the intersection cino-set, with all the element references.
+ */
+set_t *set_intersection(set_t *set1, set_t *set2);
+
+/**
+ * @brief   Get the union of two cino-sets.
+ * @param set1  cino-set
+ * @param set2  cino-set
+ * @return  Returns the the union cino-set, with all the element references.
+ */
+set_t *set_union(set_t *set1, set_t *set2);
+
+/**
+ * @brief   Get the difference of two cino-sets.
+ * @param set1  cino-set
+ * @param set2  cino-set
+ * @return  Returns the the difference cino-set, with all the element references.
+ */
+set_t *set_difference(set_t *set1, set_t *set2);
 
 #endif

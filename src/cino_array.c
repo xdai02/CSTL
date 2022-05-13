@@ -26,14 +26,14 @@ typedef struct array_t {
  *                      - `compare_int` if the data type is DATA_TYPE_INT
  *                      - `compare_double` if the data type is DATA_TYPE_DOUBLE
  *                      - `compare_char` if the data type is DATA_TYPE_CHAR
- *                      - `compare_t` interface if the data type is DATA_TYPE_T, 
+ *                      - `compare_t` interface if the data type is DATA_TYPE_T,
  *                         otherwise a default `compare_default` is applied.
  * @param destroy   User-defined callback function for destroying.
  *                  Set to:
  *                      - `compare_int` if the data type is DATA_TYPE_INT
  *                      - `compare_double` if the data type is DATA_TYPE_DOUBLE
  *                      - `compare_char` if the data type is DATA_TYPE_CHAR
- *                      - `compare_t` interface if the data type is DATA_TYPE_T, 
+ *                      - `compare_t` interface if the data type is DATA_TYPE_T,
  *                         otherwise a default `compare_default` is applied.
  * @return  Returns the pointer to cino-array, or `NULL` if creation failed.
  */

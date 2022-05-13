@@ -58,14 +58,16 @@ void test_stack_destroy() {
 }
 
 void test_stack_is_empty() {
+    const int len = 5;
+
     stack_t *stack = stack_create(DATA_TYPE_INT, compare_int, destroy_int);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         stack_push(stack, wrap_int(i));
     }
     assert(!stack_is_empty(stack));
-    assert(stack_size(stack) == 5);
+    assert(stack_size(stack) == len);
     stack_clear(stack);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
@@ -74,11 +76,11 @@ void test_stack_is_empty() {
     stack = stack_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         stack_push(stack, wrap_double(i));
     }
     assert(!stack_is_empty(stack));
-    assert(stack_size(stack) == 5);
+    assert(stack_size(stack) == len);
     stack_clear(stack);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
@@ -87,11 +89,11 @@ void test_stack_is_empty() {
     stack = stack_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
-    for (int i = 'A'; i < 'A' + 5; i++) {
+    for (int i = 'A'; i < 'A' + len; i++) {
         stack_push(stack, wrap_char(i));
     }
     assert(!stack_is_empty(stack));
-    assert(stack_size(stack) == 5);
+    assert(stack_size(stack) == len);
     stack_clear(stack);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
@@ -100,12 +102,12 @@ void test_stack_is_empty() {
     stack = stack_create(DATA_TYPE_T, compare_default, destroy_default);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
-    test_t *test = (test_t *)calloc(5, sizeof(test_t));
-    for (int i = 0; i < 5; i++) {
+    test_t *test = (test_t *)calloc(len, sizeof(test_t));
+    for (int i = 0; i < len; i++) {
         stack_push(stack, &test[i]);
     }
     assert(!stack_is_empty(stack));
-    assert(stack_size(stack) == 5);
+    assert(stack_size(stack) == len);
     stack_clear(stack);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
@@ -115,14 +117,16 @@ void test_stack_is_empty() {
 }
 
 void test_stack_size() {
+    const int len = 5;
+
     stack_t *stack = stack_create(DATA_TYPE_INT, compare_int, destroy_int);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         stack_push(stack, wrap_int(i));
     }
     assert(!stack_is_empty(stack));
-    assert(stack_size(stack) == 5);
+    assert(stack_size(stack) == len);
     stack_clear(stack);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
@@ -131,11 +135,11 @@ void test_stack_size() {
     stack = stack_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         stack_push(stack, wrap_double(i));
     }
     assert(!stack_is_empty(stack));
-    assert(stack_size(stack) == 5);
+    assert(stack_size(stack) == len);
     stack_clear(stack);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
@@ -144,11 +148,11 @@ void test_stack_size() {
     stack = stack_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
-    for (int i = 'A'; i < 'A' + 5; i++) {
+    for (int i = 'A'; i < 'A' + len; i++) {
         stack_push(stack, wrap_char(i));
     }
     assert(!stack_is_empty(stack));
-    assert(stack_size(stack) == 5);
+    assert(stack_size(stack) == len);
     stack_clear(stack);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
@@ -157,12 +161,12 @@ void test_stack_size() {
     stack = stack_create(DATA_TYPE_T, compare_default, destroy_default);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
-    test_t *test = (test_t *)calloc(5, sizeof(test_t));
-    for (int i = 0; i < 5; i++) {
+    test_t *test = (test_t *)calloc(len, sizeof(test_t));
+    for (int i = 0; i < len; i++) {
         stack_push(stack, &test[i]);
     }
     assert(!stack_is_empty(stack));
-    assert(stack_size(stack) == 5);
+    assert(stack_size(stack) == len);
     stack_clear(stack);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
@@ -172,14 +176,16 @@ void test_stack_size() {
 }
 
 void test_stack_clear() {
+    const int len = 5;
+
     stack_t *stack = stack_create(DATA_TYPE_INT, compare_int, destroy_int);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         stack_push(stack, wrap_int(i));
     }
     assert(!stack_is_empty(stack));
-    assert(stack_size(stack) == 5);
+    assert(stack_size(stack) == len);
     stack_clear(stack);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
@@ -188,11 +194,11 @@ void test_stack_clear() {
     stack = stack_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         stack_push(stack, wrap_double(i));
     }
     assert(!stack_is_empty(stack));
-    assert(stack_size(stack) == 5);
+    assert(stack_size(stack) == len);
     stack_clear(stack);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
@@ -201,11 +207,11 @@ void test_stack_clear() {
     stack = stack_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
-    for (int i = 'A'; i < 'A' + 5; i++) {
+    for (int i = 'A'; i < 'A' + len; i++) {
         stack_push(stack, wrap_char(i));
     }
     assert(!stack_is_empty(stack));
-    assert(stack_size(stack) == 5);
+    assert(stack_size(stack) == len);
     stack_clear(stack);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
@@ -214,12 +220,12 @@ void test_stack_clear() {
     stack = stack_create(DATA_TYPE_T, compare_default, destroy_default);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
-    test_t *test = (test_t *)calloc(5, sizeof(test_t));
-    for (int i = 0; i < 5; i++) {
+    test_t *test = (test_t *)calloc(len, sizeof(test_t));
+    for (int i = 0; i < len; i++) {
         stack_push(stack, &test[i]);
     }
     assert(!stack_is_empty(stack));
-    assert(stack_size(stack) == 5);
+    assert(stack_size(stack) == len);
     stack_clear(stack);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
@@ -229,52 +235,54 @@ void test_stack_clear() {
 }
 
 void test_stack_push() {
+    const int len = 5;
+
     stack_t *stack = stack_create(DATA_TYPE_INT, compare_int, destroy_int);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         stack_push(stack, wrap_int(i));
     }
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         wrapper_int_t *wrapper = stack_peek(stack);
-        assert(wrapper->data == 5 - i - 1);
+        assert(wrapper->data == len - i - 1);
         wrapper = stack_pop(stack);
-        assert(unwrap_int(wrapper) == 5 - i - 1);
+        assert(unwrap_int(wrapper) == len - i - 1);
     }
     assert(stack_size(stack) == 0);
     assert(stack_is_empty(stack));
     stack_destroy(stack);
 
     stack = stack_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         stack_push(stack, wrap_double(i));
     }
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         wrapper_double_t *wrapper = stack_peek(stack);
-        assert(double_equal(wrapper->data, 5 - i - 1));
+        assert(double_equal(wrapper->data, len - i - 1));
         wrapper = stack_pop(stack);
-        assert(double_equal(unwrap_double(wrapper), 5 - i - 1));
+        assert(double_equal(unwrap_double(wrapper), len - i - 1));
     }
     assert(stack_size(stack) == 0);
     assert(stack_is_empty(stack));
     stack_destroy(stack);
 
     stack = stack_create(DATA_TYPE_CHAR, compare_char, destroy_char);
-    for (int i = 'A'; i < 'A' + 5; i++) {
+    for (int i = 'A'; i < 'A' + len; i++) {
         stack_push(stack, wrap_char(i));
     }
-    for (int i = 'A'; i < 'A' + 5; i++) {
+    for (int i = 'A'; i < 'A' + len; i++) {
         wrapper_char_t *wrapper = stack_peek(stack);
-        assert(wrapper->data == 'A' + (5 - 1) - (i - 'A'));
+        assert(wrapper->data == 'A' + (len - 1) - (i - 'A'));
         wrapper = stack_pop(stack);
-        assert(unwrap_char(wrapper) == 'A' + (5 - 1) - (i - 'A'));
+        assert(unwrap_char(wrapper) == 'A' + (len - 1) - (i - 'A'));
     }
     assert(stack_size(stack) == 0);
     assert(stack_is_empty(stack));
     stack_destroy(stack);
 
     stack = stack_create(DATA_TYPE_T, compare_default, destroy_default);
-    test_t *test = (test_t *)calloc(10, sizeof(test_t));
+    test_t *test = (test_t *)calloc(len, sizeof(test_t));
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         test[i].i = i;
         char str[8] = {0};
         int_to_str(i, str, sizeof(str));
@@ -282,16 +290,16 @@ void test_stack_push() {
         stack_push(stack, &test[i]);
     }
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         test_t *t = (test_t *)stack_peek(stack);
-        assert(t->i == 5 - i - 1);
+        assert(t->i == len - i - 1);
         char str[8] = {0};
-        int_to_str(5 - i - 1, str, sizeof(str));
+        int_to_str(len - i - 1, str, sizeof(str));
         assert(str_equal(t->str, str));
 
         t = stack_pop(stack);
-        assert(t->i == 5 - i - 1);
-        int_to_str(5 - i - 1, str, sizeof(str));
+        assert(t->i == len - i - 1);
+        int_to_str(len - i - 1, str, sizeof(str));
         assert(str_equal(t->str, str));
     }
     assert(stack_size(stack) == 0);
@@ -303,43 +311,45 @@ void test_stack_push() {
 }
 
 void test_stack_pop() {
+    const int len = 5;
+
     stack_t *stack = stack_create(DATA_TYPE_INT, compare_int, destroy_int);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         stack_push(stack, wrap_int(i));
     }
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         wrapper_int_t *wrapper = stack_peek(stack);
-        assert(wrapper->data == 5 - i - 1);
+        assert(wrapper->data == len - i - 1);
         wrapper = stack_pop(stack);
-        assert(unwrap_int(wrapper) == 5 - i - 1);
+        assert(unwrap_int(wrapper) == len - i - 1);
     }
     assert(stack_size(stack) == 0);
     assert(stack_is_empty(stack));
     stack_destroy(stack);
 
     stack = stack_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         stack_push(stack, wrap_double(i));
     }
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         wrapper_double_t *wrapper = stack_peek(stack);
-        assert(double_equal(wrapper->data, 5 - i - 1));
+        assert(double_equal(wrapper->data, len - i - 1));
         wrapper = stack_pop(stack);
-        assert(double_equal(unwrap_double(wrapper), 5 - i - 1));
+        assert(double_equal(unwrap_double(wrapper), len - i - 1));
     }
     assert(stack_size(stack) == 0);
     assert(stack_is_empty(stack));
     stack_destroy(stack);
 
     stack = stack_create(DATA_TYPE_CHAR, compare_char, destroy_char);
-    for (int i = 'A'; i < 'A' + 5; i++) {
+    for (int i = 'A'; i < 'A' + len; i++) {
         stack_push(stack, wrap_char(i));
     }
-    for (int i = 'A'; i < 'A' + 5; i++) {
+    for (int i = 'A'; i < 'A' + len; i++) {
         wrapper_char_t *wrapper = stack_peek(stack);
-        assert(wrapper->data == 'A' + (5 - 1) - (i - 'A'));
+        assert(wrapper->data == 'A' + (len - 1) - (i - 'A'));
         wrapper = stack_pop(stack);
-        assert(unwrap_char(wrapper) == 'A' + (5 - 1) - (i - 'A'));
+        assert(unwrap_char(wrapper) == 'A' + (len - 1) - (i - 'A'));
     }
     assert(stack_size(stack) == 0);
     assert(stack_is_empty(stack));
@@ -348,7 +358,7 @@ void test_stack_pop() {
     stack = stack_create(DATA_TYPE_T, compare_default, destroy_default);
     test_t *test = (test_t *)calloc(10, sizeof(test_t));
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         test[i].i = i;
         char str[8] = {0};
         int_to_str(i, str, sizeof(str));
@@ -356,16 +366,16 @@ void test_stack_pop() {
         stack_push(stack, &test[i]);
     }
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         test_t *t = (test_t *)stack_peek(stack);
-        assert(t->i == 5 - i - 1);
+        assert(t->i == len - i - 1);
         char str[8] = {0};
-        int_to_str(5 - i - 1, str, sizeof(str));
+        int_to_str(len - i - 1, str, sizeof(str));
         assert(str_equal(t->str, str));
 
         t = stack_pop(stack);
-        assert(t->i == 5 - i - 1);
-        int_to_str(5 - i - 1, str, sizeof(str));
+        assert(t->i == len - i - 1);
+        int_to_str(len - i - 1, str, sizeof(str));
         assert(str_equal(t->str, str));
     }
     assert(stack_size(stack) == 0);
@@ -377,52 +387,54 @@ void test_stack_pop() {
 }
 
 void test_stack_peek() {
+    const int len = 5;
+
     stack_t *stack = stack_create(DATA_TYPE_INT, compare_int, destroy_int);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         stack_push(stack, wrap_int(i));
     }
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         wrapper_int_t *wrapper = stack_peek(stack);
-        assert(wrapper->data == 5 - i - 1);
+        assert(wrapper->data == len - i - 1);
         wrapper = stack_pop(stack);
-        assert(unwrap_int(wrapper) == 5 - i - 1);
+        assert(unwrap_int(wrapper) == len - i - 1);
     }
     assert(stack_size(stack) == 0);
     assert(stack_is_empty(stack));
     stack_destroy(stack);
 
     stack = stack_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         stack_push(stack, wrap_double(i));
     }
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         wrapper_double_t *wrapper = stack_peek(stack);
-        assert(double_equal(wrapper->data, 5 - i - 1));
+        assert(double_equal(wrapper->data, len - i - 1));
         wrapper = stack_pop(stack);
-        assert(double_equal(unwrap_double(wrapper), 5 - i - 1));
+        assert(double_equal(unwrap_double(wrapper), len - i - 1));
     }
     assert(stack_size(stack) == 0);
     assert(stack_is_empty(stack));
     stack_destroy(stack);
 
     stack = stack_create(DATA_TYPE_CHAR, compare_char, destroy_char);
-    for (int i = 'A'; i < 'A' + 5; i++) {
+    for (int i = 'A'; i < 'A' + len; i++) {
         stack_push(stack, wrap_char(i));
     }
-    for (int i = 'A'; i < 'A' + 5; i++) {
+    for (int i = 'A'; i < 'A' + len; i++) {
         wrapper_char_t *wrapper = stack_peek(stack);
-        assert(wrapper->data == 'A' + (5 - 1) - (i - 'A'));
+        assert(wrapper->data == 'A' + (len - 1) - (i - 'A'));
         wrapper = stack_pop(stack);
-        assert(unwrap_char(wrapper) == 'A' + (5 - 1) - (i - 'A'));
+        assert(unwrap_char(wrapper) == 'A' + (len - 1) - (i - 'A'));
     }
     assert(stack_size(stack) == 0);
     assert(stack_is_empty(stack));
     stack_destroy(stack);
 
     stack = stack_create(DATA_TYPE_T, compare_default, destroy_default);
-    test_t *test = (test_t *)calloc(10, sizeof(test_t));
+    test_t *test = (test_t *)calloc(len, sizeof(test_t));
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         test[i].i = i;
         char str[8] = {0};
         int_to_str(i, str, sizeof(str));
@@ -430,16 +442,16 @@ void test_stack_peek() {
         stack_push(stack, &test[i]);
     }
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         test_t *t = (test_t *)stack_peek(stack);
-        assert(t->i == 5 - i - 1);
+        assert(t->i == len - i - 1);
         char str[8] = {0};
-        int_to_str(5 - i - 1, str, sizeof(str));
+        int_to_str(len - i - 1, str, sizeof(str));
         assert(str_equal(t->str, str));
 
         t = stack_pop(stack);
-        assert(t->i == 5 - i - 1);
-        int_to_str(5 - i - 1, str, sizeof(str));
+        assert(t->i == len - i - 1);
+        int_to_str(len - i - 1, str, sizeof(str));
         assert(str_equal(t->str, str));
     }
     assert(stack_size(stack) == 0);

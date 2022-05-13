@@ -58,14 +58,16 @@ void test_queue_destroy() {
 }
 
 void test_queue_is_empty() {
+    const int len = 5;
+
     queue_t *queue = queue_create(DATA_TYPE_INT, compare_int, destroy_int);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         queue_enqueue(queue, wrap_int(i));
     }
     assert(!queue_is_empty(queue));
-    assert(queue_size(queue) == 5);
+    assert(queue_size(queue) == len);
     queue_clear(queue);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
@@ -74,11 +76,11 @@ void test_queue_is_empty() {
     queue = queue_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         queue_enqueue(queue, wrap_double(i));
     }
     assert(!queue_is_empty(queue));
-    assert(queue_size(queue) == 5);
+    assert(queue_size(queue) == len);
     queue_clear(queue);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
@@ -87,11 +89,11 @@ void test_queue_is_empty() {
     queue = queue_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
-    for (int i = 'A'; i < 'A' + 5; i++) {
+    for (int i = 'A'; i < 'A' + len; i++) {
         queue_enqueue(queue, wrap_char(i));
     }
     assert(!queue_is_empty(queue));
-    assert(queue_size(queue) == 5);
+    assert(queue_size(queue) == len);
     queue_clear(queue);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
@@ -100,12 +102,12 @@ void test_queue_is_empty() {
     queue = queue_create(DATA_TYPE_T, compare_default, destroy_default);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
-    test_t *test = (test_t *)calloc(5, sizeof(test_t));
-    for (int i = 0; i < 5; i++) {
+    test_t *test = (test_t *)calloc(len, sizeof(test_t));
+    for (int i = 0; i < len; i++) {
         queue_enqueue(queue, &test[i]);
     }
     assert(!queue_is_empty(queue));
-    assert(queue_size(queue) == 5);
+    assert(queue_size(queue) == len);
     queue_clear(queue);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
@@ -115,14 +117,16 @@ void test_queue_is_empty() {
 }
 
 void test_queue_size() {
+    const int len = 5;
+
     queue_t *queue = queue_create(DATA_TYPE_INT, compare_int, destroy_int);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         queue_enqueue(queue, wrap_int(i));
     }
     assert(!queue_is_empty(queue));
-    assert(queue_size(queue) == 5);
+    assert(queue_size(queue) == len);
     queue_clear(queue);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
@@ -131,11 +135,11 @@ void test_queue_size() {
     queue = queue_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         queue_enqueue(queue, wrap_double(i));
     }
     assert(!queue_is_empty(queue));
-    assert(queue_size(queue) == 5);
+    assert(queue_size(queue) == len);
     queue_clear(queue);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
@@ -144,11 +148,11 @@ void test_queue_size() {
     queue = queue_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
-    for (int i = 'A'; i < 'A' + 5; i++) {
+    for (int i = 'A'; i < 'A' + len; i++) {
         queue_enqueue(queue, wrap_char(i));
     }
     assert(!queue_is_empty(queue));
-    assert(queue_size(queue) == 5);
+    assert(queue_size(queue) == len);
     queue_clear(queue);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
@@ -157,12 +161,12 @@ void test_queue_size() {
     queue = queue_create(DATA_TYPE_T, compare_default, destroy_default);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
-    test_t *test = (test_t *)calloc(5, sizeof(test_t));
-    for (int i = 0; i < 5; i++) {
+    test_t *test = (test_t *)calloc(len, sizeof(test_t));
+    for (int i = 0; i < len; i++) {
         queue_enqueue(queue, &test[i]);
     }
     assert(!queue_is_empty(queue));
-    assert(queue_size(queue) == 5);
+    assert(queue_size(queue) == len);
     queue_clear(queue);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
@@ -172,14 +176,16 @@ void test_queue_size() {
 }
 
 void test_queue_clear() {
+    const int len = 5;
+
     queue_t *queue = queue_create(DATA_TYPE_INT, compare_int, destroy_int);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         queue_enqueue(queue, wrap_int(i));
     }
     assert(!queue_is_empty(queue));
-    assert(queue_size(queue) == 5);
+    assert(queue_size(queue) == len);
     queue_clear(queue);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
@@ -188,11 +194,11 @@ void test_queue_clear() {
     queue = queue_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         queue_enqueue(queue, wrap_double(i));
     }
     assert(!queue_is_empty(queue));
-    assert(queue_size(queue) == 5);
+    assert(queue_size(queue) == len);
     queue_clear(queue);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
@@ -201,11 +207,11 @@ void test_queue_clear() {
     queue = queue_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
-    for (int i = 'A'; i < 'A' + 5; i++) {
+    for (int i = 'A'; i < 'A' + len; i++) {
         queue_enqueue(queue, wrap_char(i));
     }
     assert(!queue_is_empty(queue));
-    assert(queue_size(queue) == 5);
+    assert(queue_size(queue) == len);
     queue_clear(queue);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
@@ -214,12 +220,12 @@ void test_queue_clear() {
     queue = queue_create(DATA_TYPE_T, compare_default, destroy_default);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
-    test_t *test = (test_t *)calloc(5, sizeof(test_t));
-    for (int i = 0; i < 5; i++) {
+    test_t *test = (test_t *)calloc(len, sizeof(test_t));
+    for (int i = 0; i < len; i++) {
         queue_enqueue(queue, &test[i]);
     }
     assert(!queue_is_empty(queue));
-    assert(queue_size(queue) == 5);
+    assert(queue_size(queue) == len);
     queue_clear(queue);
     assert(queue_is_empty(queue));
     assert(queue_size(queue) == 0);
@@ -229,11 +235,13 @@ void test_queue_clear() {
 }
 
 void test_queue_enqueue() {
+    const int len = 5;
+
     queue_t *queue = queue_create(DATA_TYPE_INT, compare_int, destroy_int);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         queue_enqueue(queue, wrap_int(i));
     }
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         wrapper_int_t *wrapper = queue_get_front(queue);
         assert(wrapper->data == i);
         wrapper = queue_dequeue(queue);
@@ -244,10 +252,10 @@ void test_queue_enqueue() {
     queue_destroy(queue);
 
     queue = queue_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         queue_enqueue(queue, wrap_double(i));
     }
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         wrapper_double_t *wrapper = queue_get_front(queue);
         assert(double_equal(wrapper->data, i));
         wrapper = queue_dequeue(queue);
@@ -258,10 +266,10 @@ void test_queue_enqueue() {
     queue_destroy(queue);
 
     queue = queue_create(DATA_TYPE_CHAR, compare_char, destroy_char);
-    for (int i = 'A'; i < 'A' + 5; i++) {
+    for (int i = 'A'; i < 'A' + len; i++) {
         queue_enqueue(queue, wrap_char(i));
     }
-    for (int i = 'A'; i < 'A' + 5; i++) {
+    for (int i = 'A'; i < 'A' + len; i++) {
         wrapper_char_t *wrapper = queue_get_front(queue);
         assert(wrapper->data == i);
         wrapper = queue_dequeue(queue);
@@ -274,7 +282,7 @@ void test_queue_enqueue() {
     queue = queue_create(DATA_TYPE_T, compare_default, destroy_default);
     test_t *test = (test_t *)calloc(10, sizeof(test_t));
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         test[i].i = i;
         char str[8] = {0};
         int_to_str(i, str, sizeof(str));
@@ -282,7 +290,7 @@ void test_queue_enqueue() {
         queue_enqueue(queue, &test[i]);
     }
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         test_t *t = (test_t *)queue_get_front(queue);
         assert(t->i == i);
         char str[8] = {0};
@@ -303,11 +311,13 @@ void test_queue_enqueue() {
 }
 
 void test_queue_dequeue() {
+    const int len = 5;
+
     queue_t *queue = queue_create(DATA_TYPE_INT, compare_int, destroy_int);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         queue_enqueue(queue, wrap_int(i));
     }
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         wrapper_int_t *wrapper = queue_get_front(queue);
         assert(wrapper->data == i);
         wrapper = queue_dequeue(queue);
@@ -318,10 +328,10 @@ void test_queue_dequeue() {
     queue_destroy(queue);
 
     queue = queue_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         queue_enqueue(queue, wrap_double(i));
     }
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         wrapper_double_t *wrapper = queue_get_front(queue);
         assert(double_equal(wrapper->data, i));
         wrapper = queue_dequeue(queue);
@@ -332,10 +342,10 @@ void test_queue_dequeue() {
     queue_destroy(queue);
 
     queue = queue_create(DATA_TYPE_CHAR, compare_char, destroy_char);
-    for (int i = 'A'; i < 'A' + 5; i++) {
+    for (int i = 'A'; i < 'A' + len; i++) {
         queue_enqueue(queue, wrap_char(i));
     }
-    for (int i = 'A'; i < 'A' + 5; i++) {
+    for (int i = 'A'; i < 'A' + len; i++) {
         wrapper_char_t *wrapper = queue_get_front(queue);
         assert(wrapper->data == i);
         wrapper = queue_dequeue(queue);
@@ -346,9 +356,9 @@ void test_queue_dequeue() {
     queue_destroy(queue);
 
     queue = queue_create(DATA_TYPE_T, compare_default, destroy_default);
-    test_t *test = (test_t *)calloc(10, sizeof(test_t));
+    test_t *test = (test_t *)calloc(len, sizeof(test_t));
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         test[i].i = i;
         char str[8] = {0};
         int_to_str(i, str, sizeof(str));
@@ -356,7 +366,7 @@ void test_queue_dequeue() {
         queue_enqueue(queue, &test[i]);
     }
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         test_t *t = (test_t *)queue_get_front(queue);
         assert(t->i == i);
         char str[8] = {0};
@@ -377,11 +387,13 @@ void test_queue_dequeue() {
 }
 
 void test_queue_get_front() {
+    const int len = 5;
+
     queue_t *queue = queue_create(DATA_TYPE_INT, compare_int, destroy_int);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         queue_enqueue(queue, wrap_int(i));
     }
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         wrapper_int_t *wrapper = queue_get_front(queue);
         assert(wrapper->data == i);
         wrapper = queue_dequeue(queue);
@@ -392,10 +404,10 @@ void test_queue_get_front() {
     queue_destroy(queue);
 
     queue = queue_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         queue_enqueue(queue, wrap_double(i));
     }
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         wrapper_double_t *wrapper = queue_get_front(queue);
         assert(double_equal(wrapper->data, i));
         wrapper = queue_dequeue(queue);
@@ -406,10 +418,10 @@ void test_queue_get_front() {
     queue_destroy(queue);
 
     queue = queue_create(DATA_TYPE_CHAR, compare_char, destroy_char);
-    for (int i = 'A'; i < 'A' + 5; i++) {
+    for (int i = 'A'; i < 'A' + len; i++) {
         queue_enqueue(queue, wrap_char(i));
     }
-    for (int i = 'A'; i < 'A' + 5; i++) {
+    for (int i = 'A'; i < 'A' + len; i++) {
         wrapper_char_t *wrapper = queue_get_front(queue);
         assert(wrapper->data == i);
         wrapper = queue_dequeue(queue);
@@ -420,9 +432,9 @@ void test_queue_get_front() {
     queue_destroy(queue);
 
     queue = queue_create(DATA_TYPE_T, compare_default, destroy_default);
-    test_t *test = (test_t *)calloc(10, sizeof(test_t));
+    test_t *test = (test_t *)calloc(len, sizeof(test_t));
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         test[i].i = i;
         char str[8] = {0};
         int_to_str(i, str, sizeof(str));
@@ -430,7 +442,7 @@ void test_queue_get_front() {
         queue_enqueue(queue, &test[i]);
     }
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < len; i++) {
         test_t *t = (test_t *)queue_get_front(queue);
         assert(t->i == i);
         char str[8] = {0};

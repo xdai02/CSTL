@@ -6,6 +6,7 @@
 #include "test_cino_queue.h"
 #include "test_cino_deque.h"
 #include "test_cino_tree.h"
+#include "test_cino_set.h"
 
 void test_cino_utils() {
     test_min();
@@ -204,10 +205,26 @@ void test_cino_tree() {
     test_tree_insert();
     test_tree_remove();
     test_tree_set();
-    // test_tree_node_array_create();
-    // test_tree_node_array_destroy();
+    test_tree_node_array_create();
+    test_tree_node_array_destroy();
 
     LOGGER(INFO, "[PASS] test_cino_tree");
+}
+
+void test_cino_set() {
+    test_set_create();
+    test_set_destroy();
+    test_set_is_empty();
+    test_set_size();
+    test_set_clear();
+    test_set_foreach();
+    test_set_add();
+    test_set_remove();
+    test_set_intersection();
+    test_set_union();
+    test_set_difference();
+
+    LOGGER(INFO, "[PASS] test_cino_set");
 }
 
 int main(int argc, char *argv[]) {
@@ -219,6 +236,7 @@ int main(int argc, char *argv[]) {
     test_cino_queue();
     test_cino_deque();
     test_cino_tree();
+    test_cino_set();
 
     return 0;
 }

@@ -1,1 +1,0 @@
-gcc -Wall -std=c99 -Iinclude src/* test/* -o test_cino
