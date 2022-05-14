@@ -77,6 +77,15 @@ set_t *set_clear(set_t *set);
 void set_foreach(set_t *set, visit_t visit);
 
 /**
+ * @brief   Determine if the data can be found in the cino-set.
+ * @param set   cino-set
+ * @param data  For primitive data, a wrapper type of that primitive is needed.
+ * @return  Returns `true` if the data is found, otherwise returns `false`. It is
+ *          caller's responsibility to unwrap or free.
+ */
+bool set_contains(set_t *set, T data);
+
+/**
  * @brief   Add an element to the cino-set.
  * @param set   cino-set
  * @return  Returns the modified cino-set.

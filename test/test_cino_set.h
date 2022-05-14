@@ -10,6 +10,7 @@ void test_set_is_empty();
 void test_set_size();
 void test_set_clear();
 void test_set_foreach();
+void test_set_contains();
 void test_set_add();
 void test_set_remove();
 void test_set_intersection();

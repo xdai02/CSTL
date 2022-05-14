@@ -525,14 +525,14 @@ void test_tree_contains() {
     tree_destroy(tree);
 
     tree = tree_create(DATA_TYPE_T, compare_default, destroy_default);
-    test_t *test = (test_t *)calloc(len, sizeof(test_t));
+    test_t *test = (test_t *)calloc(len + 1, sizeof(test_t));
     for (int i = 0; i < len; i++) {
         tree_insert(tree, &test[i]);
     }
     for (int i = 0; i < len; i++) {
         assert(tree_contains(tree, &test[i]));
     }
-    assert(!tree_contains(tree, NULL));
+    assert(!tree_contains(tree, &test[len]));
     free(test);
     test = NULL;
     tree_destroy(tree);

@@ -218,6 +218,7 @@ void test_cino_set() {
     test_set_size();
     test_set_clear();
     test_set_foreach();
+    test_set_contains();
     test_set_add();
     test_set_remove();
     test_set_intersection();
