@@ -5,6 +5,13 @@ typedef struct test_t {
     char str[16];
 } test_t;
 
+static void test_setter(test_t *test, int index, int value) {
+    test[index].i = value;
+    char str[8] = {0};
+    int_to_str(value, str, sizeof(str));
+    str_copy(test[index].str, str);
+}
+
 void test_deque_create() {
     deque_t *deque = deque_create(DATA_TYPE_INT, compare_int, destroy_int);
     assert(deque);
@@ -283,10 +290,7 @@ void test_deque_push_front() {
     test_t *test = (test_t *)calloc(len, sizeof(test_t));
 
     for (int i = 0; i < len; i++) {
-        test[i].i = i;
-        char str[8] = {0};
-        int_to_str(i, str, sizeof(str));
-        str_copy(test[i].str, str);
+        test_setter(test, i, i);
         deque_push_front(deque, &test[i]);
     }
 
@@ -359,10 +363,7 @@ void test_deque_pop_front() {
     test_t *test = (test_t *)calloc(len, sizeof(test_t));
 
     for (int i = 0; i < len; i++) {
-        test[i].i = i;
-        char str[8] = {0};
-        int_to_str(i, str, sizeof(str));
-        str_copy(test[i].str, str);
+        test_setter(test, i, i);
         deque_push_front(deque, &test[i]);
     }
 
@@ -435,10 +436,7 @@ void test_deque_get_front() {
     test_t *test = (test_t *)calloc(len, sizeof(test_t));
 
     for (int i = 0; i < len; i++) {
-        test[i].i = i;
-        char str[8] = {0};
-        int_to_str(i, str, sizeof(str));
-        str_copy(test[i].str, str);
+        test_setter(test, i, i);
         deque_push_front(deque, &test[i]);
     }
 
@@ -511,10 +509,7 @@ void test_deque_push_back() {
     test_t *test = (test_t *)calloc(len, sizeof(test_t));
 
     for (int i = 0; i < len; i++) {
-        test[i].i = i;
-        char str[8] = {0};
-        int_to_str(i, str, sizeof(str));
-        str_copy(test[i].str, str);
+        test_setter(test, i, i);
         deque_push_back(deque, &test[i]);
     }
 
@@ -587,10 +582,7 @@ void test_deque_pop_back() {
     test_t *test = (test_t *)calloc(len, sizeof(test_t));
 
     for (int i = 0; i < len; i++) {
-        test[i].i = i;
-        char str[8] = {0};
-        int_to_str(i, str, sizeof(str));
-        str_copy(test[i].str, str);
+        test_setter(test, i, i);
         deque_push_back(deque, &test[i]);
     }
 
@@ -663,10 +655,7 @@ void test_deque_get_back() {
     test_t *test = (test_t *)calloc(len, sizeof(test_t));
 
     for (int i = 0; i < len; i++) {
-        test[i].i = i;
-        char str[8] = {0};
-        int_to_str(i, str, sizeof(str));
-        str_copy(test[i].str, str);
+        test_setter(test, i, i);
         deque_push_back(deque, &test[i]);
     }
 

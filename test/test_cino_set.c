@@ -5,6 +5,19 @@ typedef struct test_t {
     char str[16];
 } test_t;
 
+static void test_setter(test_t *test, int index, int value) {
+    test[index].i = value;
+    char str[8] = {0};
+    int_to_str(value, str, sizeof(str));
+    str_copy(test[index].str, str);
+}
+
+static int compare_test(const void *data1, const void *data2) {
+    test_t *test1 = (test_t *)data1;
+    test_t *test2 = (test_t *)data2;
+    return test1->i - test2->i;
+}
+
 static void visit_int(void *data) {
     wrapper_int_t *wrapper = (wrapper_int_t *)data;
     assert(wrapper);
@@ -26,6 +39,7 @@ static void visit_char(void *data) {
 static void visit_test(void *data) {
     test_t *test = (test_t *)data;
     assert(test);
+    LOGGER(INFO, "test->i = %d", test->i);
 }
 
 void test_set_create() {
@@ -453,16 +467,42 @@ void test_set_intersection() {
     set2 = set_create(DATA_TYPE_CHAR, compare_char, destroy_char);
 
     for (int i = 0; i < len1; i++) {
-        set_add(set1, wrap_char(arr1[i] + 'A'));
+        set_add(set1, wrap_char('A' + arr1[i]));
     }
     for (int i = 0; i < len2; i++) {
-        set_add(set2, wrap_char(arr2[i] + 'A'));
+        set_add(set2, wrap_char('A' + arr2[i]));
     }
 
     intersection = set_intersection(set1, set2);
     assert(set_size(intersection) == 3);
     set_foreach(intersection, visit_char);
 
+    set_destroy(intersection);
+    set_destroy(set1);
+    set_destroy(set2);
+
+    set1 = set_create(DATA_TYPE_T, compare_test, destroy_default);
+    set2 = set_create(DATA_TYPE_T, compare_test, destroy_default);
+    test_t *test1 = (test_t *)calloc(len1, sizeof(test_t));
+    test_t *test2 = (test_t *)calloc(len2, sizeof(test_t));
+
+    for (int i = 0; i < len1; i++) {
+        test_setter(test1, i, arr1[i]);
+        set_add(set1, &test1[i]);
+    }
+    for (int i = 0; i < len2; i++) {
+        test_setter(test2, i, arr2[i]);
+        set_add(set2, &test2[i]);
+    }
+
+    intersection = set_intersection(set1, set2);
+    assert(set_size(intersection) == 3);
+    set_foreach(intersection, visit_test);
+
+    free(test1);
+    free(test2);
+    test1 = NULL;
+    test2 = NULL;
     set_destroy(intersection);
     set_destroy(set1);
     set_destroy(set2);

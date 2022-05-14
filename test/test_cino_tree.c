@@ -26,6 +26,7 @@ static void visit_char(void *data) {
 static void visit_test(void *data) {
     test_t *test = (test_t *)data;
     assert(test);
+    LOGGER(NONE, "test->i = %d", test->i);
 }
 
 static int compare_test_by_int(const void *data1, const void *data2) {
@@ -382,104 +383,94 @@ void test_tree_post_order() {
 }
 
 void test_tree_min() {
-    int arr1[] = {5, 7, 1, 9, 4, 2, 5, 6};
-    int len1 = arr_len(arr1);
+    int arr[] = {5, 7, 1, 9, 4, 2, 5, 6};
+    int len = arr_len(arr);
+    const int min_val = 1;
 
     tree_t *tree = tree_create(DATA_TYPE_INT, compare_int, destroy_int);
-    for (int i = 0; i < len1; i++) {
-        tree_insert(tree, wrap_int(arr1[i]));
+    for (int i = 0; i < len; i++) {
+        tree_insert(tree, wrap_int(arr[i]));
     }
     wrapper_int_t *wrapper_int = (wrapper_int_t *)tree_min(tree);
-    assert(wrapper_int->data == 1);
+    assert(wrapper_int->data == min_val);
     tree_destroy(tree);
-
-    double arr2[] = {5.5, 7.7, 1.1, 9.9, 4.4, 2.2, 5.5, 6.6};
-    int len2 = arr_len(arr2);
 
     tree = tree_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
-    for (int i = 0; i < len2; i++) {
-        tree_insert(tree, wrap_double(arr2[i]));
+    for (int i = 0; i < len; i++) {
+        tree_insert(tree, wrap_double(arr[i]));
     }
     wrapper_double_t *wrapper_double = (wrapper_double_t *)tree_min(tree);
-    assert(double_equal(wrapper_double->data, 1.1));
+    assert(double_equal(wrapper_double->data, min_val));
     tree_destroy(tree);
 
-    char arr3[] = {'D', 'F', 'A', 'G', 'C', 'B', 'D', 'E', '\0'};
-    int len3 = str_length(arr3);
-
     tree = tree_create(DATA_TYPE_CHAR, compare_char, destroy_char);
-    for (int i = 0; i < len3; i++) {
-        tree_insert(tree, wrap_char(arr3[i]));
+    for (int i = 0; i < len; i++) {
+        tree_insert(tree, wrap_char('A' + arr[i]));
     }
     wrapper_char_t *wrapper_char = (wrapper_char_t *)tree_min(tree);
-    assert(wrapper_char->data == 'A');
+    assert(wrapper_char->data == 'A' + min_val);
     tree_destroy(tree);
 
     tree = tree_create(DATA_TYPE_T, compare_test_by_int, destroy_default);
-    test_t *test = (test_t *)calloc(len1, sizeof(test_t));
+    test_t *test = (test_t *)calloc(len, sizeof(test_t));
 
-    for (int i = 0; i < len1; i++) {
-        test[i].i = arr1[i];
+    for (int i = 0; i < len; i++) {
+        test[i].i = arr[i];
         char str[8] = {0};
-        int_to_str(arr1[i], str, sizeof(str));
+        int_to_str(arr[i], str, sizeof(str));
         str_copy(test[i].str, str);
         tree_insert(tree, &test[i]);
     }
 
     test_t *t = (test_t *)tree_min(tree);
-    assert(t->i == 1);
+    assert(t->i == min_val);
     free(test);
     test = NULL;
     tree_destroy(tree);
 }
 
 void test_tree_max() {
-    int arr1[] = {5, 7, 1, 9, 4, 2, 5, 6};
-    int len1 = arr_len(arr1);
+    int arr[] = {5, 7, 1, 9, 4, 2, 5, 6};
+    int len = arr_len(arr);
+    const int max_val = 9;
 
     tree_t *tree = tree_create(DATA_TYPE_INT, compare_int, destroy_int);
-    for (int i = 0; i < len1; i++) {
-        tree_insert(tree, wrap_int(arr1[i]));
+    for (int i = 0; i < len; i++) {
+        tree_insert(tree, wrap_int(arr[i]));
     }
     wrapper_int_t *wrapper_int = (wrapper_int_t *)tree_max(tree);
-    assert(wrapper_int->data == 9);
+    assert(wrapper_int->data == max_val);
     tree_destroy(tree);
-
-    double arr2[] = {5.5, 7.7, 1.1, 9.9, 4.4, 2.2, 5.5, 6.6};
-    int len2 = arr_len(arr2);
 
     tree = tree_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
-    for (int i = 0; i < len2; i++) {
-        tree_insert(tree, wrap_double(arr2[i]));
+    for (int i = 0; i < len; i++) {
+        tree_insert(tree, wrap_double(arr[i]));
     }
     wrapper_double_t *wrapper_double = (wrapper_double_t *)tree_max(tree);
-    assert(double_equal(wrapper_double->data, 9.9));
+    assert(double_equal(wrapper_double->data, max_val));
     tree_destroy(tree);
 
-    char arr3[] = {'D', 'F', 'A', 'G', 'C', 'B', 'D', 'E', '\0'};
-    int len3 = str_length(arr3);
-
     tree = tree_create(DATA_TYPE_CHAR, compare_char, destroy_char);
-    for (int i = 0; i < len3; i++) {
-        tree_insert(tree, wrap_char(arr3[i]));
+    for (int i = 0; i < len; i++) {
+        tree_insert(tree, wrap_char('A' + arr[i]));
     }
     wrapper_char_t *wrapper_char = (wrapper_char_t *)tree_max(tree);
-    assert(wrapper_char->data == 'G');
+    assert(wrapper_char->data == 'A' + max_val);
     tree_destroy(tree);
 
     tree = tree_create(DATA_TYPE_T, compare_test_by_int, destroy_default);
-    test_t *test = (test_t *)calloc(len1, sizeof(test_t));
+    test_t *test = (test_t *)calloc(len, sizeof(test_t));
 
-    for (int i = 0; i < len1; i++) {
-        test[i].i = arr1[i];
+    for (int i = 0; i < len; i++) {
+        test[i].i = arr[i];
         char str[8] = {0};
-        int_to_str(arr1[i], str, sizeof(str));
+        int_to_str(arr[i], str, sizeof(str));
         str_copy(test[i].str, str);
         tree_insert(tree, &test[i]);
     }
 
     test_t *t = (test_t *)tree_max(tree);
-    assert(t->i == 9);
+    assert(t->i == max_val);
     free(test);
     test = NULL;
     tree_destroy(tree);
@@ -548,40 +539,37 @@ void test_tree_contains() {
 }
 
 void test_tree_insert() {
-    int arr1[] = {5, 2, 8, 0, 5, 6, 2, 2, 12, 57, 23, 63, 18, 84, 55};
-    int len1 = arr_len(arr1);
+    int arr[] = {5, 2, 8, 0, 5, 6, 2, 2, 12, 12, 23, 9, 18, 9, 10};
+    int len = arr_len(arr);
 
     tree_t *tree = tree_create(DATA_TYPE_INT, compare_int, destroy_int);
-    for (int i = 0; i < len1; i++) {
-        tree_insert(tree, wrap_int(arr1[i]));
+    for (int i = 0; i < len; i++) {
+        tree_insert(tree, wrap_int(arr[i]));
     }
     tree_in_order(tree, visit_int);
     tree_destroy(tree);
 
     tree = tree_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
-    for (int i = 0; i < len1; i++) {
-        tree_insert(tree, wrap_double(arr1[i]));
+    for (int i = 0; i < len; i++) {
+        tree_insert(tree, wrap_double(arr[i]));
     }
     tree_pre_order(tree, visit_double);
     tree_destroy(tree);
 
-    char arr2[] = {'F', 'A', 'C', 'C', 'A', 'I', 'L', 'W', 'Z', 'T', '\0'};
-    int len2 = str_length(arr2);
-
     tree = tree_create(DATA_TYPE_CHAR, compare_char, destroy_char);
-    for (int i = 0; i < len2; i++) {
-        tree_insert(tree, wrap_char(arr2[i]));
+    for (int i = 0; i < len; i++) {
+        tree_insert(tree, wrap_char('A' + arr[i]));
     }
     tree_pre_order(tree, visit_char);
     tree_destroy(tree);
 
     tree = tree_create(DATA_TYPE_T, compare_default, destroy_default);
-    test_t *test = (test_t *)calloc(len1, sizeof(test_t));
+    test_t *test = (test_t *)calloc(len, sizeof(test_t));
 
-    for (int i = 0; i < len1; i++) {
-        test[i].i = arr1[i];
+    for (int i = 0; i < len; i++) {
+        test[i].i = arr[i];
         char str[8] = {0};
-        int_to_str(arr1[i], str, sizeof(str));
+        int_to_str(arr[i], str, sizeof(str));
         str_copy(test[i].str, str);
         tree_insert(tree, &test[i]);
     }

@@ -5,6 +5,13 @@ typedef struct test_t {
     char str[16];
 } test_t;
 
+static void test_setter(test_t *test, int index, int value) {
+    test[index].i = value;
+    char str[8] = {0};
+    int_to_str(value, str, sizeof(str));
+    str_copy(test[index].str, str);
+}
+
 static void visit_int(void *data) {
     wrapper_int_t *wrapper = (wrapper_int_t *)data;
     assert(wrapper);
@@ -26,6 +33,7 @@ static void visit_char(void *data) {
 static void visit_test(void *data) {
     test_t *test = (test_t *)data;
     assert(test);
+    LOGGER(NONE, "test->i = %d", test->i);
 }
 
 static bool match_test_int(const void *data) {
@@ -158,10 +166,7 @@ void test_list_size() {
     assert(list_size(list) == 0);
     test_t *test = (test_t *)calloc(len, sizeof(test_t));
     for (int i = 0; i < len; i++) {
-        test[i].i = i;
-        char str[8] = {0};
-        int_to_str(i, str, sizeof(str));
-        str_copy(test[i].str, str);
+        test_setter(test, i, i);
         list_push_back(list, &test[i]);
     }
     assert(!list_is_empty(list));
@@ -221,10 +226,7 @@ void test_list_clear() {
     assert(list_size(list) == 0);
     test_t *test = (test_t *)calloc(len, sizeof(test_t));
     for (int i = 0; i < len; i++) {
-        test[i].i = i;
-        char str[8] = {0};
-        int_to_str(i, str, sizeof(str));
-        str_copy(test[i].str, str);
+        test_setter(test, i, i);
         list_push_back(list, &test[i]);
     }
     assert(!list_is_empty(list));
@@ -264,10 +266,7 @@ void test_list_foreach() {
     list = list_create(DATA_TYPE_T, compare_default, destroy_default);
     test_t *test = (test_t *)calloc(len, sizeof(test_t));
     for (int i = 0; i < len; i++) {
-        test[i].i = i;
-        char str[8] = {0};
-        int_to_str(i, str, sizeof(str));
-        str_copy(test[i].str, str);
+        test_setter(test, i, i);
         list_push_back(list, &test[i]);
     }
     list_foreach(list, visit_test, false);
@@ -311,10 +310,7 @@ void test_list_get_front() {
     test_t *test = (test_t *)calloc(len, sizeof(test_t));
 
     for (int i = 0; i < len; i++) {
-        test[i].i = i;
-        char str[8] = {0};
-        int_to_str(i, str, sizeof(str));
-        str_copy(test[i].str, str);
+        test_setter(test, i, i);
         list_push_back(list, &test[i]);
     }
 
@@ -362,10 +358,7 @@ void test_list_get_back() {
     test_t *test = (test_t *)calloc(len, sizeof(test_t));
 
     for (int i = 0; i < len; i++) {
-        test[i].i = i;
-        char str[8] = {0};
-        int_to_str(i, str, sizeof(str));
-        str_copy(test[i].str, str);
+        test_setter(test, i, i);
         list_push_back(list, &test[i]);
     }
 
@@ -419,10 +412,7 @@ void test_list_get() {
     test_t *test = (test_t *)calloc(len, sizeof(test_t));
 
     for (int i = 0; i < len; i++) {
-        test[i].i = i;
-        char str[8] = {0};
-        int_to_str(i, str, sizeof(str));
-        str_copy(test[i].str, str);
+        test_setter(test, i, i);
         list_push_back(list, &test[i]);
     }
 
@@ -492,10 +482,7 @@ void test_list_set() {
     test_t *test = (test_t *)calloc(3, sizeof(test_t));
 
     for (int i = 0; i < 3; i++) {
-        test[i].i = i;
-        char str[8] = {0};
-        int_to_str(i, str, sizeof(str));
-        str_copy(test[i].str, str);
+        test_setter(test, i, i);
         list_push_back(list, &test[i]);
     }
 
@@ -553,10 +540,7 @@ void test_list_index_of() {
     test_t *test = (test_t *)calloc(len, sizeof(test_t));
 
     for (int i = 0; i < len; i++) {
-        test[i].i = arr[i];
-        char str[8] = {0};
-        int_to_str(arr[i], str, sizeof(str));
-        str_copy(test[i].str, str);
+        test_setter(test, i, arr[i]);
         list_push_back(list, &test[i]);
     }
 
@@ -604,10 +588,7 @@ void test_list_push_front() {
     test_t *test = (test_t *)calloc(len, sizeof(test_t));
 
     for (int i = 0; i < len; i++) {
-        test[i].i = i;
-        char str[8] = {0};
-        int_to_str(i, str, sizeof(str));
-        str_copy(test[i].str, str);
+        test_setter(test, i, i);
         list_push_front(list, &test[i]);
     }
 
@@ -661,10 +642,7 @@ void test_list_push_back() {
     test_t *test = (test_t *)calloc(len, sizeof(test_t));
 
     for (int i = 0; i < len; i++) {
-        test[i].i = i;
-        char str[8] = {0};
-        int_to_str(i, str, sizeof(str));
-        str_copy(test[i].str, str);
+        test_setter(test, i, i);
         list_push_back(list, &test[i]);
     }
 
@@ -724,10 +702,7 @@ void test_list_pop_front() {
     test_t *test = (test_t *)calloc(len, sizeof(test_t));
 
     for (int i = 0; i < len; i++) {
-        test[i].i = i;
-        char str[8] = {0};
-        int_to_str(i, str, sizeof(str));
-        str_copy(test[i].str, str);
+        test_setter(test, i, i);
         list_push_back(list, &test[i]);
     }
 
@@ -787,10 +762,7 @@ void test_list_pop_back() {
     test_t *test = (test_t *)calloc(len, sizeof(test_t));
 
     for (int i = 0; i < len; i++) {
-        test[i].i = i;
-        char str[8] = {0};
-        int_to_str(i, str, sizeof(str));
-        str_copy(test[i].str, str);
+        test_setter(test, i, i);
         list_push_back(list, &test[i]);
     }
 
@@ -940,10 +912,7 @@ void test_list_remove() {
     test_t *test = (test_t *)calloc(len, sizeof(test_t));
 
     for (int i = 0; i < len; i++) {
-        test[i].i = i;
-        char str[8] = {0};
-        int_to_str(i, str, sizeof(str));
-        str_copy(test[i].str, str);
+        test_setter(test, i, i);
         list_push_back(list, &test[i]);
     }
 
