@@ -104,11 +104,11 @@ void test_set_is_empty() {
     set = set_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(set_is_empty(set));
     assert(set_size(set) == 0);
-    for (int i = 'A'; i < 'A' + len; i++) {
-        set_add(set, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        set_add(set, wrap_char('A' + i));
     }
-    for (int i = 'A'; i < 'A' + len; i++) {
-        set_add(set, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        set_add(set, wrap_char('A' + i));
     }
     assert(!set_is_empty(set));
     assert(set_size(set) == len);
@@ -165,11 +165,11 @@ void test_set_size() {
     set = set_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(set_is_empty(set));
     assert(set_size(set) == 0);
-    for (int i = 'A'; i < 'A' + len; i++) {
-        set_add(set, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        set_add(set, wrap_char('A' + i));
     }
-    for (int i = 'A'; i < 'A' + len; i++) {
-        set_add(set, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        set_add(set, wrap_char('A' + i));
     }
     assert(!set_is_empty(set));
     assert(set_size(set) == len);
@@ -232,11 +232,11 @@ void test_set_clear() {
     set = set_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(set_is_empty(set));
     assert(set_size(set) == 0);
-    for (int i = 'A'; i < 'A' + len; i++) {
-        set_add(set, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        set_add(set, wrap_char('A' + i));
     }
-    for (int i = 'A'; i < 'A' + len; i++) {
-        set_add(set, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        set_add(set, wrap_char('A' + i));
     }
     assert(!set_is_empty(set));
     assert(set_size(set) == len);
@@ -286,8 +286,8 @@ void test_set_foreach() {
     set_destroy(set);
 
     set = set_create(DATA_TYPE_CHAR, compare_char, destroy_char);
-    for (int i = 'A'; i < 'A' + len; i++) {
-        set_add(set, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        set_add(set, wrap_char('A' + i));
     }
     set_foreach(set, visit_char);
     set_destroy(set);
@@ -327,11 +327,11 @@ void test_set_add() {
     set_destroy(set);
 
     set = set_create(DATA_TYPE_CHAR, compare_char, destroy_char);
-    for (int i = 'A'; i < 'A' + len; i++) {
-        set_add(set, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        set_add(set, wrap_char('A' + i));
     }
-    for (int i = 'A'; i < 'A' + len; i++) {
-        set_add(set, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        set_add(set, wrap_char('A' + i));
     }
     assert(set_size(set) == len);
     set_destroy(set);
@@ -379,11 +379,11 @@ void test_set_remove() {
     set_destroy(set);
 
     set = set_create(DATA_TYPE_CHAR, compare_char, destroy_char);
-    for (int i = 'A'; i < 'A' + len; i++) {
-        set_add(set, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        set_add(set, wrap_char('A' + i));
     }
-    for (int i = 'A'; i < 'A' + 3; i++) {
-        set_remove(set, wrap_char(i));
+    for (int i = 0; i < 3; i++) {
+        set_remove(set, wrap_char('A' + i));
     }
     assert(set_size(set) == 2);
     set_foreach(set, visit_char);
@@ -426,6 +426,42 @@ void test_set_intersection() {
     set_t *intersection = set_intersection(set1, set2);
     assert(set_size(intersection) == 3);
     set_foreach(intersection, visit_int);
+
+    set_destroy(intersection);
+    set_destroy(set1);
+    set_destroy(set2);
+
+    set1 = set_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
+    set2 = set_create(DATA_TYPE_DOUBLE, compare_double, destroy_double);
+
+    for (int i = 0; i < len1; i++) {
+        set_add(set1, wrap_double(arr1[i]));
+    }
+    for (int i = 0; i < len2; i++) {
+        set_add(set2, wrap_double(arr2[i]));
+    }
+
+    intersection = set_intersection(set1, set2);
+    assert(set_size(intersection) == 3);
+    set_foreach(intersection, visit_double);
+
+    set_destroy(intersection);
+    set_destroy(set1);
+    set_destroy(set2);
+
+    set1 = set_create(DATA_TYPE_CHAR, compare_char, destroy_char);
+    set2 = set_create(DATA_TYPE_CHAR, compare_char, destroy_char);
+
+    for (int i = 0; i < len1; i++) {
+        set_add(set1, wrap_char(arr1[i] + 'A'));
+    }
+    for (int i = 0; i < len2; i++) {
+        set_add(set2, wrap_char(arr2[i] + 'A'));
+    }
+
+    intersection = set_intersection(set1, set2);
+    assert(set_size(intersection) == 3);
+    set_foreach(intersection, visit_char);
 
     set_destroy(intersection);
     set_destroy(set1);

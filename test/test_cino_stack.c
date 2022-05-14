@@ -89,8 +89,8 @@ void test_stack_is_empty() {
     stack = stack_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
-    for (int i = 'A'; i < 'A' + len; i++) {
-        stack_push(stack, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        stack_push(stack, wrap_char('A' + i));
     }
     assert(!stack_is_empty(stack));
     assert(stack_size(stack) == len);
@@ -148,8 +148,8 @@ void test_stack_size() {
     stack = stack_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
-    for (int i = 'A'; i < 'A' + len; i++) {
-        stack_push(stack, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        stack_push(stack, wrap_char('A' + i));
     }
     assert(!stack_is_empty(stack));
     assert(stack_size(stack) == len);
@@ -207,8 +207,8 @@ void test_stack_clear() {
     stack = stack_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(stack_is_empty(stack));
     assert(stack_size(stack) == 0);
-    for (int i = 'A'; i < 'A' + len; i++) {
-        stack_push(stack, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        stack_push(stack, wrap_char('A' + i));
     }
     assert(!stack_is_empty(stack));
     assert(stack_size(stack) == len);
@@ -266,14 +266,14 @@ void test_stack_push() {
     stack_destroy(stack);
 
     stack = stack_create(DATA_TYPE_CHAR, compare_char, destroy_char);
-    for (int i = 'A'; i < 'A' + len; i++) {
-        stack_push(stack, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        stack_push(stack, wrap_char('A' + i));
     }
-    for (int i = 'A'; i < 'A' + len; i++) {
+    for (int i = 0; i < len; i++) {
         wrapper_char_t *wrapper = stack_peek(stack);
-        assert(wrapper->data == 'A' + (len - 1) - (i - 'A'));
+        assert(wrapper->data == 'A' + len - i - 1);
         wrapper = stack_pop(stack);
-        assert(unwrap_char(wrapper) == 'A' + (len - 1) - (i - 'A'));
+        assert(unwrap_char(wrapper) == 'A' + len - i - 1);
     }
     assert(stack_size(stack) == 0);
     assert(stack_is_empty(stack));
@@ -342,14 +342,14 @@ void test_stack_pop() {
     stack_destroy(stack);
 
     stack = stack_create(DATA_TYPE_CHAR, compare_char, destroy_char);
-    for (int i = 'A'; i < 'A' + len; i++) {
-        stack_push(stack, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        stack_push(stack, wrap_char('A' + i));
     }
-    for (int i = 'A'; i < 'A' + len; i++) {
+    for (int i = 0; i < len; i++) {
         wrapper_char_t *wrapper = stack_peek(stack);
-        assert(wrapper->data == 'A' + (len - 1) - (i - 'A'));
+        assert(wrapper->data == 'A' + len - i - 1);
         wrapper = stack_pop(stack);
-        assert(unwrap_char(wrapper) == 'A' + (len - 1) - (i - 'A'));
+        assert(unwrap_char(wrapper) == 'A' + len - i - 1);
     }
     assert(stack_size(stack) == 0);
     assert(stack_is_empty(stack));
@@ -418,14 +418,14 @@ void test_stack_peek() {
     stack_destroy(stack);
 
     stack = stack_create(DATA_TYPE_CHAR, compare_char, destroy_char);
-    for (int i = 'A'; i < 'A' + len; i++) {
-        stack_push(stack, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        stack_push(stack, wrap_char('A' + i));
     }
-    for (int i = 'A'; i < 'A' + len; i++) {
+    for (int i = 0; i < len; i++) {
         wrapper_char_t *wrapper = stack_peek(stack);
-        assert(wrapper->data == 'A' + (len - 1) - (i - 'A'));
+        assert(wrapper->data == 'A' + len - i - 1);
         wrapper = stack_pop(stack);
-        assert(unwrap_char(wrapper) == 'A' + (len - 1) - (i - 'A'));
+        assert(unwrap_char(wrapper) == 'A' + len - i - 1);
     }
     assert(stack_size(stack) == 0);
     assert(stack_is_empty(stack));

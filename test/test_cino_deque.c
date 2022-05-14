@@ -89,8 +89,8 @@ void test_deque_is_empty() {
     deque = deque_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(deque_is_empty(deque));
     assert(deque_size(deque) == 0);
-    for (int i = 'A'; i < 'A' + len; i++) {
-        deque_push_back(deque, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        deque_push_back(deque, wrap_char('A' + i));
     }
     assert(!deque_is_empty(deque));
     assert(deque_size(deque) == len);
@@ -148,8 +148,8 @@ void test_deque_size() {
     deque = deque_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(deque_is_empty(deque));
     assert(deque_size(deque) == 0);
-    for (int i = 'A'; i < 'A' + len; i++) {
-        deque_push_back(deque, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        deque_push_back(deque, wrap_char('A' + i));
     }
     assert(!deque_is_empty(deque));
     assert(deque_size(deque) == len);
@@ -207,8 +207,8 @@ void test_deque_clear() {
     deque = deque_create(DATA_TYPE_CHAR, compare_char, destroy_char);
     assert(deque_is_empty(deque));
     assert(deque_size(deque) == 0);
-    for (int i = 'A'; i < 'A' + len; i++) {
-        deque_push_back(deque, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        deque_push_back(deque, wrap_char('A' + i));
     }
     assert(!deque_is_empty(deque));
     assert(deque_size(deque) == len);
@@ -266,14 +266,14 @@ void test_deque_push_front() {
     deque_destroy(deque);
 
     deque = deque_create(DATA_TYPE_CHAR, compare_char, destroy_char);
-    for (int i = 'A'; i < 'A' + len; i++) {
-        deque_push_front(deque, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        deque_push_front(deque, wrap_char('A' + i));
     }
-    for (int i = 'A'; i < 'A' + len; i++) {
+    for (int i = 0; i < len; i++) {
         wrapper_char_t *wrapper = deque_get_front(deque);
-        assert(wrapper->data == 'A' + (len - 1) - (i - 'A'));
+        assert(wrapper->data == 'A' + len - i - 1);
         wrapper = deque_pop_front(deque);
-        assert(unwrap_char(wrapper) == 'A' + (len - 1) - (i - 'A'));
+        assert(unwrap_char(wrapper) == 'A' + len - i - 1);
     }
     assert(deque_size(deque) == 0);
     assert(deque_is_empty(deque));
@@ -342,14 +342,14 @@ void test_deque_pop_front() {
     deque_destroy(deque);
 
     deque = deque_create(DATA_TYPE_CHAR, compare_char, destroy_char);
-    for (int i = 'A'; i < 'A' + len; i++) {
-        deque_push_front(deque, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        deque_push_front(deque, wrap_char('A' + i));
     }
-    for (int i = 'A'; i < 'A' + len; i++) {
+    for (int i = 0; i < len; i++) {
         wrapper_char_t *wrapper = deque_get_front(deque);
-        assert(wrapper->data == 'A' + (len - 1) - (i - 'A'));
+        assert(wrapper->data == 'A' + len - i - 1);
         wrapper = deque_pop_front(deque);
-        assert(unwrap_char(wrapper) == 'A' + (len - 1) - (i - 'A'));
+        assert(unwrap_char(wrapper) == 'A' + len - i - 1);
     }
     assert(deque_size(deque) == 0);
     assert(deque_is_empty(deque));
@@ -418,14 +418,14 @@ void test_deque_get_front() {
     deque_destroy(deque);
 
     deque = deque_create(DATA_TYPE_CHAR, compare_char, destroy_char);
-    for (int i = 'A'; i < 'A' + len; i++) {
-        deque_push_front(deque, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        deque_push_front(deque, wrap_char('A' + i));
     }
-    for (int i = 'A'; i < 'A' + len; i++) {
+    for (int i = 0; i < len; i++) {
         wrapper_char_t *wrapper = deque_get_front(deque);
-        assert(wrapper->data == 'A' + (len - 1) - (i - 'A'));
+        assert(wrapper->data == 'A' + len - i - 1);
         wrapper = deque_pop_front(deque);
-        assert(unwrap_char(wrapper) == 'A' + (len - 1) - (i - 'A'));
+        assert(unwrap_char(wrapper) == 'A' + len - i - 1);
     }
     assert(deque_size(deque) == 0);
     assert(deque_is_empty(deque));
@@ -494,14 +494,14 @@ void test_deque_push_back() {
     deque_destroy(deque);
 
     deque = deque_create(DATA_TYPE_CHAR, compare_char, destroy_char);
-    for (int i = 'A'; i < 'A' + len; i++) {
-        deque_push_back(deque, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        deque_push_back(deque, wrap_char('A' + i));
     }
-    for (int i = 'A'; i < 'A' + len; i++) {
+    for (int i = 0; i < len; i++) {
         wrapper_char_t *wrapper = deque_get_back(deque);
-        assert(wrapper->data == 'A' + (len - 1) - (i - 'A'));
+        assert(wrapper->data == 'A' + len - i - 1);
         wrapper = deque_pop_back(deque);
-        assert(unwrap_char(wrapper) == 'A' + (len - 1) - (i - 'A'));
+        assert(unwrap_char(wrapper) == 'A' + len - i - 1);
     }
     assert(deque_size(deque) == 0);
     assert(deque_is_empty(deque));
@@ -570,14 +570,14 @@ void test_deque_pop_back() {
     deque_destroy(deque);
 
     deque = deque_create(DATA_TYPE_CHAR, compare_char, destroy_char);
-    for (int i = 'A'; i < 'A' + len; i++) {
-        deque_push_back(deque, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        deque_push_back(deque, wrap_char('A' + i));
     }
-    for (int i = 'A'; i < 'A' + len; i++) {
+    for (int i = 0; i < len; i++) {
         wrapper_char_t *wrapper = deque_get_back(deque);
-        assert(wrapper->data == 'A' + (len - 1) - (i - 'A'));
+        assert(wrapper->data == 'A' + len - i - 1);
         wrapper = deque_pop_back(deque);
-        assert(unwrap_char(wrapper) == 'A' + (len - 1) - (i - 'A'));
+        assert(unwrap_char(wrapper) == 'A' + len - i - 1);
     }
     assert(deque_size(deque) == 0);
     assert(deque_is_empty(deque));
@@ -646,14 +646,14 @@ void test_deque_get_back() {
     deque_destroy(deque);
 
     deque = deque_create(DATA_TYPE_CHAR, compare_char, destroy_char);
-    for (int i = 'A'; i < 'A' + len; i++) {
-        deque_push_back(deque, wrap_char(i));
+    for (int i = 0; i < len; i++) {
+        deque_push_back(deque, wrap_char('A' + i));
     }
-    for (int i = 'A'; i < 'A' + len; i++) {
+    for (int i = 0; i < len; i++) {
         wrapper_char_t *wrapper = deque_get_back(deque);
-        assert(wrapper->data == 'A' + (len - 1) - (i - 'A'));
+        assert(wrapper->data == 'A' + len - i - 1);
         wrapper = deque_pop_back(deque);
-        assert(unwrap_char(wrapper) == 'A' + (len - 1) - (i - 'A'));
+        assert(unwrap_char(wrapper) == 'A' + len - i - 1);
     }
     assert(deque_size(deque) == 0);
     assert(deque_is_empty(deque));
