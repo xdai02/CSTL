@@ -33,11 +33,11 @@ typedef struct array_t array_t;
  *                         otherwise a default `compare_default` is applied.
  * @param destroy   User-defined callback function for destroying.
  *                  Set to:
- *                      - `compare_int` if the data type is DATA_TYPE_INT
- *                      - `compare_double` if the data type is DATA_TYPE_DOUBLE
- *                      - `compare_char` if the data type is DATA_TYPE_CHAR
- *                      - `compare_t` interface if the data type is DATA_TYPE_T, 
- *                         otherwise a default `compare_default` is applied.
+ *                      - `destroy_int` if the data type is DATA_TYPE_INT
+ *                      - `destroy_double` if the data type is DATA_TYPE_DOUBLE
+ *                      - `destroy_char` if the data type is DATA_TYPE_CHAR
+ *                      - `destroy_t` interface if the data type is DATA_TYPE_T, 
+ *                         otherwise a default `destroy_default` is applied.
  * @return  Returns the pointer to cino-array, or `NULL` if creation failed.
  */
 array_t *array_create(data_type_t data_type, compare_t compare, destroy_t destroy);

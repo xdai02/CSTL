@@ -7,6 +7,7 @@
 #include "test_cino_deque.h"
 #include "test_cino_tree.h"
 #include "test_cino_set.h"
+#include "test_cino_map.h"
 
 void test_cino_utils() {
     test_min();
@@ -228,6 +229,10 @@ void test_cino_set() {
     LOGGER(INFO, "[PASS] test_cino_set");
 }
 
+void test_cino_map() {
+    LOGGER(INFO, "[PASS] test_cino_map");
+}
+
 int main(int argc, char *argv[]) {
     test_cino_utils();
     test_cino_string();
@@ -238,6 +243,7 @@ int main(int argc, char *argv[]) {
     test_cino_deque();
     test_cino_tree();
     test_cino_set();
+    test_cino_map();
 
     return 0;
 }

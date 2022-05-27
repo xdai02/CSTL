@@ -24,8 +24,8 @@ array_t *array_create(data_type_t data_type, compare_t compare, destroy_t destro
 | 参数      | 说明                                                         |
 | --------- | ------------------------------------------------------------ |
 | data_type | cino-array的元素类型，支持DATA_TYPE_INT、DATA_TYPE_DOUBLE、DATA_TYPE_CHAR、DATA_TYPE_T（泛型） |
-| compare   | 用于比较的回调函数，<br />DATA_TYPE_INT类型使用compare_int，<br />DATA_TYPE_DOUBLE类型使用compare_double，<br />DATA_TYPE_CHAR类型使用compare_char，<br />DATA_TYPE_T类型可使用自定义compare_t函数接口，使用`NULL`使用默认方式 |
-| destroy   | 用于销毁的回调函数，<br />DATA_TYPE_INT类型使用compare_int，<br />DATA_TYPE_DOUBLE类型使用compare_double，<br />DATA_TYPE_CHAR类型使用compare_char，<br />DATA_TYPE_T类型可使用自定义compare_t函数接口，使用`NULL`使用默认方式 |
+| compare   | 用于比较的回调函数，<br />DATA_TYPE_INT类型使用compare_int，<br />DATA_TYPE_DOUBLE类型使用compare_double，<br />DATA_TYPE_CHAR类型使用compare_char，<br />DATA_TYPE_T类型可使用自定义compare_t函数接口，使用`NULL`为默认方式 |
+| destroy   | 用于销毁的回调函数，<br />DATA_TYPE_INT类型使用destroy_int，<br />DATA_TYPE_DOUBLE类型使用destroy_double，<br />DATA_TYPE_CHAR类型使用destroy_char，<br />DATA_TYPE_T类型可使用自定义destroy_t函数接口，使用`NULL`为默认方式 |
 
 - 返回值：返回cino-array指针，创建失败返回`NULL`。
 
