@@ -230,6 +230,16 @@ void test_cino_set() {
 }
 
 void test_cino_map() {
+    test_map_create();
+    test_map_destroy();
+    test_map_is_empty();
+    test_map_size();
+    test_map_clear();
+    test_map_foreach();
+    test_map_contains();
+    test_map_add();
+    test_map_remove();
+
     LOGGER(INFO, "[PASS] test_cino_map");
 }
 
