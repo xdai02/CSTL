@@ -1,4 +1,4 @@
-# CINO (v0.7.2)
+# CINO (v1.0.0)
 
 `CINO` = `CINO Is Not OOP`
 
