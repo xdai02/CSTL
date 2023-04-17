@@ -1,6 +1,11 @@
 #ifndef _COOP_UTILS_H_
 #define _COOP_UTILS_H_
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
 #define bool int
 #define true 1
 #define false 0

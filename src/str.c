@@ -19,7 +19,15 @@ bool str_equal_ignore_case(const char *s1, const char *s2) {
     if (s1 == NULL || s2 == NULL) {
         Exception("NULL pointer exception");
     }
-    return strcasecmp(s1, s2) == 0;
+
+    while (*s1 && *s2) {
+        if (toupper(*s1) != toupper(*s2)) {
+            return false;
+        }
+        s1++;
+        s2++;
+    }
+    return *s1 == '\0' && *s2 == '\0';
 }
 
 char *str_tolower(char *str) {
@@ -89,6 +97,11 @@ int str_index_of_char(const char *str, char c) {
 int str_index_of_string(const char *str, const char *substr) {
     if (str == NULL || substr == NULL) {
         Exception("NULL pointer exception");
+    }
+
+    int substr_len = strlen(substr);
+    if (substr_len == 0) {
+        return -1;
     }
 
     char *p = strstr(str, substr);
@@ -165,6 +178,11 @@ char *str_substring(const char *str, int start, int end) {
 int str_count_substring(const char *str, const char *substr) {
     if (str == NULL || substr == NULL) {
         Exception("NULL pointer exception");
+    }
+
+    int substr_len = strlen(substr);
+    if (substr_len == 0) {
+        return 0;
     }
 
     int count = 0;
@@ -293,10 +311,11 @@ char **str_split(const char *str, const char *delimiter) {
         Exception("NULL pointer exception");
     }
 
-    char *temp = strdup(str);
+    char *temp = (char *)malloc(sizeof(char) * (strlen(str) + 1));
     if (temp == NULL) {
         Exception("Out of memory exception");
     }
+    strcpy(temp, str);
 
     size_t count = 0;
     char *token = strtok(temp, delimiter);
@@ -315,15 +334,18 @@ char **str_split(const char *str, const char *delimiter) {
     count = 0;
     token = strtok(temp, delimiter);
     while (token != NULL) {
-        tokens[count] = strdup(token);
+        tokens[count] = (char *)malloc(sizeof(char) * (strlen(token) + 1));
         if (tokens[count] == NULL) {
-            for (size_t i = 0; i < count; i++) {
+            size_t i;
+            for (i = 0; i < count; i++) {
                 free(tokens[i]);
             }
             free(tokens);
             free(temp);
             Exception("Out of memory exception");
         }
+        strcpy(tokens[count], token);
+
         count++;
         token = strtok(NULL, delimiter);
     }
