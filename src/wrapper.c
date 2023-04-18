@@ -163,7 +163,7 @@ int Short_compare(const void *ptr1, const void *ptr2) {
 }
 
 short Short_valueOf(const Short *s) {
-    if (setbuf == NULL) {
+    if (s == NULL) {
         Exception("Null pointer exception");
     }
     return s->value;
@@ -399,7 +399,14 @@ int Float_compare(const void *ptr1, const void *ptr2) {
     }
     Float *float1 = (Float *)ptr1;
     Float *float2 = (Float *)ptr2;
-    return float1->value - float2->value;
+
+    if (float_equal(float1->value, float2->value)) {
+        return 0;
+    } else if (float1->value < float2->value) {
+        return -1;
+    } else {
+        return 1;
+    }
 }
 
 float Float_valueOf(const Float *f) {
@@ -413,7 +420,7 @@ bool Float_equals(const Float *float1, const Float *float2) {
     if (float1 == NULL || float2 == NULL) {
         Exception("Null pointer exception");
     }
-    return float1->value == float2->value;
+    return float_equal(float1->value, float2->value);
 }
 
 Double *Double_new(double value) {
@@ -439,7 +446,14 @@ int Double_compare(const void *ptr1, const void *ptr2) {
     }
     Double *double1 = (Double *)ptr1;
     Double *double2 = (Double *)ptr2;
-    return double1->value - double2->value;
+
+    if (double_equal(double1->value, double2->value)) {
+        return 0;
+    } else if (double1->value < double2->value) {
+        return -1;
+    } else {
+        return 1;
+    }
 }
 
 double Double_valueOf(const Double *d) {
@@ -453,7 +467,54 @@ bool Double_equals(const Double *double1, const Double *double2) {
     if (double1 == NULL || double2 == NULL) {
         Exception("Null pointer exception");
     }
-    return double1->value == double2->value;
+    return double_equal(double1->value, double2->value);
+}
+
+LongDouble *LongDouble_new(long double value) {
+    LongDouble *ld = (LongDouble *)malloc(sizeof(LongDouble));
+    if (ld == NULL) {
+        Exception("Out of memory exception");
+    }
+    ld->value = value;
+    return ld;
+}
+
+void LongDouble_delete(void *ptr) {
+    if (ptr == NULL) {
+        Exception("Null pointer exception");
+    }
+    LongDouble *ld = (LongDouble *)ptr;
+    free(ld);
+}
+
+int LongDouble_compare(const void *ptr1, const void *ptr2) {
+    if (ptr1 == NULL || ptr2 == NULL) {
+        Exception("Null pointer exception");
+    }
+    LongDouble *long_double1 = (LongDouble *)ptr1;
+    LongDouble *long_double2 = (LongDouble *)ptr2;
+
+    if (long_double_equal(long_double1->value, long_double2->value)) {
+        return 0;
+    } else if (long_double1->value < long_double2->value) {
+        return -1;
+    } else {
+        return 1;
+    }
+}
+
+long double LongDouble_valueOf(const LongDouble *ld) {
+    if (ld == NULL) {
+        Exception("Null pointer exception");
+    }
+    return ld->value;
+}
+
+bool LongDouble_equals(const LongDouble *long_double1, const LongDouble *long_double2) {
+    if (long_double1 == NULL || long_double2 == NULL) {
+        Exception("Null pointer exception");
+    }
+    return long_double_equal(long_double1->value, long_double2->value);
 }
 
 Boolean *Boolean_new(bool value) {

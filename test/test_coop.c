@@ -1,5 +1,17 @@
-#include "test_str.h"
 #include <stdio.h>
+#include "test_coop_utils.h"
+#include "test_str.h"
+
+void test_coop_utils() {
+    test_min();
+    test_max();
+    test_swap();
+    test_float_equal();
+    test_double_equal();
+    test_long_double_equal();
+
+    printf("[PASS] coop_utils\n");
+}
 
 void test_str() {
     test_str_clear();
@@ -28,6 +40,7 @@ void test_str() {
 }
 
 int main() {
+    test_coop_utils();
     test_str();
 
     return 0;

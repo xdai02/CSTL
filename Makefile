@@ -15,14 +15,23 @@ setup:
 
 ############### COOP ###############
 
-coop: str
+coop: coop_utils wrapper str
+
+coop_utils: $(SRC)/coop_utils.c
+	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)/coop_utils.c -o $(BIN)/coop_utils.o
+
+wrapper: $(SRC)/wrapper.c
+	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)/wrapper.c -o $(BIN)/wrapper.o
 
 str: $(SRC)/str.c
 	$(CC) $(CFLAGS) -I$(INC) -c $(SRC)/str.c -o $(BIN)/str.o
 
 ############### TEST ###############
 
-test: test_str test_coop
+test: test_coop_utils test_str test_coop
+
+test_coop_utils: $(TEST)/test_coop_utils.c
+	$(CC) $(CFLAGS) -I$(INC) -c $(TEST)/test_coop_utils.c -o $(BIN)/test_coop_utils.o
 
 test_str: $(TEST)/test_str.c
 	$(CC) $(CFLAGS) -I$(INC) -c $(TEST)/test_str.c -o $(BIN)/test_str.o

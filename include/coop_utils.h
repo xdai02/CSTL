@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <math.h>
 
 #define bool int
 #define true 1
@@ -20,17 +21,27 @@
         return (ret);                   \
     }
 
+#define min(x, y) (((x) < (y)) ? (x) : (y))
+
+#define max(x, y) (((x) > (y)) ? (x) : (y))
+
 #define swap(a, b, type) \
     do {                 \
-        type tmp = (a);  \
+        type temp = (a); \
         (a) = (b);       \
-        (b) = tmp;       \
+        (b) = temp;      \
     } while (0)
 
-#define Exception(msg)                                                          \
-    do {                                                                        \
+#define arr_len(arr) ((int)(sizeof(arr) / sizeof((arr)[0])))
+
+#define Exception(msg)                                                           \
+    do {                                                                         \
         fprintf(stderr, "%s:%d %s(): %s.\n", __FILE__, __LINE__, __func__, msg); \
-        exit(EXIT_FAILURE);                                                     \
+        exit(EXIT_FAILURE);                                                      \
     } while (0)
+
+bool float_equal(float f1, float f2);
+bool double_equal(double d1, double d2);
+bool long_double_equal(long double ld1, long double ld2);
 
 #endif
