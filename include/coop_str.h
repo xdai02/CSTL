@@ -1,5 +1,5 @@
-#ifndef _STR_H_
-#define _STR_H_
+#ifndef _COOP_STR_H_
+#define _COOP_STR_H_
 
 #include "coop_utils.h"
 

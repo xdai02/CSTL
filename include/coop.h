@@ -2,7 +2,7 @@
 #define _COOP_H_
 
 #include "coop_utils.h"
-#include "wrapper.h"
-#include "str.h"
+#include "coop_wrapper.h"
+#include "coop_str.h"
 
 #endif

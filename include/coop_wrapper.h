@@ -1,5 +1,5 @@
-#ifndef _WRAPPER_H_
-#define _WRAPPER_H_
+#ifndef _COOP_WRAPPER_H_
+#define _COOP_WRAPPER_H_
 
 #include "coop_utils.h"
 

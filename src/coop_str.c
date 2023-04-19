@@ -1,4 +1,4 @@
-#include "str.h"
+#include "coop_str.h"
 
 char *str_clear(char *str) {
     if (str == NULL) {

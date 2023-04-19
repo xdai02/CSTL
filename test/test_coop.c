@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "test_coop_utils.h"
-#include "test_str.h"
+#include "test_coop_str.h"
 
 void test_coop_utils() {
     test_min();
@@ -13,7 +13,7 @@ void test_coop_utils() {
     printf("[PASS] coop_utils\n");
 }
 
-void test_str() {
+void test_coop_str() {
     test_str_clear();
     test_str_equal();
     test_str_equal_ignore_case();
@@ -41,7 +41,7 @@ void test_str() {
 
 int main() {
     test_coop_utils();
-    test_str();
+    test_coop_str();
 
     return 0;
 }

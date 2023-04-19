@@ -1,5 +1,5 @@
-#ifndef _TEST_STR_H_
-#define _TEST_STR_H_
+#ifndef _TEST_COOP_STR_H_
+#define _TEST_COOP_STR_H_
 
 void test_str_clear();
 void test_str_equal();

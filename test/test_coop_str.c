@@ -1,4 +1,4 @@
-#include "test_str.h"
+#include "test_coop_str.h"
 #include "coop.h"
 #include <assert.h>
 
