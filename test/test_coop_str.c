@@ -107,6 +107,14 @@ void test_str_index_of_string() {
     assert(str_index_of_string("abcdef", "xyz") == -1);
 }
 
+void test_str_contains_string() {
+    assert(str_contains_string("Hello, world!", "world") == true);
+    assert(str_contains_string("Hello, world!", "abc") == false);
+    assert(str_contains_string("", "Hello, world!") == false);
+    assert(str_contains_string("abcdef", "") == false);
+    assert(str_contains_string("abcdef", "xyz") == false);
+}
+
 void test_str_reverse() {
     char str1[] = "Hello, world!";
     assert(strcmp(str_reverse(str1), "!dlrow ,olleH") == 0);
@@ -121,21 +129,21 @@ void test_str_reverse() {
     assert(strcmp(str3, "fedcba") == 0);
 }
 
-void test_str_trim() {
+void test_str_strip() {
     char str1[] = "  Hello, world!  ";
-    assert(strcmp(str_trim(str1), "Hello, world!") == 0);
+    assert(strcmp(str_strip(str1), "Hello, world!") == 0);
     assert(strcmp(str1, "Hello, world!") == 0);
 
     char str2[] = "";
-    assert(strcmp(str_trim(str2), "") == 0);
+    assert(strcmp(str_strip(str2), "") == 0);
     assert(strcmp(str2, "") == 0);
 
     char str3[] = "abcdef";
-    assert(strcmp(str_trim(str3), "abcdef") == 0);
+    assert(strcmp(str_strip(str3), "abcdef") == 0);
     assert(strcmp(str3, "abcdef") == 0);
 
     char str4[] = "   ";
-    assert(strcmp(str_trim(str4), "") == 0);
+    assert(strcmp(str_strip(str4), "") == 0);
     assert(strcmp(str4, "") == 0);
 }
 

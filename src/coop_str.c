@@ -1,24 +1,18 @@
 #include "coop_str.h"
 
 char *str_clear(char *str) {
-    if (str == NULL) {
-        Exception("NULL pointer exception");
-    }
+    return_value_if_fail(str != NULL, NULL);
     str[0] = '\0';
     return str;
 }
 
 bool str_equal(const char *s1, const char *s2) {
-    if (s1 == NULL || s2 == NULL) {
-        Exception("NULL pointer exception");
-    }
+    exit_if_fail(s1 != NULL && s2 != NULL);
     return strcmp(s1, s2) == 0;
 }
 
 bool str_equal_ignore_case(const char *s1, const char *s2) {
-    if (s1 == NULL || s2 == NULL) {
-        Exception("NULL pointer exception");
-    }
+    exit_if_fail(s1 != NULL && s2 != NULL);
 
     while (*s1 && *s2) {
         if (toupper(*s1) != toupper(*s2)) {
@@ -31,9 +25,7 @@ bool str_equal_ignore_case(const char *s1, const char *s2) {
 }
 
 char *str_tolower(char *str) {
-    if (str == NULL) {
-        Exception("NULL pointer exception");
-    }
+    return_value_if_fail(str != NULL, NULL);
 
     char *p = str;
     while (*p != '\0') {
@@ -44,9 +36,7 @@ char *str_tolower(char *str) {
 }
 
 char *str_toupper(char *str) {
-    if (str == NULL) {
-        Exception("NULL pointer exception");
-    }
+    return_value_if_fail(str != NULL, NULL);
 
     char *p = str;
     while (*p != '\0') {
@@ -57,64 +47,52 @@ char *str_toupper(char *str) {
 }
 
 bool str_starts_with(const char *str, const char *prefix) {
-    if (str == NULL || prefix == NULL) {
-        Exception("NULL pointer exception");
-    }
+    exit_if_fail(str != NULL && prefix != NULL);
 
     size_t str_len = strlen(str);
     size_t prefix_len = strlen(prefix);
-    if (str_len < prefix_len) {
-        return false;
-    }
+    return_value_if_fail(prefix_len <= str_len, false);
     return strncmp(str, prefix, prefix_len) == 0;
 }
 
 bool str_ends_with(const char *str, const char *suffix) {
-    if (str == NULL || suffix == NULL) {
-        Exception("NULL pointer exception");
-    }
+    exit_if_fail(str != NULL && suffix != NULL);
 
     size_t str_len = strlen(str);
     size_t suffix_len = strlen(suffix);
-    if (str_len < suffix_len) {
-        return false;
-    }
+    return_value_if_fail(suffix_len <= str_len, false);
     return strcmp(str + str_len - suffix_len, suffix) == 0;
 }
 
 int str_index_of_char(const char *str, char c) {
-    if (str == NULL) {
-        Exception("NULL pointer exception");
-    }
-
+    return_value_if_fail(str != NULL, -1);
     char *p = strchr(str, c);
-    if (p == NULL) {
-        return -1;
-    }
+    return_value_if_fail(p != NULL, -1);
     return p - str;
 }
 
 int str_index_of_string(const char *str, const char *substr) {
-    if (str == NULL || substr == NULL) {
-        Exception("NULL pointer exception");
-    }
+    return_value_if_fail(str != NULL && substr != NULL, -1);
 
-    int substr_len = strlen(substr);
-    if (substr_len == 0) {
-        return -1;
-    }
+    size_t substr_len = strlen(substr);
+    return_value_if_fail(substr_len > 0, -1);
 
     char *p = strstr(str, substr);
-    if (p == NULL) {
-        return -1;
-    }
+    return_value_if_fail(p != NULL, -1);
     return p - str;
 }
 
+bool str_contains_string(const char *str, const char *substr) {
+    return_value_if_fail(str != NULL && substr != NULL, false);
+
+    size_t substr_len = strlen(substr);
+    return_value_if_fail(substr_len > 0, false);
+
+    return strstr(str, substr) != NULL;
+}
+
 char *str_reverse(char *str) {
-    if (str == NULL) {
-        Exception("NULL pointer exception");
-    }
+    return_value_if_fail(str != NULL, NULL);
 
     size_t len = strlen(str);
     size_t i;
@@ -125,10 +103,8 @@ char *str_reverse(char *str) {
     return str;
 }
 
-char *str_trim(char *str) {
-    if (str == NULL) {
-        Exception("NULL pointer exception");
-    }
+char *str_strip(char *str) {
+    return_value_if_fail(str != NULL, NULL);
 
     char *start = str;
     while (isspace(*start)) {
@@ -152,40 +128,30 @@ char *str_trim(char *str) {
     return str;
 }
 
-char *str_substring(const char *str, int start, int end) {
-    if (str == NULL) {
-        Exception("NULL pointer exception");
-    }
+char *str_substring(const char *str, size_t start, size_t end) {
+    return_value_if_fail(str != NULL, NULL);
 
     size_t len = strlen(str);
-    if (start < 0 || start > len) {
-        Exception("Index out of range exception");
-    }
-    if (end < 0 || end > len) {
-        Exception("Index out of range exception");
-    }
+    return_value_if_fail(start >= 0 && start <= len, NULL);
+    return_value_if_fail(end >= 0 && end <= len, NULL);
+    return_value_if_fail(start <= end, NULL);
 
     size_t substr_len = end - start;
     char *substring = (char *)malloc(sizeof(char) * (substr_len + 1));
-    if (substring == NULL) {
-        Exception("Out of memory exception");
-    }
+    return_value_if_fail(substring != NULL, NULL);
+
     memcpy(substring, str + start, substr_len);
     substring[substr_len] = '\0';
     return substring;
 }
 
-int str_count_substring(const char *str, const char *substr) {
-    if (str == NULL || substr == NULL) {
-        Exception("NULL pointer exception");
-    }
+size_t str_count_substring(const char *str, const char *substr) {
+    return_value_if_fail(str != NULL && substr != NULL, 0);
 
-    int substr_len = strlen(substr);
-    if (substr_len == 0) {
-        return 0;
-    }
+    size_t substr_len = strlen(substr);
+    return_value_if_fail(substr_len > 0, 0);
 
-    int count = 0;
+    size_t count = 0;
     char *p = strstr(str, substr);
     while (p != NULL) {
         count++;
@@ -195,9 +161,7 @@ int str_count_substring(const char *str, const char *substr) {
 }
 
 char *str_append_char(char *str, char c) {
-    if (str == NULL) {
-        Exception("NULL pointer exception");
-    }
+    return_value_if_fail(str != NULL, NULL);
 
     size_t len = strlen(str);
     str[len] = c;
@@ -205,31 +169,23 @@ char *str_append_char(char *str, char c) {
     return str;
 }
 
-char *str_insert_char(char *str, int index, char c) {
-    if (str == NULL) {
-        Exception("NULL pointer exception");
-    }
+char *str_insert_char(char *str, size_t index, char c) {
+    return_value_if_fail(str != NULL, NULL);
 
     size_t len = strlen(str);
-    if (index < 0 || index > len) {
-        Exception("Index out of range exception");
-    }
+    return_value_if_fail(index >= 0 && index <= len, str);
 
     memmove(str + index + 1, str + index, len - index + 1);
     str[index] = c;
     return str;
 }
 
-char *str_insert_string(char *str, int index, const char *substr) {
-    if (str == NULL || substr == NULL) {
-        Exception("NULL pointer exception");
-    }
+char *str_insert_string(char *str, size_t index, const char *substr) {
+    return_value_if_fail(str != NULL && substr != NULL, str);
 
     size_t len = strlen(str);
     size_t substr_len = strlen(substr);
-    if (index < 0 || index > len) {
-        Exception("Index out of range exception");
-    }
+    return_value_if_fail(index >= 0 && index <= len, str);
 
     memmove(str + index + substr_len, str + index, len - index + 1);
     memcpy(str + index, substr, substr_len);
@@ -237,9 +193,7 @@ char *str_insert_string(char *str, int index, const char *substr) {
 }
 
 char *str_remove_char(char *str, char c) {
-    if (str == NULL) {
-        Exception("NULL pointer exception");
-    }
+    return_value_if_fail(str != NULL, NULL);
 
     char *p = str;
     while (*p != '\0') {
@@ -253,9 +207,7 @@ char *str_remove_char(char *str, char c) {
 }
 
 char *str_remove_string(char *str, const char *substr) {
-    if (str == NULL || substr == NULL) {
-        Exception("NULL pointer exception");
-    }
+    return_value_if_fail(str != NULL && substr != NULL, str);
 
     size_t substr_len = strlen(substr);
     char *p = str;
@@ -271,9 +223,7 @@ char *str_remove_string(char *str, const char *substr) {
 }
 
 char *str_replace_char(char *str, char old_char, char new_char) {
-    if (str == NULL) {
-        Exception("NULL pointer exception");
-    }
+    return_value_if_fail(str != NULL, NULL);
 
     char *p = str;
     while (*p != '\0') {
@@ -286,15 +236,11 @@ char *str_replace_char(char *str, char old_char, char new_char) {
 }
 
 char *str_replace_string(char *str, const char *old_str, const char *new_str) {
-    if (str == NULL || old_str == NULL || new_str == NULL) {
-        Exception("NULL pointer exception");
-    }
+    return_value_if_fail(str != NULL && old_str != NULL && new_str != NULL, str);
 
     size_t old_str_len = strlen(old_str);
     size_t new_str_len = strlen(new_str);
-    if (old_str_len == 0) {
-        return str;
-    }
+    return_value_if_fail(old_str_len > 0, str);
 
     char *p = str;
     while ((p = strstr(p, old_str))) {
@@ -307,14 +253,10 @@ char *str_replace_string(char *str, const char *old_str, const char *new_str) {
 }
 
 char **str_split(const char *str, const char *delimiter) {
-    if (str == NULL || delimiter == NULL) {
-        Exception("NULL pointer exception");
-    }
+    return_value_if_fail(str != NULL && delimiter != NULL, NULL);
 
     char *temp = (char *)malloc(sizeof(char) * (strlen(str) + 1));
-    if (temp == NULL) {
-        Exception("Out of memory exception");
-    }
+    return_value_if_fail(temp != NULL, NULL);
     strcpy(temp, str);
 
     size_t count = 0;
@@ -327,7 +269,7 @@ char **str_split(const char *str, const char *delimiter) {
     char **tokens = (char **)malloc(sizeof(char *) * (count + 1));
     if (tokens == NULL) {
         free(temp);
-        Exception("Out of memory exception");
+        return NULL;
     }
 
     strcpy(temp, str);
@@ -342,7 +284,7 @@ char **str_split(const char *str, const char *delimiter) {
             }
             free(tokens);
             free(temp);
-            Exception("Out of memory exception");
+            return NULL;
         }
         strcpy(tokens[count], token);
 

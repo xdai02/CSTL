@@ -23,8 +23,9 @@ void test_coop_str() {
     test_str_ends_with();
     test_str_index_of_char();
     test_str_index_of_string();
+    test_str_contains_string();
     test_str_reverse();
-    test_str_trim();
+    test_str_strip();
     test_str_substring();
     test_str_count_substring();
     test_str_append_char();
