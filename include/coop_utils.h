@@ -3,9 +3,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <math.h>
 
 #define return_if_fail(expr) \
     if (!(expr)) {           \
@@ -21,6 +18,8 @@
     if (!(expr)) {          \
         exit(EXIT_FAILURE); \
     }
+
+typedef void *T;
 
 #define bool int
 #define true 1
@@ -63,5 +62,13 @@ bool double_equal(double d1, double d2);
  *         LDBL_EPSILON, false otherwise.
  */
 bool long_double_equal(long double ld1, long double ld2);
+
+typedef int (*compare_t)(const void *data1, const void *data2);
+
+typedef void (*destroy_t)(void *data);
+
+typedef void (*visit_t)(void *data);
+
+typedef bool (*match_t)(const void *data);
 
 #endif

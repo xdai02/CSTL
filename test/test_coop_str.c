@@ -201,6 +201,10 @@ void test_str_append_char() {
     strcpy(str, "abc");
     assert(strcmp(str_append_char(str, 'd'), "abcd") == 0);
     assert(strcmp(str, "abcd") == 0);
+
+    strcpy(str, "Hello, world!");
+    assert(strcmp(str_append_char(str, '\0'), "Hello, world!") == 0);
+    assert(strcmp(str, "Hello, world!") == 0);
 }
 
 void test_str_insert_char() {
@@ -217,6 +221,10 @@ void test_str_insert_char() {
     strcpy(str, "abc");
     assert(strcmp(str_insert_char(str, 1, 'X'), "aXbc") == 0);
     assert(strcmp(str, "aXbc") == 0);
+
+    strcpy(str, "Hello, world!");
+    assert(strcmp(str_insert_char(str, 5, '\0'), "Hello") == 0);
+    assert(strcmp(str, "Hello") == 0);
 }
 
 void test_str_insert_string() {
@@ -285,6 +293,10 @@ void test_str_replace_char() {
     strcpy(str, "abc");
     assert(strcmp(str_replace_char(str, 'd', 'X'), "abc") == 0);
     assert(strcmp(str, "abc") == 0);
+
+    strcpy(str, "Hello, world!");
+    assert(strcmp(str_replace_char(str, 'o', '\0'), "Hell") == 0);
+    assert(strcmp(str, "Hell") == 0);
 }
 
 void test_str_replace_string() {
