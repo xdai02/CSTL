@@ -1,19 +1,22 @@
 #include "coop_string.h"
 #include "coop_str.h"
 
-typedef struct string_t {
+struct string_t {
     char *string;
     size_t length;
     size_t capacity;
-} string_t;
+};
 
 string_t *string_create(const char *str) {
+    string_t *string = NULL;
+    size_t len;
+
     return_value_if_fail(str != NULL, NULL);
 
-    string_t *string = (string_t *)malloc(sizeof(string_t));
+    string = (string_t *)malloc(sizeof(string_t));
     return_value_if_fail(string != NULL, NULL);
 
-    size_t len = strlen(str);
+    len = strlen(str);
     string->string = (char *)malloc(sizeof(char) * (len + 1));
     if (string->string == NULL) {
         free(string);
@@ -40,9 +43,11 @@ void string_destroy(string_t *string) {
  * @return Returns false if the memory allocation fails, otherwise returns true.
  */
 static bool __string_resize(string_t *string, size_t new_capacity) {
+    char *new_string = NULL;
+
     return_value_if_fail(string != NULL, false);
 
-    char *new_string = (char *)realloc(string->string, sizeof(char) * new_capacity);
+    new_string = (char *)realloc(string->string, sizeof(char) * new_capacity);
     return_value_if_fail(new_string != NULL, false);
     string->string = new_string;
     string->capacity = new_capacity;
@@ -161,12 +166,15 @@ string_t *string_strip(string_t *string) {
 }
 
 string_t *string_substring(const string_t *string, int start, int end) {
+    char *substring = NULL;
+    string_t *new_string = NULL;
+
     return_value_if_fail(string != NULL, NULL);
 
-    char *substring = str_substring(string->string, start, end);
+    substring = str_substring(string->string, start, end);
     return_value_if_fail(substring != NULL, NULL);
 
-    string_t *new_string = string_create(substring);
+    new_string = string_create(substring);
     free(substring);
     return new_string;
 }
@@ -218,9 +226,11 @@ string_t *string_insert_char(string_t *string, size_t index, char c) {
 }
 
 string_t *string_concat(string_t *string, const char *str) {
+    size_t new_len;
+
     return_value_if_fail(string != NULL && str != NULL, string);
 
-    size_t new_len = string->length + strlen(str);
+    new_len = string->length + strlen(str);
     if (new_len + 1 >= string->capacity) {
         if (!__string_resize(string, new_len + 1)) {
             return string;
@@ -233,10 +243,12 @@ string_t *string_concat(string_t *string, const char *str) {
 }
 
 string_t *string_insert_string(string_t *string, size_t index, const char *str) {
+    size_t new_len;
+
     return_value_if_fail(string != NULL && str != NULL, string);
     return_value_if_fail(index >= 0 && index <= string->length, string);
 
-    size_t new_len = string->length + strlen(str);
+    new_len = string->length + strlen(str);
     if (new_len + 1 >= string->capacity) {
         if (!__string_resize(string, new_len + 1)) {
             return string;
@@ -301,20 +313,23 @@ string_t *string_replace_string(string_t *string, const char *old_str, const cha
 }
 
 string_t **string_split(const string_t *string, const char *delimiter) {
+    char **str_tokens = NULL;
+    size_t count = 0;
+    string_t **tokens = NULL;
+    size_t i = 0;
+
     return_value_if_fail(string != NULL && delimiter != NULL, NULL);
 
-    char **str_tokens = str_split(string->string, delimiter);
+    str_tokens = str_split(string->string, delimiter);
     return_value_if_fail(str_tokens != NULL, NULL);
 
-    size_t count = 0;
     while (str_tokens[count] != NULL) {
         count++;
     }
 
-    string_t **tokens = (string_t **)malloc(sizeof(string_t *) * (count + 1));
+    tokens = (string_t **)malloc(sizeof(string_t *) * (count + 1));
     return_value_if_fail(tokens != NULL, NULL);
 
-    size_t i;
     for (i = 0; i < count; i++) {
         tokens[i] = string_create(str_tokens[i]);
         free(str_tokens[i]);

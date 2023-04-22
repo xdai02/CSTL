@@ -11,8 +11,6 @@ typedef struct Integer Integer;
 typedef struct UnsignedInteger UnsignedInteger;
 typedef struct Long Long;
 typedef struct UnsignedLong UnsignedLong;
-typedef struct LongLong LongLong;
-typedef struct UnsignedLongLong UnsignedLongLong;
 typedef struct Float Float;
 typedef struct Double Double;
 typedef struct LongDouble LongDouble;
@@ -65,18 +63,6 @@ void UnsignedLong_delete(void *ptr);
 int UnsignedLong_compare(const void *ptr1, const void *ptr2);
 unsigned long UnsignedLong_valueOf(const UnsignedLong *unsigned_long);
 bool UnsignedLong_equals(const UnsignedLong *unsigned_long1, const UnsignedLong *unsigned_long2);
-
-LongLong *LongLong_new(long long value);
-void LongLong_delete(void *ptr);
-int LongLong_compare(const void *ptr1, const void *ptr2);
-long long LongLong_valueOf(const LongLong *long_long);
-bool LongLong_equals(const LongLong *long_long1, const LongLong *long_long2);
-
-UnsignedLongLong *UnsignedLongLong_new(unsigned long long value);
-void UnsignedLongLong_delete(void *ptr);
-int UnsignedLongLong_compare(const void *ptr1, const void *ptr2);
-unsigned long long UnsignedLongLong_valueOf(const UnsignedLongLong *unsigned_long_long);
-bool UnsignedLongLong_equals(const UnsignedLongLong *unsigned_long_long1, const UnsignedLongLong *unsigned_long_long2);
 
 Float *Float_new(float value);
 void Float_delete(void *ptr);

@@ -3,21 +3,23 @@
 #include <assert.h>
 
 void test_str_clear() {
-    char str1[] = "Hello, world!";
-    assert(strcmp(str_clear(str1), "") == 0);
-    assert(str1[0] == '\0');
+    char str[32];
 
-    char str2[] = "";
-    assert(strcmp(str_clear(str2), "") == 0);
-    assert(str2[0] == '\0');
+    strcpy(str, "Hello, world!");
+    assert(strcmp(str_clear(str), "") == 0);
+    assert(str[0] == '\0');
 
-    char str3[] = "Th!$ !s @ t3st str!ng.";
-    assert(strcmp(str_clear(str3), "") == 0);
-    assert(str3[0] == '\0');
+    strcpy(str, "");
+    assert(strcmp(str_clear(str), "") == 0);
+    assert(str[0] == '\0');
 
-    char str4[] = "   ";
-    assert(strcmp(str_clear(str4), "") == 0);
-    assert(str4[0] == '\0');
+    strcpy(str, "Th!$ !s @ t3st str!ng.");
+    assert(strcmp(str_clear(str), "") == 0);
+    assert(str[0] == '\0');
+
+    strcpy(str, "   ");
+    assert(strcmp(str_clear(str), "") == 0);
+    assert(str[0] == '\0');
 }
 
 void test_str_equal() {
@@ -35,39 +37,43 @@ void test_str_equal_ignore_case() {
 }
 
 void test_str_tolower() {
-    char str1[] = "HELLO";
-    assert(strcmp(str_tolower(str1), "hello") == 0);
-    assert(strcmp(str1, "hello") == 0);
+    char str[32];
 
-    char str2[] = "";
-    assert(strcmp(str_tolower(str2), "") == 0);
-    assert(strcmp(str2, "") == 0);
+    strcpy(str, "HELLO");
+    assert(strcmp(str_tolower(str), "hello") == 0);
+    assert(strcmp(str, "hello") == 0);
 
-    char str3[] = "HeLLo, W0rLd! 123";
-    assert(strcmp(str_tolower(str3), "hello, w0rld! 123") == 0);
-    assert(strcmp(str3, "hello, w0rld! 123") == 0);
+    strcpy(str, "");
+    assert(strcmp(str_tolower(str), "") == 0);
+    assert(strcmp(str, "") == 0);
 
-    char str4[] = "@!$%^&*()";
-    assert(strcmp(str_tolower(str4), "@!$%^&*()") == 0);
-    assert(strcmp(str4, "@!$%^&*()") == 0);
+    strcpy(str, "HeLLo, W0rLd! 123");
+    assert(strcmp(str_tolower(str), "hello, w0rld! 123") == 0);
+    assert(strcmp(str, "hello, w0rld! 123") == 0);
+
+    strcpy(str, "@!$%^&*()");
+    assert(strcmp(str_tolower(str), "@!$%^&*()") == 0);
+    assert(strcmp(str, "@!$%^&*()") == 0);
 }
 
 void test_str_toupper() {
-    char str1[] = "hello";
-    assert(strcmp(str_toupper(str1), "HELLO") == 0);
-    assert(strcmp(str1, "HELLO") == 0);
+    char str[32];
 
-    char str2[] = "";
-    assert(strcmp(str_toupper(str2), "") == 0);
-    assert(strcmp(str2, "") == 0);
+    strcpy(str, "hello");
+    assert(strcmp(str_toupper(str), "HELLO") == 0);
+    assert(strcmp(str, "HELLO") == 0);
 
-    char str3[] = "HeLLo, W0rLd! 123";
-    assert(strcmp(str_toupper(str3), "HELLO, W0RLD! 123") == 0);
-    assert(strcmp(str3, "HELLO, W0RLD! 123") == 0);
+    strcpy(str, "");
+    assert(strcmp(str_toupper(str), "") == 0);
+    assert(strcmp(str, "") == 0);
 
-    char str4[] = "@!$%^&*()";
-    assert(strcmp(str_toupper(str4), "@!$%^&*()") == 0);
-    assert(strcmp(str4, "@!$%^&*()") == 0);
+    strcpy(str, "HeLLo, W0rLd! 123");
+    assert(strcmp(str_toupper(str), "HELLO, W0RLD! 123") == 0);
+    assert(strcmp(str, "HELLO, W0RLD! 123") == 0);
+
+    strcpy(str, "@!$%^&*()");
+    assert(strcmp(str_toupper(str), "@!$%^&*()") == 0);
+    assert(strcmp(str, "@!$%^&*()") == 0);
 }
 
 void test_str_starts_with() {
@@ -116,53 +122,59 @@ void test_str_contains_string() {
 }
 
 void test_str_reverse() {
-    char str1[] = "Hello, world!";
-    assert(strcmp(str_reverse(str1), "!dlrow ,olleH") == 0);
-    assert(strcmp(str1, "!dlrow ,olleH") == 0);
+    char str[32];
 
-    char str2[] = "";
-    assert(strcmp(str_reverse(str2), "") == 0);
-    assert(strcmp(str2, "") == 0);
+    strcpy(str, "Hello, world!");
+    assert(strcmp(str_reverse(str), "!dlrow ,olleH") == 0);
+    assert(strcmp(str, "!dlrow ,olleH") == 0);
 
-    char str3[] = "abcdef";
-    assert(strcmp(str_reverse(str3), "fedcba") == 0);
-    assert(strcmp(str3, "fedcba") == 0);
+    strcpy(str, "");
+    assert(strcmp(str_reverse(str), "") == 0);
+    assert(strcmp(str, "") == 0);
+
+    strcpy(str, "abcdef");
+    assert(strcmp(str_reverse(str), "fedcba") == 0);
+    assert(strcmp(str, "fedcba") == 0);
 }
 
 void test_str_strip() {
-    char str1[] = "  Hello, world!  ";
-    assert(strcmp(str_strip(str1), "Hello, world!") == 0);
-    assert(strcmp(str1, "Hello, world!") == 0);
+    char str[32];
 
-    char str2[] = "";
-    assert(strcmp(str_strip(str2), "") == 0);
-    assert(strcmp(str2, "") == 0);
+    strcpy(str, "  Hello, world!  ");
+    assert(strcmp(str_strip(str), "Hello, world!") == 0);
+    assert(strcmp(str, "Hello, world!") == 0);
 
-    char str3[] = "abcdef";
-    assert(strcmp(str_strip(str3), "abcdef") == 0);
-    assert(strcmp(str3, "abcdef") == 0);
+    strcpy(str, "");
+    assert(strcmp(str_strip(str), "") == 0);
+    assert(strcmp(str, "") == 0);
 
-    char str4[] = "   ";
-    assert(strcmp(str_strip(str4), "") == 0);
-    assert(strcmp(str4, "") == 0);
+    strcpy(str, "abcdef");
+    assert(strcmp(str_strip(str), "abcdef") == 0);
+    assert(strcmp(str, "abcdef") == 0);
+
+    strcpy(str, "   ");
+    assert(strcmp(str_strip(str), "") == 0);
+    assert(strcmp(str, "") == 0);
 }
 
 void test_str_substring() {
-    char *substr1 = str_substring("Hello, world!", 0, 5);
-    assert(strcmp(substr1, "Hello") == 0);
-    free(substr1);
+    char *substr = NULL;
 
-    char *substr2 = str_substring("Hello, world!", 7, 12);
-    assert(strcmp(substr2, "world") == 0);
-    free(substr2);
+    substr = str_substring("Hello, world!", 0, 5);
+    assert(strcmp(substr, "Hello") == 0);
+    free(substr);
 
-    char *substr3 = str_substring("", 0, 0);
-    assert(strcmp(substr3, "") == 0);
-    free(substr3);
+    substr = str_substring("Hello, world!", 7, 12);
+    assert(strcmp(substr, "world") == 0);
+    free(substr);
 
-    char *substr4 = str_substring("abcdef", 2, 5);
-    assert(strcmp(substr4, "cde") == 0);
-    free(substr4);
+    substr = str_substring("", 0, 0);
+    assert(strcmp(substr, "") == 0);
+    free(substr);
+
+    substr = str_substring("abcdef", 2, 5);
+    assert(strcmp(substr, "cde") == 0);
+    free(substr);
 }
 
 void test_str_count_substring() {
@@ -176,151 +188,166 @@ void test_str_count_substring() {
 }
 
 void test_str_append_char() {
-    char str1[20] = "Hello, world!";
-    assert(strcmp(str_append_char(str1, '!'), "Hello, world!!") == 0);
-    assert(strcmp(str1, "Hello, world!!") == 0);
+    char str[32];
 
-    char str2[20] = "";
-    assert(strcmp(str_append_char(str2, 'A'), "A") == 0);
-    assert(strcmp(str2, "A") == 0);
+    strcpy(str, "Hello, world!");
+    assert(strcmp(str_append_char(str, '!'), "Hello, world!!") == 0);
+    assert(strcmp(str, "Hello, world!!") == 0);
 
-    char str3[20] = "abc";
-    assert(strcmp(str_append_char(str3, 'd'), "abcd") == 0);
-    assert(strcmp(str3, "abcd") == 0);
+    strcpy(str, "");
+    assert(strcmp(str_append_char(str, 'A'), "A") == 0);
+    assert(strcmp(str, "A") == 0);
+
+    strcpy(str, "abc");
+    assert(strcmp(str_append_char(str, 'd'), "abcd") == 0);
+    assert(strcmp(str, "abcd") == 0);
 }
 
 void test_str_insert_char() {
-    char str1[20] = "Hello, world!";
-    assert(strcmp(str_insert_char(str1, 0, 'A'), "AHello, world!") == 0);
-    assert(strcmp(str1, "AHello, world!") == 0);
+    char str[32];
 
-    char str2[20] = "Hello, world!";
-    assert(strcmp(str_insert_char(str2, 13, '!'), "Hello, world!!") == 0);
-    assert(strcmp(str2, "Hello, world!!") == 0);
+    strcpy(str, "Hello, world!");
+    assert(strcmp(str_insert_char(str, 0, 'A'), "AHello, world!") == 0);
+    assert(strcmp(str, "AHello, world!") == 0);
 
-    char str3[20] = "abc";
-    assert(strcmp(str_insert_char(str3, 1, 'X'), "aXbc") == 0);
-    assert(strcmp(str3, "aXbc") == 0);
+    strcpy(str, "Hello, world!");
+    assert(strcmp(str_insert_char(str, 13, '!'), "Hello, world!!") == 0);
+    assert(strcmp(str, "Hello, world!!") == 0);
+
+    strcpy(str, "abc");
+    assert(strcmp(str_insert_char(str, 1, 'X'), "aXbc") == 0);
+    assert(strcmp(str, "aXbc") == 0);
 }
 
 void test_str_insert_string() {
-    char str1[20] = "Hello, world!";
-    assert(strcmp(str_insert_string(str1, 0, "A"), "AHello, world!") == 0);
-    assert(strcmp(str1, "AHello, world!") == 0);
+    char str[32];
 
-    char str2[20] = "Hello, world!";
-    assert(strcmp(str_insert_string(str2, 13, "!!"), "Hello, world!!!") == 0);
-    assert(strcmp(str2, "Hello, world!!!") == 0);
+    strcpy(str, "Hello, world!");
+    assert(strcmp(str_insert_string(str, 0, "A"), "AHello, world!") == 0);
+    assert(strcmp(str, "AHello, world!") == 0);
 
-    char str3[20] = "abc";
-    assert(strcmp(str_insert_string(str3, 1, "XYZ"), "aXYZbc") == 0);
-    assert(strcmp(str3, "aXYZbc") == 0);
+    strcpy(str, "Hello, world!");
+    assert(strcmp(str_insert_string(str, 13, "!!"), "Hello, world!!!") == 0);
+    assert(strcmp(str, "Hello, world!!!") == 0);
+
+    strcpy(str, "abc");
+    assert(strcmp(str_insert_string(str, 1, "XYZ"), "aXYZbc") == 0);
+    assert(strcmp(str, "aXYZbc") == 0);
 }
 
 void test_str_remove_char() {
-    char str1[] = "Hello, world!";
-    assert(strcmp(str_remove_char(str1, 'o'), "Hell, wrld!") == 0);
-    assert(strcmp(str1, "Hell, wrld!") == 0);
+    char str[32];
 
-    char str2[] = "aaaaaa";
-    assert(strcmp(str_remove_char(str2, 'a'), "") == 0);
-    assert(strcmp(str2, "") == 0);
+    strcpy(str, "Hello, world!");
+    assert(strcmp(str_remove_char(str, 'o'), "Hell, wrld!") == 0);
+    assert(strcmp(str, "Hell, wrld!") == 0);
 
-    char str3[] = "abc";
-    assert(strcmp(str_remove_char(str3, 'd'), "abc") == 0);
-    assert(strcmp(str3, "abc") == 0);
+    strcpy(str, "aaaaaa");
+    assert(strcmp(str_remove_char(str, 'a'), "") == 0);
+    assert(strcmp(str, "") == 0);
+
+    strcpy(str, "abc");
+    assert(strcmp(str_remove_char(str, 'd'), "abc") == 0);
+    assert(strcmp(str, "abc") == 0);
 }
 
 void test_str_remove_string() {
-    char str1[] = "Hello, world! world!";
-    assert(strcmp(str_remove_string(str1, "world"), "Hello, ! !") == 0);
-    assert(strcmp(str1, "Hello, ! !") == 0);
+    char str[32];
 
-    char str2[] = "aaaaaa";
-    assert(strcmp(str_remove_string(str2, "aa"), "") == 0);
-    assert(strcmp(str2, "") == 0);
+    strcpy(str, "Hello, world! world!");
+    assert(strcmp(str_remove_string(str, "world"), "Hello, ! !") == 0);
+    assert(strcmp(str, "Hello, ! !") == 0);
 
-    char str3[] = "abc";
-    assert(strcmp(str_remove_string(str3, "d"), "abc") == 0);
-    assert(strcmp(str3, "abc") == 0);
+    strcpy(str, "aaaaaa");
+    assert(strcmp(str_remove_string(str, "aa"), "") == 0);
+    assert(strcmp(str, "") == 0);
 
-    char str4[] = "aaaaaaa";
-    assert(strcmp(str_remove_string(str4, "aa"), "a") == 0);
-    assert(strcmp(str4, "a") == 0);
+    strcpy(str, "abc");
+    assert(strcmp(str_remove_string(str, "d"), "abc") == 0);
+    assert(strcmp(str, "abc") == 0);
+
+    strcpy(str, "aaaaaaa");
+    assert(strcmp(str_remove_string(str, "aa"), "a") == 0);
+    assert(strcmp(str, "a") == 0);
 }
 
 void test_str_replace_char() {
-    char str1[] = "Hello, world!";
-    assert(strcmp(str_replace_char(str1, 'o', 'X'), "HellX, wXrld!") == 0);
-    assert(strcmp(str1, "HellX, wXrld!") == 0);
+    char str[32];
 
-    char str2[] = "aaaaaa";
-    assert(strcmp(str_replace_char(str2, 'a', 'b'), "bbbbbb") == 0);
-    assert(strcmp(str2, "bbbbbb") == 0);
+    strcpy(str, "Hello, world!");
+    assert(strcmp(str_replace_char(str, 'o', 'X'), "HellX, wXrld!") == 0);
+    assert(strcmp(str, "HellX, wXrld!") == 0);
 
-    char str3[] = "abc";
-    assert(strcmp(str_replace_char(str3, 'd', 'X'), "abc") == 0);
-    assert(strcmp(str3, "abc") == 0);
+    strcpy(str, "aaaaaa");
+    assert(strcmp(str_replace_char(str, 'a', 'b'), "bbbbbb") == 0);
+    assert(strcmp(str, "bbbbbb") == 0);
+
+    strcpy(str, "abc");
+    assert(strcmp(str_replace_char(str, 'd', 'X'), "abc") == 0);
+    assert(strcmp(str, "abc") == 0);
 }
 
 void test_str_replace_string() {
-    char str1[30] = "Hello, world! world!";
-    assert(strcmp(str_replace_string(str1, "world", "Earth"), "Hello, Earth! Earth!") == 0);
-    assert(strcmp(str1, "Hello, Earth! Earth!") == 0);
+    char str[32];
 
-    char str2[20] = "aaaaaa";
-    assert(strcmp(str_replace_string(str2, "aa", "bb"), "bbbbbb") == 0);
-    assert(strcmp(str2, "bbbbbb") == 0);
+    strcpy(str, "Hello, world! world!");
+    assert(strcmp(str_replace_string(str, "world", "Earth"), "Hello, Earth! Earth!") == 0);
+    assert(strcmp(str, "Hello, Earth! Earth!") == 0);
 
-    char str3[20] = "abc";
-    assert(strcmp(str_replace_string(str3, "d", "X"), "abc") == 0);
-    assert(strcmp(str3, "abc") == 0);
+    strcpy(str, "aaaaaa");
+    assert(strcmp(str_replace_string(str, "aa", "bb"), "bbbbbb") == 0);
+    assert(strcmp(str, "bbbbbb") == 0);
 
-    char str4[30] = "Test test test.";
-    assert(strcmp(str_replace_string(str4, "test", "new"), "Test new new.") == 0);
-    assert(strcmp(str4, "Test new new.") == 0);
+    strcpy(str, "abc");
+    assert(strcmp(str_replace_string(str, "d", "X"), "abc") == 0);
+    assert(strcmp(str, "abc") == 0);
 
-    char str5[20] = "abcdef";
-    assert(strcmp(str_replace_string(str5, "cd", "DCE"), "abDCEef") == 0);
-    assert(strcmp(str5, "abDCEef") == 0);
+    strcpy(str, "Test test test.");
+    assert(strcmp(str_replace_string(str, "test", "new"), "Test new new.") == 0);
+    assert(strcmp(str, "Test new new.") == 0);
+
+    strcpy(str, "abcdef");
+    assert(strcmp(str_replace_string(str, "cd", "DCE"), "abDCEef") == 0);
+    assert(strcmp(str, "abDCEef") == 0);
 }
 
 void test_str_split() {
     char **temp = NULL;
+    char **tokens = NULL;
 
-    char **tokens1 = str_split("Hello, world! world!", " ");
-    assert(strcmp(tokens1[0], "Hello,") == 0);
-    assert(strcmp(tokens1[1], "world!") == 0);
-    assert(strcmp(tokens1[2], "world!") == 0);
-    assert(tokens1[3] == NULL);
+    tokens = str_split("Hello, world! world!", " ");
+    assert(strcmp(tokens[0], "Hello,") == 0);
+    assert(strcmp(tokens[1], "world!") == 0);
+    assert(strcmp(tokens[2], "world!") == 0);
+    assert(tokens[3] == NULL);
 
-    temp = tokens1;
+    temp = tokens;
     while (*temp) {
         free(*temp);
         temp++;
     }
-    free(tokens1);
+    free(tokens);
 
-    char **tokens2 = str_split("abc,def,ghi", ",");
-    assert(strcmp(tokens2[0], "abc") == 0);
-    assert(strcmp(tokens2[1], "def") == 0);
-    assert(strcmp(tokens2[2], "ghi") == 0);
-    assert(tokens2[3] == NULL);
+    tokens = str_split("abc,def,ghi", ",");
+    assert(strcmp(tokens[0], "abc") == 0);
+    assert(strcmp(tokens[1], "def") == 0);
+    assert(strcmp(tokens[2], "ghi") == 0);
+    assert(tokens[3] == NULL);
 
-    temp = tokens2;
+    temp = tokens;
     while (*temp) {
         free(*temp);
         temp++;
     }
-    free(tokens2);
+    free(tokens);
 
-    char **tokens3 = str_split("aaaaaa", "a");
-    assert(tokens3[0] == NULL);
+    tokens = str_split("aaaaaa", "a");
+    assert(tokens[0] == NULL);
 
-    temp = tokens3;
+    temp = tokens;
     while (*temp) {
         free(*temp);
         temp++;
     }
-    free(tokens3);
+    free(tokens);
 }

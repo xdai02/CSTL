@@ -1,60 +1,52 @@
 #include "coop_wrapper.h"
 
-typedef struct Character {
+struct Character {
     char value;
-} Character;
+};
 
-typedef struct UnsignedCharacter {
+struct UnsignedCharacter {
     unsigned char value;
-} UnsignedCharacter;
+};
 
-typedef struct Short {
+struct Short {
     short value;
-} Short;
+};
 
-typedef struct UnsignedShort {
+struct UnsignedShort {
     unsigned short value;
-} UnsignedShort;
+};
 
-typedef struct Integer {
+struct Integer {
     int value;
-} Integer;
+};
 
-typedef struct UnsignedInteger {
+struct UnsignedInteger {
     unsigned int value;
-} UnsignedInteger;
+};
 
-typedef struct Long {
+struct Long {
     long value;
-} Long;
+};
 
-typedef struct UnsignedLong {
+struct UnsignedLong {
     unsigned long value;
-} UnsignedLong;
+};
 
-typedef struct LongLong {
-    long long value;
-} LongLong;
-
-typedef struct UnsignedLongLong {
-    unsigned long long value;
-} UnsignedLongLong;
-
-typedef struct Float {
+struct Float {
     float value;
-} Float;
+};
 
-typedef struct Double {
+struct Double {
     double value;
-} Double;
+};
 
-typedef struct LongDouble {
+struct LongDouble {
     long double value;
-} LongDouble;
+};
 
-typedef struct Boolean {
+struct Boolean {
     bool value;
-} Boolean;
+};
 
 Character *Character_new(char value) {
     Character *character = (Character *)malloc(sizeof(Character));
@@ -64,15 +56,18 @@ Character *Character_new(char value) {
 }
 
 void Character_delete(void *ptr) {
+    Character *character = NULL;
     return_if_fail(ptr != NULL);
-    Character *character = (Character *)ptr;
+    character = (Character *)ptr;
     free(character);
 }
 
 int Character_compare(const void *ptr1, const void *ptr2) {
+    Character *character1 = NULL;
+    Character *character2 = NULL;
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
-    Character *character1 = (Character *)ptr1;
-    Character *character2 = (Character *)ptr2;
+    character1 = (Character *)ptr1;
+    character2 = (Character *)ptr2;
     return character1->value - character2->value;
 }
 
@@ -94,15 +89,18 @@ UnsignedCharacter *UnsignedCharacter_new(unsigned char value) {
 }
 
 void UnsignedCharacter_delete(void *ptr) {
+    UnsignedCharacter *unsigned_character = NULL;
     return_if_fail(ptr != NULL);
-    UnsignedCharacter *unsigned_character = (UnsignedCharacter *)ptr;
+    unsigned_character = (UnsignedCharacter *)ptr;
     free(unsigned_character);
 }
 
 int UnsignedCharacter_compare(const void *ptr1, const void *ptr2) {
+    UnsignedCharacter *unsigned_character1 = NULL;
+    UnsignedCharacter *unsigned_character2 = NULL;
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
-    UnsignedCharacter *unsigned_character1 = (UnsignedCharacter *)ptr1;
-    UnsignedCharacter *unsigned_character2 = (UnsignedCharacter *)ptr2;
+    unsigned_character1 = (UnsignedCharacter *)ptr1;
+    unsigned_character2 = (UnsignedCharacter *)ptr2;
     return unsigned_character1->value - unsigned_character2->value;
 }
 
@@ -124,15 +122,18 @@ Short *Short_new(short value) {
 }
 
 void Short_delete(void *ptr) {
+    Short *s = NULL;
     return_if_fail(ptr != NULL);
-    Short *s = (Short *)ptr;
+    s = (Short *)ptr;
     free(s);
 }
 
 int Short_compare(const void *ptr1, const void *ptr2) {
+    Short *short1 = NULL;
+    Short *short2 = NULL;
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
-    Short *short1 = (Short *)ptr1;
-    Short *short2 = (Short *)ptr2;
+    short1 = (Short *)ptr1;
+    short2 = (Short *)ptr2;
     return short1->value - short2->value;
 }
 
@@ -154,15 +155,18 @@ UnsignedShort *UnsignedShort_new(unsigned short value) {
 }
 
 void UnsignedShort_delete(void *ptr) {
+    UnsignedShort *unsigned_short = NULL;
     return_if_fail(ptr != NULL);
-    UnsignedShort *unsigned_short = (UnsignedShort *)ptr;
+    unsigned_short = (UnsignedShort *)ptr;
     free(unsigned_short);
 }
 
 int UnsignedShort_compare(const void *ptr1, const void *ptr2) {
+    UnsignedShort *unsigned_short1 = NULL;
+    UnsignedShort *unsigned_short2 = NULL;
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
-    UnsignedShort *unsigned_short1 = (UnsignedShort *)ptr1;
-    UnsignedShort *unsigned_short2 = (UnsignedShort *)ptr2;
+    unsigned_short1 = (UnsignedShort *)ptr1;
+    unsigned_short2 = (UnsignedShort *)ptr2;
     return unsigned_short1->value - unsigned_short2->value;
 }
 
@@ -184,15 +188,18 @@ Integer *Integer_new(int value) {
 }
 
 void Integer_delete(void *ptr) {
+    Integer *integer = NULL;
     return_if_fail(ptr != NULL);
-    Integer *integer = (Integer *)ptr;
+    integer = (Integer *)ptr;
     free(integer);
 }
 
 int Integer_compare(const void *ptr1, const void *ptr2) {
+    Integer *integer1 = NULL;
+    Integer *integer2 = NULL;
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
-    Integer *integer1 = (Integer *)ptr1;
-    Integer *integer2 = (Integer *)ptr2;
+    integer1 = (Integer *)ptr1;
+    integer2 = (Integer *)ptr2;
     return integer1->value - integer2->value;
 }
 
@@ -214,15 +221,18 @@ UnsignedInteger *UnsignedInteger_new(unsigned int value) {
 }
 
 void UnsignedInteger_delete(void *ptr) {
+    UnsignedInteger *unsigned_integer = NULL;
     return_if_fail(ptr != NULL);
-    UnsignedInteger *unsigned_integer = (UnsignedInteger *)ptr;
+    unsigned_integer = (UnsignedInteger *)ptr;
     free(unsigned_integer);
 }
 
 int UnsignedInteger_compare(const void *ptr1, const void *ptr2) {
+    UnsignedInteger *unsigned_integer1 = NULL;
+    UnsignedInteger *unsigned_integer2 = NULL;
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
-    UnsignedInteger *unsigned_integer1 = (UnsignedInteger *)ptr1;
-    UnsignedInteger *unsigned_integer2 = (UnsignedInteger *)ptr2;
+    unsigned_integer1 = (UnsignedInteger *)ptr1;
+    unsigned_integer2 = (UnsignedInteger *)ptr2;
     return unsigned_integer1->value - unsigned_integer2->value;
 }
 
@@ -244,15 +254,18 @@ Long *Long_new(long value) {
 }
 
 void Long_delete(void *ptr) {
+    Long *l = NULL;
     return_if_fail(ptr != NULL);
-    Long *l = (Long *)ptr;
+    l = (Long *)ptr;
     free(l);
 }
 
 int Long_compare(const void *ptr1, const void *ptr2) {
+    Long *long1 = NULL;
+    Long *long2 = NULL;
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
-    Long *long1 = (Long *)ptr1;
-    Long *long2 = (Long *)ptr2;
+    long1 = (Long *)ptr1;
+    long2 = (Long *)ptr2;
     return long1->value - long2->value;
 }
 
@@ -274,15 +287,18 @@ UnsignedLong *UnsignedLong_new(unsigned long value) {
 }
 
 void UnsignedLong_delete(void *ptr) {
+    UnsignedLong *unsigned_long = NULL;
     return_if_fail(ptr != NULL);
-    UnsignedLong *unsigned_long = (UnsignedLong *)ptr;
+    unsigned_long = (UnsignedLong *)ptr;
     free(unsigned_long);
 }
 
 int UnsignedLong_compare(const void *ptr1, const void *ptr2) {
+    UnsignedLong *unsigned_long1 = NULL;
+    UnsignedLong *unsigned_long2 = NULL;
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
-    UnsignedLong *unsigned_long1 = (UnsignedLong *)ptr1;
-    UnsignedLong *unsigned_long2 = (UnsignedLong *)ptr2;
+    unsigned_long1 = (UnsignedLong *)ptr1;
+    unsigned_long2 = (UnsignedLong *)ptr2;
     return unsigned_long1->value - unsigned_long2->value;
 }
 
@@ -304,16 +320,20 @@ Float *Float_new(float value) {
 }
 
 void Float_delete(void *ptr) {
+    Float *f = NULL;
     return_if_fail(ptr != NULL);
-    Float *f = (Float *)ptr;
+    f = (Float *)ptr;
     free(f);
 }
 
 int Float_compare(const void *ptr1, const void *ptr2) {
+    Float *float1 = NULL;
+    Float *float2 = NULL;
+
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
 
-    Float *float1 = (Float *)ptr1;
-    Float *float2 = (Float *)ptr2;
+    float1 = (Float *)ptr1;
+    float2 = (Float *)ptr2;
 
     if (float_equal(float1->value, float2->value)) {
         return 0;
@@ -342,16 +362,20 @@ Double *Double_new(double value) {
 }
 
 void Double_delete(void *ptr) {
+    Double *d = NULL;
     return_if_fail(ptr != NULL);
-    Double *d = (Double *)ptr;
+    d = (Double *)ptr;
     free(d);
 }
 
 int Double_compare(const void *ptr1, const void *ptr2) {
+    Double *double1 = NULL;
+    Double *double2 = NULL;
+
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
 
-    Double *double1 = (Double *)ptr1;
-    Double *double2 = (Double *)ptr2;
+    double1 = (Double *)ptr1;
+    double2 = (Double *)ptr2;
 
     if (double_equal(double1->value, double2->value)) {
         return 0;
@@ -380,16 +404,20 @@ LongDouble *LongDouble_new(long double value) {
 }
 
 void LongDouble_delete(void *ptr) {
+    LongDouble *ld = NULL;
     return_if_fail(ptr != NULL);
-    LongDouble *ld = (LongDouble *)ptr;
+    ld = (LongDouble *)ptr;
     free(ld);
 }
 
 int LongDouble_compare(const void *ptr1, const void *ptr2) {
+    LongDouble *long_double1 = NULL;
+    LongDouble *long_double2 = NULL;
+
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
 
-    LongDouble *long_double1 = (LongDouble *)ptr1;
-    LongDouble *long_double2 = (LongDouble *)ptr2;
+    long_double1 = (LongDouble *)ptr1;
+    long_double2 = (LongDouble *)ptr2;
 
     if (long_double_equal(long_double1->value, long_double2->value)) {
         return 0;
@@ -418,15 +446,18 @@ Boolean *Boolean_new(bool value) {
 }
 
 void Boolean_delete(void *ptr) {
+    Boolean *b = NULL;
     return_if_fail(ptr != NULL);
-    Boolean *b = (Boolean *)ptr;
+    b = (Boolean *)ptr;
     free(b);
 }
 
 int Boolean_compare(const void *ptr1, const void *ptr2) {
+    Boolean *boolean1 = NULL;
+    Boolean *boolean2 = NULL;
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
-    Boolean *boolean1 = (Boolean *)ptr1;
-    Boolean *boolean2 = (Boolean *)ptr2;
+    boolean1 = (Boolean *)ptr1;
+    boolean2 = (Boolean *)ptr2;
     return boolean1->value - boolean2->value;
 }
 
