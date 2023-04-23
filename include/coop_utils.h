@@ -17,7 +17,7 @@ typedef int bool;
  * @brief A generic data type representing a pointer to any data type.
  *        It is an alias for void *.
  */
-typedef void *T;
+#define T void*
 
 /**
  * @brief A generic function pointer type for comparing two data items.

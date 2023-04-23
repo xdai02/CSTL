@@ -4,14 +4,20 @@
 
 void test_min() {
     assert(min(5, 10) == 5);
+    assert(min(-5, -10) == -10);
     assert(float_equal(min(3.14f, 1.59f), 1.59f));
+    assert(float_equal(min(-3.14f, -1.59f), -3.14f));
     assert(double_equal(min(2.718, 1.414), 1.414));
+    assert(double_equal(min(-2.718, -1.414), -2.718));
 }
 
 void test_max() {
     assert(max(5, 10) == 10);
+    assert(max(-5, -10) == -5);
     assert(float_equal(max(3.14f, 1.59f), 3.14f));
+    assert(float_equal(max(-3.14f, -1.59f), -1.59f));
     assert(double_equal(max(2.718, 1.414), 2.718));
+    assert(double_equal(max(-2.718, -1.414), -1.414));
 }
 
 void test_swap() {
@@ -40,15 +46,21 @@ void test_swap() {
 
 void test_float_equal() {
     assert(float_equal(0.1f + 0.2f, 0.3f));
+    assert(float_equal(0.1f - 0.2f, -0.1f));
     assert(float_equal(1.0f / 3.0f, 1.0f - 2.0f / 3.0f));
+    assert(float_equal(-1.0f / 3.0f, -1.0f + 2.0f / 3.0f));
 }
 
 void test_double_equal() {
     assert(double_equal(0.1 + 0.2, 0.3));
+    assert(double_equal(0.1 - 0.2, -0.1));
     assert(double_equal(1.0 / 3.0, 1.0 - 2.0 / 3.0));
+    assert(double_equal(-1.0 / 3.0, -1.0 + 2.0 / 3.0));
 }
 
 void test_long_double_equal() {
     assert(long_double_equal(0.1L + 0.2L, 0.3L));
+    assert(long_double_equal(0.1L - 0.2L, -0.1L));
     assert(long_double_equal(1.0L / 3.0L, 1.0L - 2.0L / 3.0L));
+    assert(long_double_equal(-1.0L / 3.0L, -1.0L + 2.0L / 3.0L));
 }

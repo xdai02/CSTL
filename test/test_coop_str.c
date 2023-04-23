@@ -27,6 +27,7 @@ void test_str_equal() {
     assert(str_equal("hello", "world") == false);
     assert(str_equal("", "") == true);
     assert(str_equal("hello", "") == false);
+    assert(str_equal("Hello, world!", "Hello, world!") == true);
 }
 
 void test_str_equal_ignore_case() {
@@ -34,6 +35,7 @@ void test_str_equal_ignore_case() {
     assert(str_equal_ignore_case("hello", "world") == false);
     assert(str_equal_ignore_case("", "") == true);
     assert(str_equal_ignore_case("hello", "") == false);
+    assert(str_equal_ignore_case("Hello, world!", "HELLO, WORLD!") == true);
 }
 
 void test_str_tolower() {
@@ -82,6 +84,7 @@ void test_str_starts_with() {
     assert(str_starts_with("hello, world!", "") == true);
     assert(str_starts_with("", "hello") == false);
     assert(str_starts_with("", "") == true);
+    assert(str_starts_with("Hello, world!", "Hello, world!") == true);
 }
 
 void test_str_ends_with() {
@@ -90,6 +93,7 @@ void test_str_ends_with() {
     assert(str_ends_with("hello, world!", "") == true);
     assert(str_ends_with("", "world!") == false);
     assert(str_ends_with("", "") == true);
+    assert(str_ends_with("Hello, world!", "Hello, world!") == true);
 }
 
 void test_str_index_of_char() {
@@ -97,9 +101,7 @@ void test_str_index_of_char() {
     assert(str_index_of_char("Hello, world!", ',') == 5);
     assert(str_index_of_char("Hello, world!", '!') == 12);
     assert(str_index_of_char("Hello, world!", 'z') == -1);
-
     assert(str_index_of_char("", 'a') == -1);
-
     assert(str_index_of_char("abcdef", 'a') == 0);
     assert(str_index_of_char("abcdef", 'f') == 5);
     assert(str_index_of_char("abcdef", 'z') == -1);
@@ -111,6 +113,7 @@ void test_str_index_of_string() {
     assert(str_index_of_string("", "Hello, world!") == -1);
     assert(str_index_of_string("abcdef", "") == -1);
     assert(str_index_of_string("abcdef", "xyz") == -1);
+    assert(str_index_of_string("Hello, world!", "Hello, world!") == 0);
 }
 
 void test_str_contains_string() {
@@ -119,6 +122,7 @@ void test_str_contains_string() {
     assert(str_contains_string("", "Hello, world!") == false);
     assert(str_contains_string("abcdef", "") == false);
     assert(str_contains_string("abcdef", "xyz") == false);
+    assert(str_contains_string("Hello, world!", "Hello, world!") == true);
 }
 
 void test_str_reverse() {
@@ -153,6 +157,14 @@ void test_str_strip() {
     assert(strcmp(str, "abcdef") == 0);
 
     strcpy(str, "   ");
+    assert(strcmp(str_strip(str), "") == 0);
+    assert(strcmp(str, "") == 0);
+
+    strcpy(str, "\n\t\t\t\nHello, world!\n\t\t\t\n");
+    assert(strcmp(str_strip(str), "Hello, world!") == 0);
+    assert(strcmp(str, "Hello, world!") == 0);
+
+    strcpy(str, "\n\n\n\n   \t\t\t\n ");
     assert(strcmp(str_strip(str), "") == 0);
     assert(strcmp(str, "") == 0);
 }
@@ -355,6 +367,19 @@ void test_str_split() {
 
     tokens = str_split("aaaaaa", "a");
     assert(tokens[0] == NULL);
+
+    temp = tokens;
+    while (*temp) {
+        free(*temp);
+        temp++;
+    }
+    free(tokens);
+
+    tokens = str_split("2023/04/23", "/");
+    assert(strcmp(tokens[0], "2023") == 0);
+    assert(strcmp(tokens[1], "04") == 0);
+    assert(strcmp(tokens[2], "23") == 0);
+    assert(tokens[3] == NULL);
 
     temp = tokens;
     while (*temp) {

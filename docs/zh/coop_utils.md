@@ -20,7 +20,7 @@ typedef int bool;
 ## T
 
 ```c
-typedef void *T;
+#define T void*
 ```
 
 - 描述
