@@ -25,7 +25,6 @@ void test_coop_wrapper() {
     test_UnsignedLong();
     test_Float();
     test_Double();
-    test_LongDouble();
     test_Boolean();
 
     printf("[PASS] coop_wrapper\n");

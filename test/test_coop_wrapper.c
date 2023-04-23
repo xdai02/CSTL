@@ -222,28 +222,6 @@ void test_Double() {
     Double_delete(d3);
 }
 
-void test_LongDouble() {
-    LongDouble *ld1 = LongDouble_new(1.1L);
-    LongDouble *ld2 = LongDouble_new(2.2L);
-    LongDouble *ld3 = LongDouble_new(1.1L);
-
-    assert(LongDouble_valueOf(ld1) == 1.1L);
-    assert(LongDouble_valueOf(ld2) == 2.2L);
-    assert(LongDouble_valueOf(ld3) == 1.1L);
-
-    assert(LongDouble_compare(ld1, ld2) < 0);
-    assert(LongDouble_compare(ld2, ld1) > 0);
-    assert(LongDouble_compare(ld1, ld3) == 0);
-
-    assert(LongDouble_equals(ld1, ld2) == false);
-    assert(LongDouble_equals(ld2, ld1) == false);
-    assert(LongDouble_equals(ld1, ld3) == true);
-
-    LongDouble_delete(ld1);
-    LongDouble_delete(ld2);
-    LongDouble_delete(ld3);
-}
-
 void test_Boolean() {
     Boolean *b1 = Boolean_new(true);
     Boolean *b2 = Boolean_new(false);

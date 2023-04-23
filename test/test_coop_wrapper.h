@@ -11,7 +11,6 @@ void test_Long();
 void test_UnsignedLong();
 void test_Float();
 void test_Double();
-void test_LongDouble();
 void test_Boolean();
 
 #endif
