@@ -58,7 +58,6 @@ size_t array_size(array_t *array) {
 
 array_t *array_clear(array_t *array) {
     const int INITIAL_CAPACITY = 16;
-    size_t i = 0;
 
     return_value_if_fail(array != NULL, NULL);
 

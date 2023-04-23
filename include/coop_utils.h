@@ -3,37 +3,103 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
+/**
+ * @brief Boolean type for compatibility with standards before C99.
+ */
+typedef int bool;
+#define true 1
+#define false 0
+
+/**
+ * @brief A generic data type representing a pointer to any data type.
+ *        It is an alias for void *.
+ */
+typedef void *T;
+
+/**
+ * @brief A generic function pointer type for comparing two data items.
+ * @param data1 The first data item to be compared.
+ * @param data2 The second data item to be compared.
+ * @return Returns a negative integer if data1 < data2, 0 if data1 == data2, or a positive integer if data1 > data2.
+ */
+typedef int (*compare_t)(const T data1, const T data2);
+
+/**
+ * @brief A generic function pointer type for destroying a data item.
+ * @param data The data item to be destroyed.
+ */
+typedef void (*destroy_t)(T data);
+
+/**
+ * @brief A generic function pointer type for visiting a data item.
+ * @param data The data item to be visited.
+ */
+typedef void (*visit_t)(T data);
+
+/**
+ * @brief Returns from the current function immediately if the given expression `expr` is false.
+ *        This is useful when you want to ensure that a certain condition is met
+ *        before proceeding with the rest of the function.
+ * @param expr The expression to be evaluated.
+ */
 #define return_if_fail(expr) \
     if (!(expr)) {           \
         return;              \
     }
 
+/**
+ * @brief Returns the specific value from the current function immediately if the given expression `expr` is false.
+ *        This is useful when you want to ensure that a certain condition is met
+ *        before proceeding with the rest of the function.
+ * @param expr The expression to be evaluated.
+ * @param ret The value to be returned.
+ */
 #define return_value_if_fail(expr, ret) \
     if (!(expr)) {                      \
         return (ret);                   \
     }
 
+/**
+ * @brief Terminates the program immediately with the `EXIT_FAILURE` status if the given expression `expr` is false.
+ *        This is useful when you want to ensure that a certain condition is met
+ *        before proceeding with the rest of the function.
+ * @param expr The expression to be evaluated.
+ */
 #define exit_if_fail(expr)  \
     if (!(expr)) {          \
         exit(EXIT_FAILURE); \
     }
 
-typedef void *T;
-
-#define bool int
-#define true 1
-#define false 0
-
+/**
+ * @brief Returns the minimum of two numbers.
+ * @param x The first number to be compared.
+ * @param y The second number to be compared.
+ * @return Returns the minimum of x and y.
+ */
 #define min(x, y) (((x) < (y)) ? (x) : (y))
 
+/**
+ * @brief Returns the maximum of two numbers.
+ * @param x The first number to be compared.
+ * @param y The second number to be compared.
+ * @return Returns the maximum of x and y.
+ */
 #define max(x, y) (((x) > (y)) ? (x) : (y))
 
-#define swap(a, b, type) \
+/**
+ * @brief Swaps the values of two variables with the given type.
+ * @param x The first variable to be swapped.
+ * @param y The second variable to be swapped.
+ * @param type The type of the variables to be swapped.
+ */
+#define swap(x, y, type) \
     do {                 \
-        type temp = (a); \
-        (a) = (b);       \
-        (b) = temp;      \
+        type temp = (x); \
+        (x) = (y);       \
+        (y) = temp;      \
     } while (0)
 
 /**
@@ -62,13 +128,5 @@ bool double_equal(double d1, double d2);
  *         LDBL_EPSILON, false otherwise.
  */
 bool long_double_equal(long double ld1, long double ld2);
-
-typedef int (*compare_t)(const void *data1, const void *data2);
-
-typedef void (*destroy_t)(void *data);
-
-typedef void (*visit_t)(void *data);
-
-typedef bool (*match_t)(const void *data);
 
 #endif
