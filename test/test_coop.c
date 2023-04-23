@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "test_coop_utils.h"
 #include "test_coop_str.h"
+#include "test_coop_wrapper.h"
 
 void test_coop_utils() {
     test_min();
@@ -11,6 +12,23 @@ void test_coop_utils() {
     test_long_double_equal();
 
     printf("[PASS] coop_utils\n");
+}
+
+void test_coop_wrapper() {
+    test_Character();
+    test_UnsignedCharacter();
+    test_Short();
+    test_UnsignedShort();
+    test_Integer();
+    test_UnsignedInteger();
+    test_Long();
+    test_UnsignedLong();
+    test_Float();
+    test_Double();
+    test_LongDouble();
+    test_Boolean();
+
+    printf("[PASS] coop_wrapper\n");
 }
 
 void test_coop_str() {
@@ -37,11 +55,12 @@ void test_coop_str() {
     test_str_replace_string();
     test_str_split();
 
-    printf("[PASS] str\n");
+    printf("[PASS] coop_str\n");
 }
 
 int main() {
     test_coop_utils();
+    test_coop_wrapper();
     test_coop_str();
 
     return 0;
