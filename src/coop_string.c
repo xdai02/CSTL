@@ -305,20 +305,29 @@ string_t *string_replace_char(string_t *string, char old_char, char new_char) {
 }
 
 string_t *string_replace_string(string_t *string, const char *old_str, const char *new_str) {
+    size_t old_str_len;
+    size_t new_str_len;
+    size_t len_diff;
+    size_t occurences;
+    size_t new_len;
+
     return_value_if_fail(string != NULL && old_str != NULL && new_str != NULL, string);
 
-    string->length = strlen(string->string);
-    if (string->length < string->capacity / 2) {
-        __string_resize(string, string->capacity / 2 + 1);
+    old_str_len = strlen(old_str);
+    new_str_len = strlen(new_str);
+    len_diff = new_str_len - old_str_len;
+    occurences = str_count_substring(string->string, old_str);
+    new_len = string->length + occurences * len_diff;
+
+    if (new_len + 1 >= string->capacity) {
+        if (!__string_resize(string, new_len + 1)) {
+            return string;
+        }
     }
 
     str_replace_string(string->string, old_str, new_str);
 
-    string->length = strlen(string->string);
-    if (string->length < string->capacity / 2) {
-        __string_resize(string, string->capacity / 2 + 1);
-    }
-
+    string->length = new_len;
     return string;
 }
 
