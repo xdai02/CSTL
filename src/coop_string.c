@@ -1,5 +1,5 @@
 #include "coop_string.h"
-#include "coop_str.h"
+#include "coop_utils.h"
 
 struct string_t {
     char *string;

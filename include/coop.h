@@ -3,7 +3,6 @@
 
 #include "coop_utils.h"
 #include "coop_wrapper.h"
-#include "coop_str.h"
 #include "coop_string.h"
 #include "coop_array.h"
 
