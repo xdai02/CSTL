@@ -69,6 +69,11 @@ bool string_is_empty(const string_t *string) {
     return string->length == 0;
 }
 
+const char *string_get(const string_t *string) {
+    return_value_if_fail(string != NULL, NULL);
+    return string->string;
+}
+
 char string_char_at(const string_t *string, size_t index) {
     exit_if_fail(string != NULL);
     exit_if_fail(index >= 0 && index < string->length);
@@ -301,6 +306,11 @@ string_t *string_replace_char(string_t *string, char old_char, char new_char) {
 
 string_t *string_replace_string(string_t *string, const char *old_str, const char *new_str) {
     return_value_if_fail(string != NULL && old_str != NULL && new_str != NULL, string);
+
+    string->length = strlen(string->string);
+    if (string->length < string->capacity / 2) {
+        __string_resize(string, string->capacity / 2 + 1);
+    }
 
     str_replace_string(string->string, old_str, new_str);
 

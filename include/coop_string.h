@@ -10,6 +10,7 @@ void string_destroy(string_t *string);
 string_t *string_clone(const string_t *string);
 size_t string_length(const string_t *string);
 bool string_is_empty(const string_t *string);
+const char *string_get(const string_t *string);
 char string_char_at(const string_t *string, size_t index);
 string_t *string_set_char_at(string_t *string, size_t index, char c);
 string_t *string_clear(string_t *string);

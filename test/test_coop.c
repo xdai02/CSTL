@@ -54,6 +54,38 @@ void test_coop_wrapper() {
 }
 
 void test_coop_string() {
+    test_string_create();
+    test_string_destroy();
+    test_string_clone();
+    test_string_length();
+    test_string_is_empty();
+    test_string_get();
+    test_string_char_at();
+    test_string_set_char_at();
+    test_string_clear();
+    test_string_equal();
+    test_string_equal_ignore_case();
+    test_string_tolower();
+    test_string_toupper();
+    test_string_starts_with();
+    test_string_ends_with();
+    test_string_index_of_char();
+    test_string_index_of_string();
+    test_string_contains_string();
+    test_string_reverse();
+    test_string_strip();
+    test_string_substring();
+    test_string_count_substring();
+    test_string_append_char();
+    test_string_insert_char();
+    test_string_concat();
+    test_string_insert_string();
+    test_string_remove_char();
+    test_string_remove_string();
+    test_string_replace_char();
+    test_string_replace_string();
+    test_string_split();
+
     printf("[PASS] coop_string\n");
 }
 
