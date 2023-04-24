@@ -352,10 +352,10 @@ void test_str_split() {
     }
     free(tokens);
 
-    tokens = str_split("abc,def,ghi", ",");
-    assert(strcmp(tokens[0], "abc") == 0);
-    assert(strcmp(tokens[1], "def") == 0);
-    assert(strcmp(tokens[2], "ghi") == 0);
+    tokens = str_split("123, 456, 789", ", ");
+    assert(strcmp(tokens[0], "123") == 0);
+    assert(strcmp(tokens[1], "456") == 0);
+    assert(strcmp(tokens[2], "789") == 0);
     assert(tokens[3] == NULL);
 
     temp = tokens;

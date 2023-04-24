@@ -96,11 +96,11 @@ char *str_strip(char *str);
 
 /**
  * @brief Get the substring of the specified string.
- * @note The returned string must be freed by the caller.
  * @param str The string to be sliced.
  * @param start The start index of the substring (inclusive).
  * @param end The end index of the substring (exclusive).
  * @return The substring of the specified string.
+ * @note The returned string must be freed by the caller.
  */
 char *str_substring(const char *str, size_t start, size_t end);
 
@@ -174,11 +174,11 @@ char *str_replace_string(char *str, const char *old_str, const char *new_str);
 
 /**
  * @brief Splits the string into a list of strings using the specified delimiter.
- * @note The returned list ends with NULL.
- * @note The returned list must be freed by the caller.
  * @param str The string to be split.
  * @param delimiter The delimiter.
  * @return A list of strings ends with NULL.
+ * @note The returned list ends with NULL.
+ * @note The returned list must be freed by the caller.
  */
 char **str_split(const char *str, const char *delimiter);
 
