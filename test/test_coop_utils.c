@@ -243,13 +243,12 @@ void test_str_substring() {
     assert(strcmp(substr, "world") == 0);
     free(substr);
 
-    substr = str_substring("", 0, 0);
-    assert(strcmp(substr, "") == 0);
-    free(substr);
-
     substr = str_substring("abcdef", 2, 5);
     assert(strcmp(substr, "cde") == 0);
     free(substr);
+
+    substr = str_substring("", 0, 0);
+    assert(substr == NULL);
 }
 
 void test_str_count_substring() {

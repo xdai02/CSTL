@@ -268,9 +268,8 @@ char *str_substring(const char *str, size_t start, size_t end) {
     return_value_if_fail(str != NULL, NULL);
 
     len = strlen(str);
-    return_value_if_fail(start >= 0 && start <= len, NULL);
+    return_value_if_fail(start >= 0 && start < end, NULL);
     return_value_if_fail(end >= 0 && end <= len, NULL);
-    return_value_if_fail(start <= end, NULL);
 
     substr_len = end - start;
     substring = (char *)malloc(sizeof(char) * (substr_len + 1));

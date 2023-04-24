@@ -7,6 +7,11 @@ struct string_t {
     size_t capacity;
 };
 
+/**
+ * @brief Create a string_t object.
+ * @param str The primitive string.
+ * @return Returns a string_t pointer if the memory allocation succeeds, otherwise returns NULL.
+ */
 string_t *string_create(const char *str) {
     string_t *string = NULL;
     size_t len;
@@ -29,20 +34,17 @@ string_t *string_create(const char *str) {
     return string;
 }
 
+/**
+ * @brief Destroy the string_t object.
+ * @param string string_t object.
+ */
 void string_destroy(string_t *string) {
     return_if_fail(string != NULL);
     free(string->string);
     free(string);
 }
 
-/**
- * @brief Resize the string capacity.
- *        1. If the string length is less than half of the capacity, the capacity will be reduced to half.
- *        2. If the string length is greater than or equal to the capacity, the capacity will be increased to 1.5 times.
- * @param string string_t pointer
- * @return Returns false if the memory allocation fails, otherwise returns true.
- */
-static bool __string_resize(string_t *string, size_t new_capacity) {
+static bool __string_resize_to(string_t *string, size_t new_capacity) {
     char *new_string = NULL;
 
     return_value_if_fail(string != NULL, false);
@@ -54,32 +56,91 @@ static bool __string_resize(string_t *string, size_t new_capacity) {
     return true;
 }
 
+/**
+ * @brief Resize the string capacity.
+ *        1. If the length of the string is 0, the capacity is set to 16.
+ *        2. If the length of the string is less than half of the capacity, the capacity is reduced by half.
+ *        3. If the length of the string is greater than or equal to the capacity, the capacity is increased by half.
+ * @param string string_t object.
+ * @return Returns false if the memory allocation fails, otherwise returns true.
+ */
+static bool __string_resize(string_t *string) {
+    size_t new_capacity;
+
+    return_value_if_fail(string != NULL, false);
+
+    if (string->length == 0) {
+        new_capacity = 16;
+    } else if (string->length < string->capacity / 2) {
+        new_capacity = string->capacity / 2 + 1;
+    } else if (string->length + 1 >= string->capacity) {
+        new_capacity = string->capacity * 3 / 2 + 1;
+    } else {
+        return true;
+    }
+
+    return __string_resize_to(string, new_capacity);
+}
+
+/**
+ * @brief Clone a string_t object.
+ * @param string string_t object.
+ * @return Returns a string_t pointer if the memory allocation succeeds, otherwise returns NULL.
+ */
 string_t *string_clone(const string_t *string) {
     return_value_if_fail(string != NULL, NULL);
     return string_create(string->string);
 }
 
+/**
+ * @brief Returns the length of the string.
+ * @param string string_t object.
+ * @return Returns the length of the string.
+ */
 size_t string_length(const string_t *string) {
     return_value_if_fail(string != NULL, 0);
     return string->length;
 }
 
+/**
+ * @brief Checks if the string is empty.
+ * @param string string_t object.
+ * @return Returns true if the string is empty, otherwise returns false.
+ */
 bool string_is_empty(const string_t *string) {
     return_value_if_fail(string != NULL, true);
     return string->length == 0;
 }
 
+/**
+ * @brief Get the primitive string.
+ * @param string string_t object.
+ * @return Returns the primitive string.
+ */
 const char *string_get(const string_t *string) {
     return_value_if_fail(string != NULL, NULL);
     return string->string;
 }
 
+/**
+ * @brief Get the character at the specified index.
+ * @param string string_t object.
+ * @param index The index.
+ * @return Returns the character at the specified index.
+ */
 char string_char_at(const string_t *string, size_t index) {
     exit_if_fail(string != NULL);
     exit_if_fail(index >= 0 && index < string->length);
     return string->string[index];
 }
 
+/**
+ * @brief Set the character at the specified index.
+ * @param string string_t object.
+ * @param index The index.
+ * @param c The new character.
+ * @return Returns the modified string_t object.
+ */
 string_t *string_set_char_at(string_t *string, size_t index, char c) {
     return_value_if_fail(string != NULL, NULL);
     return_value_if_fail(index >= 0 && index < string->length, string);
@@ -88,11 +149,7 @@ string_t *string_set_char_at(string_t *string, size_t index, char c) {
     if (c == '\0') {
         string->length = index;
     }
-
-    if (string->length < string->capacity / 2) {
-        __string_resize(string, string->capacity / 2 + 1);
-    }
-
+    __string_resize(string);
     return string;
 }
 
@@ -100,7 +157,7 @@ string_t *string_clear(string_t *string) {
     return_value_if_fail(string != NULL, NULL);
     string->string[0] = '\0';
     string->length = 0;
-    __string_resize(string, 16);
+    __string_resize(string);
     return string;
 }
 
@@ -159,29 +216,15 @@ string_t *string_reverse(string_t *string) {
 
 string_t *string_strip(string_t *string) {
     return_value_if_fail(string != NULL, NULL);
-
     str_strip(string->string);
     string->length = strlen(string->string);
-
-    if (string->length < string->capacity / 2) {
-        __string_resize(string, string->capacity / 2 + 1);
-    }
-
+    __string_resize(string);
     return string;
 }
 
-string_t *string_substring(const string_t *string, int start, int end) {
-    char *substring = NULL;
-    string_t *new_string = NULL;
-
+const char *string_substring(const string_t *string, int start, int end) {
     return_value_if_fail(string != NULL, NULL);
-
-    substring = str_substring(string->string, start, end);
-    return_value_if_fail(substring != NULL, NULL);
-
-    new_string = string_create(substring);
-    free(substring);
-    return new_string;
+    return str_substring(string->string, start, end);
 }
 
 size_t string_count_substring(const string_t *string, const char *substr) {
@@ -193,12 +236,7 @@ string_t *string_append_char(string_t *string, char c) {
     return_value_if_fail(string != NULL, NULL);
     return_value_if_fail(c != '\0', string);
 
-    if (string->length + 1 >= string->capacity) {
-        if (!__string_resize(string, string->capacity * 3 / 2 + 1)) {
-            return string;
-        }
-    }
-
+    __string_resize(string);
     string->string[string->length++] = c;
     string->string[string->length] = '\0';
     return string;
@@ -211,20 +249,11 @@ string_t *string_insert_char(string_t *string, size_t index, char c) {
     if (c == '\0') {
         string->string[index] = '\0';
         string->length = index;
-
-        if (string->length < string->capacity / 2) {
-            __string_resize(string, string->capacity / 2 + 1);
-        }
-
+        __string_resize(string);
         return string;
     }
 
-    if (string->length + 1 >= string->capacity) {
-        if (!__string_resize(string, string->capacity * 3 / 2 + 1)) {
-            return string;
-        }
-    }
-
+    __string_resize(string);
     str_insert_char(string->string, index, c);
     string->length++;
     return string;
@@ -237,7 +266,7 @@ string_t *string_concat(string_t *string, const char *str) {
 
     new_len = string->length + strlen(str);
     if (new_len + 1 >= string->capacity) {
-        if (!__string_resize(string, new_len + 1)) {
+        if (!__string_resize_to(string, new_len + 1)) {
             return string;
         }
     }
@@ -255,7 +284,7 @@ string_t *string_insert_string(string_t *string, size_t index, const char *str) 
 
     new_len = string->length + strlen(str);
     if (new_len + 1 >= string->capacity) {
-        if (!__string_resize(string, new_len + 1)) {
+        if (!__string_resize_to(string, new_len + 1)) {
             return string;
         }
     }
@@ -267,40 +296,25 @@ string_t *string_insert_string(string_t *string, size_t index, const char *str) 
 
 string_t *string_remove_char(string_t *string, char c) {
     return_value_if_fail(string != NULL, NULL);
-
     str_remove_char(string->string, c);
-
     string->length = strlen(string->string);
-    if (string->length < string->capacity / 2) {
-        __string_resize(string, string->capacity / 2 + 1);
-    }
-
+    __string_resize(string);
     return string;
 }
 
 string_t *string_remove_string(string_t *string, const char *str) {
     return_value_if_fail(string != NULL && str != NULL, NULL);
-
     str_remove_string(string->string, str);
-
     string->length = strlen(string->string);
-    if (string->length < string->capacity / 2) {
-        __string_resize(string, string->capacity / 2 + 1);
-    }
-
+    __string_resize(string);
     return string;
 }
 
 string_t *string_replace_char(string_t *string, char old_char, char new_char) {
     return_value_if_fail(string != NULL, NULL);
-
     str_replace_char(string->string, old_char, new_char);
-
     string->length = strlen(string->string);
-    if (string->length < string->capacity / 2) {
-        __string_resize(string, string->capacity / 2 + 1);
-    }
-
+    __string_resize(string);
     return string;
 }
 
@@ -320,13 +334,12 @@ string_t *string_replace_string(string_t *string, const char *old_str, const cha
     new_len = string->length + occurences * len_diff;
 
     if (new_len + 1 >= string->capacity) {
-        if (!__string_resize(string, new_len + 1)) {
+        if (!__string_resize_to(string, new_len + 1)) {
             return string;
         }
     }
 
     str_replace_string(string->string, old_str, new_str);
-
     string->length = new_len;
     return string;
 }
