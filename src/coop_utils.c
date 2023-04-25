@@ -461,12 +461,12 @@ char *str_replace_string(char *str, const char *old_str, const char *new_str) {
 }
 
 /**
- * @brief Splits the string into a list of strings using the specified delimiter.
+ * @brief Splits the string into an array of strings using the specified delimiter.
  * @param str The string to be split.
  * @param delimiter The delimiter.
- * @return A list of strings ends with NULL.
- * @note The returned list ends with NULL.
- * @note The returned list must be freed by the caller.
+ * @return An array of strings ends with NULL.
+ * @note The returned array ends with NULL.
+ * @note The returned array must be freed by the caller.
  */
 char **str_split(const char *str, const char *delimiter) {
     char *temp = NULL;

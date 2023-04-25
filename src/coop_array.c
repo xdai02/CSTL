@@ -85,32 +85,27 @@ void array_set(array_t *array, size_t index, T elem) {
 }
 
 static bool __array_resize(array_t *array) {
-    size_t new_capacity = array->capacity;
+    size_t new_capacity;
 
     return_value_if_fail(array != NULL, false);
 
     if (array->size < array->capacity / 2) {
         new_capacity = array->capacity / 2 + 1;
-    } else {
+    } else if (array->size >= array->capacity) {
         new_capacity = array->capacity * 3 / 2 + 1;
+    } else {
+        return true;
     }
 
     array->data = (T *)realloc(array->data, sizeof(T) * new_capacity);
     return_value_if_fail(array->data != NULL, false);
-
     array->capacity = new_capacity;
     return true;
 }
 
 array_t *array_append(array_t *array, T elem) {
     return_value_if_fail(array != NULL && elem != NULL, array);
-
-    if (array->size >= array->capacity) {
-        if (!__array_resize(array)) {
-            return array;
-        }
-    }
-
+    return_value_if_fail(__array_resize(array), array);
     array->data[array->size++] = elem;
     return array;
 }
@@ -119,12 +114,7 @@ array_t *array_insert(array_t *array, size_t index, T elem) {
     size_t i = 0;
 
     return_value_if_fail(array != NULL && index >= 0 && index <= array->size, array);
-
-    if (array->size >= array->capacity) {
-        if (!__array_resize(array)) {
-            return array;
-        }
-    }
+    return_value_if_fail(__array_resize(array), array);
 
     for (i = array->size; i > index; i--) {
         array->data[i] = array->data[i - 1];
@@ -149,10 +139,7 @@ array_t *array_remove(array_t *array, size_t index) {
     }
     array->size--;
 
-    if (array->size < array->capacity / 2) {
-        __array_resize(array);
-    }
-
+    __array_resize(array);
     return array;
 }
 

@@ -674,35 +674,35 @@ void test_string_replace_string() {
 
 void test_string_split() {
     string_t *string = NULL;
-    string_t **tokens = NULL;
-    string_t **temp = NULL;
+    char **tokens = NULL;
+    char **temp = NULL;
 
     string = string_create("Hello, world! world!");
     tokens = string_split(string, " ");
-    assert(strcmp(string_get(tokens[0]), "Hello,") == 0);
-    assert(strcmp(string_get(tokens[1]), "world!") == 0);
-    assert(strcmp(string_get(tokens[2]), "world!") == 0);
+    assert(strcmp(tokens[0], "Hello,") == 0);
+    assert(strcmp(tokens[1], "world!") == 0);
+    assert(strcmp(tokens[2], "world!") == 0);
     assert(tokens[3] == NULL);
 
     string_destroy(string);
     temp = tokens;
     while (*temp) {
-        string_destroy(*temp);
+        free(*temp);
         temp++;
     }
     free(tokens);
 
     string = string_create("123, 456, 789");
     tokens = string_split(string, ", ");
-    assert(strcmp(string_get(tokens[0]), "123") == 0);
-    assert(strcmp(string_get(tokens[1]), "456") == 0);
-    assert(strcmp(string_get(tokens[2]), "789") == 0);
+    assert(strcmp(tokens[0], "123") == 0);
+    assert(strcmp(tokens[1], "456") == 0);
+    assert(strcmp(tokens[2], "789") == 0);
     assert(tokens[3] == NULL);
 
     string_destroy(string);
     temp = tokens;
     while (*temp) {
-        string_destroy(*temp);
+        free(*temp);
         temp++;
     }
     free(tokens);
@@ -714,22 +714,22 @@ void test_string_split() {
     string_destroy(string);
     temp = tokens;
     while (*temp) {
-        string_destroy(*temp);
+        free(*temp);
         temp++;
     }
     free(tokens);
 
     string = string_create("2023/04/23");
     tokens = string_split(string, "/");
-    assert(strcmp(string_get(tokens[0]), "2023") == 0);
-    assert(strcmp(string_get(tokens[1]), "04") == 0);
-    assert(strcmp(string_get(tokens[2]), "23") == 0);
+    assert(strcmp(tokens[0], "2023") == 0);
+    assert(strcmp(tokens[1], "04") == 0);
+    assert(strcmp(tokens[2], "23") == 0);
     assert(tokens[3] == NULL);
 
     string_destroy(string);
     temp = tokens;
     while (*temp) {
-        string_destroy(*temp);
+        free(*temp);
         temp++;
     }
     free(tokens);
