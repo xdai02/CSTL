@@ -17,7 +17,7 @@ typedef int bool;
  * @brief A generic data type representing a pointer to any data type.
  *        It is an alias for void *.
  */
-#define T void*
+#define T void *
 
 /**
  * @brief A generic function pointer type for comparing two data items.
@@ -119,15 +119,6 @@ bool float_equal(float f1, float f2);
  *         DBL_EPSILON, false otherwise.
  */
 bool double_equal(double d1, double d2);
-
-/**
- * @brief Compares two long double precision floating point numbers for equality within a certain tolerance.
- * @param ld1 The first long double number to be compared.
- * @param ld2 The second long double number to be compared.
- * @return Returns true if the absolute difference between ld1 and ld2 is less than
- *         LDBL_EPSILON, false otherwise.
- */
-bool long_double_equal(long double ld1, long double ld2);
 
 /**
  * @brief Clear the string.

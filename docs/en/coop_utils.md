@@ -331,32 +331,6 @@ if (double_equal(x, 3.14)) {
 
 
 
-## long_double_equal()
-
-- Prototype
-
-```c
-bool long_double_equal(long double ld1, long double ld2);
-```
-
-- Description
-    - Compares two long double precision floating point numbers for equality within a certain tolerance.
-- Parameters
-    - `ld1`: The first long double number to be compared.
-    - `ld2`: The second long double number to be compared.
-- Return
-    - Returns `true` if the absolute difference between `ld1` and `ld2` is less than `LDBL_EPSILON`, `false` otherwise.
-- Usage
-
-```c
-long double x = 3.14L;
-if (long_double_equal(x, 3.14L)) {
-    // ...
-}
-```
-
-
-
 ## str_clear()
 
 - Prototype

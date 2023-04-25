@@ -331,32 +331,6 @@ if (double_equal(x, 3.14)) {
 
 
 
-## long_double_equal()
-
-- 原型
-
-```c
-bool long_double_equal(long double ld1, long double ld2)
-```
-
-- 描述
-    - 在一定的容差范围内比较两个长双精度浮点数是否相等。
-- 参数
-    - `ld1`：要比较的第一个长双精度数。
-    - `ld2`：要比较的第二个长双精度数。
-- 返回值
-    - 如果`ld1`和`ld2`之间的绝对差小于`LDBL_EPSILON`，则返回`true`，否则返回`false`。 
-- 用例
-
-```c
-long double x = 3.14L;
-if (long_double_equal(x, 3.14L)) {
-    // ...
-}
-```
-
-
-
 ## str_clear()
 
 - 原型

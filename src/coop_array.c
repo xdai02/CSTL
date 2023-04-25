@@ -11,8 +11,11 @@ struct array_t {
 
 array_t *array_create(compare_t compare, destroy_t destroy) {
     const int INITIAL_CAPACITY = 16;
+    array_t *array = NULL;
 
-    array_t *array = (array_t *)malloc(sizeof(array_t));
+    return_value_if_fail(compare != NULL && destroy != NULL, NULL);
+
+    array = (array_t *)malloc(sizeof(array_t));
     return_value_if_fail(array != NULL, NULL);
 
     array->data = (T *)malloc(sizeof(T) * INITIAL_CAPACITY);
@@ -38,9 +41,7 @@ void array_destroy(array_t *array) {
 
 void array_foreach(array_t *array, visit_t visit) {
     size_t i = 0;
-
     return_if_fail(array != NULL && visit != NULL);
-
     for (i = 0; i < array->size; i++) {
         visit(array->data[i]);
     }
@@ -66,7 +67,6 @@ array_t *array_clear(array_t *array) {
     array->data = (T *)realloc(array->data, sizeof(T) * INITIAL_CAPACITY);
     array->size = 0;
     array->capacity = INITIAL_CAPACITY;
-
     return array;
 }
 
@@ -77,10 +77,7 @@ T array_get(array_t *array, size_t index) {
 
 void array_set(array_t *array, size_t index, T elem) {
     return_if_fail(array != NULL && index >= 0 && index < array->size);
-
-    if (array->destroy != NULL) {
-        array->destroy(array->data[index]);
-    }
+    array->destroy(array->data[index]);
     array->data[index] = elem;
 }
 
@@ -106,7 +103,8 @@ static bool __array_resize(array_t *array) {
 array_t *array_append(array_t *array, T elem) {
     return_value_if_fail(array != NULL && elem != NULL, array);
     return_value_if_fail(__array_resize(array), array);
-    array->data[array->size++] = elem;
+    array->data[array->size] = elem;
+    array->size++;
     return array;
 }
 
@@ -130,10 +128,7 @@ array_t *array_remove(array_t *array, size_t index) {
 
     return_value_if_fail(array != NULL && index >= 0 && index < array->size, array);
 
-    if (array->destroy != NULL) {
-        array->destroy(array->data[index]);
-    }
-
+    array->destroy(array->data[index]);
     for (i = index; i < array->size - 1; i++) {
         array->data[i] = array->data[i + 1];
     }

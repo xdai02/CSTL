@@ -71,12 +71,13 @@ static bool __string_resize_to(string_t *string, size_t new_capacity) {
  * @return Returns false if the memory allocation fails, otherwise returns true.
  */
 static bool __string_resize(string_t *string) {
+    const int INITIAL_CAPACITY = 16;
     size_t new_capacity;
 
     return_value_if_fail(string != NULL, false);
 
     if (string->length == 0) {
-        new_capacity = 16;
+        new_capacity = INITIAL_CAPACITY;
     } else if (string->length < string->capacity / 2) {
         new_capacity = string->capacity / 2 + 1;
     } else if (string->length + 1 >= string->capacity) {

@@ -58,13 +58,6 @@ void test_double_equal() {
     assert(double_equal(-1.0 / 3.0, -1.0 + 2.0 / 3.0));
 }
 
-void test_long_double_equal() {
-    assert(long_double_equal(0.1L + 0.2L, 0.3L));
-    assert(long_double_equal(0.1L - 0.2L, -0.1L));
-    assert(long_double_equal(1.0L / 3.0L, 1.0L - 2.0L / 3.0L));
-    assert(long_double_equal(-1.0L / 3.0L, -1.0L + 2.0L / 3.0L));
-}
-
 void test_str_clear() {
     char str[32];
 

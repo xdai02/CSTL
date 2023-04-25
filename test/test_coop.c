@@ -2,6 +2,7 @@
 #include "test_coop_utils.h"
 #include "test_coop_wrapper.h"
 #include "test_coop_string.h"
+#include "test_coop_array.h"
 
 void test_coop_utils() {
     test_min();
@@ -9,7 +10,6 @@ void test_coop_utils() {
     test_swap();
     test_float_equal();
     test_double_equal();
-    test_long_double_equal();
 
     test_str_clear();
     test_str_equal();
@@ -89,10 +89,27 @@ void test_coop_string() {
     printf("[PASS] coop_string\n");
 }
 
+void test_coop_array() {
+    test_array_create();
+    test_array_destroy();
+    test_array_foreach();
+    test_array_is_empty();
+    test_array_size();
+    test_array_clear();
+    test_array_get();
+    test_array_set();
+    test_array_append();
+    test_array_insert();
+    test_array_remove();
+
+    printf("[PASS] coop_array\n");
+}
+
 int main() {
     test_coop_utils();
     test_coop_wrapper();
     test_coop_string();
+    test_coop_array();
 
     return 0;
 }
