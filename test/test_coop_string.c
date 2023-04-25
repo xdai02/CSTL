@@ -427,25 +427,25 @@ void test_string_strip() {
 
 void test_string_substring() {
     string_t *string = NULL;
-    const char *substring = NULL;
+    char *substring = NULL;
 
     string = string_create("Hello, world!");
     substring = string_substring(string, 0, 5);
     assert(strcmp(substring, "Hello") == 0);
     string_destroy(string);
-    free((void *)substring);
+    free(substring);
 
     string = string_create("Hello, world!");
     substring = string_substring(string, 7, 12);
     assert(strcmp(substring, "world") == 0);
     string_destroy(string);
-    free((void *)substring);
+    free(substring);
 
     string = string_create("abcdef");
     substring = string_substring(string, 2, 5);
     assert(strcmp(substring, "cde") == 0);
     string_destroy(string);
-    free((void *)substring);
+    free(substring);
 
     string = string_create("");
     substring = string_substring(string, 0, 0);

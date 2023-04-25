@@ -723,7 +723,7 @@ char *str_append_char(char *str, char c);
     - 在字符串末尾追加一个字符。
 - 参数
     - `str`：待追加字符串。
-    - `substr`：追加字符。
+    - `c`：追加字符。
 - 返回值
     - 追加后的字符串。
 - 用例
@@ -782,7 +782,7 @@ char *str_insert_string(char *str, size_t index, const char *substr);
 
 ```c
 char str[32] = "helloworld";
-str_insert_char(str, 5, ", ");
+str_insert_string(str, 5, ", ");
 printf("%s\n", str);
 ```
 
@@ -899,7 +899,7 @@ char **str_split(const char *str, const char *delimiter);
 ```
 
 - 描述
-    - 将字符串使用指定的分隔符分割成字符串列表。
+    - 将字符串使用指定的分隔符分割成字符串数组。
 - 参数
     - `str`：待分割字符串。
     - `delimiter`：分隔符。

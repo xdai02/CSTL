@@ -36,7 +36,7 @@ string_t *string_create(const char *str) {
 
 /**
  * @brief Destroy the string_t object.
- * @param string string_t object.
+ * @param string The string_t object.
  */
 void string_destroy(string_t *string) {
     return_if_fail(string != NULL);
@@ -46,7 +46,7 @@ void string_destroy(string_t *string) {
 
 /**
  * @brief Resizes the string capacity to the specified capacity.
- * @param string string_t object.
+ * @param string The string_t object.
  * @param new_capacity The new capacity.
  * @return Returns false if the memory allocation fails, otherwise returns true.
  */
@@ -67,7 +67,7 @@ static bool __string_resize_to(string_t *string, size_t new_capacity) {
  *        1. If the length of the string is 0, the capacity is set to 16.
  *        2. If the length of the string is less than half of the capacity, the capacity is reduced by half.
  *        3. If the length of the string is greater than or equal to the capacity, the capacity is increased by half.
- * @param string string_t object.
+ * @param string The string_t object.
  * @return Returns false if the memory allocation fails, otherwise returns true.
  */
 static bool __string_resize(string_t *string) {
@@ -90,7 +90,7 @@ static bool __string_resize(string_t *string) {
 
 /**
  * @brief Clone a string_t object.
- * @param string string_t object.
+ * @param string The string_t object.
  * @return Returns a string_t pointer if the memory allocation succeeds, otherwise returns NULL.
  */
 string_t *string_clone(const string_t *string) {
@@ -99,9 +99,9 @@ string_t *string_clone(const string_t *string) {
 }
 
 /**
- * @brief Returns the length of the string.
- * @param string string_t object.
- * @return Returns the length of the string.
+ * @brief Returns the length of the string_t object.
+ * @param string The string_t object.
+ * @return Returns the length of the string_t object.
  */
 size_t string_length(const string_t *string) {
     return_value_if_fail(string != NULL, 0);
@@ -109,9 +109,9 @@ size_t string_length(const string_t *string) {
 }
 
 /**
- * @brief Checks if the string is empty.
- * @param string string_t object.
- * @return Returns true if the string is empty, otherwise returns false.
+ * @brief Checks if the string_t object is empty.
+ * @param string The string_t object.
+ * @return Returns true if the string_t object is empty, otherwise returns false.
  */
 bool string_is_empty(const string_t *string) {
     return_value_if_fail(string != NULL, true);
@@ -120,7 +120,7 @@ bool string_is_empty(const string_t *string) {
 
 /**
  * @brief Get the primitive string.
- * @param string string_t object.
+ * @param string The string_t object.
  * @return Returns the primitive string.
  */
 const char *string_get(const string_t *string) {
@@ -130,7 +130,7 @@ const char *string_get(const string_t *string) {
 
 /**
  * @brief Get the character at the specified index.
- * @param string string_t object.
+ * @param string The string_t object.
  * @param index The index.
  * @return Returns the character at the specified index.
  */
@@ -142,7 +142,7 @@ char string_char_at(const string_t *string, size_t index) {
 
 /**
  * @brief Set the character at the specified index.
- * @param string string_t object.
+ * @param string The string_t object.
  * @param index The index.
  * @param c The new character.
  * @return Returns the modified string_t object.
@@ -160,8 +160,8 @@ string_t *string_set_char_at(string_t *string, size_t index, char c) {
 }
 
 /**
- * @brief Clear the string.
- * @param string string_t object.
+ * @brief Clear the string_t object.
+ * @param string The string_t object.
  * @return Returns the modified string_t object.
  */
 string_t *string_clear(string_t *string) {
@@ -174,9 +174,9 @@ string_t *string_clear(string_t *string) {
 
 /**
  * @brief Checks if two string_t objects are equal.
- * @param string1 The first string_t object.
- * @param string2 The second string_t object.
- * @return Returns true if the two string_t objects are equal, otherwise returns false.
+ * @param s1 The first string_t object.
+ * @param s2 The second string_t object.
+ * @return Returns true if the two string_t object are equal, otherwise returns false.
  */
 bool string_equal(const string_t *string1, const string_t *string2) {
     exit_if_fail(string1 != NULL && string2 != NULL);
@@ -273,7 +273,7 @@ bool string_contains_string(const string_t *string, const char *str) {
 
 /**
  * @brief Reverse the string_t object.
- * @param str The string_t object.
+ * @param string The string_t object.
  * @return Returns the modified string_t object.
  */
 string_t *string_reverse(string_t *string) {
@@ -284,7 +284,7 @@ string_t *string_reverse(string_t *string) {
 
 /**
  * @brief Remove the leading and trailing whitespace characters from the string_t object.
- * @param str The string_t object.
+ * @param string The string_t object.
  * @return Returns the modified string_t object.
  */
 string_t *string_strip(string_t *string) {
@@ -303,14 +303,14 @@ string_t *string_strip(string_t *string) {
  * @return The substring of the specified string.
  * @note The returned string must be freed by the caller.
  */
-const char *string_substring(const string_t *string, int start, int end) {
+char *string_substring(const string_t *string, int start, int end) {
     return_value_if_fail(string != NULL, NULL);
     return str_substring(string->string, start, end);
 }
 
 /**
  * @brief Count the number of occurrences of the specified substring in the string_t object.
- * @param str The string_t object.
+ * @param string The string_t object.
  * @param substr The target substring.
  * @return The number of occurrences of the specified substring in the string_t object.
  */
@@ -478,7 +478,7 @@ string_t *string_replace_string(string_t *string, const char *old_str, const cha
 
 /**
  * @brief Splits the string_t object into an array of strings using the specified delimiter.
- * @param str The string_t object.
+ * @param string The string_t object.
  * @param delimiter The delimiter.
  * @return An array of strings ends with NULL.
  * @note The returned array ends with NULL.

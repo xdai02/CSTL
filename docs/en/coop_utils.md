@@ -723,7 +723,7 @@ char *str_append_char(char *str, char c);
     - Append the specified character to the end of the string.
 - Parameters
     - `str`: The string to be appended.
-    - `substr`: The appended character.
+    - `c`: The appended character.
 - Return
     - The string after appending.
 - Usage
@@ -782,7 +782,7 @@ char *str_insert_string(char *str, size_t index, const char *substr);
 
 ```c
 char str[32] = "helloworld";
-str_insert_char(str, 5, ", ");
+str_insert_string(str, 5, ", ");
 printf("%s\n", str);
 ```
 
@@ -899,7 +899,7 @@ char **str_split(const char *str, const char *delimiter);
 ```
 
 - Description
-    - Splits the string into a list of strings using the specified delimiter.
+    - Splits the string into an array of strings using the specified delimiter.
 - Parameters
     - `str`: The string to be split.
     - `delimiter`: The delimiter.
