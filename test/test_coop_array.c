@@ -171,6 +171,8 @@ void test_array_insert() {
 void test_array_remove() {
     const int N = 10000;
     int i = 0;
+    Integer *integer;
+    Boolean *boolean;
     array_t *array = NULL;
 
     array = array_create(Integer_compare, Integer_delete);
@@ -178,7 +180,9 @@ void test_array_remove() {
         array_append(array, Integer_new(i));
     }
     for (i = 0; i < N; i++) {
-        array_remove(array, 0);
+        integer = (Integer *)array_remove(array, 0);
+        assert(Integer_valueOf(integer) == i);
+        Integer_delete(integer);
     }
     assert(array_size(array) == 0);
     array_destroy(array);
@@ -189,9 +193,19 @@ void test_array_remove() {
     array_append(array, Boolean_new(true));
     array_append(array, Boolean_new(false));
     array_append(array, Boolean_new(true));
-    array_remove(array, 0);
-    array_remove(array, 2);
-    array_remove(array, 1);
+
+    boolean = array_remove(array, 0);
+    assert(Boolean_valueOf(boolean) == true);
+    Boolean_delete(boolean);
+
+    boolean = array_remove(array, 2);
+    assert(Boolean_valueOf(boolean) == false);
+    Boolean_delete(boolean);
+
+    boolean = array_remove(array, 1);
+    assert(Boolean_valueOf(boolean) == true);
+    Boolean_delete(boolean);
+
     assert(array_size(array) == 2);
     assert(Boolean_valueOf((Boolean *)array_get(array, 0)) == false);
     assert(Boolean_valueOf((Boolean *)array_get(array, 1)) == true);
@@ -210,6 +224,27 @@ void test_array_index_of() {
     for (i = 0; i < N; i++) {
         integer = Integer_new(i);
         assert(array_index_of(array, integer) == i);
+        Integer_delete(integer);
+    }
+    array_destroy(array);
+}
+
+void test_array_contains() {
+    const int N = 100;
+    int i = 0;
+    Integer *integer;
+
+    array_t *array = array_create(Integer_compare, Integer_delete);
+    for (i = 0; i < N; i++) {
+        array_append(array, Integer_new(i));
+    }
+    for (i = 0; i < 2 * N; i++) {
+        integer = Integer_new(i);
+        if (i < N) {
+            assert(array_contains(array, integer) == true);
+        } else {
+            assert(array_contains(array, integer) == false);
+        }
         Integer_delete(integer);
     }
     array_destroy(array);

@@ -47,12 +47,12 @@ void array_foreach(array_t *array, visit_t visit) {
     }
 }
 
-bool array_is_empty(array_t *array) {
+bool array_is_empty(const array_t *array) {
     return_value_if_fail(array != NULL, true);
     return array->size == 0;
 }
 
-size_t array_size(array_t *array) {
+size_t array_size(const array_t *array) {
     return_value_if_fail(array != NULL, 0);
     return array->size;
 }
@@ -70,12 +70,12 @@ array_t *array_clear(array_t *array) {
     return array;
 }
 
-T array_get(array_t *array, size_t index) {
+T array_get(const array_t *array, size_t index) {
     return_value_if_fail(array != NULL && index >= 0 && index < array->size, NULL);
     return array->data[index];
 }
 
-void array_set(array_t *array, size_t index, T elem) {
+array_t *array_set(array_t *array, size_t index, T elem) {
     return_if_fail(array != NULL && index >= 0 && index < array->size);
     array->destroy(array->data[index]);
     array->data[index] = elem;
@@ -123,22 +123,21 @@ array_t *array_insert(array_t *array, size_t index, T elem) {
     return array;
 }
 
-array_t *array_remove(array_t *array, size_t index) {
+T array_remove(array_t *array, size_t index) {
     size_t i = 0;
 
     return_value_if_fail(array != NULL && index >= 0 && index < array->size, array);
 
-    array->destroy(array->data[index]);
+    T elem = array->data[index];
     for (i = index; i < array->size - 1; i++) {
         array->data[i] = array->data[i + 1];
     }
     array->size--;
 
-    __array_resize(array);
-    return array;
+    return elem;
 }
 
-size_t array_index_of(array_t *array, T elem) {
+size_t array_index_of(const array_t *array, T elem) {
     size_t i = 0;
 
     return_value_if_fail(array != NULL && elem != NULL, -1);
@@ -152,7 +151,11 @@ size_t array_index_of(array_t *array, T elem) {
     return -1;
 }
 
-size_t array_count(array_t *array, T elem) {
+bool array_contains(const array_t *array, T elem) {
+    return array_index_of(array, elem) != -1;
+}
+
+size_t array_count(const array_t *array, T elem) {
     size_t i = 0;
     size_t count = 0;
 

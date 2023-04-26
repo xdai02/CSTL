@@ -104,6 +104,7 @@ void test_coop_array() {
     test_array_insert();
     test_array_remove();
     test_array_index_of();
+    test_array_contains();
     test_array_count();
     test_array_reverse();
     test_array_sort();
