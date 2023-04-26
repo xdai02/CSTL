@@ -71,7 +71,7 @@ char *str_clear(char *str) {
  * @return Returns true if the two strings are equal, otherwise returns false.
  */
 bool str_equal(const char *s1, const char *s2) {
-    exit_if_fail(s1 != NULL && s2 != NULL);
+    return_value_if_fail(s1 != NULL && s2 != NULL, false);
     return strcmp(s1, s2) == 0;
 }
 
@@ -82,7 +82,7 @@ bool str_equal(const char *s1, const char *s2) {
  * @return Returns true if the two strings are equal ignoring case, otherwise returns false.
  */
 bool str_equal_ignore_case(const char *s1, const char *s2) {
-    exit_if_fail(s1 != NULL && s2 != NULL);
+    return_value_if_fail(s1 != NULL && s2 != NULL, false);
 
     while (*s1 && *s2) {
         if (toupper(*s1) != toupper(*s2)) {
@@ -140,7 +140,7 @@ bool str_starts_with(const char *str, const char *prefix) {
     size_t str_len;
     size_t prefix_len;
 
-    exit_if_fail(str != NULL && prefix != NULL);
+    return_value_if_fail(str != NULL && prefix != NULL, false);
 
     str_len = strlen(str);
     prefix_len = strlen(prefix);
@@ -158,7 +158,7 @@ bool str_ends_with(const char *str, const char *suffix) {
     size_t str_len;
     size_t suffix_len;
 
-    exit_if_fail(str != NULL && suffix != NULL);
+    return_value_if_fail(str != NULL && suffix != NULL, false);
 
     str_len = strlen(str);
     suffix_len = strlen(suffix);
@@ -174,7 +174,6 @@ bool str_ends_with(const char *str, const char *suffix) {
  */
 int str_index_of_char(const char *str, char c) {
     char *p = NULL;
-
     return_value_if_fail(str != NULL, -1);
     p = strchr(str, c);
     return_value_if_fail(p != NULL, -1);
@@ -214,7 +213,6 @@ bool str_contains_string(const char *str, const char *substr) {
 
     substr_len = strlen(substr);
     return_value_if_fail(substr_len > 0, false);
-
     return strstr(str, substr) != NULL;
 }
 
@@ -233,7 +231,6 @@ char *str_reverse(char *str) {
     for (i = 0; i < len / 2; i++) {
         swap(str[i], str[len - i - 1], char);
     }
-
     return str;
 }
 

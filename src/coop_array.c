@@ -71,12 +71,15 @@ array_t *array_clear(array_t *array) {
 }
 
 T array_get(const array_t *array, size_t index) {
-    return_value_if_fail(array != NULL && index >= 0 && index < array->size, NULL);
+    return_value_if_fail(array != NULL, NULL);
+    return_value_if_fail(index >= 0 && index < array->size, NULL);
     return array->data[index];
 }
 
 array_t *array_set(array_t *array, size_t index, T elem) {
-    return_if_fail(array != NULL && index >= 0 && index < array->size);
+    return_value_if_fail(array != NULL, NULL);
+    return_value_if_fail(index >= 0 && index < array->size, array);
+    return_value_if_fail(elem != NULL, array);
     array->destroy(array->data[index]);
     array->data[index] = elem;
 }
@@ -111,7 +114,8 @@ array_t *array_append(array_t *array, T elem) {
 array_t *array_insert(array_t *array, size_t index, T elem) {
     size_t i = 0;
 
-    return_value_if_fail(array != NULL && index >= 0 && index <= array->size, array);
+    return_value_if_fail(array != NULL, NULL);
+    return_value_if_fail(index >= 0 && index <= array->size, array);
     return_value_if_fail(__array_resize(array), array);
 
     for (i = array->size; i > index; i--) {
@@ -126,7 +130,8 @@ array_t *array_insert(array_t *array, size_t index, T elem) {
 T array_remove(array_t *array, size_t index) {
     size_t i = 0;
 
-    return_value_if_fail(array != NULL && index >= 0 && index < array->size, array);
+    return_value_if_fail(array != NULL, NULL);
+    return_value_if_fail(index >= 0 && index < array->size, array);
 
     T elem = array->data[index];
     for (i = index; i < array->size - 1; i++) {
@@ -147,7 +152,6 @@ size_t array_index_of(const array_t *array, T elem) {
             return i;
         }
     }
-
     return -1;
 }
 
@@ -166,7 +170,6 @@ size_t array_count(const array_t *array, T elem) {
             count++;
         }
     }
-
     return count;
 }
 
@@ -178,7 +181,6 @@ array_t *array_reverse(array_t *array) {
     for (i = 0; i < array->size / 2; i++) {
         swap(array->data[i], array->data[array->size - i - 1], T);
     }
-
     return array;
 }
 

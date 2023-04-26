@@ -47,7 +47,7 @@ char Character_valueOf(const Character *character) {
  * @return Returns true if the primitive char values of the two Character wrappers are equal, false otherwise.
  */
 bool Character_equals(const Character *character1, const Character *character2) {
-    exit_if_fail(character1 != NULL && character2 != NULL);
+    return_value_if_fail(character1 != NULL && character2 != NULL, false);
     return character1->value == character2->value;
 }
 
@@ -115,7 +115,7 @@ unsigned char UnsignedCharacter_valueOf(const UnsignedCharacter *unsigned_charac
  * @return Returns true if the primitive unsigned char values of the two UnsignedCharacter wrappers are equal, false otherwise.
  */
 bool UnsignedCharacter_equals(const UnsignedCharacter *unsigned_character1, const UnsignedCharacter *unsigned_character2) {
-    exit_if_fail(unsigned_character1 != NULL && unsigned_character2 != NULL);
+    return_value_if_fail(unsigned_character1 != NULL && unsigned_character2 != NULL, false);
     return unsigned_character1->value == unsigned_character2->value;
 }
 
@@ -183,7 +183,7 @@ short Short_valueOf(const Short *s) {
  * @return Returns true if the primitive short values of the two Short wrappers are equal, false otherwise.
  */
 bool Short_equals(const Short *short1, const Short *short2) {
-    exit_if_fail(short1 != NULL && short2 != NULL);
+    return_value_if_fail(short1 != NULL && short2 != NULL, false);
     return short1->value == short2->value;
 }
 
@@ -251,7 +251,7 @@ unsigned short UnsignedShort_valueOf(const UnsignedShort *unsigned_short) {
  * @return Returns true if the primitive unsigned short values of the two UnsignedShort wrappers are equal, false otherwise.
  */
 bool UnsignedShort_equals(const UnsignedShort *unsigned_short1, const UnsignedShort *unsigned_short2) {
-    exit_if_fail(unsigned_short1 != NULL && unsigned_short2 != NULL);
+    return_value_if_fail(unsigned_short1 != NULL && unsigned_short2 != NULL, false);
     return unsigned_short1->value == unsigned_short2->value;
 }
 
@@ -319,7 +319,7 @@ int Integer_valueOf(const Integer *integer) {
  * @return Returns true if the primitive int values of the two Integer wrappers are equal, false otherwise.
  */
 bool Integer_equals(const Integer *integer1, const Integer *integer2) {
-    exit_if_fail(integer1 != NULL && integer2 != NULL);
+    return_value_if_fail(integer1 != NULL && integer2 != NULL, false);
     return integer1->value == integer2->value;
 }
 
@@ -387,7 +387,7 @@ unsigned int UnsignedInteger_valueOf(const UnsignedInteger *unsigned_integer) {
  * @return Returns true if the primitive unsigned int values of the two UnsignedInteger wrappers are equal, false otherwise.
  */
 bool UnsignedInteger_equals(const UnsignedInteger *unsigned_integer1, const UnsignedInteger *unsigned_integer2) {
-    exit_if_fail(unsigned_integer1 != NULL && unsigned_integer2 != NULL);
+    return_value_if_fail(unsigned_integer1 != NULL && unsigned_integer2 != NULL, false);
     return unsigned_integer1->value == unsigned_integer2->value;
 }
 
@@ -455,7 +455,7 @@ long Long_valueOf(const Long *l) {
  * @return Returns true if the primitive long values of the two Long wrappers are equal, false otherwise.
  */
 bool Long_equals(const Long *long1, const Long *long2) {
-    exit_if_fail(long1 != NULL && long2 != NULL);
+    return_value_if_fail(long1 != NULL && long2 != NULL, false);
     return long1->value == long2->value;
 }
 
@@ -523,7 +523,7 @@ unsigned long UnsignedLong_valueOf(const UnsignedLong *unsigned_long) {
  * @return Returns true if the primitive unsigned long values of the two UnsignedLong wrappers are equal, false otherwise.
  */
 bool UnsignedLong_equals(const UnsignedLong *unsigned_long1, const UnsignedLong *unsigned_long2) {
-    exit_if_fail(unsigned_long1 != NULL && unsigned_long2 != NULL);
+    return_value_if_fail(unsigned_long1 != NULL && unsigned_long2 != NULL, false);
     return unsigned_long1->value == unsigned_long2->value;
 }
 
@@ -591,7 +591,7 @@ float Float_valueOf(const Float *f) {
  * @return Returns true if the primitive float values of the two Float wrappers are equal, false otherwise.
  */
 bool Float_equals(const Float *float1, const Float *float2) {
-    exit_if_fail(float1 != NULL && float2 != NULL);
+    return_value_if_fail(float1 != NULL && float2 != NULL, false);
     return float_equal(float1->value, float2->value);
 }
 
@@ -668,7 +668,7 @@ double Double_valueOf(const Double *d) {
  * @return Returns true if the primitive double values of the two Double wrappers are equal, false otherwise.
  */
 bool Double_equals(const Double *double1, const Double *double2) {
-    exit_if_fail(double1 != NULL && double2 != NULL);
+    return_value_if_fail(double1 != NULL && double2 != NULL, false);
     return double_equal(double1->value, double2->value);
 }
 
@@ -745,7 +745,7 @@ bool Boolean_valueOf(const Boolean *b) {
  * @return Returns true if the primitive bool values of the two Boolean wrappers are equal, false otherwise.
  */
 bool Boolean_equals(const Boolean *boolean1, const Boolean *boolean2) {
-    exit_if_fail(boolean1 != NULL && boolean2 != NULL);
+    return_value_if_fail(boolean1 != NULL && boolean2 != NULL, false);
     return boolean1->value == boolean2->value;
 }
 

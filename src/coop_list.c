@@ -76,11 +76,12 @@ list_t *list_clear(list_t *list) {
     return list;
 }
 
-T list_get(const list_t *list, size_t index) {
+static node_t *__node_get(list_t *list, size_t index) {
     node_t *node = NULL;
     size_t i = 0;
 
-    return_value_if_fail(list != NULL && index >= 0 && index < list->size, NULL);
+    return_value_if_fail(list != NULL, NULL);
+    return_value_if_fail(index >= 0 && index < list->size, NULL);
 
     if (index <= list->size / 2) {
         node = list->head;
@@ -94,28 +95,158 @@ T list_get(const list_t *list, size_t index) {
         }
     }
 
+    return node;
+}
+
+T list_get(const list_t *list, size_t index) {
+    node_t *node = NULL;
+
+    return_value_if_fail(list != NULL, NULL);
+    return_value_if_fail(index >= 0 && index < list->size, list);
+
+    node = __node_get(list, index);
+    return_value_if_fail(node != NULL, NULL);
     return node->data;
 }
 
 list_t *list_set(list_t *list, size_t index, T elem) {
     node_t *node = NULL;
-    size_t i = 0;
 
-    return_if_fail(list != NULL && index >= 0 && index < list->size);
+    return_value_if_fail(list != NULL, NULL);
+    return_value_if_fail(index >= 0 && index < list->size, list);
+    return_value_if_fail(elem != NULL, list);
 
-    if (index <= list->size / 2) {
-        node = list->head;
-        for (i = 0; i < index; i++) {
-            node = node->next;
-        }
-    } else {
-        node = list->tail;
-        for (i = list->size - 1; i > index; i--) {
-            node = node->prev;
-        }
-    }
+    node = __node_get(list, index);
+    return_value_if_fail(node != NULL, list);
 
-    list->destroy(node->data);
     node->data = elem;
     return list;
 }
+
+static list_t *__list_push_front(list_t *list, T elem) {
+    node_t *node = NULL;
+
+    return_value_if_fail(list != NULL, NULL);
+    return_value_if_fail(elem != NULL, list);
+
+    node = node_create(elem);
+    return_value_if_fail(node != NULL, list);
+
+    if (list->size == 0) {
+        list->head = node;
+        list->tail = node;
+    } else {
+        node->next = list->head;
+        list->head->prev = node;
+        list->head = node;
+    }
+
+    list->size++;
+    return list;
+}
+
+static list_t *__list_push_back(list_t *list, T elem) {
+    node_t *node = NULL;
+
+    return_value_if_fail(list != NULL, NULL);
+    return_value_if_fail(elem != NULL, list);
+
+    node = node_create(elem);
+    return_value_if_fail(node != NULL, list);
+
+    if (list->size == 0) {
+        list->head = node;
+        list->tail = node;
+    } else {
+        node->prev = list->tail;
+        list->tail->next = node;
+        list->tail = node;
+    }
+
+    list->size++;
+    return list;
+}
+
+static T __list_pop_front(list_t *list) {
+    node_t *node = NULL;
+    T elem = NULL;
+
+    return_value_if_fail(list != NULL, NULL);
+    return_value_if_fail(list->size > 0, NULL);
+
+    node = list->head;
+    elem = node->data;
+
+    if (list->size == 1) {
+        list->head = NULL;
+        list->tail = NULL;
+    } else {
+        list->head = node->next;
+        list->head->prev = NULL;
+    }
+
+    free(node);
+    list->size--;
+    return elem;
+}
+
+static T __list_pop_back(list_t *list) {
+    node_t *node = NULL;
+    T elem = NULL;
+
+    return_value_if_fail(list != NULL, NULL);
+    return_value_if_fail(list->size > 0, NULL);
+
+    node = list->tail;
+    elem = node->data;
+
+    if (list->size == 1) {
+        list->head = NULL;
+        list->tail = NULL;
+    } else {
+        list->tail = node->prev;
+        list->tail->next = NULL;
+    }
+
+    free(node);
+    list->size--;
+    return elem;
+}
+
+list_t *list_add(list_t *list, T elem) {
+    return_value_if_fail(list != NULL, NULL);
+    return_value_if_fail(elem != NULL, list);
+    __list_push_back(list, elem);
+    return list;
+}
+
+list_t *list_insert(list_t *list, size_t index, T elem) {
+    return_value_if_fail(list != NULL, NULL);
+    return_value_if_fail(index >= 0 && index <= list->size, list);
+    return_value_if_fail(elem != NULL, list);
+
+    if (index == 0) {
+        __list_push_front(list, elem);
+    } else if (index == list->size) {
+        __list_push_back(list, elem);
+    } else {
+        node_t *node = NULL;
+        node_t *new_node = NULL;
+
+        node = __node_get(list, index);
+        return_value_if_fail(node != NULL, list);
+
+        new_node = node_create(elem);
+        return_value_if_fail(new_node != NULL, list);
+
+        new_node->prev = node->prev;
+        new_node->next = node;
+        node->prev->next = new_node;
+        node->prev = new_node;
+
+        list->size++;
+    }
+
+    return list;
+}
+

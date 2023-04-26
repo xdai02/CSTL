@@ -180,7 +180,7 @@ string_t *string_clear(string_t *string) {
  * @return Returns true if the two string_t object are equal, otherwise returns false.
  */
 bool string_equal(const string_t *string1, const string_t *string2) {
-    exit_if_fail(string1 != NULL && string2 != NULL);
+    return_value_if_fail(string1 != NULL && string2 != NULL, false);
     return str_equal(string1->string, string2->string);
 }
 
@@ -191,7 +191,7 @@ bool string_equal(const string_t *string1, const string_t *string2) {
  * @return Returns true if the two string_t objects are equal ignoring case, otherwise returns false.
  */
 bool string_equal_ignore_case(const string_t *string1, const string_t *string2) {
-    exit_if_fail(string1 != NULL && string2 != NULL);
+    return_value_if_fail(string1 != NULL && string2 != NULL, false);
     return str_equal_ignore_case(string1->string, string2->string);
 }
 
@@ -224,7 +224,7 @@ string_t *string_toupper(string_t *string) {
  * @return Returns true if the string_t object starts with the specified prefix, otherwise returns false.
  */
 bool string_starts_with(const string_t *string, const char *prefix) {
-    exit_if_fail(string != NULL && prefix != NULL);
+    return_value_if_fail(string != NULL && prefix != NULL, false);
     return str_starts_with(string->string, prefix);
 }
 
@@ -235,7 +235,7 @@ bool string_starts_with(const string_t *string, const char *prefix) {
  * @return Returns true if the string_t object ends with the specified suffix, otherwise returns false.
  */
 bool string_ends_with(const string_t *string, const char *suffix) {
-    exit_if_fail(string != NULL && suffix != NULL);
+    return_value_if_fail(string != NULL && suffix != NULL, false);
     return str_ends_with(string->string, suffix);
 }
 
