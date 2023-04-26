@@ -1,7 +1,6 @@
 #include "test_coop_array.h"
 #include "coop.h"
 #include <assert.h>
-#include <time.h>
 
 void test_array_create() {
     array_t *array = NULL;
@@ -202,12 +201,16 @@ void test_array_remove() {
 void test_array_index_of() {
     const int N = 100;
     int i = 0;
+    Integer *integer;
+
     array_t *array = array_create(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         array_append(array, Integer_new(i));
     }
     for (i = 0; i < N; i++) {
-        assert(array_index_of(array, Integer_new(i)) == i);
+        integer = Integer_new(i);
+        assert(array_index_of(array, integer) == i);
+        Integer_delete(integer);
     }
     array_destroy(array);
 }
@@ -255,11 +258,11 @@ void test_array_reverse() {
     const int N = 10000;
     int i = 0;
     array_t *array = array_create(Integer_compare, Integer_delete);
-    for(i = 0; i < N; i++) {
+    for (i = 0; i < N; i++) {
         array_append(array, Integer_new(i));
     }
     array_reverse(array);
-    for(i = 0; i < N; i++) {
+    for (i = 0; i < N; i++) {
         Integer *integer = (Integer *)array_get(array, i);
         assert(Integer_valueOf(integer) == N - i - 1);
     }
@@ -267,7 +270,36 @@ void test_array_reverse() {
 }
 
 void test_array_sort() {
-    const int N = 10000;
+    const int N = 100;
     int i = 0;
     array_t *array = NULL;
+    Integer *integer1;
+    Integer *integer2;
+    Double *double1;
+    Double *double2;
+
+    array = array_create(Integer_compare, Integer_delete);
+    for (i = 0; i < N; i++) {
+        array_append(array, Integer_new(randint(0, N)));
+    }
+    array_sort(array);
+    for (i = 0; i < N - 1; i++) {
+        integer1 = (Integer *)array_get(array, i);
+        integer2 = (Integer *)array_get(array, i + 1);
+        assert(Integer_valueOf(integer1) <= Integer_valueOf(integer2));
+    }
+
+    array_destroy(array);
+
+    array = array_create(Double_compare, Double_delete);
+    for (i = 0; i < N; i++) {
+        array_append(array, Double_new(random()));
+    }
+    array_sort(array);
+    for (i = 0; i < N - 1; i++) {
+        double1 = (Double *)array_get(array, i);
+        double2 = (Double *)array_get(array, i + 1);
+        assert(Double_valueOf(double1) <= Double_valueOf(double2));
+    }
+    array_destroy(array);
 }

@@ -179,8 +179,15 @@ array_t *array_reverse(array_t *array) {
     return array;
 }
 
+static compare_t compare;
+
+static int __compare(const T a, const T b) {
+    return compare(*(T *)a, *(T *)b);
+}
+
 array_t *array_sort(array_t *array) {
     return_value_if_fail(array != NULL, array);
-    qsort(array->data, array->size, sizeof(T), array->compare);
+    compare = array->compare;
+    qsort(array->data, array->size, sizeof(T), __compare);
     return array;
 }
