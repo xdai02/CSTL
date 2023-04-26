@@ -10,6 +10,8 @@ void test_coop_utils() {
     test_swap();
     test_float_equal();
     test_double_equal();
+    test_randint();
+    test_random();
 
     test_str_clear();
     test_str_equal();
@@ -101,6 +103,10 @@ void test_coop_array() {
     test_array_append();
     test_array_insert();
     test_array_remove();
+    test_array_index_of();
+    test_array_count();
+    test_array_reverse();
+    test_array_sort();
 
     printf("[PASS] coop_array\n");
 }

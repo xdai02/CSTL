@@ -1,6 +1,7 @@
 #include "test_coop_array.h"
 #include "coop.h"
 #include <assert.h>
+#include <time.h>
 
 void test_array_create() {
     array_t *array = NULL;
@@ -196,4 +197,77 @@ void test_array_remove() {
     assert(Boolean_valueOf((Boolean *)array_get(array, 0)) == false);
     assert(Boolean_valueOf((Boolean *)array_get(array, 1)) == true);
     array_destroy(array);
+}
+
+void test_array_index_of() {
+    const int N = 100;
+    int i = 0;
+    array_t *array = array_create(Integer_compare, Integer_delete);
+    for (i = 0; i < N; i++) {
+        array_append(array, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        assert(array_index_of(array, Integer_new(i)) == i);
+    }
+    array_destroy(array);
+}
+
+void test_array_count() {
+    int arr[] = {9, 1, 2, 8, 2, 5, 2, 8, 9, 1, 2, 8, 2, 5, 2, 8};
+    const int N = sizeof(arr) / sizeof(arr[0]);
+
+    int i = 0;
+    Integer *integer = NULL;
+
+    array_t *array = array_create(Integer_compare, Integer_delete);
+    for (i = 0; i < N; i++) {
+        array_append(array, Integer_new(arr[i]));
+    }
+
+    integer = Integer_new(1);
+    assert(array_count(array, integer) == 2);
+    Integer_delete(integer);
+
+    integer = Integer_new(2);
+    assert(array_count(array, integer) == 6);
+    Integer_delete(integer);
+
+    integer = Integer_new(3);
+    assert(array_count(array, integer) == 0);
+    Integer_delete(integer);
+
+    integer = Integer_new(5);
+    assert(array_count(array, integer) == 2);
+    Integer_delete(integer);
+
+    integer = Integer_new(8);
+    assert(array_count(array, integer) == 4);
+    Integer_delete(integer);
+
+    integer = Integer_new(9);
+    assert(array_count(array, integer) == 2);
+    Integer_delete(integer);
+
+    array_destroy(array);
+}
+
+void test_array_reverse() {
+    const int N = 10000;
+    int i = 0;
+    array_t *array = array_create(Integer_compare, Integer_delete);
+    for(i = 0; i < N; i++) {
+        array_append(array, Integer_new(i));
+    }
+    array_reverse(array);
+    for(i = 0; i < N; i++) {
+        Integer *integer = (Integer *)array_get(array, i);
+        assert(Integer_valueOf(integer) == N - i - 1);
+    }
+    array_destroy(array);
+}
+
+void test_array_sort() {
+    const int N = 10000;
+    int i = 0;
+    array_t *array = NULL;
 }

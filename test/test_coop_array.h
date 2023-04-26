@@ -12,5 +12,9 @@ void test_array_set();
 void test_array_append();
 void test_array_insert();
 void test_array_remove();
+void test_array_index_of();
+void test_array_count();
+void test_array_reverse();
+void test_array_sort();
 
 #endif

@@ -6,6 +6,8 @@ void test_max();
 void test_swap();
 void test_float_equal();
 void test_double_equal();
+void test_randint();
+void test_random();
 
 void test_str_clear();
 void test_str_equal();
