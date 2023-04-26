@@ -1,4 +1,4 @@
-#include "coop_wrapper.h"
+#include "wrapper.h"
 
 /**
  * @brief A wrapper for the primitive data type char.

@@ -1,5 +1,5 @@
-#ifndef _COOP_UTILS_H_
-#define _COOP_UTILS_H_
+#ifndef _UTILS_H_
+#define _UTILS_H_
 
 #include <stdio.h>
 #include <stdlib.h>

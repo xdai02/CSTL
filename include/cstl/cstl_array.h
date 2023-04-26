@@ -1,7 +1,7 @@
-#ifndef _COOP_ARRAY_H_
-#define _COOP_ARRAY_H_
+#ifndef _CSTL_ARRAY_H_
+#define _CSTL_ARRAY_H_
 
-#include "coop_utils.h"
+#include "utils.h"
 
 typedef struct array_t array_t;
 

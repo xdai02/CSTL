@@ -1,5 +1,5 @@
-#include "coop_list.h"
-#include "coop_utils.h"
+#include "cstl_list.h"
+#include "utils.h"
 
 typedef struct node_t {
     T data;
@@ -27,7 +27,7 @@ static node_t *node_create(T elem) {
 list_t *list_create(compare_t compare, destroy_t destroy) {
     list_t *list = NULL;
 
-    return_value_if_fail(compare != NULL && destroy != NULL, NULL);
+    return_value_if_fail(compare != NULL, NULL);
 
     list = (list_t *)malloc(sizeof(list_t));
     return_value_if_fail(list != NULL, NULL);
@@ -76,7 +76,7 @@ list_t *list_clear(list_t *list) {
     return list;
 }
 
-static node_t *__node_get(list_t *list, size_t index) {
+static node_t *__node_get(const list_t *list, size_t index) {
     node_t *node = NULL;
     size_t i = 0;
 
@@ -102,7 +102,7 @@ T list_get(const list_t *list, size_t index) {
     node_t *node = NULL;
 
     return_value_if_fail(list != NULL, NULL);
-    return_value_if_fail(index >= 0 && index < list->size, list);
+    return_value_if_fail(index >= 0 && index < list->size, NULL);
 
     node = __node_get(list, index);
     return_value_if_fail(node != NULL, NULL);
@@ -123,7 +123,45 @@ list_t *list_set(list_t *list, size_t index, T elem) {
     return list;
 }
 
-static list_t *__list_push_front(list_t *list, T elem) {
+int list_index_of(const list_t *list, T elem) {
+    node_t *node = NULL;
+    int index = 0;
+
+    return_value_if_fail(list != NULL, -1);
+    return_value_if_fail(elem != NULL, -1);
+
+    node = list->head;
+    while (node != NULL) {
+        if (node->data == elem) {
+            return index;
+        }
+
+        index++;
+        node = node->next;
+    }
+
+    return -1;
+}
+
+bool list_contains(const list_t *list, T elem) {
+    return_value_if_fail(list != NULL, false);
+    return_value_if_fail(elem != NULL, false);
+    return list_index_of(list, elem) != -1;
+}
+
+T list_get_front(const list_t *list) {
+    return_value_if_fail(list != NULL, NULL);
+    return_value_if_fail(list->size > 0, NULL);
+    return list->head->data;
+}
+
+T list_get_back(const list_t *list) {
+    return_value_if_fail(list != NULL, NULL);
+    return_value_if_fail(list->size > 0, NULL);
+    return list->tail->data;
+}
+
+list_t *list_push_front(list_t *list, T elem) {
     node_t *node = NULL;
 
     return_value_if_fail(list != NULL, NULL);
@@ -145,7 +183,7 @@ static list_t *__list_push_front(list_t *list, T elem) {
     return list;
 }
 
-static list_t *__list_push_back(list_t *list, T elem) {
+list_t *list_push_back(list_t *list, T elem) {
     node_t *node = NULL;
 
     return_value_if_fail(list != NULL, NULL);
@@ -167,7 +205,7 @@ static list_t *__list_push_back(list_t *list, T elem) {
     return list;
 }
 
-static T __list_pop_front(list_t *list) {
+T list_pop_front(list_t *list) {
     node_t *node = NULL;
     T elem = NULL;
 
@@ -190,7 +228,7 @@ static T __list_pop_front(list_t *list) {
     return elem;
 }
 
-static T __list_pop_back(list_t *list) {
+T list_pop_back(list_t *list) {
     node_t *node = NULL;
     T elem = NULL;
 
@@ -213,22 +251,15 @@ static T __list_pop_back(list_t *list) {
     return elem;
 }
 
-list_t *list_add(list_t *list, T elem) {
-    return_value_if_fail(list != NULL, NULL);
-    return_value_if_fail(elem != NULL, list);
-    __list_push_back(list, elem);
-    return list;
-}
-
 list_t *list_insert(list_t *list, size_t index, T elem) {
     return_value_if_fail(list != NULL, NULL);
     return_value_if_fail(index >= 0 && index <= list->size, list);
     return_value_if_fail(elem != NULL, list);
 
     if (index == 0) {
-        __list_push_front(list, elem);
+        list_push_front(list, elem);
     } else if (index == list->size) {
-        __list_push_back(list, elem);
+        list_push_back(list, elem);
     } else {
         node_t *node = NULL;
         node_t *new_node = NULL;
@@ -250,3 +281,27 @@ list_t *list_insert(list_t *list, size_t index, T elem) {
     return list;
 }
 
+T list_remove(list_t *list, size_t index) {
+    node_t *node = NULL;
+    T elem = NULL;
+
+    return_value_if_fail(list != NULL, NULL);
+    return_value_if_fail(index >= 0 && index < list->size, NULL);
+
+    if (index == 0) {
+        return list_pop_front(list);
+    } else if (index == list->size - 1) {
+        return list_pop_back(list);
+    } else {
+        node = __node_get(list, index);
+        return_value_if_fail(node != NULL, NULL);
+
+        elem = node->data;
+        node->prev->next = node->next;
+        node->next->prev = node->prev;
+
+        free(node);
+        list->size--;
+        return elem;
+    }
+}

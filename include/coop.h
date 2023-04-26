@@ -1,9 +1,11 @@
 #ifndef _COOP_H_
 #define _COOP_H_
 
-#include "coop_utils.h"
-#include "coop_wrapper.h"
-#include "coop_string.h"
-#include "coop_array.h"
+#include "utils.h"
+#include "wrapper.h"
+#include "cstl_string.h"
+#include "cstl_iterator.h"
+#include "cstl_array.h"
+#include "cstl_list.h"
 
 #endif

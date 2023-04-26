@@ -1,5 +1,5 @@
-#include "coop_array.h"
-#include "coop_utils.h"
+#include "cstl_array.h"
+#include "utils.h"
 
 struct array_t {
     T *data;
@@ -13,7 +13,7 @@ array_t *array_create(compare_t compare, destroy_t destroy) {
     const int INITIAL_CAPACITY = 16;
     array_t *array = NULL;
 
-    return_value_if_fail(compare != NULL && destroy != NULL, NULL);
+    return_value_if_fail(compare != NULL, NULL);
 
     array = (array_t *)malloc(sizeof(array_t));
     return_value_if_fail(array != NULL, NULL);
@@ -28,7 +28,6 @@ array_t *array_create(compare_t compare, destroy_t destroy) {
     array->capacity = INITIAL_CAPACITY;
     array->compare = compare;
     array->destroy = destroy;
-
     return array;
 }
 
@@ -80,8 +79,11 @@ array_t *array_set(array_t *array, size_t index, T elem) {
     return_value_if_fail(array != NULL, NULL);
     return_value_if_fail(index >= 0 && index < array->size, array);
     return_value_if_fail(elem != NULL, array);
-    array->destroy(array->data[index]);
+    if (array->destroy != NULL) {
+        array->destroy(array->data[index]);
+    }
     array->data[index] = elem;
+    return array;
 }
 
 static bool __array_resize(array_t *array) {
@@ -129,11 +131,12 @@ array_t *array_insert(array_t *array, size_t index, T elem) {
 
 T array_remove(array_t *array, size_t index) {
     size_t i = 0;
+    T elem = NULL;
 
     return_value_if_fail(array != NULL, NULL);
     return_value_if_fail(index >= 0 && index < array->size, array);
 
-    T elem = array->data[index];
+    elem = array->data[index];
     for (i = index; i < array->size - 1; i++) {
         array->data[i] = array->data[i + 1];
     }

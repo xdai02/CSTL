@@ -4,9 +4,8 @@ COOP provides object-oriented features similar to those used in other languages 
 
 - [x] coop_utils
 - [x] coop_wrapper
-- [x] coop_str
 - [x] coop_string
-- [ ] coop_array
+- [x] coop_array
 - [ ] coop_list
 - [ ] coop_stack
 - [ ] coop_queue

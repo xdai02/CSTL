@@ -1,7 +1,7 @@
-#ifndef _COOP_LIST_H_
-#define _COOP_LIST_H_
+#ifndef _CSTL_LIST_H_
+#define _CSTL_LIST_H_
 
-#include "coop_utils.h"
+#include "utils.h"
 
 typedef struct list_t list_t;
 
@@ -13,7 +13,15 @@ size_t list_size(const list_t *list);
 list_t *list_clear(list_t *list);
 T list_get(const list_t *list, size_t index);
 list_t *list_set(list_t *list, size_t index, T elem);
-list_t *list_add(list_t *list, T elem);
+int list_index_of(const list_t *list, T elem);
+bool list_contains(const list_t *list, T elem);
+T list_get_front(const list_t *list);
+T list_get_back(const list_t *list);
+list_t *list_push_front(list_t *list, T elem);
+list_t *list_push_back(list_t *list, T elem);
+T list_pop_front(list_t *list);
+T list_pop_back(list_t *list);
 list_t *list_insert(list_t *list, size_t index, T elem);
+T list_remove(list_t *list, size_t index);
 
 #endif

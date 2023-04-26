@@ -1,5 +1,5 @@
-#ifndef _TEST_COOP_WRAPPER_H_
-#define _TEST_COOP_WRAPPER_H_
+#ifndef _TEST_WRAPPER_H_
+#define _TEST_WRAPPER_H_
 
 void test_Character();
 void test_UnsignedCharacter();

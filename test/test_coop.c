@@ -1,10 +1,10 @@
 #include <stdio.h>
-#include "test_coop_utils.h"
-#include "test_coop_wrapper.h"
-#include "test_coop_string.h"
-#include "test_coop_array.h"
+#include "test_utils.h"
+#include "test_wrapper.h"
+#include "test_cstl_string.h"
+#include "test_cstl_array.h"
 
-void test_coop_utils() {
+void test_utils() {
     test_min();
     test_max();
     test_swap();
@@ -36,10 +36,10 @@ void test_coop_utils() {
     test_str_replace_string();
     test_str_split();
 
-    printf("[PASS] coop_utils\n");
+    printf("[PASS] utils\n");
 }
 
-void test_coop_wrapper() {
+void test_wrapper() {
     test_Character();
     test_UnsignedCharacter();
     test_Short();
@@ -52,10 +52,10 @@ void test_coop_wrapper() {
     test_Double();
     test_Boolean();
 
-    printf("[PASS] coop_wrapper\n");
+    printf("[PASS] wrapper\n");
 }
 
-void test_coop_string() {
+void test_cstl_string() {
     test_string_create();
     test_string_destroy();
     test_string_clone();
@@ -88,10 +88,10 @@ void test_coop_string() {
     test_string_replace_string();
     test_string_split();
 
-    printf("[PASS] coop_string\n");
+    printf("[PASS] cstl_string\n");
 }
 
-void test_coop_array() {
+void test_cstl_array() {
     test_array_create();
     test_array_destroy();
     test_array_foreach();
@@ -109,14 +109,14 @@ void test_coop_array() {
     test_array_reverse();
     test_array_sort();
 
-    printf("[PASS] coop_array\n");
+    printf("[PASS] cstl_array\n");
 }
 
 int main() {
-    test_coop_utils();
-    test_coop_wrapper();
-    test_coop_string();
-    test_coop_array();
+    test_utils();
+    test_wrapper();
+    test_cstl_string();
+    test_cstl_array();
 
     return 0;
 }

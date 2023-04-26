@@ -1,5 +1,5 @@
-#ifndef _TEST_COOP_ARRAY_H_
-#define _TEST_COOP_ARRAY_H_
+#ifndef _TEST_CSTL_ARRAY_H_
+#define _TEST_CSTL_ARRAY_H_
 
 void test_array_create();
 void test_array_destroy();

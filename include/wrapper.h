@@ -1,7 +1,7 @@
-#ifndef _COOP_WRAPPER_H_
-#define _COOP_WRAPPER_H_
+#ifndef _WRAPPER_H_
+#define _WRAPPER_H_
 
-#include "coop_utils.h"
+#include "utils.h"
 
 /**
  * @brief A wrapper for the primitive data type char.

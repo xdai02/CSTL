@@ -1,7 +1,7 @@
-#ifndef _COOP_STRING_H_
-#define _COOP_STRING_H_
+#ifndef _CSTL_STRING_H_
+#define _CSTL_STRING_H_
 
-#include "coop_utils.h"
+#include "utils.h"
 
 typedef struct string_t string_t;
 

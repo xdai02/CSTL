@@ -1,5 +1,5 @@
-#ifndef _TEST_COOP_STRING_H_
-#define _TEST_COOP_STRING_H_
+#ifndef _TEST_CSTL_STRING_H_
+#define _TEST_CSTL_STRING_H_
 
 void test_string_create();
 void test_string_destroy();

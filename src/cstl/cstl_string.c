@@ -1,5 +1,5 @@
-#include "coop_string.h"
-#include "coop_utils.h"
+#include "cstl_string.h"
+#include "utils.h"
 
 struct string_t {
     char *string;
@@ -269,7 +269,7 @@ int string_index_of_string(const string_t *string, const char *str) {
  */
 bool string_contains_string(const string_t *string, const char *str) {
     return_value_if_fail(string != NULL && str != NULL, false);
-    return str_index_of_string(string->string, str) >= 0;
+    return str_index_of_string(string->string, str) != -1;
 }
 
 /**
