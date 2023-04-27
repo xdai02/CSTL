@@ -54,6 +54,7 @@ void test_cstl_array() {
     test_array_count();
     test_array_reverse();
     test_array_sort();
+    test_array_iterator();
 
     printf("[PASS] cstl_array\n");
 }

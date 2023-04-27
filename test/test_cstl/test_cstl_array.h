@@ -17,5 +17,6 @@ void test_array_contains();
 void test_array_count();
 void test_array_reverse();
 void test_array_sort();
+void test_array_iterator();
 
 #endif

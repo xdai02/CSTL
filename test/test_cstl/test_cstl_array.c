@@ -338,3 +338,28 @@ void test_array_sort() {
     }
     array_destroy(array);
 }
+
+void test_array_iterator() {
+    const int N = 1000;
+    int i = 0;
+    array_t *array = NULL;
+    iterator_t *iterator = NULL;
+    Integer *integer;
+
+    array = array_create(Integer_compare, Integer_delete);
+    for (i = 0; i < N; i++) {
+        array_append(array, Integer_new(i));
+    }
+
+    iterator = array_iterator_create(array);
+
+    i = 0;
+    while (array_iterator_has_next(iterator)) {
+        integer = (Integer *)array_iterator_next(iterator);
+        assert(Integer_valueOf(integer) == i);
+        i++;
+    }
+
+    array_iterator_destroy(iterator);
+    array_destroy(array);
+}

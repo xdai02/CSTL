@@ -66,18 +66,18 @@ void UnsignedCharacter_delete(void *ptr);
 
 /**
  * @brief Returns the value of the given UnsignedCharacter wrapper.
- * @param unsigned_character The pointer to the UnsignedCharacter wrapper.
+ * @param uc The pointer to the UnsignedCharacter wrapper.
  * @return The primitive unsigned char value of the given UnsignedCharacter wrapper.
  */
-unsigned char UnsignedCharacter_valueOf(const UnsignedCharacter *unsigned_character);
+unsigned char UnsignedCharacter_valueOf(const UnsignedCharacter *uc);
 
 /**
  * @brief Checks if two UnsignedCharacter wrappers are equal.
- * @param unsigned_character1 The pointer to the first UnsignedCharacter wrapper to be compared.
- * @param unsigned_character2 The pointer to the second UnsignedCharacter wrapper to be compared.
+ * @param uc1 The pointer to the first UnsignedCharacter wrapper to be compared.
+ * @param uc2 The pointer to the second UnsignedCharacter wrapper to be compared.
  * @return Returns true if the primitive unsigned char values of the two UnsignedCharacter wrappers are equal, false otherwise.
  */
-bool UnsignedCharacter_equals(const UnsignedCharacter *unsigned_character1, const UnsignedCharacter *unsigned_character2);
+bool UnsignedCharacter_equals(const UnsignedCharacter *uc1, const UnsignedCharacter *uc2);
 
 /**
  * @brief Compares two UnsignedCharacter wrappers.
@@ -116,11 +116,11 @@ short Short_valueOf(const Short *s);
 
 /**
  * @brief Checks if two Short wrappers are equal.
- * @param short1 The pointer to the first Short wrapper to be compared.
- * @param short2 The pointer to the second Short wrapper to be compared.
+ * @param s1 The pointer to the first Short wrapper to be compared.
+ * @param ss2 The pointer to the second Short wrapper to be compared.
  * @return Returns true if the primitive short values of the two Short wrappers are equal, false otherwise.
  */
-bool Short_equals(const Short *short1, const Short *short2);
+bool Short_equals(const Short *s1, const Short *s2);
 
 /**
  * @brief Compares two Short wrappers.
@@ -152,18 +152,18 @@ void UnsignedShort_delete(void *ptr);
 
 /**
  * @brief Returns the value of the given UnsignedShort wrapper.
- * @param unsigned_short The pointer to the UnsignedShort wrapper.
+ * @param us The pointer to the UnsignedShort wrapper.
  * @return The primitive unsigned short value of the given UnsignedShort wrapper.
  */
-unsigned short UnsignedShort_valueOf(const UnsignedShort *unsigned_short);
+unsigned short UnsignedShort_valueOf(const UnsignedShort *us);
 
 /**
  * @brief Checks if two UnsignedShort wrappers are equal.
- * @param unsigned_short1 The pointer to the first UnsignedShort wrapper to be compared.
- * @param unsigned_short2 The pointer to the second UnsignedShort wrapper to be compared.
+ * @param us1 The pointer to the first UnsignedShort wrapper to be compared.
+ * @param us2 The pointer to the second UnsignedShort wrapper to be compared.
  * @return Returns true if the primitive unsigned short values of the two UnsignedShort wrappers are equal, false otherwise.
  */
-bool UnsignedShort_equals(const UnsignedShort *unsigned_short1, const UnsignedShort *unsigned_short2);
+bool UnsignedShort_equals(const UnsignedShort *us1, const UnsignedShort *us2);
 
 /**
  * @brief Compares two UnsignedShort wrappers.
@@ -238,18 +238,18 @@ void UnsignedInteger_delete(void *ptr);
 
 /**
  * @brief Returns the value of the given UnsignedInteger wrapper.
- * @param unsigned_integer The pointer to the UnsignedInteger wrapper.
+ * @param ui The pointer to the UnsignedInteger wrapper.
  * @return The primitive unsigned int value of the given UnsignedInteger wrapper.
  */
-unsigned int UnsignedInteger_valueOf(const UnsignedInteger *unsigned_integer);
+unsigned int UnsignedInteger_valueOf(const UnsignedInteger *ui);
 
 /**
  * @brief Checks if two UnsignedInteger wrappers are equal.
- * @param unsigned_integer1 The pointer to the first UnsignedInteger wrapper to be compared.
- * @param unsigned_integer2 The pointer to the second UnsignedInteger wrapper to be compared.
+ * @param ui1 The pointer to the first UnsignedInteger wrapper to be compared.
+ * @param ui2 The pointer to the second UnsignedInteger wrapper to be compared.
  * @return Returns true if the primitive unsigned int values of the two UnsignedInteger wrappers are equal, false otherwise.
  */
-bool UnsignedInteger_equals(const UnsignedInteger *unsigned_integer1, const UnsignedInteger *unsigned_integer2);
+bool UnsignedInteger_equals(const UnsignedInteger *ui1, const UnsignedInteger *ui2);
 
 /**
  * @brief Compares two UnsignedInteger wrappers.
@@ -324,18 +324,18 @@ void UnsignedLong_delete(void *ptr);
 
 /**
  * @brief Returns the value of the given UnsignedLong wrapper.
- * @param unsigned_long The pointer to the UnsignedLong wrapper.
+ * @param ul The pointer to the UnsignedLong wrapper.
  * @return The primitive unsigned long value of the given UnsignedLong wrapper.
  */
-unsigned long UnsignedLong_valueOf(const UnsignedLong *unsigned_long);
+unsigned long UnsignedLong_valueOf(const UnsignedLong *ul);
 
 /**
  * @brief Checks if two UnsignedLong wrappers are equal.
- * @param unsigned_long1 The pointer to the first UnsignedLong wrapper to be compared.
- * @param unsigned_long2 The pointer to the second UnsignedLong wrapper to be compared.
+ * @param ul1 The pointer to the first UnsignedLong wrapper to be compared.
+ * @param ul2 The pointer to the second UnsignedLong wrapper to be compared.
  * @return Returns true if the primitive unsigned long values of the two UnsignedLong wrappers are equal, false otherwise.
  */
-bool UnsignedLong_equals(const UnsignedLong *unsigned_long1, const UnsignedLong *unsigned_long2);
+bool UnsignedLong_equals(const UnsignedLong *ul1, const UnsignedLong *ul2);
 
 /**
  * @brief Compares two UnsignedLong wrappers.

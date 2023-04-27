@@ -85,10 +85,10 @@ struct UnsignedCharacter {
  * @return Returns a pointer to the newly created UnsignedCharacter wrapper.
  */
 UnsignedCharacter *UnsignedCharacter_new(unsigned char value) {
-    UnsignedCharacter *unsigned_character = (UnsignedCharacter *)malloc(sizeof(UnsignedCharacter));
-    return_value_if_fail(unsigned_character != NULL, NULL);
-    unsigned_character->value = value;
-    return unsigned_character;
+    UnsignedCharacter *uc = (UnsignedCharacter *)malloc(sizeof(UnsignedCharacter));
+    return_value_if_fail(uc != NULL, NULL);
+    uc->value = value;
+    return uc;
 }
 
 /**
@@ -96,31 +96,31 @@ UnsignedCharacter *UnsignedCharacter_new(unsigned char value) {
  * @param ptr The pointer to the UnsignedCharacter wrapper to be destroyed.
  */
 void UnsignedCharacter_delete(void *ptr) {
-    UnsignedCharacter *unsigned_character = NULL;
+    UnsignedCharacter *uc = NULL;
     return_if_fail(ptr != NULL);
-    unsigned_character = (UnsignedCharacter *)ptr;
-    free(unsigned_character);
+    uc = (UnsignedCharacter *)ptr;
+    free(uc);
 }
 
 /**
  * @brief Returns the value of the given UnsignedCharacter wrapper.
- * @param unsigned_character The pointer to the UnsignedCharacter wrapper.
+ * @param uc The pointer to the UnsignedCharacter wrapper.
  * @return The primitive unsigned char value of the given UnsignedCharacter wrapper.
  */
-unsigned char UnsignedCharacter_valueOf(const UnsignedCharacter *unsigned_character) {
-    exit_if_fail(unsigned_character != NULL);
-    return unsigned_character->value;
+unsigned char UnsignedCharacter_valueOf(const UnsignedCharacter *uc) {
+    exit_if_fail(uc != NULL);
+    return uc->value;
 }
 
 /**
  * @brief Checks if two UnsignedCharacter wrappers are equal.
- * @param unsigned_character1 The pointer to the first UnsignedCharacter wrapper to be compared.
- * @param unsigned_character2 The pointer to the second UnsignedCharacter wrapper to be compared.
+ * @param uc1 The pointer to the first UnsignedCharacter wrapper to be compared.
+ * @param uc2 The pointer to the second UnsignedCharacter wrapper to be compared.
  * @return Returns true if the primitive unsigned char values of the two UnsignedCharacter wrappers are equal, false otherwise.
  */
-bool UnsignedCharacter_equals(const UnsignedCharacter *unsigned_character1, const UnsignedCharacter *unsigned_character2) {
-    return_value_if_fail(unsigned_character1 != NULL && unsigned_character2 != NULL, false);
-    return unsigned_character1->value == unsigned_character2->value;
+bool UnsignedCharacter_equals(const UnsignedCharacter *uc1, const UnsignedCharacter *uc2) {
+    return_value_if_fail(uc1 != NULL && uc2 != NULL, false);
+    return uc1->value == uc2->value;
 }
 
 /**
@@ -132,12 +132,12 @@ bool UnsignedCharacter_equals(const UnsignedCharacter *unsigned_character1, cons
  *         Returns a positive integer if ptr1 > ptr2.
  */
 int UnsignedCharacter_compare(const void *ptr1, const void *ptr2) {
-    UnsignedCharacter *unsigned_character1 = NULL;
-    UnsignedCharacter *unsigned_character2 = NULL;
+    UnsignedCharacter *uc1 = NULL;
+    UnsignedCharacter *uc2 = NULL;
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
-    unsigned_character1 = (UnsignedCharacter *)ptr1;
-    unsigned_character2 = (UnsignedCharacter *)ptr2;
-    return unsigned_character1->value - unsigned_character2->value;
+    uc1 = (UnsignedCharacter *)ptr1;
+    uc2 = (UnsignedCharacter *)ptr2;
+    return uc1->value - uc2->value;
 }
 
 /**
@@ -221,10 +221,10 @@ struct UnsignedShort {
  * @return Returns a pointer to the newly created UnsignedShort wrapper.
  */
 UnsignedShort *UnsignedShort_new(unsigned short value) {
-    UnsignedShort *unsigned_short = (UnsignedShort *)malloc(sizeof(UnsignedShort));
-    return_value_if_fail(unsigned_short != NULL, NULL);
-    unsigned_short->value = value;
-    return unsigned_short;
+    UnsignedShort *us = (UnsignedShort *)malloc(sizeof(UnsignedShort));
+    return_value_if_fail(us != NULL, NULL);
+    us->value = value;
+    return us;
 }
 
 /**
@@ -232,31 +232,31 @@ UnsignedShort *UnsignedShort_new(unsigned short value) {
  * @param ptr The pointer to the UnsignedShort wrapper to be destroyed.
  */
 void UnsignedShort_delete(void *ptr) {
-    UnsignedShort *unsigned_short = NULL;
+    UnsignedShort *us = NULL;
     return_if_fail(ptr != NULL);
-    unsigned_short = (UnsignedShort *)ptr;
-    free(unsigned_short);
+    us = (UnsignedShort *)ptr;
+    free(us);
 }
 
 /**
  * @brief Returns the value of the given UnsignedShort wrapper.
- * @param unsigned_short The pointer to the UnsignedShort wrapper.
+ * @param us The pointer to the UnsignedShort wrapper.
  * @return The primitive unsigned short value of the given UnsignedShort wrapper.
  */
-unsigned short UnsignedShort_valueOf(const UnsignedShort *unsigned_short) {
-    exit_if_fail(unsigned_short != NULL);
-    return unsigned_short->value;
+unsigned short UnsignedShort_valueOf(const UnsignedShort *us) {
+    exit_if_fail(us != NULL);
+    return us->value;
 }
 
 /**
  * @brief Checks if two UnsignedShort wrappers are equal.
- * @param unsigned_short1 The pointer to the first UnsignedShort wrapper to be compared.
- * @param unsigned_short2 The pointer to the second UnsignedShort wrapper to be compared.
+ * @param us1 The pointer to the first UnsignedShort wrapper to be compared.
+ * @param us2 The pointer to the second UnsignedShort wrapper to be compared.
  * @return Returns true if the primitive unsigned short values of the two UnsignedShort wrappers are equal, false otherwise.
  */
-bool UnsignedShort_equals(const UnsignedShort *unsigned_short1, const UnsignedShort *unsigned_short2) {
-    return_value_if_fail(unsigned_short1 != NULL && unsigned_short2 != NULL, false);
-    return unsigned_short1->value == unsigned_short2->value;
+bool UnsignedShort_equals(const UnsignedShort *us1, const UnsignedShort *us2) {
+    return_value_if_fail(us1 != NULL && us2 != NULL, false);
+    return us1->value == us2->value;
 }
 
 /**
@@ -268,12 +268,12 @@ bool UnsignedShort_equals(const UnsignedShort *unsigned_short1, const UnsignedSh
  *         Returns a positive integer if ptr1 > ptr2.
  */
 int UnsignedShort_compare(const void *ptr1, const void *ptr2) {
-    UnsignedShort *unsigned_short1 = NULL;
-    UnsignedShort *unsigned_short2 = NULL;
+    UnsignedShort *us1 = NULL;
+    UnsignedShort *us2 = NULL;
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
-    unsigned_short1 = (UnsignedShort *)ptr1;
-    unsigned_short2 = (UnsignedShort *)ptr2;
-    return unsigned_short1->value - unsigned_short2->value;
+    us1 = (UnsignedShort *)ptr1;
+    us2 = (UnsignedShort *)ptr2;
+    return us1->value - us2->value;
 }
 
 /**
@@ -357,10 +357,10 @@ struct UnsignedInteger {
  * @return Returns a pointer to the newly created UnsignedInteger wrapper.
  */
 UnsignedInteger *UnsignedInteger_new(unsigned int value) {
-    UnsignedInteger *unsigned_integer = (UnsignedInteger *)malloc(sizeof(UnsignedInteger));
-    return_value_if_fail(unsigned_integer != NULL, NULL);
-    unsigned_integer->value = value;
-    return unsigned_integer;
+    UnsignedInteger *ui = (UnsignedInteger *)malloc(sizeof(UnsignedInteger));
+    return_value_if_fail(ui != NULL, NULL);
+    ui->value = value;
+    return ui;
 }
 
 /**
@@ -368,31 +368,31 @@ UnsignedInteger *UnsignedInteger_new(unsigned int value) {
  * @param ptr The pointer to the UnsignedInteger wrapper to be destroyed.
  */
 void UnsignedInteger_delete(void *ptr) {
-    UnsignedInteger *unsigned_integer = NULL;
+    UnsignedInteger *ui = NULL;
     return_if_fail(ptr != NULL);
-    unsigned_integer = (UnsignedInteger *)ptr;
-    free(unsigned_integer);
+    ui = (UnsignedInteger *)ptr;
+    free(ui);
 }
 
 /**
  * @brief Returns the value of the given UnsignedInteger wrapper.
- * @param unsigned_integer The pointer to the UnsignedInteger wrapper.
+ * @param ui The pointer to the UnsignedInteger wrapper.
  * @return The primitive unsigned int value of the given UnsignedInteger wrapper.
  */
-unsigned int UnsignedInteger_valueOf(const UnsignedInteger *unsigned_integer) {
-    exit_if_fail(unsigned_integer != NULL);
-    return unsigned_integer->value;
+unsigned int UnsignedInteger_valueOf(const UnsignedInteger *ui) {
+    exit_if_fail(ui != NULL);
+    return ui->value;
 }
 
 /**
  * @brief Checks if two UnsignedInteger wrappers are equal.
- * @param unsigned_integer1 The pointer to the first UnsignedInteger wrapper to be compared.
- * @param unsigned_integer2 The pointer to the second UnsignedInteger wrapper to be compared.
+ * @param ui1 The pointer to the first UnsignedInteger wrapper to be compared.
+ * @param ui2 The pointer to the second UnsignedInteger wrapper to be compared.
  * @return Returns true if the primitive unsigned int values of the two UnsignedInteger wrappers are equal, false otherwise.
  */
-bool UnsignedInteger_equals(const UnsignedInteger *unsigned_integer1, const UnsignedInteger *unsigned_integer2) {
-    return_value_if_fail(unsigned_integer1 != NULL && unsigned_integer2 != NULL, false);
-    return unsigned_integer1->value == unsigned_integer2->value;
+bool UnsignedInteger_equals(const UnsignedInteger *ui1, const UnsignedInteger *ui2) {
+    return_value_if_fail(ui1 != NULL && ui2 != NULL, false);
+    return ui1->value == ui2->value;
 }
 
 /**
@@ -404,12 +404,12 @@ bool UnsignedInteger_equals(const UnsignedInteger *unsigned_integer1, const Unsi
  *         Returns a positive integer if ptr1 > ptr2.
  */
 int UnsignedInteger_compare(const void *ptr1, const void *ptr2) {
-    UnsignedInteger *unsigned_integer1 = NULL;
-    UnsignedInteger *unsigned_integer2 = NULL;
+    UnsignedInteger *ui1 = NULL;
+    UnsignedInteger *ui2 = NULL;
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
-    unsigned_integer1 = (UnsignedInteger *)ptr1;
-    unsigned_integer2 = (UnsignedInteger *)ptr2;
-    return unsigned_integer1->value - unsigned_integer2->value;
+    ui1 = (UnsignedInteger *)ptr1;
+    ui2 = (UnsignedInteger *)ptr2;
+    return ui1->value - ui2->value;
 }
 
 /**
@@ -493,10 +493,10 @@ struct UnsignedLong {
  * @return Returns a pointer to the newly created UnsignedLong wrapper.
  */
 UnsignedLong *UnsignedLong_new(unsigned long value) {
-    UnsignedLong *unsigned_long = (UnsignedLong *)malloc(sizeof(UnsignedLong));
-    return_value_if_fail(unsigned_long != NULL, NULL);
-    unsigned_long->value = value;
-    return unsigned_long;
+    UnsignedLong *ul = (UnsignedLong *)malloc(sizeof(UnsignedLong));
+    return_value_if_fail(ul != NULL, NULL);
+    ul->value = value;
+    return ul;
 }
 
 /**
@@ -504,31 +504,31 @@ UnsignedLong *UnsignedLong_new(unsigned long value) {
  * @param ptr The pointer to the UnsignedLong wrapper to be destroyed.
  */
 void UnsignedLong_delete(void *ptr) {
-    UnsignedLong *unsigned_long = NULL;
+    UnsignedLong *ul = NULL;
     return_if_fail(ptr != NULL);
-    unsigned_long = (UnsignedLong *)ptr;
-    free(unsigned_long);
+    ul = (UnsignedLong *)ptr;
+    free(ul);
 }
 
 /**
  * @brief Returns the value of the given UnsignedLong wrapper.
- * @param unsigned_long The pointer to the UnsignedLong wrapper.
+ * @param ul The pointer to the UnsignedLong wrapper.
  * @return The primitive unsigned long value of the given UnsignedLong wrapper.
  */
-unsigned long UnsignedLong_valueOf(const UnsignedLong *unsigned_long) {
-    exit_if_fail(unsigned_long != NULL);
-    return unsigned_long->value;
+unsigned long UnsignedLong_valueOf(const UnsignedLong *ul) {
+    exit_if_fail(ul != NULL);
+    return ul->value;
 }
 
 /**
  * @brief Checks if two UnsignedLong wrappers are equal.
- * @param unsigned_long1 The pointer to the first UnsignedLong wrapper to be compared.
- * @param unsigned_long2 The pointer to the second UnsignedLong wrapper to be compared.
+ * @param ul1 The pointer to the first UnsignedLong wrapper to be compared.
+ * @param ul2 The pointer to the second UnsignedLong wrapper to be compared.
  * @return Returns true if the primitive unsigned long values of the two UnsignedLong wrappers are equal, false otherwise.
  */
-bool UnsignedLong_equals(const UnsignedLong *unsigned_long1, const UnsignedLong *unsigned_long2) {
-    return_value_if_fail(unsigned_long1 != NULL && unsigned_long2 != NULL, false);
-    return unsigned_long1->value == unsigned_long2->value;
+bool UnsignedLong_equals(const UnsignedLong *ul1, const UnsignedLong *ul2) {
+    return_value_if_fail(ul1 != NULL && ul2 != NULL, false);
+    return ul1->value == ul2->value;
 }
 
 /**
@@ -540,12 +540,12 @@ bool UnsignedLong_equals(const UnsignedLong *unsigned_long1, const UnsignedLong 
  *         Returns a positive integer if ptr1 > ptr2.
  */
 int UnsignedLong_compare(const void *ptr1, const void *ptr2) {
-    UnsignedLong *unsigned_long1 = NULL;
-    UnsignedLong *unsigned_long2 = NULL;
+    UnsignedLong *ul1 = NULL;
+    UnsignedLong *ul2 = NULL;
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
-    unsigned_long1 = (UnsignedLong *)ptr1;
-    unsigned_long2 = (UnsignedLong *)ptr2;
-    return unsigned_long1->value - unsigned_long2->value;
+    ul1 = (UnsignedLong *)ptr1;
+    ul2 = (UnsignedLong *)ptr2;
+    return ul1->value - ul2->value;
 }
 
 /**
@@ -715,10 +715,10 @@ struct Boolean {
  * @return Returns a pointer to the newly created Boolean wrapper.
  */
 Boolean *Boolean_new(bool value) {
-    Boolean *b = (Boolean *)malloc(sizeof(Boolean));
-    return_value_if_fail(b != NULL, NULL);
-    b->value = value;
-    return b;
+    Boolean *boolean = (Boolean *)malloc(sizeof(Boolean));
+    return_value_if_fail(boolean != NULL, NULL);
+    boolean->value = value;
+    return boolean;
 }
 
 /**
@@ -726,10 +726,10 @@ Boolean *Boolean_new(bool value) {
  * @param ptr The pointer to the Boolean wrapper to be destroyed.
  */
 void Boolean_delete(void *ptr) {
-    Boolean *b = NULL;
+    Boolean *boolean = NULL;
     return_if_fail(ptr != NULL);
-    b = (Boolean *)ptr;
-    free(b);
+    boolean = (Boolean *)ptr;
+    free(boolean);
 }
 
 /**
@@ -737,9 +737,9 @@ void Boolean_delete(void *ptr) {
  * @param boolean The pointer to the Boolean wrapper.
  * @return The primitive bool value of the given Boolean wrapper.
  */
-bool Boolean_valueOf(const Boolean *b) {
-    exit_if_fail(b != NULL);
-    return b->value;
+bool Boolean_valueOf(const Boolean *boolean) {
+    exit_if_fail(boolean != NULL);
+    return boolean->value;
 }
 
 /**

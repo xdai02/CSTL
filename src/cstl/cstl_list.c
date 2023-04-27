@@ -305,3 +305,36 @@ T list_remove(list_t *list, size_t index) {
         return elem;
     }
 }
+
+iterator_t *list_iterator_create(const list_t *list) {
+    iterator_t *iterator = NULL;
+
+    return_value_if_fail(list != NULL, NULL);
+
+    iterator = (iterator_t *)malloc(sizeof(iterator_t));
+    return_value_if_fail(iterator != NULL, NULL);
+
+    iterator->container = list;
+    iterator->current = list->head;
+}
+
+void list_iterator_destroy(iterator_t *iterator) {
+    return_if_fail(iterator != NULL);
+    free(iterator);
+}
+
+bool list_iterator_has_next(const iterator_t *iterator) {
+    return_value_if_fail(iterator != NULL, false);
+    return iterator->current != NULL;
+}
+
+T list_iterator_next(iterator_t *iterator) {
+    T elem = NULL;
+
+    return_value_if_fail(iterator != NULL, NULL);
+    return_value_if_fail(list_iterator_has_next(iterator), NULL);
+
+    elem = ((node_t *)iterator->current)->data;
+    iterator->current = ((node_t *)iterator->current)->next;
+    return elem;
+}

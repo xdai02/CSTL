@@ -93,15 +93,15 @@ int Character_compare(const void *ptr1, const void *ptr2);
 - 用例
 
 ```c
-Character *a = Character_new('A');
-Character *b = Character_new('B');
+Character *c1 = Character_new('A');
+Character *c2 = Character_new('B');
 
-printf("%c\n", Character_valueOf(a));
-printf("%d\n", Character_compare(a, b));
-printf("%d\n", Character_equals(a, b));
+printf("%c\n", Character_valueOf(c1));
+printf("%d\n", Character_compare(c1, c2));
+printf("%d\n", Character_equals(c1, c2));
 
-Character_delete(a);
-Character_delete(b);
+Character_delete(c1);
+Character_delete(c2);
 ```
 
 
@@ -145,13 +145,13 @@ void UnsignedCharacter_delete(void *ptr);
 - 原型
 
 ```c
-unsigned char UnsignedCharacter_valueOf(const UnsignedCharacter *unsigned_character);
+unsigned char UnsignedCharacter_valueOf(const UnsignedCharacter *uc);
 ```
 
 - 描述
     - 返回`UnsignedCharacter`包装类的值。
 - 参数
-    - `unsigned_character`： 包装类指针。
+    - `uc`： 包装类指针。
 - 返回值
     - 包装类的原生`unsigned char`数据。
 
@@ -162,14 +162,14 @@ unsigned char UnsignedCharacter_valueOf(const UnsignedCharacter *unsigned_charac
 - 原型
 
 ```c
-bool UnsignedCharacter_equals(const UnsignedCharacter *unsigned_character1, const UnsignedCharacter *unsigned_character2);
+bool UnsignedCharacter_equals(const UnsignedCharacter *uc1, const UnsignedCharacter *uc2);
 ```
 
 - 描述
     - 检查两个`UnsignedCharacter`包装类是否相等。
 - 参数
-    - `unsigned_character1`： 第一个待比较的包装类指针。
-    - `unsigned_character2`： 第二个待比较的包装类指针。
+    - `uc1`： 第一个待比较的包装类指针。
+    - `uc2`： 第二个待比较的包装类指针。
 - 返回值
     - 如果两个包装类的原生`unsigned char`数据相等返回`true`，否则返回`false`。
 
@@ -195,15 +195,15 @@ int UnsignedCharacter_compare(const void *ptr1, const void *ptr2);
 - 用例
 
 ```c
-UnsignedCharacter *a = UnsignedCharacter_new('A');
-UnsignedCharacter *b = UnsignedCharacter_new('B');
+UnsignedCharacter *uc1 = UnsignedCharacter_new('A');
+UnsignedCharacter *uc2 = UnsignedCharacter_new('B');
 
-printf("%u\n", UnsignedCharacter_valueOf(a));
-printf("%d\n", UnsignedCharacter_compare(a, b));
-printf("%d\n", UnsignedCharacter_equals(a, b));
+printf("%u\n", UnsignedCharacter_valueOf(uc1));
+printf("%d\n", UnsignedCharacter_compare(uc1, uc2));
+printf("%d\n", UnsignedCharacter_equals(uc1, uc2));
 
-UnsignedCharacter_delete(a);
-UnsignedCharacter_delete(b);
+UnsignedCharacter_delete(uc1);
+UnsignedCharacter_delete(uc2);
 ```
 
 
@@ -297,15 +297,15 @@ int Short_compare(const void *ptr1, const void *ptr2);
 - 用例
 
 ```c
-Short *a = Short_new(1);
-Short *b = Short_new(2);
+Short *s1 = Short_new(1);
+Short *s2 = Short_new(2);
 
-printf("%hi\n", Short_valueOf(a));
-printf("%d\n", Short_compare(a, b));
-printf("%d\n", Short_equals(a, b));
+printf("%hi\n", Short_valueOf(s1));
+printf("%d\n", Short_compare(s1, s2));
+printf("%d\n", Short_equals(s1, s2));
 
-Short_delete(a);
-Short_delete(b);
+Short_delete(s1);
+Short_delete(s2);
 ```
 
 
@@ -349,13 +349,13 @@ void UnsignedShort_delete(void *ptr);
 - 原型
 
 ```c
-unsigned short UnsignedShort_valueOf(const UnsignedShort *unsigned_short);
+unsigned short UnsignedShort_valueOf(const UnsignedShort *us);
 ```
 
 - 描述
     - 返回`UnsignedShort`包装类的值。
 - 参数
-    - `unsigned_short`： 包装类指针。
+    - `us`： 包装类指针。
 - 返回值
     - 包装类的原生`unsigned short`数据。
 
@@ -366,14 +366,14 @@ unsigned short UnsignedShort_valueOf(const UnsignedShort *unsigned_short);
 - 原型
 
 ```c
-bool UnsignedShort_equals(const UnsignedShort *unsigned_short1, const UnsignedShort *unsigned_short2);
+bool UnsignedShort_equals(const UnsignedShort *us1, const UnsignedShort *us2);
 ```
 
 - 描述
     - 检查两个`UnsignedShort`包装类是否相等。
 - 参数
-    - `unsigned_short1`： 第一个待比较的包装类指针。
-    - `unsigned_short2`： 第二个待比较的包装类指针。
+    - `us1`： 第一个待比较的包装类指针。
+    - `us2`： 第二个待比较的包装类指针。
 - 返回值
     - 如果两个包装类的原生`unsigned short`数据相等返回`true`，否则返回`false`。
 
@@ -399,15 +399,15 @@ int UnsignedShort_compare(const void *ptr1, const void *ptr2);
 - 用例
 
 ```c
-UnsignedShort *a = UnsignedShort_new(1);
-UnsignedShort *b = UnsignedShort_new(2);
+UnsignedShort *us1 = UnsignedShort_new(1);
+UnsignedShort *us2 = UnsignedShort_new(2);
 
-printf("%hu\n", UnsignedShort_valueOf(a));
-printf("%d\n", UnsignedShort_compare(a, b));
-printf("%d\n", UnsignedShort_equals(a, b));
+printf("%hu\n", UnsignedShort_valueOf(us1));
+printf("%d\n", UnsignedShort_compare(us1, us2));
+printf("%d\n", UnsignedShort_equals(us1, us2));
 
-UnsignedShort_delete(a);
-UnsignedShort_delete(b);
+UnsignedShort_delete(us1);
+UnsignedShort_delete(us2);
 ```
 
 
@@ -501,15 +501,15 @@ int Integer_compare(const void *ptr1, const void *ptr2);
 - 用例
 
 ```c
-Integer *a = Integer_new(1);
-Integer *b = Integer_new(2);
+Integer *i1 = Integer_new(1);
+Integer *i2 = Integer_new(2);
 
-printf("%d\n", Integer_valueOf(a));
-printf("%d\n", Integer_compare(a, b));
-printf("%d\n", Integer_equals(a, b));
+printf("%d\n", Integer_valueOf(i1));
+printf("%d\n", Integer_compare(i1, i2));
+printf("%d\n", Integer_equals(i1, i2));
 
-Integer_delete(a);
-Integer_delete(b);
+Integer_delete(i1);
+Integer_delete(i2);
 ```
 
 
@@ -553,13 +553,13 @@ void UnsignedInteger_delete(void *ptr);
 - 原型
 
 ```c
-unsigned int UnsignedInteger_valueOf(const UnsignedInteger *unsigned_integer);
+unsigned int UnsignedInteger_valueOf(const UnsignedInteger *ui);
 ```
 
 - 描述
     - 返回`UnsignedInteger`包装类的值。
 - 参数
-    - `unsigned_integer`： 包装类指针。
+    - `ui`： 包装类指针。
 - 返回值
     - 包装类的原生`unsigned int`数据。
 
@@ -570,14 +570,14 @@ unsigned int UnsignedInteger_valueOf(const UnsignedInteger *unsigned_integer);
 - 原型
 
 ```c
-bool UnsignedInteger_equals(const UnsignedInteger *unsigned_integer1, const UnsignedInteger *unsigned_integer2);
+bool UnsignedInteger_equals(const UnsignedInteger *ui1, const UnsignedInteger *ui2);
 ```
 
 - 描述
     - 检查两个`UnsignedInteger`包装类是否相等。
 - 参数
-    - `unsigned_integer1`： 第一个待比较的包装类指针。
-    - `unsigned_integer2`： 第二个待比较的包装类指针。
+    - `ui1`： 第一个待比较的包装类指针。
+    - `ui2`： 第二个待比较的包装类指针。
 - 返回值
     - 如果两个包装类的原生`unsigned int`数据相等返回`true`，否则返回`false`。
 
@@ -603,15 +603,15 @@ int UnsignedInteger_compare(const void *ptr1, const void *ptr2);
 - 用例
 
 ```c
-UnsignedInteger *a = UnsignedInteger_new(1U);
-UnsignedInteger *b = UnsignedInteger_new(2U);
+UnsignedInteger *ui1 = UnsignedInteger_new(1U);
+UnsignedInteger *ui2 = UnsignedInteger_new(2U);
 
-printf("%u\n", UnsignedInteger_valueOf(a));
-printf("%d\n", UnsignedInteger_compare(a, b));
-printf("%d\n", UnsignedInteger_equals(a, b));
+printf("%u\n", UnsignedInteger_valueOf(ui1));
+printf("%d\n", UnsignedInteger_compare(ui1, ui2));
+printf("%d\n", UnsignedInteger_equals(ui1, ui2));
 
-UnsignedInteger_delete(a);
-UnsignedInteger_delete(b);
+UnsignedInteger_delete(ui1);
+UnsignedInteger_delete(ui2);
 ```
 
 
@@ -705,15 +705,15 @@ int Long_compare(const void *ptr1, const void *ptr2);
 - 用例
 
 ```c
-Long *a = Long_new(1L);
-Long *b = Long_new(2L);
+Long *l1 = Long_new(1L);
+Long *l2 = Long_new(2L);
 
-printf("%ld\n", Long_valueOf(a));
-printf("%d\n", Long_compare(a, b));
-printf("%d\n", Long_equals(a, b));
+printf("%ld\n", Long_valueOf(l1));
+printf("%d\n", Long_compare(l1, l2));
+printf("%d\n", Long_equals(l1, l2));
 
-Long_delete(a);
-Long_delete(b);
+Long_delete(l1);
+Long_delete(l2);
 ```
 
 
@@ -757,13 +757,13 @@ void UnsignedLong_delete(void *ptr);
 - 原型
 
 ```c
-unsigned long UnsignedLong_valueOf(const UnsignedLong *unsigned_long);
+unsigned long UnsignedLong_valueOf(const UnsignedLong *ul);
 ```
 
 - 描述
     - 返回`UnsignedLong`包装类的值。
 - 参数
-    - `unsigned_long`： 包装类指针。
+    - `ul`： 包装类指针。
 - 返回值
     - 包装类的原生`unsigned long`数据。
 
@@ -774,14 +774,14 @@ unsigned long UnsignedLong_valueOf(const UnsignedLong *unsigned_long);
 - 原型
 
 ```c
-bool UnsignedLong_equals(const UnsignedLong *unsigned_long1, const UnsignedLong *unsigned_long2);
+bool UnsignedLong_equals(const UnsignedLong *ul1, const UnsignedLong *ul2);
 ```
 
 - 描述
     - 检查两个`UnsignedLong`包装类是否相等。
 - 参数
-    - `unsigned_long1`： 第一个待比较的包装类指针。
-    - `unsigned_long2`： 第二个待比较的包装类指针。
+    - `ul1`： 第一个待比较的包装类指针。
+    - `ul2`： 第二个待比较的包装类指针。
 - 返回值
     - 如果两个包装类的原生`unsigned long`数据相等返回`true`，否则返回`false`。
 
@@ -807,15 +807,15 @@ int UnsignedLong_compare(const void *ptr1, const void *ptr2);
 - 用例
 
 ```c
-UnsignedLong *a = UnsignedLong_new(1UL);
-UnsignedLong *b = UnsignedLong_new(2UL);
+UnsignedLong *ul1 = UnsignedLong_new(1UL);
+UnsignedLong *ul2 = UnsignedLong_new(2UL);
 
-printf("%lu\n", UnsignedLong_valueOf(a));
-printf("%d\n", UnsignedLong_compare(a, b));
-printf("%d\n", UnsignedLong_equals(a, b));
+printf("%lu\n", UnsignedLong_valueOf(ul1));
+printf("%d\n", UnsignedLong_compare(ul1, ul2));
+printf("%d\n", UnsignedLong_equals(ul1, ul2));
 
 UnsignedLong_delete(a);
-UnsignedLong_delete(b);
+UnsignedLong_delete(ul2);
 ```
 
 
@@ -909,14 +909,14 @@ int Float_compare(const void *ptr1, const void *ptr2);
 - 用例
 
 ```c
-Float *a = Float_new(1.1f);
-Float *b = Float_new(2.2f);
+Float *f1 = Float_new(1.1f);
+Float *f2 = Float_new(2.2f);
 
-printf("%f\n", Float_valueOf(a));
-printf("%d\n", Float_compare(a, b));
-printf("%d\n", Float_equals(a, b));
+printf("%f\n", Float_valueOf(f1));
+printf("%d\n", Float_compare(f1, f2));
+printf("%d\n", Float_equals(f1, f2));
 
-Float_delete(a);
+Float_delete(f1);
 Float_delete(b);
 ```
 
@@ -1011,15 +1011,15 @@ int Double_compare(const void *ptr1, const void *ptr2);
 - 用例
 
 ```c
-Double *a = Double_new(1.1);
-Double *b = Double_new(2.2);
+Double *d1 = Double_new(1.1);
+Double *d2 = Double_new(2.2);
 
-printf("%f\n", Double_valueOf(a));
-printf("%d\n", Double_compare(a, b));
-printf("%d\n", Double_equals(a, b));
+printf("%f\n", Double_valueOf(d1));
+printf("%d\n", Double_compare(d1, d2));
+printf("%d\n", Double_equals(d1, d2));
 
-Double_delete(a);
-Double_delete(b);
+Double_delete(d1);
+Double_delete(d2);
 ```
 
 
@@ -1113,14 +1113,14 @@ int Boolean_compare(const void *ptr1, const void *ptr2);
 - 用例
 
 ```c
-Boolean *a = Boolean_new(true);
-Boolean *b = Boolean_new(false);
+Boolean *b1 = Boolean_new(true);
+Boolean *b2 = Boolean_new(false);
 
-printf("%d\n", Boolean_valueOf(a));
-printf("%d\n", Boolean_compare(a, b));
-printf("%d\n", Boolean_equals(a, b));
+printf("%d\n", Boolean_valueOf(b1));
+printf("%d\n", Boolean_compare(b1, b2));
+printf("%d\n", Boolean_equals(b1, b2));
 
-Boolean_delete(a);
-Boolean_delete(b);
+Boolean_delete(b1);
+Boolean_delete(b2);
 ```
 
