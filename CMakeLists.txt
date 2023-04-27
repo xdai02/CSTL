@@ -17,6 +17,7 @@ endif()
 set(INC_DIR "${CMAKE_SOURCE_DIR}/include")
 set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
 set(TEST_DIR "${CMAKE_SOURCE_DIR}/test")
+set(DEMO_DIR, "${CMAKE_SOURCE_DIR}/demo")
 set(BIN_DIR "${CMAKE_SOURCE_DIR}/bin")
 
 # Create bin directory
@@ -35,3 +36,15 @@ file(GLOB_RECURSE TEST_SOURCES "${TEST_DIR}/*.c")
 add_executable(test_coop ${TEST_SOURCES})
 target_link_libraries(test_coop PRIVATE coop)
 target_include_directories(test_coop PRIVATE ${INC_DIR} ${INC_DIR}/cstl ${INC_DIR}/utils ${TEST_DIR}/test_cstl ${TEST_DIR}/test_utils)
+
+# Clean up CMake generated files
+add_custom_target(clean_all
+    COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_BINARY_DIR}/CMakeFiles"
+    COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/CMakeCache.txt"
+    COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/cmake_install.cmake"
+    COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/cMakeCComppilerId"
+    COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/Makefile"
+    COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_BINARY_DIR}/bin"
+    COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_BINARY_DIR}/build"
+    COMMENT "Cleaning up CMake generated files"
+)
