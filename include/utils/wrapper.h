@@ -1,7 +1,7 @@
 #ifndef _WRAPPER_H_
 #define _WRAPPER_H_
 
-#include "utils.h"
+#include "types.h"
 
 /**
  * @brief A wrapper for the primitive data type char.

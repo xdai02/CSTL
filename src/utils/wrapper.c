@@ -1,4 +1,8 @@
 #include "wrapper.h"
+#include "exception.h"
+#include "numeric.h"
+#include <stdlib.h>
+#include <string.h>
 
 /**
  * @brief A wrapper for the primitive data type char.
