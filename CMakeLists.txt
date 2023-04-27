@@ -34,4 +34,4 @@ target_include_directories(coop PUBLIC ${INC_DIR} ${INC_DIR}/cstl ${INC_DIR}/uti
 file(GLOB_RECURSE TEST_SOURCES "${TEST_DIR}/*.c")
 add_executable(test_coop ${TEST_SOURCES})
 target_link_libraries(test_coop PRIVATE coop)
-target_include_directories(test_coop PRIVATE ${INC_DIR} ${INC_DIR}/cstl ${INC_DIR}/utils ${TEST_DIR}/test_cstl)
+target_include_directories(test_coop PRIVATE ${INC_DIR} ${INC_DIR}/cstl ${INC_DIR}/utils ${TEST_DIR}/test_cstl ${TEST_DIR}/test_utils)

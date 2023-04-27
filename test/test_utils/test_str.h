@@ -1,13 +1,5 @@
-#ifndef _TEST_UTILS_H_
-#define _TEST_UTILS_H_
-
-void test_min();
-void test_max();
-void test_swap();
-void test_float_equal();
-void test_double_equal();
-void test_randint();
-void test_random();
+#ifndef _TEST_STR_H_
+#define _TEST_STR_H_
 
 void test_str_clear();
 void test_str_equal();

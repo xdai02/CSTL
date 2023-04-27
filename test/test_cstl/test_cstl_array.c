@@ -328,7 +328,7 @@ void test_array_sort() {
 
     array = array_create(Double_compare, Double_delete);
     for (i = 0; i < N; i++) {
-        array_append(array, Double_new(random()));
+        array_append(array, Double_new(uniform(0, 1)));
     }
     array_sort(array);
     for (i = 0; i < N - 1; i++) {
