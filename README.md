@@ -27,3 +27,31 @@
 - [ ] **cstl_deque**: Implements a double-ended queue (deque) data structure `deque_t`, which allows elements to be added or removed from both ends efficiently.
 - [ ] **cstl_set**: Implements a set data structure `set_t`, which is a collection of unique elements, without any specific order.
 - [ ] **cstl_map**: Provides a map data structure `map_t`, which is a collection of key-value pairs.
+
+
+
+## Usage
+
+- Run test code
+
+```shell
+cmake ./
+make
+./bin/test_coop
+```
+
+- Run demo code
+
+```shell
+cd demo
+cmake ./
+make
+./demo_[module_name]
+```
+
+- Clean intermediate files
+
+```shell
+make clean_all
+```
+
