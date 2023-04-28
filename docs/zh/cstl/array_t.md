@@ -6,20 +6,20 @@
 
 ## array_create()
 
-- Prototype
+- 原型
 
 ```c
 array_t *array_create(compare_t compare, destroy_t destroy);
 ```
 
-- Description
-    - Create an `array_t` object.
-- Parameters
-    - `compare`: Callback function for comparing two data items.
-    - `destroy`: Callback function for destroying a data item.
-- Return
-    - Returns the created `array_t` object if successful, otherwise returns `NULL`.
-- Usage
+- 描述
+    - 创建`array_t`对象。
+- 参数
+    - `compare`：用于比较两个元素的回调函数。
+    - `destroy`：用于销毁元素的回调函数。
+- 返回值
+    - 如果成功返回`array_t`，否则返回`NULL`。
+- 用例
 
 ```c
 // Create an integer array using Integer wrapper
@@ -64,17 +64,17 @@ array_t *employees = array_create(Employee_compare, Employee_delete);
 
 ## array_destroy()
 
-- Prototype
+- 原型
 
 ```c
 void array_destroy(array_t *array);
 ```
 
-- Description
-    - Destroy an `array_t` object.
-- Parameters
-    - `array`: The `array_t` object.
-- Usage
+- 描述
+    - 销毁`array_t`对象。
+- 参数
+    - `array`：`array_t`对象。
+- 用例
 
 ```c
 array_t *array = array_create(Integer_compare, Integer_delete);
@@ -85,18 +85,18 @@ array_destroy(array);
 
 ## array_foreach()
 
-- Prototype
+- 原型
 
 ```c
 void array_foreach(array_t *array, visit_t visit);
 ```
 
-- Description
-    - Traverse an `array_t` object.
-- Parameters
-    - `array`: The `array_t` object.
-    - `visit`: Callback function for visiting a data item.
-- Usage
+- 描述
+    - 遍历`array_t`对象。
+- 参数
+    - `array`：`array_t`对象。
+    - `visit`：用于访问元素的回调函数。
+- 用例
 
 ```c
 // Callback function for printing an integer
@@ -142,19 +142,19 @@ int main() {
 
 ## array_is_empty()
 
-- Prototype
+- 原型
 
 ```c
 bool array_is_empty(const array_t *array);
 ```
 
-- Description
-    - Determine whether an `array_t` object is empty.
-- Parameters
-    - `array`: The `array_t` object.
-- Return
-    - Returns `true` if the `array_t` object is empty, otherwise returns `false`.
-- Usage
+- 描述
+    - 判断`array_t`对象是否为空。
+- 参数
+    - `array`：`array_t`对象。
+- 返回值
+    - 如果`array_t`对象为空返回`true`，否则返回`false`。
+- 用例
 
 ```c
 array_t *array = array_create(Integer_compare, Integer_delete);
@@ -168,19 +168,19 @@ array_destroy(array);
 
 ## array_size()
 
-- Prototype
+- 原型
 
 ```c
 size_t array_size(const array_t *array);
 ```
 
-- Description
-    - Get the size of an `array_t` object.
-- Parameters
-    - `array`: The `array_t` object.
-- Return
-    - Returns the size of the `array_t` object.
-- Usage
+- 描述
+    - 获取`array_t`对象的大小。
+- 参数
+    - `array`：`array_t`对象。
+- 返回值
+    - 返回`array_t`对象的大小。
+- 用例
 
 ```c
 array_t *array = array_create(Integer_compare, Integer_delete);
@@ -192,19 +192,19 @@ array_destroy(array);
 
 ## array_clear()
 
-- Prototype
+- 原型
 
 ```c
 array_t *array_clear(array_t *array);
 ```
 
-- Description
-    - Clear an `array_t` object.
-- Parameters
-    - `array`: The `array_t` object.
-- Return
-    - Returns the modified `array_t` object.
-- Usage
+- 描述
+    - 清空`array_t`对象。
+- 参数
+    - `array`：`array_t`对象。
+- 返回值
+    - 返回修改后的`array_t`对象。
+- 用例
 
 ```c
 array_t *array = array_create(Integer_compare, Integer_delete);
@@ -221,20 +221,20 @@ array_destroy(array);
 
 ## array_get()
 
-- Prototype
+- 原型
 
 ```c
 T array_get(const array_t *array, size_t index);
 ```
 
-- Description
-    - Get the element at the specified index of an `array_t` object.
-- Parameters
-    - `array`: The `array_t` object.
-    - `index`: The index.
-- Return
-    - Returns the element at the specified index of the `array_t` object.
-- Usage
+- 描述
+    - 获取`array_t`对象指定下标的元素。
+- 参数
+    - `array`：`array_t`对象。
+    - `index`：下标。
+- 返回值
+    - 返回`array_t`对象指定下标的元素。
+- 用例
 
 ```c
 array_t *array = array_create(Integer_compare, Integer_delete);
@@ -253,21 +253,21 @@ array_destroy(array);
 
 ## array_set()
 
-- Prototype
+- 原型
 
 ```c
 array_t *array_set(array_t *array, size_t index, T elem);
 ```
 
-- Description
-    - Set the element at the specified index of an `array_t` object.
-- Parameters
-    - `array`: The `array_t` object.
-    - `index`: The index.
-    - `elem`: The element.
-- Return
-    - Returns the modified `array_t` object.
-- Usage
+- 描述
+    - 设置`array_t`对象指定下标的元素。
+- 参数
+    - `array`：`array_t`对象。
+    - `index`：下标。
+    - `elem`：元素。
+- 返回值
+    - 返回修改后的`array_t`对象。
+- 用例
 
 ```c
 array_t *array = array_create(Integer_compare, Integer_delete);
@@ -284,20 +284,20 @@ array_destroy(array);
 
 ## array_append()
 
-- Prototype
+- 原型
 
 ```c
 array_t *array_append(array_t *array, T elem);
 ```
 
-- Description
-    - Append an element to the end of an `array_t` object.
-- Parameters
-    - `array`: The `array_t` object.
-    - `elem`: The element.
-- Return
-    - Returns the modified `array_t` object.
-- Usage
+- 描述
+    - 在`array_t`对象末尾追加元素。
+- 参数
+    - `array`：`array_t`对象。
+    - `elem`：元素。
+- 返回值
+    - 返回修改后的`array_t`对象。
+- 用例
 
 ```c
 array_t *array = array_create(Integer_compare, Integer_delete);
@@ -311,21 +311,21 @@ array_destroy(array);
 
 ## array_insert()
 
-- Prototype
+- 原型
 
 ```c
 array_t *array_insert(array_t *array, size_t index, T elem);
 ```
 
-- Description
-    - Insert an element at the specified index of an `array_t` object.
-- Parameters
-    - `array`: The `array_t` object.
-    - `index`: The index.
-    - `elem`: The element.
-- Return
-    - Returns the modified `array_t` object.
-- Usage
+- 描述
+    - 在`array_t`对象指定下标插入元素。
+- 参数
+    - `array`：`array_t`对象。
+    - `index`：下标。
+    - `elem`：元素。
+- 返回值
+    - 返回修改后的`array_t`对象。
+- 用例
 
 ```c
 array_t *array = array_create(Integer_compare, Integer_delete);
@@ -340,20 +340,20 @@ array_destroy(array);
 
 ## array_remove()
 
-- Prototype
+- 原型
 
 ```c
 T array_remove(array_t *array, size_t index);
 ```
 
-- Description
-    - Remove the element at the specified index of an `array_t` object.
-- Parameters
-    - `array`: The `array_t` object.
-    - `index`: The index.
-- Return
-    - Returns the modified `array_t` object.
-- Usage
+- 描述
+    - 删除`array_t`对象指定下标的元素。
+- 参数
+    - `array`：`array_t`对象。
+    - `index`：下标。
+- 返回值
+    - 返回修改后的`array_t`对象。
+- 用例
 
 ```c
 array_t *array = array_create(Integer_compare, Integer_delete);
@@ -370,20 +370,20 @@ array_destroy(array);
 
 ## array_index_of()
 
-- Prototype
+- 原型
 
 ```c
 size_t array_index_of(const array_t *array, T elem);
 ```
 
-- Description
-    - Get the index of the specified element in an `array_t` object.
-- Parameters
-    - `array`: The `array_t` object.
-    - `elem`: The element.
-- Return
-    - Returns the index of the specified element in the `array_t` object.
-- Usage
+- 描述
+    - 获取`array_t`对象指定元素的下标。
+- 参数
+    - `array`：`array_t`对象。
+    - `elem`：元素。
+- 返回值
+    - 返回`array_t`对象指定元素的下标。
+- 用例
 
 ```c
 array_t *array = array_create(Integer_compare, Integer_delete);
@@ -403,20 +403,20 @@ array_destroy(array);
 
 ## array_contains()
 
-- Prototype
+- 原型
 
 ```c
 bool array_contains(const array_t *array, T elem);
 ```
 
-- Description
-    - Check if an `array_t` object contains the specified element.
-- Parameters
-    - `array`: The `array_t` object.
-    - `elem`: The element.
-- Return
-    - Returns `true` if the `array_t` object contains the specified element, otherwise returns `false`.
-- Usage
+- 描述
+    - 判断`array_t`对象是否包含指定元素。
+- 参数
+    - `array`：`array_t`对象。
+    - `elem`：元素。
+- 返回值
+    - 如果`array_t`对象包含指定元素返回`true`，否则返回`false`。
+- 用例
 
 ```c
 array_t *array = array_create(Integer_compare, Integer_delete);
@@ -438,20 +438,20 @@ array_destroy(array);
 
 ## array_count()
 
-- Prototype
+- 原型
 
 ```c
 size_t array_count(const array_t *array, T elem);
 ```
 
-- Description
-    - Count the number of occurrences of the specified element in an `array_t` object.
-- Parameters
-    - `array`: The `array_t` object.
-    - `elem`: The element.
-- Return
-    - Returns the number of occurrences of the specified element in the `array_t` object.
-- Usage
+- 描述
+    - 计算`array_t`对象中指定元素出现次数。
+- 参数
+    - `array`：`array_t`对象。
+    - `elem`：元素。
+- 返回值
+    - 返回`array_t`对象中指定元素出现次数。
+- 用例
 
 ```c
 array_t *array = array_create(Integer_compare, Integer_delete);
@@ -473,19 +473,19 @@ array_destroy(array);
 
 ## array_reverse()
 
-- Prototype
+- 原型
 
 ```c
 array_t *array_reverse(array_t *array);
 ```
 
-- Description
-    - Reverse an `array_t` object.
-- Parameters
-    - `array`: The `array_t` object.
-- Return
-    - Returns the modified `array_t` object.
-- Usage
+- 描述
+    - 反转`array_t`对象。
+- 参数
+    - `array`：`array_t`对象。
+- 返回值
+    - 返回修改后的`array_t`对象。
+- 用例
 
 ```c
 array_t *array = array_create(Integer_compare, Integer_delete);
@@ -502,19 +502,19 @@ array_destroy(array);
 
 ## array_sort()
 
-- Prototype
+- 原型
 
 ```c
 array_t *array_sort(array_t *array);
 ```
 
-- Description
-    - Sort an `array_t` object in ascending order.
-- Parameters
-    - `array`: The `array_t` object.
-- Return
-    - Returns the modified `array_t` object.
-- Usage
+- 描述
+    - 升序排序`array_t`对象。
+- 参数
+    - `array`：`array_t`对象。
+- 返回值
+    - 返回修改后的`array_t`对象。
+- 用例
 
 ```c
 array_t *array = array_create(Integer_compare, Integer_delete);
@@ -533,68 +533,68 @@ array_destroy(array);
 
 ## array_iterator_create()
 
-- Prototype
+- 原型
 
 ```c
 iterator_t *array_iterator_create(const array_t *array);
 ```
 
-- Description
-    - Create an iterator for an `array_t` object.
-- Parameters
-    - `array`: The `array_t` object.
-- Return
-    - Returns the iterator for container.
+- 描述
+    - 创建`array_t`对象的迭代器。
+- 参数
+    - `array`：`array_t`对象。
+- 返回值
+    - 返回容器的迭代器。
 
 
 
 ## array_iterator_destroy()
 
-- Prototype
+- 原型
 
 ```c
 void array_iterator_destroy(iterator_t *iterator);
 ```
 
-- Description
-    - Destroy an iterator.
-- Parameters
-    - `iterator`: The `iterator_t` object.
+- 描述
+    - 销毁迭代器。
+- 参数
+    - `iterator`：`iterator_t`对象。
 
 
 
 ## array_iterator_has_next()
 
-- Prototype
+- 原型
 
 ```c
 bool array_iterator_has_next(const iterator_t *iterator);
 ```
 
-- Description
-    - Determine whether an iterator has the next element.
-- Parameters
-    - `iterator`: The `iterator_t` object.
-- Return
-    - Returns `true` if the iterator has the next element, otherwise returns `false`.
+- 描述
+    - 判断迭代器是否存在下一个元素。
+- 参数
+    - `iterator`：`iterator_t`对象。
+- 返回值
+    - 如果迭代器存在下一个元素返回`true`，否则返回`false`。
 
 
 
 ## array_iterator_has_next()
 
-- Prototype
+- 原型
 
 ```c
 T array_iterator_next(iterator_t *iterator);
 ```
 
-- Description
-    - Get the next element of an iterator.
-- Parameters
-    - `iterator`: The `iterator_t` object.
-- Return
-    - Returns the next element of the iterator.
-- Usage
+- 描述
+    - 获取迭代器下一个元素。
+- 参数
+    - `iterator`：`iterator_t`对象。
+- 返回值
+    - 返回迭代器下一个元素。
+- 用例
 
 ```c
 array_t *array = array_create(Integer_compare, Integer_delete);

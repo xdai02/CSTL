@@ -328,7 +328,7 @@ iterator_t *array_iterator_create(const array_t *array) {
 
 /**
  * @brief Destroy an iterator.
- * @param iterator The iterator.
+ * @param iterator The iterator_t object.
  */
 void array_iterator_destroy(iterator_t *iterator) {
     return_if_fail(iterator != NULL);
@@ -337,7 +337,7 @@ void array_iterator_destroy(iterator_t *iterator) {
 
 /**
  * @brief Determine whether an iterator has the next element.
- * @param iterator The iterator.
+ * @param iterator The iterator_t object.
  * @return Returns true if the iterator has the next element, otherwise returns false.
  */
 bool array_iterator_has_next(const iterator_t *iterator) {
@@ -351,7 +351,7 @@ bool array_iterator_has_next(const iterator_t *iterator) {
 
 /**
  * @brief Get the next element of an iterator.
- * @param iterator The iterator.
+ * @param iterator The iterator_t object.
  * @return Returns the next element of the iterator.
  */
 T array_iterator_next(iterator_t *iterator) {
