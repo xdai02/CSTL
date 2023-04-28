@@ -30,10 +30,14 @@ static void Integer_store(T elem) {
     n++;
 }
 
+static void Integer_double(T elem) {
+    Integer *integer = (Integer *)elem;
+    
+}
+
 void test_array_foreach() {
     const int N = 100;
     int i = 0;
-
     array_t *array = NULL;
 
     array = array_create(Integer_compare, Integer_delete);
@@ -48,6 +52,8 @@ void test_array_foreach() {
     }
 
     array_destroy(array);
+
+
 }
 
 void test_array_is_empty() {

@@ -45,6 +45,16 @@ char Character_valueOf(const Character *character) {
 }
 
 /**
+ * @brief Sets the value of the given Character wrapper.
+ * @param character The pointer to the wrapper.
+ * @param value The new value of the wrapper.
+ */
+void Character_set(Character *character, char value) {
+    return_if_fail(character != NULL);
+    character->value = value;
+}
+
+/**
  * @brief Checks if two Character wrappers are equal.
  * @param character1 The pointer to the first Character wrapper to be compared.
  * @param character2 The pointer to the second Character wrapper to be compared.
@@ -110,6 +120,16 @@ void UnsignedCharacter_delete(void *ptr) {
 unsigned char UnsignedCharacter_valueOf(const UnsignedCharacter *uc) {
     exit_if_fail(uc != NULL);
     return uc->value;
+}
+
+/**
+ * @brief Sets the value of the given UnsignedCharacter wrapper.
+ * @param uc The pointer to the wrapper.
+ * @param value The new value of the wrapper.
+ */
+void UnsignedCharacter_set(UnsignedCharacter *uc, unsigned char value) {
+    return_if_fail(uc != NULL);
+    uc->value = value;
 }
 
 /**
@@ -181,6 +201,16 @@ short Short_valueOf(const Short *s) {
 }
 
 /**
+ * @brief Sets the value of the given Short wrapper.
+ * @param s The pointer to the wrapper.
+ * @param value The new value of the wrapper.
+ */
+void Short_set(Short *s, short value) {
+    return_if_fail(s != NULL);
+    s->value = value;
+}
+
+/**
  * @brief Checks if two Short wrappers are equal.
  * @param short1 The pointer to the first Short wrapper to be compared.
  * @param short2 The pointer to the second Short wrapper to be compared.
@@ -246,6 +276,16 @@ void UnsignedShort_delete(void *ptr) {
 unsigned short UnsignedShort_valueOf(const UnsignedShort *us) {
     exit_if_fail(us != NULL);
     return us->value;
+}
+
+/**
+ * @brief Sets the value of the given UnsignedShort wrapper.
+ * @param us The pointer to the UnsignedShort wrapper.
+ * @param value The new value of the UnsignedShort wrapper.
+ */
+void UnsignedShort_set(UnsignedShort *us, unsigned short value) {
+    return_if_fail(us != NULL);
+    us->value = value;
 }
 
 /**
@@ -317,6 +357,16 @@ int Integer_valueOf(const Integer *integer) {
 }
 
 /**
+ * @brief Sets the value of the given Integer wrapper.
+ * @param integer The pointer to the Integer wrapper.
+ * @param value The new value of the Integer wrapper.
+ */
+void Integer_set(Integer *integer, int value) {
+    return_if_fail(integer != NULL);
+    integer->value = value;
+}
+
+/**
  * @brief Checks if two Integer wrappers are equal.
  * @param integer1 The pointer to the first Integer wrapper to be compared.
  * @param integer2 The pointer to the second Integer wrapper to be compared.
@@ -382,6 +432,16 @@ void UnsignedInteger_delete(void *ptr) {
 unsigned int UnsignedInteger_valueOf(const UnsignedInteger *ui) {
     exit_if_fail(ui != NULL);
     return ui->value;
+}
+
+/**
+ * @brief Sets the value of the given UnsignedInteger wrapper.
+ * @param ui The pointer to the UnsignedInteger wrapper.
+ * @param value The new value of the UnsignedInteger wrapper.
+ */
+void UnsignedInteger_set(UnsignedInteger *ui, unsigned int value) {
+    return_if_fail(ui != NULL);
+    ui->value = value;
 }
 
 /**
@@ -453,6 +513,16 @@ long Long_valueOf(const Long *l) {
 }
 
 /**
+ * @brief Sets the value of the given Long wrapper.
+ * @param l The pointer to the Long wrapper.
+ * @param value The new value of the Long wrapper.
+ */
+void Long_set(Long *l, long value) {
+    return_if_fail(l != NULL);
+    l->value = value;
+}
+
+/**
  * @brief Checks if two Long wrappers are equal.
  * @param long1 The pointer to the first Long wrapper to be compared.
  * @param long2 The pointer to the second Long wrapper to be compared.
@@ -521,6 +591,16 @@ unsigned long UnsignedLong_valueOf(const UnsignedLong *ul) {
 }
 
 /**
+ * @brief Sets the value of the given UnsignedLong wrapper.
+ * @param ul The pointer to the UnsignedLong wrapper.
+ * @param value The new value of the UnsignedLong wrapper.
+ */
+void UnsignedLong_set(UnsignedLong *ul, unsigned long value) {
+    return_if_fail(ul != NULL);
+    ul->value = value;
+}
+
+/**
  * @brief Checks if two UnsignedLong wrappers are equal.
  * @param ul1 The pointer to the first UnsignedLong wrapper to be compared.
  * @param ul2 The pointer to the second UnsignedLong wrapper to be compared.
@@ -586,6 +666,16 @@ void Float_delete(void *ptr) {
 float Float_valueOf(const Float *f) {
     exit_if_fail(f != NULL);
     return f->value;
+}
+
+/**
+ * @brief Sets the value of the given Float wrapper.
+ * @param f The pointer to the Float wrapper.
+ * @param value The new value of the Float wrapper.
+ */
+void Float_set(Float *f, float value) {
+    return_if_fail(f != NULL);
+    f->value = value;
 }
 
 /**
@@ -666,6 +756,16 @@ double Double_valueOf(const Double *d) {
 }
 
 /**
+ * @brief Sets the value of the given Double wrapper.
+ * @param d The pointer to the Double wrapper.
+ * @param value The new value of the Double wrapper.
+ */
+void Double_set(Double *d, double value) {
+    return_if_fail(d != NULL);
+    d->value = value;
+}
+
+/**
  * @brief Checks if two Double wrappers are equal.
  * @param double1 The pointer to the first Double wrapper to be compared.
  * @param double2 The pointer to the second Double wrapper to be compared.
@@ -740,6 +840,16 @@ void Boolean_delete(void *ptr) {
 bool Boolean_valueOf(const Boolean *boolean) {
     exit_if_fail(boolean != NULL);
     return boolean->value;
+}
+
+/**
+ * @brief Sets the value of the given Boolean wrapper.
+ * @param boolean The pointer to the Boolean wrapper.
+ * @param value The new value of the Boolean wrapper.
+ */
+void Boolean_set(Boolean *boolean, bool value) {
+    return_if_fail(boolean != NULL);
+    boolean->value = value;
 }
 
 /**

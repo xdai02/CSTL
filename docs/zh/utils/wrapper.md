@@ -55,6 +55,22 @@ char Character_valueOf(const Character *character);
 
 
 
+### Character_set()
+
+- 原型
+
+```c
+void Character_set(Character *character, char value);
+```
+
+- 描述
+    - 设置`Character`包装类的值。
+- 参数
+    - `character`：包装类指针。
+    - `value`：新值。
+
+
+
 ### Character_equals()
 
 - 原型
@@ -98,6 +114,8 @@ Character *c2 = Character_new('B');
 
 printf("%c\n", Character_valueOf(c1));
 printf("%d\n", Character_compare(c1, c2));
+
+Character_set(c1, 'B');
 printf("%d\n", Character_equals(c1, c2));
 
 Character_delete(c1);
@@ -157,6 +175,22 @@ unsigned char UnsignedCharacter_valueOf(const UnsignedCharacter *uc);
 
 
 
+### UnsignedCharacter_set()
+
+- 原型
+
+```c
+void UnsignedCharacter_set(UnsignedCharacter *uc, unsigned char value);
+```
+
+- 描述
+    - 设置`UnsignedCharacter`包装类的值。
+- 参数
+    - `uc`：包装类指针。
+    - `value`：新值。
+
+
+
 ### UnsignedCharacter_equals()
 
 - 原型
@@ -200,6 +234,8 @@ UnsignedCharacter *uc2 = UnsignedCharacter_new('B');
 
 printf("%u\n", UnsignedCharacter_valueOf(uc1));
 printf("%d\n", UnsignedCharacter_compare(uc1, uc2));
+
+UnsignedCharacter_set(uc1, 'B');
 printf("%d\n", UnsignedCharacter_equals(uc1, uc2));
 
 UnsignedCharacter_delete(uc1);
@@ -259,6 +295,22 @@ short Short_valueOf(const Short *s);
 
 
 
+### Short_set()
+
+- 原型
+
+```c
+void Short_set(Short *s, short value);
+```
+
+- 描述
+    - 设置`Short`包装类的值。
+- 参数
+    - `s`：包装类指针。
+    - `value`：新值。
+
+
+
 ### Short_equals()
 
 - 原型
@@ -302,6 +354,8 @@ Short *s2 = Short_new(2);
 
 printf("%hi\n", Short_valueOf(s1));
 printf("%d\n", Short_compare(s1, s2));
+
+Short_set(s1, 2);
 printf("%d\n", Short_equals(s1, s2));
 
 Short_delete(s1);
@@ -361,6 +415,22 @@ unsigned short UnsignedShort_valueOf(const UnsignedShort *us);
 
 
 
+### UnsignedShort_set()
+
+- 原型
+
+```c
+void UnsignedShort_set(UnsignedShort *us, unsigned short value);
+```
+
+- 描述
+    - 设置`UnsignedShort`包装类的值。
+- 参数
+    - `us`：包装类指针。
+    - `value`：新值。
+
+
+
 ### UnsignedShort_equals()
 
 - 原型
@@ -404,6 +474,8 @@ UnsignedShort *us2 = UnsignedShort_new(2);
 
 printf("%hu\n", UnsignedShort_valueOf(us1));
 printf("%d\n", UnsignedShort_compare(us1, us2));
+
+UnsignedShort_set(us1, 2);
 printf("%d\n", UnsignedShort_equals(us1, us2));
 
 UnsignedShort_delete(us1);
@@ -463,6 +535,22 @@ int Integer_valueOf(const Integer *integer);
 
 
 
+### Integer_set()
+
+- 原型
+
+```c
+void Integer_set(Integer *integer, int value);
+```
+
+- 描述
+    - 设置`Integer`包装类的值。
+- 参数
+    - `integer`：包装类指针。
+    - `value`：新值。
+
+
+
 ### Integer_equals()
 
 - 原型
@@ -506,6 +594,8 @@ Integer *i2 = Integer_new(2);
 
 printf("%d\n", Integer_valueOf(i1));
 printf("%d\n", Integer_compare(i1, i2));
+
+Integer_set(i1, 2);
 printf("%d\n", Integer_equals(i1, i2));
 
 Integer_delete(i1);
@@ -565,6 +655,22 @@ unsigned int UnsignedInteger_valueOf(const UnsignedInteger *ui);
 
 
 
+### UnsignedInteger_set()
+
+- 原型
+
+```c
+void UnsignedInteger_set(UnsignedInteger *ui, unsigned int value);
+```
+
+- 描述
+    - 设置`UnsignedInteger`包装类的值。
+- 参数
+    - `ui`：包装类指针。
+    - `value`：新值。
+
+
+
 ### UnsignedInteger_equals()
 
 - 原型
@@ -608,6 +714,8 @@ UnsignedInteger *ui2 = UnsignedInteger_new(2U);
 
 printf("%u\n", UnsignedInteger_valueOf(ui1));
 printf("%d\n", UnsignedInteger_compare(ui1, ui2));
+
+UnsignedInteger_set(ui1, 2U);
 printf("%d\n", UnsignedInteger_equals(ui1, ui2));
 
 UnsignedInteger_delete(ui1);
@@ -667,6 +775,22 @@ long Long_valueOf(const Long *l);
 
 
 
+### Long_set()
+
+- 原型
+
+```c
+void Long_set(Long *l, long value);
+```
+
+- 描述
+    - 设置`Long`包装类的值。
+- 参数
+    - `l`：包装类指针。
+    - `value`：新值。
+
+
+
 ### Long_equals()
 
 - 原型
@@ -710,6 +834,8 @@ Long *l2 = Long_new(2L);
 
 printf("%ld\n", Long_valueOf(l1));
 printf("%d\n", Long_compare(l1, l2));
+
+Long_set(l1, 2L);
 printf("%d\n", Long_equals(l1, l2));
 
 Long_delete(l1);
@@ -769,6 +895,22 @@ unsigned long UnsignedLong_valueOf(const UnsignedLong *ul);
 
 
 
+### UnsignedLong_set()
+
+- 原型
+
+```c
+void UnsignedLong_set(UnsignedLong *ul, unsigned long value);
+```
+
+- 描述
+    - 设置`UnsignedLong`包装类的值。
+- 参数
+    - `ul`：包装类指针。
+    - `value`：新值。
+
+
+
 ### UnsignedLong_equals()
 
 - 原型
@@ -812,6 +954,8 @@ UnsignedLong *ul2 = UnsignedLong_new(2UL);
 
 printf("%lu\n", UnsignedLong_valueOf(ul1));
 printf("%d\n", UnsignedLong_compare(ul1, ul2));
+
+UnsignedLong_set(ul1, 2UL);
 printf("%d\n", UnsignedLong_equals(ul1, ul2));
 
 UnsignedLong_delete(a);
@@ -871,6 +1015,22 @@ float Float_valueOf(const Float *f);
 
 
 
+### Float_set()
+
+- 原型
+
+```c
+void Float_set(Float *f, float value);
+```
+
+- 描述
+    - 设置`Float`包装类的值。
+- 参数
+    - `f`：包装类指针。
+    - `value`：新值。
+
+
+
 ### Float_equals()
 
 - 原型
@@ -914,6 +1074,8 @@ Float *f2 = Float_new(2.2f);
 
 printf("%f\n", Float_valueOf(f1));
 printf("%d\n", Float_compare(f1, f2));
+
+Float_set(f1, 2.2f);
 printf("%d\n", Float_equals(f1, f2));
 
 Float_delete(f1);
@@ -973,6 +1135,22 @@ double Double_valueOf(const Double *d);
 
 
 
+### Double_set()
+
+- 原型
+
+```c
+void Double_set(Double *d, double value);
+```
+
+- 描述
+    - 设置`Double`包装类的值。
+- 参数
+    - `d`：包装类指针。
+    - `value`：新值。
+
+
+
 ### Double_equals()
 
 - 原型
@@ -1016,6 +1194,8 @@ Double *d2 = Double_new(2.2);
 
 printf("%f\n", Double_valueOf(d1));
 printf("%d\n", Double_compare(d1, d2));
+
+Double_set(d1, 2.2);
 printf("%d\n", Double_equals(d1, d2));
 
 Double_delete(d1);
@@ -1075,6 +1255,22 @@ bool Boolean_valueOf(const Boolean *boolean);
 
 
 
+### Boolean_set()
+
+- 原型
+
+```c
+void Boolean_set(Boolean *boolean, bool value);
+```
+
+- 描述
+    - 设置`Boolean`包装类的值。
+- 参数
+    - `boolean`：包装类指针。
+    - `value`：新值。
+
+
+
 ### Boolean_equals()
 
 - 原型
@@ -1118,6 +1314,8 @@ Boolean *b2 = Boolean_new(false);
 
 printf("%d\n", Boolean_valueOf(b1));
 printf("%d\n", Boolean_compare(b1, b2));
+
+Boolean_set(b1, false);
 printf("%d\n", Boolean_equals(b1, b2));
 
 Boolean_delete(b1);

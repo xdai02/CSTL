@@ -55,6 +55,24 @@ char Character_valueOf(const Character *character);
 
 
 
+### Character_set()
+
+- Prototype
+
+```c
+void Character_set(Character *character, char value);
+```
+
+- Description
+    - Sets the value of the given `Character` wrapper.
+- Parameters
+    - `character`: The pointer to the wrapper.
+    - `value`: The new value.
+- Return
+    - The new value of the wrapper.
+
+
+
 ### Character_equals()
 
 - Prototype
@@ -98,6 +116,8 @@ Character *c2 = Character_new('B');
 
 printf("%c\n", Character_valueOf(c1));
 printf("%d\n", Character_compare(c1, c2));
+
+Character_set(c1, 'B');
 printf("%d\n", Character_equals(c1, c2));
 
 Character_delete(c1);
@@ -157,6 +177,24 @@ unsigned char UnsignedCharacter_valueOf(const UnsignedCharacter *uc);
 
 
 
+### UnsignedCharacter_set()
+
+- Prototype
+
+```c
+void UnsignedCharacter_set(UnsignedCharacter *uc, unsigned char value);
+```
+
+- Description
+    - Sets the value of the given `UnsignedCharacter` wrapper.
+- Parameters
+    - `uc`: The pointer to the wrapper.
+    - `value`: The new value.
+- Return
+    - The new value of the wrapper.
+
+
+
 ### UnsignedCharacter_equals()
 
 - Prototype
@@ -200,6 +238,8 @@ UnsignedCharacter *uc2 = UnsignedCharacter_new('B');
 
 printf("%u\n", UnsignedCharacter_valueOf(uc1));
 printf("%d\n", UnsignedCharacter_compare(uc1, uc2));
+
+UnsignedCharacter_set(uc1, 'B');
 printf("%d\n", UnsignedCharacter_equals(uc1, uc2));
 
 UnsignedCharacter_delete(uc1);
@@ -259,6 +299,24 @@ short Short_valueOf(const Short *s);
 
 
 
+### Short_set()
+
+- Prototype
+
+```c
+void Short_set(Short *s, short value);
+```
+
+- Description
+    - Sets the value of the given `Short` wrapper.
+- Parameters
+    - `uc`: The pointer to the wrapper.
+    - `value`: The new value.
+- Return
+    - The new value of the wrapper.
+
+
+
 ### Short_equals()
 
 - Prototype
@@ -302,6 +360,8 @@ Short *s2 = Short_new(2);
 
 printf("%hi\n", Short_valueOf(s1));
 printf("%d\n", Short_compare(s1, s2));
+
+Short_set(s1, 2);
 printf("%d\n", Short_equals(s1, s2));
 
 Short_delete(s1);
@@ -361,6 +421,24 @@ unsigned short UnsignedShort_valueOf(const UnsignedShort *us);
 
 
 
+### UnsignedShort_set()
+
+- Prototype
+
+```c
+void UnsignedShort_set(UnsignedShort *us, unsigned short value);
+```
+
+- Description
+    - Sets the value of the given `UnsignedShort` wrapper.
+- Parameters
+    - `us`: The pointer to the wrapper.
+    - `value`: The new value.
+- Return
+    - The new value of the wrapper.
+
+
+
 ### UnsignedShort_equals()
 
 - Prototype
@@ -404,6 +482,8 @@ UnsignedShort *us2 = UnsignedShort_new(2);
 
 printf("%hu\n", UnsignedShort_valueOf(us1));
 printf("%d\n", UnsignedShort_compare(us1, us2));
+
+UnsignedShort_set(us1, 2);
 printf("%d\n", UnsignedShort_equals(us1, us2));
 
 UnsignedShort_delete(us1);
@@ -463,6 +543,24 @@ int Integer_valueOf(const Integer *integer);
 
 
 
+### Integer_set()
+
+- Prototype
+
+```c
+void Integer_set(Integer *integer, int value);
+```
+
+- Description
+    - Sets the value of the given `Integer` wrapper.
+- Parameters
+    - `integer`: The pointer to the wrapper.
+    - `value`: The new value.
+- Return
+    - The new value of the wrapper.
+
+
+
 ### Integer_equals()
 
 - Prototype
@@ -506,6 +604,8 @@ Integer *i2 = Integer_new(2);
 
 printf("%d\n", Integer_valueOf(i1));
 printf("%d\n", Integer_compare(i1, i2));
+
+Integer_set(i1, 2);
 printf("%d\n", Integer_equals(i1, i2));
 
 Integer_delete(i1);
@@ -565,6 +665,24 @@ unsigned int UnsignedInteger_valueOf(const UnsignedInteger *ui);
 
 
 
+### UnsignedInteger_set()
+
+- Prototype
+
+```c
+void UnsignedInteger_set(UnsignedInteger *ui, unsigned int value);
+```
+
+- Description
+    - Sets the value of the given `UnsignedInteger` wrapper.
+- Parameters
+    - `ui`: The pointer to the wrapper.
+    - `value`: The new value.
+- Return
+    - The new value of the wrapper.
+
+
+
 ### UnsignedInteger_equals()
 
 - Prototype
@@ -608,6 +726,8 @@ UnsignedInteger *ui2 = UnsignedInteger_new(2U);
 
 printf("%u\n", UnsignedInteger_valueOf(ui1));
 printf("%d\n", UnsignedInteger_compare(ui1, ui2));
+
+UnsignedInteger_set(ui1, 2U);
 printf("%d\n", UnsignedInteger_equals(ui1, ui2));
 
 UnsignedInteger_delete(ui1);
@@ -667,6 +787,24 @@ long Long_valueOf(const Long *l);
 
 
 
+### Long_set()
+
+- Prototype
+
+```c
+void Long_set(Long *l, long value);
+```
+
+- Description
+    - Sets the value of the given `Long` wrapper.
+- Parameters
+    - `l`: The pointer to the wrapper.
+    - `value`: The new value.
+- Return
+    - The new value of the wrapper.
+
+
+
 ### Long_equals()
 
 - Prototype
@@ -710,6 +848,8 @@ Long *l2 = Long_new(2L);
 
 printf("%ld\n", Long_valueOf(l1));
 printf("%d\n", Long_compare(l1, l2));
+
+Long_set(l1, 2L);
 printf("%d\n", Long_equals(l1, l2));
 
 Long_delete(l1);
@@ -769,6 +909,24 @@ unsigned long UnsignedLong_valueOf(const UnsignedLong *ul);
 
 
 
+### UnsignedLong_set()
+
+- Prototype
+
+```c
+void UnsignedLong_set(UnsignedLong *ul, unsigned long value);
+```
+
+- Description
+    - Sets the value of the given `UnsignedLong` wrapper.
+- Parameters
+    - `ul`: The pointer to the wrapper.
+    - `value`: The new value.
+- Return
+    - The new value of the wrapper.
+
+
+
 ### UnsignedLong_equals()
 
 - Prototype
@@ -812,6 +970,8 @@ UnsignedLong *ul2 = UnsignedLong_new(2UL);
 
 printf("%lu\n", UnsignedLong_valueOf(ul1));
 printf("%d\n", UnsignedLong_compare(ul1, ul2));
+
+UnsignedLong_set(ul1, 2UL);
 printf("%d\n", UnsignedLong_equals(ul1, ul2));
 
 UnsignedLong_delete(a);
@@ -871,6 +1031,24 @@ float Float_valueOf(const Float *f);
 
 
 
+### Float_set()
+
+- Prototype
+
+```c
+void Float_set(Float *f, float value);
+```
+
+- Description
+    - Sets the value of the given `Float` wrapper.
+- Parameters
+    - `f`: The pointer to the wrapper.
+    - `value`: The new value.
+- Return
+    - The new value of the wrapper.
+
+
+
 ### Float_equals()
 
 - Prototype
@@ -914,6 +1092,8 @@ Float *f2 = Float_new(2.2f);
 
 printf("%f\n", Float_valueOf(f1));
 printf("%d\n", Float_compare(f1, f2));
+
+Float_set(f1, 2.2f);
 printf("%d\n", Float_equals(f1, f2));
 
 Float_delete(f1);
@@ -973,6 +1153,24 @@ double Double_valueOf(const Double *d);
 
 
 
+### Double_set()
+
+- Prototype
+
+```c
+void Double_set(Double *d, double value);
+```
+
+- Description
+    - Sets the value of the given `Double` wrapper.
+- Parameters
+    - `d`: The pointer to the wrapper.
+    - `value`: The new value.
+- Return
+    - The new value of the wrapper.
+
+
+
 ### Double_equals()
 
 - Prototype
@@ -1016,6 +1214,8 @@ Double *d2 = Double_new(2.2);
 
 printf("%f\n", Double_valueOf(d1));
 printf("%d\n", Double_compare(d1, d2));
+
+Double_set(d1, 2.2);
 printf("%d\n", Double_equals(d1, d2));
 
 Double_delete(d1);
@@ -1075,6 +1275,24 @@ bool Boolean_valueOf(const Boolean *boolean);
 
 
 
+### Boolean_set()
+
+- Prototype
+
+```c
+void Boolean_set(Boolean *boolean, bool value);
+```
+
+- Description
+    - Sets the value of the given `Boolean` wrapper.
+- Parameters
+    - `boolean`: The pointer to the wrapper.
+    - `value`: The new value.
+- Return
+    - The new value of the wrapper.
+
+
+
 ### Boolean_equals()
 
 - Prototype
@@ -1118,6 +1336,8 @@ Boolean *b2 = Boolean_new(false);
 
 printf("%d\n", Boolean_valueOf(b1));
 printf("%d\n", Boolean_compare(b1, b2));
+
+Boolean_set(b1, false);
 printf("%d\n", Boolean_equals(b1, b2));
 
 Boolean_delete(b1);
