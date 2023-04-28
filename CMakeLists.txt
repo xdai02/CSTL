@@ -29,13 +29,13 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR})
 # Build the coop library
 file(GLOB_RECURSE COOP_SOURCES "${SRC_DIR}/*.c")
 add_library(coop OBJECT ${COOP_SOURCES})
-target_include_directories(coop PUBLIC ${INC_DIR} ${INC_DIR}/cstl ${INC_DIR}/utils)
+target_include_directories(coop PUBLIC ${INC_DIR} ${INC_DIR}/utils ${INC_DIR}/cstl)
 
 # Build the test executable
 file(GLOB_RECURSE TEST_SOURCES "${TEST_DIR}/*.c")
 add_executable(test_coop ${TEST_SOURCES})
 target_link_libraries(test_coop PRIVATE coop)
-target_include_directories(test_coop PRIVATE ${INC_DIR} ${INC_DIR}/cstl ${INC_DIR}/utils ${TEST_DIR}/test_cstl ${TEST_DIR}/test_utils)
+target_include_directories(test_coop PRIVATE ${INC_DIR} ${INC_DIR}/utils ${INC_DIR}/cstl ${TEST_DIR}/test_utils ${TEST_DIR}/test_cstl)
 
 # Clean up CMake generated files
 add_custom_target(clean_all
@@ -44,7 +44,7 @@ add_custom_target(clean_all
     COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/cmake_install.cmake"
     COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/cMakeCComppilerId"
     COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/Makefile"
-    COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_BINARY_DIR}/bin"
     COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_BINARY_DIR}/build"
+    COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_BINARY_DIR}/bin"
     COMMENT "Cleaning up CMake generated files"
 )

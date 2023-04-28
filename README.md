@@ -19,7 +19,7 @@
 ## cstl
 
 - [x] **cstl_string**: Implements a dynamic string type `string_t` with automatic memory management.
-- [ ] **iterator**: Provides a common interface `iterator_t` for traversing various data structures.
+- [x] **iterator**: Provides a common interface `iterator_t` for traversing various data structures.
 - [x] **cstl_array**: Implements a dynamic array `array_t` type with automatic resizing and memory management.
 - [ ] **cstl_list**: Implements a doubly-linked list data structure `list_t` for efficient insertion and deletion operations.
 - [ ] **cstl_stack**: Implements a stack data structure `stack_t`, which is a Last-In-First-Out (LIFO) collection of elements.
@@ -46,7 +46,7 @@ make
 cd demo
 cmake ./
 make
-./demo_[module_name]
+./[module_name]
 ```
 
 - Clean intermediate files

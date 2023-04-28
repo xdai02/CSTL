@@ -66,6 +66,4 @@ void test_utils() {
     test_random();
     test_str();
     test_wrapper();
-
-    printf("[PASS] utils\n");
 }

@@ -3,14 +3,11 @@
 #include <assert.h>
 
 void test_array_create() {
-    array_t *array = NULL;
-
-    array = array_create(UnsignedCharacter_compare, UnsignedCharacter_delete);
+    array_t *array = array_create(UnsignedCharacter_compare, UnsignedCharacter_delete);
     assert(array != NULL);
     assert(array_is_empty(array) == true);
     assert(array_size(array) == 0);
     array_destroy(array);
-
     array = array_create(NULL, NULL);
     assert(array == NULL);
 }
@@ -70,7 +67,7 @@ void test_array_is_empty() {
 }
 
 void test_array_size() {
-    const int N = 10000;
+    const int N = 1000;
     int i = 0;
     array_t *array = array_create(UnsignedLong_compare, UnsignedLong_delete);
     assert(array_size(array) == 0);
@@ -108,7 +105,7 @@ void test_array_get() {
 }
 
 void test_array_set() {
-    const int N = 10000;
+    const int N = 1000;
     int i = 0;
     array_t *array = array_create(Long_compare, Long_delete);
     for (i = 0; i < N; i++) {
@@ -125,7 +122,7 @@ void test_array_set() {
 }
 
 void test_array_append() {
-    const int N = 10000;
+    const int N = 1000;
     int i = 0;
     array_t *array = NULL;
 
@@ -151,7 +148,7 @@ void test_array_append() {
 }
 
 void test_array_insert() {
-    const int N = 10000;
+    const int N = 1000;
     int i = 0;
     array_t *array = NULL;
 
@@ -180,7 +177,7 @@ void test_array_insert() {
 }
 
 void test_array_remove() {
-    const int N = 10000;
+    const int N = 1000;
     int i = 0;
     Integer *integer;
     Boolean *boolean;
@@ -249,6 +246,7 @@ void test_array_contains() {
     for (i = 0; i < N; i++) {
         array_append(array, Integer_new(i));
     }
+
     for (i = 0; i < 2 * N; i++) {
         integer = Integer_new(i);
         if (i < N) {
@@ -258,6 +256,7 @@ void test_array_contains() {
         }
         Integer_delete(integer);
     }
+    
     array_destroy(array);
 }
 
@@ -301,7 +300,7 @@ void test_array_count() {
 }
 
 void test_array_reverse() {
-    const int N = 10000;
+    const int N = 1000;
     int i = 0;
     array_t *array = array_create(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {

@@ -321,7 +321,7 @@ iterator_t *array_iterator_create(const array_t *array) {
     iterator = (iterator_t *)malloc(sizeof(iterator_t));
     return_value_if_fail(iterator != NULL, NULL);
 
-    iterator->container = array;
+    iterator->container = (void *)array;
     iterator->current = 0;
     return iterator;
 }

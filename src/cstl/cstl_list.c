@@ -68,8 +68,21 @@ size_t list_size(const list_t *list) {
 }
 
 list_t *list_clear(list_t *list) {
+    node_t *node = NULL;
+    node_t *next_node = NULL;
+
     return_value_if_fail(list != NULL, NULL);
-    list_foreach(list, list->destroy);
+
+    node = list->head;
+    while (node != NULL) {
+        next_node = node->next;
+        if (list->destroy != NULL) {
+            list->destroy(node->data);
+        }
+        free(node);
+        node = next_node;
+    }
+
     list->head = NULL;
     list->tail = NULL;
     list->size = 0;
@@ -119,6 +132,10 @@ list_t *list_set(list_t *list, size_t index, T elem) {
     node = __node_get(list, index);
     return_value_if_fail(node != NULL, list);
 
+    if (list->destroy != NULL) {
+        list->destroy(node->data);
+    }
+
     node->data = elem;
     return list;
 }
@@ -127,12 +144,11 @@ int list_index_of(const list_t *list, T elem) {
     node_t *node = NULL;
     int index = 0;
 
-    return_value_if_fail(list != NULL, -1);
-    return_value_if_fail(elem != NULL, -1);
+    return_value_if_fail(list != NULL && elem != NULL, -1);
 
     node = list->head;
     while (node != NULL) {
-        if (node->data == elem) {
+        if (list->compare(node->data, elem) == 0) {
             return index;
         }
 
@@ -144,9 +160,24 @@ int list_index_of(const list_t *list, T elem) {
 }
 
 bool list_contains(const list_t *list, T elem) {
-    return_value_if_fail(list != NULL, false);
-    return_value_if_fail(elem != NULL, false);
+    return_value_if_fail(list != NULL && elem != NULL, false);
     return list_index_of(list, elem) != -1;
+}
+
+size_t list_count(const list_t *list, T elem) {
+    size_t count = 0;
+    node_t *node = NULL;
+
+    return_value_if_fail(list != NULL && elem != NULL, 0);
+
+    node = list->head;
+    while (node != NULL) {
+        if (list->compare(node->data, elem) == 0) {
+            count++;
+        }
+        node = node->next;
+    }
+    return count;
 }
 
 T list_get_front(const list_t *list) {
@@ -306,6 +337,27 @@ T list_remove(list_t *list, size_t index) {
     }
 }
 
+list_t *list_reverse(list_t *list) {
+    node_t *node = NULL;
+    node_t *next = NULL;
+
+    return_value_if_fail(list != NULL, NULL);
+
+    node = list->head;
+    while (node != NULL) {
+        next = node->next;
+        node->next = node->prev;
+        node->prev = next;
+        node = next;
+    }
+
+    node = list->head;
+    list->head = list->tail;
+    list->tail = node;
+
+    return list;
+}
+
 iterator_t *list_iterator_create(const list_t *list) {
     iterator_t *iterator = NULL;
 
@@ -314,8 +366,9 @@ iterator_t *list_iterator_create(const list_t *list) {
     iterator = (iterator_t *)malloc(sizeof(iterator_t));
     return_value_if_fail(iterator != NULL, NULL);
 
-    iterator->container = list;
+    iterator->container = (void *)list;
     iterator->current = list->head;
+    return iterator;
 }
 
 void list_iterator_destroy(iterator_t *iterator) {

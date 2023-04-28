@@ -5,7 +5,7 @@
 int main() {
     test_utils();
     test_cstl();
-    printf("[PASS] All\n");
 
+    printf("[PASS] ALL\n");
     return 0;
 }
