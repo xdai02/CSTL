@@ -19,6 +19,14 @@ void test_Character() {
     assert(Character_equals(c2, c1) == false);
     assert(Character_equals(c1, c3) == true);
 
+    Character_set(c1, 'b');
+    Character_set(c2, 'a');
+    Character_set(c3, 'b');
+
+    assert(Character_valueOf(c1) == 'b');
+    assert(Character_valueOf(c2) == 'a');
+    assert(Character_valueOf(c3) == 'b');
+
     Character_delete(c1);
     Character_delete(c2);
     Character_delete(c3);
@@ -40,6 +48,14 @@ void test_UnsignedCharacter() {
     assert(UnsignedCharacter_equals(uc1, uc2) == false);
     assert(UnsignedCharacter_equals(uc2, uc1) == false);
     assert(UnsignedCharacter_equals(uc1, uc3) == true);
+
+    UnsignedCharacter_set(uc1, 'b');
+    UnsignedCharacter_set(uc2, 'a');
+    UnsignedCharacter_set(uc3, 'b');
+
+    assert(UnsignedCharacter_valueOf(uc1) == 'b');
+    assert(UnsignedCharacter_valueOf(uc2) == 'a');
+    assert(UnsignedCharacter_valueOf(uc3) == 'b');
 
     UnsignedCharacter_delete(uc1);
     UnsignedCharacter_delete(uc2);
@@ -63,6 +79,14 @@ void test_Short() {
     assert(Short_equals(s2, s1) == false);
     assert(Short_equals(s1, s3) == true);
 
+    Short_set(s1, 2);
+    Short_set(s2, 1);
+    Short_set(s3, 2);
+
+    assert(Short_valueOf(s1) == 2);
+    assert(Short_valueOf(s2) == 1);
+    assert(Short_valueOf(s3) == 2);
+
     Short_delete(s1);
     Short_delete(s2);
     Short_delete(s3);
@@ -84,6 +108,14 @@ void test_UnsignedShort() {
     assert(UnsignedShort_equals(us1, us2) == false);
     assert(UnsignedShort_equals(us2, us1) == false);
     assert(UnsignedShort_equals(us1, us3) == true);
+
+    UnsignedShort_set(us1, 2);
+    UnsignedShort_set(us2, 1);
+    UnsignedShort_set(us3, 2);
+
+    assert(UnsignedShort_valueOf(us1) == 2);
+    assert(UnsignedShort_valueOf(us2) == 1);
+    assert(UnsignedShort_valueOf(us3) == 2);
 
     UnsignedShort_delete(us1);
     UnsignedShort_delete(us2);
@@ -107,6 +139,14 @@ void test_Integer() {
     assert(Integer_equals(i2, i1) == false);
     assert(Integer_equals(i1, i3) == true);
 
+    Integer_set(i1, 2);
+    Integer_set(i2, 1);
+    Integer_set(i3, 2);
+
+    assert(Integer_valueOf(i1) == 2);
+    assert(Integer_valueOf(i2) == 1);
+    assert(Integer_valueOf(i3) == 2);
+
     Integer_delete(i1);
     Integer_delete(i2);
     Integer_delete(i3);
@@ -128,6 +168,14 @@ void test_UnsignedInteger() {
     assert(UnsignedInteger_equals(ui1, ui2) == false);
     assert(UnsignedInteger_equals(ui2, ui1) == false);
     assert(UnsignedInteger_equals(ui1, ui3) == true);
+
+    UnsignedInteger_set(ui1, 2);
+    UnsignedInteger_set(ui2, 1);
+    UnsignedInteger_set(ui3, 2);
+
+    assert(UnsignedInteger_valueOf(ui1) == 2);
+    assert(UnsignedInteger_valueOf(ui2) == 1);
+    assert(UnsignedInteger_valueOf(ui3) == 2);
 
     UnsignedInteger_delete(ui1);
     UnsignedInteger_delete(ui2);
@@ -151,6 +199,14 @@ void test_Long() {
     assert(Long_equals(l2, l1) == false);
     assert(Long_equals(l1, l3) == true);
 
+    Long_set(l1, 2);
+    Long_set(l2, 1);
+    Long_set(l3, 2);
+
+    assert(Long_valueOf(l1) == 2);
+    assert(Long_valueOf(l2) == 1);
+    assert(Long_valueOf(l3) == 2);
+
     Long_delete(l1);
     Long_delete(l2);
     Long_delete(l3);
@@ -173,6 +229,14 @@ void test_UnsignedLong() {
     assert(UnsignedLong_equals(ul2, ul1) == false);
     assert(UnsignedLong_equals(ul1, ul3) == true);
 
+    UnsignedLong_set(ul1, 2);
+    UnsignedLong_set(ul2, 1);
+    UnsignedLong_set(ul3, 2);
+
+    assert(UnsignedLong_valueOf(ul1) == 2);
+    assert(UnsignedLong_valueOf(ul2) == 1);
+    assert(UnsignedLong_valueOf(ul3) == 2);
+
     UnsignedLong_delete(ul1);
     UnsignedLong_delete(ul2);
     UnsignedLong_delete(ul3);
@@ -190,6 +254,14 @@ void test_Float() {
     assert(Float_compare(f1, f2) < 0);
     assert(Float_compare(f2, f1) > 0);
     assert(Float_compare(f1, f3) == 0);
+
+    assert(Float_equals(f1, f2) == false);
+    assert(Float_equals(f2, f1) == false);
+    assert(Float_equals(f1, f3) == true);
+
+    Float_set(f1, 2.2f);
+    Float_set(f2, 1.1f);
+    Float_set(f3, 2.2f);
 
     assert(Float_equals(f1, f2) == false);
     assert(Float_equals(f2, f1) == false);
@@ -217,6 +289,14 @@ void test_Double() {
     assert(Double_equals(d2, d1) == false);
     assert(Double_equals(d1, d3) == true);
 
+    Double_set(d1, 2.2);
+    Double_set(d2, 1.1);
+    Double_set(d3, 2.2);
+
+    assert(Double_equals(d1, d2) == false);
+    assert(Double_equals(d2, d1) == false);
+    assert(Double_equals(d1, d3) == true);
+
     Double_delete(d1);
     Double_delete(d2);
     Double_delete(d3);
@@ -234,6 +314,14 @@ void test_Boolean() {
     assert(Boolean_compare(b1, b2) > 0);
     assert(Boolean_compare(b2, b1) < 0);
     assert(Boolean_compare(b1, b3) == 0);
+
+    assert(Boolean_equals(b1, b2) == false);
+    assert(Boolean_equals(b2, b1) == false);
+    assert(Boolean_equals(b1, b3) == true);
+
+    Boolean_set(b1, false);
+    Boolean_set(b2, true);
+    Boolean_set(b3, false);
 
     assert(Boolean_equals(b1, b2) == false);
     assert(Boolean_equals(b2, b1) == false);

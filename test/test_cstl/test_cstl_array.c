@@ -30,9 +30,9 @@ static void Integer_store(T elem) {
     n++;
 }
 
-static void Integer_double(T elem) {
+static void Integer_triple(T elem) {
     Integer *integer = (Integer *)elem;
-    
+    Integer_set(integer, Integer_valueOf(integer) * 3);
 }
 
 void test_array_foreach() {
@@ -44,6 +44,7 @@ void test_array_foreach() {
     for (i = 0; i < N; i++) {
         array_append(array, Integer_new(i));
     }
+
     array_foreach(array, Integer_store);
 
     assert(n == N);
@@ -51,9 +52,13 @@ void test_array_foreach() {
         assert(buffer[i] == i);
     }
 
+    array_foreach(array, Integer_triple);
+
+    for (i = 0; i < N; i++) {
+        assert(Integer_valueOf(array_get(array, i)) == i * 3);
+    }
+
     array_destroy(array);
-
-
 }
 
 void test_array_is_empty() {
