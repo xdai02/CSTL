@@ -352,7 +352,7 @@ T array_remove(array_t *array, size_t index);
     - `array`: The `array_t` object.
     - `index`: The index.
 - Return
-    - Returns the modified `array_t` object.
+    - Returns the removed element if successful, otherwise returns `NULL`.
 - Usage
 
 ```c
@@ -382,7 +382,7 @@ size_t array_index_of(const array_t *array, T elem);
     - `array`: The `array_t` object.
     - `elem`: The element.
 - Return
-    - Returns the index of the specified element in the `array_t` object.
+    - Returns the index of the specified element if found, otherwise returns `-1`.
 - Usage
 
 ```c

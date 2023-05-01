@@ -15,6 +15,11 @@ struct list_t {
     destroy_t destroy;
 };
 
+/**
+ * @brief Create a node_t object.
+ * @param elem The element.
+ * @return Returns the created node_t object if successful, otherwise returns NULL.
+ */
 static node_t *node_create(T elem) {
     node_t *node = (node_t *)malloc(sizeof(node_t));
     return_value_if_fail(node != NULL, NULL);
@@ -24,6 +29,12 @@ static node_t *node_create(T elem) {
     return node;
 }
 
+/**
+ * @brief Create a list_t object.
+ * @param compare Callback function for comparing two data items.
+ * @param destroy Callback function for destroying a data item.
+ * @return Returns the created list_t object if successful, otherwise returns NULL.
+ */
 list_t *list_create(compare_t compare, destroy_t destroy) {
     list_t *list = NULL;
 
@@ -41,12 +52,21 @@ list_t *list_create(compare_t compare, destroy_t destroy) {
     return list;
 }
 
+/**
+ * @brief Destroy a list_t object.
+ * @param list The list_t object.
+ */
 void list_destroy(list_t *list) {
     return_if_fail(list != NULL);
     list_clear(list);
     free(list);
 }
 
+/**
+ * @brief Traverse the list_t object.
+ * @param list The list_t object.
+ * @param visit Callback function for visiting a data item.
+ */
 void list_foreach(list_t *list, visit_t visit) {
     node_t *node = NULL;
     return_if_fail(list != NULL && visit != NULL);
@@ -57,16 +77,31 @@ void list_foreach(list_t *list, visit_t visit) {
     }
 }
 
+/**
+ * @brief Determine whether the list_t object is empty.
+ * @param list The list_t object.
+ * @return Returns true if the list_t object is empty, otherwise returns false.
+ */
 bool list_is_empty(const list_t *list) {
     return_value_if_fail(list != NULL, true);
     return list->size == 0;
 }
 
+/**
+ * @brief Get the size of the list_t object.
+ * @param list The list_t object.
+ * @return Returns the size of the list_t object.
+ */
 size_t list_size(const list_t *list) {
     return_value_if_fail(list != NULL, 0);
     return list->size;
 }
 
+/**
+ * @brief Clear the list_t object.
+ * @param list The list_t object.
+ * @return Returns the modified list_t object.
+ */
 list_t *list_clear(list_t *list) {
     node_t *node = NULL;
     node_t *next_node = NULL;
@@ -89,6 +124,12 @@ list_t *list_clear(list_t *list) {
     return list;
 }
 
+/**
+ * @brief Get the specified node_t object.
+ * @param list The list_t object.
+ * @param index The index.
+ * @return Returns the specified node_t object if successful, otherwise returns NULL.
+ */
 static node_t *__node_get(const list_t *list, size_t index) {
     node_t *node = NULL;
     size_t i = 0;
@@ -111,6 +152,12 @@ static node_t *__node_get(const list_t *list, size_t index) {
     return node;
 }
 
+/**
+ * @brief Get the element at the specified index of a list_t object.
+ * @param list The list_t object.
+ * @param index The index.
+ * @return Returns the element at the specified index of the list_t object.
+ */
 T list_get(const list_t *list, size_t index) {
     node_t *node = NULL;
 
@@ -122,6 +169,13 @@ T list_get(const list_t *list, size_t index) {
     return node->data;
 }
 
+/**
+ * @brief Set the element at the specified position in the list_t object.
+ * @param list The list_t object.
+ * @param index The index.
+ * @param elem The element.
+ * @return Returns the modified list_t object.
+ */
 list_t *list_set(list_t *list, size_t index, T elem) {
     node_t *node = NULL;
 
@@ -140,6 +194,12 @@ list_t *list_set(list_t *list, size_t index, T elem) {
     return list;
 }
 
+/**
+ * @brief Get the index of the specified element in the list_t object.
+ * @param list The list_t object.
+ * @param elem The element.
+ * @return Returns the index of the specified element if found, otherwise returns -1.
+ */
 int list_index_of(const list_t *list, T elem) {
     node_t *node = NULL;
     int index = 0;
@@ -159,11 +219,23 @@ int list_index_of(const list_t *list, T elem) {
     return -1;
 }
 
+/**
+ * @brief Determine whether the list_t object contains the specified element.
+ * @param list The list_t object.
+ * @param elem The element.
+ * @return Returns true if the list_t object contains the specified element, otherwise returns false.
+ */
 bool list_contains(const list_t *list, T elem) {
     return_value_if_fail(list != NULL && elem != NULL, false);
     return list_index_of(list, elem) != -1;
 }
 
+/**
+ * @brief Count the number of occurrences of the specified element in the list_t object.
+ * @param list The list_t object.
+ * @param elem The element.
+ * @return Returns the number of occurrences of the specified element.
+ */
 size_t list_count(const list_t *list, T elem) {
     size_t count = 0;
     node_t *node = NULL;
@@ -180,18 +252,34 @@ size_t list_count(const list_t *list, T elem) {
     return count;
 }
 
+/**
+ * @brief Get the first element of the list_t object.
+ * @param list The list_t object.
+ * @return Returns the first element if successful, otherwise returns NULL.
+ */
 T list_get_front(const list_t *list) {
     return_value_if_fail(list != NULL, NULL);
     return_value_if_fail(list->size > 0, NULL);
     return list->head->data;
 }
 
+/**
+ * @brief Get the last element of the list_t object.
+ * @param list The list_t object.
+ * @return Returns the last element if successful, otherwise returns NULL.
+ */
 T list_get_back(const list_t *list) {
     return_value_if_fail(list != NULL, NULL);
     return_value_if_fail(list->size > 0, NULL);
     return list->tail->data;
 }
 
+/**
+ * @brief Insert the specified element at the beginning of the list_t object.
+ * @param list The list_t object.
+ * @param elem The element.
+ * @return Returns the modified list_t object.
+ */
 list_t *list_push_front(list_t *list, T elem) {
     node_t *node = NULL;
 
@@ -214,6 +302,12 @@ list_t *list_push_front(list_t *list, T elem) {
     return list;
 }
 
+/**
+ * @brief Insert the specified element at the end of the list_t object.
+ * @param list The list_t object.
+ * @param elem The element.
+ * @return Returns the modified list_t object.
+ */
 list_t *list_push_back(list_t *list, T elem) {
     node_t *node = NULL;
 
@@ -236,6 +330,11 @@ list_t *list_push_back(list_t *list, T elem) {
     return list;
 }
 
+/**
+ * @brief Remove the first element of the list_t object.
+ * @param list The list_t object.
+ * @return Returns the removed element if successful, otherwise returns NULL.
+ */
 T list_pop_front(list_t *list) {
     node_t *node = NULL;
     T elem = NULL;
@@ -259,6 +358,11 @@ T list_pop_front(list_t *list) {
     return elem;
 }
 
+/**
+ * @brief Remove the last element of the list_t object.
+ * @param list The list_t object.
+ * @return Returns the removed element if successful, otherwise returns NULL.
+ */
 T list_pop_back(list_t *list) {
     node_t *node = NULL;
     T elem = NULL;
@@ -282,6 +386,13 @@ T list_pop_back(list_t *list) {
     return elem;
 }
 
+/**
+ * @brief Insert the specified element at the specified position in the list_t object.
+ * @param list The list_t object.
+ * @param index The index.
+ * @param elem The element.
+ * @return Returns the modified list_t object.
+ */
 list_t *list_insert(list_t *list, size_t index, T elem) {
     return_value_if_fail(list != NULL, NULL);
     return_value_if_fail(index >= 0 && index <= list->size, list);
@@ -312,6 +423,12 @@ list_t *list_insert(list_t *list, size_t index, T elem) {
     return list;
 }
 
+/**
+ * @brief Removes the element at the specified position in the list_t object.
+ * @param list The list_t object.
+ * @param index The index.
+ * @return Returns the removed element if successful, otherwise returns NULL.
+ */
 T list_remove(list_t *list, size_t index) {
     node_t *node = NULL;
     T elem = NULL;
@@ -337,6 +454,11 @@ T list_remove(list_t *list, size_t index) {
     }
 }
 
+/**
+ * @brief Reverse the list_t object.
+ * @param list The list_t object.
+ * @return Returns the modified list_t object.
+ */
 list_t *list_reverse(list_t *list) {
     node_t *node = NULL;
     node_t *next = NULL;
@@ -358,6 +480,11 @@ list_t *list_reverse(list_t *list) {
     return list;
 }
 
+/**
+ * @brief Create an iterator for an list_t object.
+ * @param list The list_t object.
+ * @return Returns the iterator for container.
+ */
 iterator_t *list_iterator_create(const list_t *list) {
     iterator_t *iterator = NULL;
 
@@ -371,16 +498,30 @@ iterator_t *list_iterator_create(const list_t *list) {
     return iterator;
 }
 
+/**
+ * @brief Destroy an iterator.
+ * @param iterator The iterator_t object.
+ */
 void list_iterator_destroy(iterator_t *iterator) {
     return_if_fail(iterator != NULL);
     free(iterator);
 }
 
+/**
+ * @brief Determine whether an iterator has the next element.
+ * @param iterator The iterator_t object.
+ * @return Returns true if the iterator has the next element, otherwise returns false.
+ */
 bool list_iterator_has_next(const iterator_t *iterator) {
     return_value_if_fail(iterator != NULL, false);
     return iterator->current != NULL;
 }
 
+/**
+ * @brief Get the next element of an iterator.
+ * @param iterator The iterator_t object.
+ * @return Returns the next element of the iterator.
+ */
 T list_iterator_next(iterator_t *iterator) {
     T elem = NULL;
 

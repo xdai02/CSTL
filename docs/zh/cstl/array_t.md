@@ -352,7 +352,7 @@ T array_remove(array_t *array, size_t index);
     - `array`：`array_t`对象。
     - `index`：下标。
 - 返回值
-    - 返回修改后的`array_t`对象。
+    - 返回被删除的元素，失败返回`NULL`。
 - 用例
 
 ```c
@@ -382,7 +382,7 @@ size_t array_index_of(const array_t *array, T elem);
     - `array`：`array_t`对象。
     - `elem`：元素。
 - 返回值
-    - 返回`array_t`对象指定元素的下标。
+    - 返回`array_t`对象指定元素的下标，找不到返回`-1`。
 - 用例
 
 ```c
