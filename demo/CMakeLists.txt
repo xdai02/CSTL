@@ -35,7 +35,7 @@ foreach(demo_src ${DEMO_SOURCES})
     
     # Create an executable for each .c file in the 'demo' directory
     add_executable(${demo_name} ${demo_src} $<TARGET_OBJECTS:coop>)
-    target_include_directories(${demo_name} PRIVATE ${INC_DIR} ${INC_DIR}/utils${INC_DIR}/cstl)
+    target_include_directories(${demo_name} PRIVATE ${INC_DIR} ${INC_DIR}/utils ${INC_DIR}/cstl)
 endforeach()
 
 # Clean up CMake generated files
@@ -44,7 +44,7 @@ add_custom_target(clean_all
     COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/CMakeCache.txt"
     COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/cmake_install.cmake"
     COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/Makefile"
-    COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/cMakeCComppilerId"
+    COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/CMakeCCompilerId"
     COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_string"
     COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_array"
     COMMENT "Cleaning up CMake generated files"
