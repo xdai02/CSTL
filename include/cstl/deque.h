@@ -8,7 +8,7 @@ typedef struct deque_t deque_t;
 /**
  * @brief Create a deque_t object.
  * @param destroy Callback function for destroying a data item.
- * @return Return the created deque_t object if successful, otherwise return NULL.
+ * @return Returns the created deque_t object if successful, otherwise return NULL.
  */
 deque_t *deque_create(destroy_t destroy);
 

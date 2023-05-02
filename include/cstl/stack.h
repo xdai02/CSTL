@@ -8,7 +8,7 @@ typedef struct stack_t stack_t;
 /**
  * @brief Create a stack_t object.
  * @param destroy Callback function for destroying a data item.
- * @return Return the created stack_t object if successful, otherwise return NULL.
+ * @return Returns the created stack_t object if successful, otherwise return NULL.
  */
 stack_t *stack_create(destroy_t destroy);
 

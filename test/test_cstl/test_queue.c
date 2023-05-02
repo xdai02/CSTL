@@ -79,7 +79,7 @@ void test_queue_dequeue() {
     queue_destroy(queue);
 }
 
-void test_queue_get_front() {
+void test_queue_peek() {
     const int N = 100;
     int i = 0;
     queue_t *queue = NULL;
@@ -90,26 +90,7 @@ void test_queue_get_front() {
         queue_enqueue(queue, Integer_new(i));
     }
     for (i = 0; i < N; i++) {
-        assert(Integer_valueOf(queue_get_front(queue)) == i);
-        integer = (Integer *)queue_dequeue(queue);
-        Integer_delete(integer);
-    }
-    assert(queue_size(queue) == 0);
-    queue_destroy(queue);
-}
-
-void test_queue_get_back() {
-    const int N = 100;
-    int i = 0;
-    queue_t *queue = NULL;
-    Integer *integer;
-
-    queue = queue_create(Integer_delete);
-    for (i = 0; i < N; i++) {
-        queue_enqueue(queue, Integer_new(i));
-    }
-    for (i = 0; i < N; i++) {
-        assert(Integer_valueOf(queue_get_back(queue)) == N - 1);
+        assert(Integer_valueOf(queue_peek(queue)) == i);
         integer = (Integer *)queue_dequeue(queue);
         Integer_delete(integer);
     }

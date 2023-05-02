@@ -2,10 +2,8 @@
 #include "coop.h"
 
 int main() {
-    // Create a string of fruits.
     string_t *fruits = string_create("APPLE, Banana, cherry, DURIAN");
 
-    // Split by comma and space.
     char **tokens = string_split(fruits, ", ");
 
     // Convert all fruit names to lowercase.
@@ -24,7 +22,6 @@ int main() {
     }
     free(tokens);
 
-    // Destroy the string_t object.
     string_destroy(fruits);
 
     return 0;

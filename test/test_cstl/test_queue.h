@@ -8,7 +8,6 @@ void test_queue_size();
 void test_queue_clear();
 void test_queue_enqueue();
 void test_queue_dequeue();
-void test_queue_get_front();
-void test_queue_get_back();
+void test_queue_peek();
 
 #endif

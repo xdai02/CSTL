@@ -9,7 +9,7 @@ struct queue_t {
 /**
  * @brief Create a queue_t object.
  * @param destroy Callback function for destroying a data item.
- * @return Return the created queue_t object if successful, otherwise return NULL.
+ * @return Returns the created queue_t object if successful, otherwise return NULL.
  */
 queue_t *queue_create(destroy_t destroy) {
     queue_t *queue = (queue_t *)malloc(sizeof(queue_t));
@@ -80,7 +80,7 @@ queue_t *queue_enqueue(queue_t *queue, T elem) {
 /**
  * @brief Dequeue an element from an queue_t object.
  * @param queue The queue_t object.
- * @return Returns the popped element.
+ * @return Returns the dequeued element.
  */
 T queue_dequeue(queue_t *queue) {
     return_value_if_fail(queue != NULL, NULL);
@@ -92,17 +92,7 @@ T queue_dequeue(queue_t *queue) {
  * @param queue The queue_t object.
  * @return Returns the front element.
  */
-T queue_get_front(const queue_t *queue) {
+T queue_peek(const queue_t *queue) {
     return_value_if_fail(queue != NULL, NULL);
     return list_get_front(queue->list);
-}
-
-/**
- * @brief Get the back element of an queue_t object.
- * @param queue The queue_t object.
- * @return Returns the back element.
- */
-T queue_get_back(const queue_t *queue) {
-    return_value_if_fail(queue != NULL, NULL);
-    return list_get_back(queue->list);
 }
