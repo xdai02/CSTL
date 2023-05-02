@@ -85,8 +85,54 @@ void test_list() {
     printf("[PASS] list\n");
 }
 
+void test_stack() {
+    test_stack_create();
+    test_stack_destroy();
+    test_stack_is_empty();
+    test_stack_size();
+    test_stack_clear();
+    test_stack_push();
+    test_stack_pop();
+    test_stack_peek();
+
+    printf("[PASS] stack\n");
+}
+
+void test_queue() {
+    test_queue_create();
+    test_queue_destroy();
+    test_queue_is_empty();
+    test_queue_size();
+    test_queue_clear();
+    test_queue_enqueue();
+    test_queue_dequeue();
+    test_queue_get_front();
+    test_queue_get_back();
+
+    printf("[PASS] queue\n");
+}
+
+void test_deque() {
+    test_deque_create();
+    test_deque_destroy();
+    test_deque_is_empty();
+    test_deque_size();
+    test_deque_clear();
+    test_deque_push_front();
+    test_deque_push_back();
+    test_deque_pop_front();
+    test_deque_pop_back();
+    test_deque_get_front();
+    test_deque_get_back();
+
+    printf("[PASS] deque\n");
+}
+
 void test_cstl() {
     test_str();
     test_array();
     test_list();
+    test_stack();
+    test_queue();
+    test_deque();
 }
