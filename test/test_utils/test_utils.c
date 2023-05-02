@@ -18,7 +18,7 @@ void test_random() {
     printf("[PASS] random\n");
 }
 
-void test_str() {
+void test_c_str() {
     test_str_clear();
     test_str_equal();
     test_str_equal_ignore_case();
@@ -42,7 +42,7 @@ void test_str() {
     test_str_replace_string();
     test_str_split();
 
-    printf("[PASS] str\n");
+    printf("[PASS] c_str\n");
 }
 
 void test_wrapper() {
@@ -64,6 +64,6 @@ void test_wrapper() {
 void test_utils() {
     test_numeric();
     test_random();
-    test_str();
+    test_c_str();
     test_wrapper();
 }

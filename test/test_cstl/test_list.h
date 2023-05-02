@@ -1,5 +1,5 @@
-#ifndef _TEST_CSTL_LIST_H_
-#define _TEST_CSTL_LIST_H_
+#ifndef _TEST_LIST_H_
+#define _TEST_LIST_H_
 
 void test_list_create();
 void test_list_destroy();

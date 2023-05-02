@@ -1,4 +1,4 @@
-#include "cstl_array.h"
+#include "array.h"
 #include "utils.h"
 
 struct array_t {
@@ -17,11 +17,8 @@ struct array_t {
  */
 array_t *array_create(compare_t compare, destroy_t destroy) {
     const int INITIAL_CAPACITY = 16;
-    array_t *array = NULL;
 
-    return_value_if_fail(compare != NULL, NULL);
-
-    array = (array_t *)malloc(sizeof(array_t));
+    array_t *array = (array_t *)malloc(sizeof(array_t));
     return_value_if_fail(array != NULL, NULL);
 
     array->data = (T *)malloc(sizeof(T) * INITIAL_CAPACITY);
@@ -224,6 +221,7 @@ size_t array_index_of(const array_t *array, T elem) {
     size_t i = 0;
 
     return_value_if_fail(array != NULL && elem != NULL, -1);
+    return_value_if_fail(array->compare != NULL, -1);
 
     for (i = 0; i < array->size; i++) {
         if (array->compare(array->data[i], elem) == 0) {
@@ -254,6 +252,7 @@ size_t array_count(const array_t *array, T elem) {
     size_t count = 0;
 
     return_value_if_fail(array != NULL && elem != NULL, 0);
+    return_value_if_fail(array->compare != NULL, 0);
 
     for (i = 0; i < array->size; i++) {
         if (array->compare(array->data[i], elem) == 0) {
@@ -303,6 +302,8 @@ static int __compare(const T a, const T b) {
  */
 array_t *array_sort(array_t *array) {
     return_value_if_fail(array != NULL, array);
+    return_value_if_fail(array->compare != NULL, array);
+
     compare = array->compare;
     qsort(array->data, array->size, sizeof(T), __compare);
     return array;

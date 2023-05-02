@@ -1,4 +1,4 @@
-#include "test_cstl_list.h"
+#include "test_list.h"
 #include "coop.h"
 #include <assert.h>
 
@@ -8,8 +8,6 @@ void test_list_create() {
     assert(list_is_empty(list) == true);
     assert(list_size(list) == 0);
     list_destroy(list);
-    list = list_create(NULL, NULL);
-    assert(list == NULL);
 }
 
 void test_list_destroy() {

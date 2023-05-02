@@ -1,5 +1,5 @@
-#ifndef _CSTL_STRING_H_
-#define _CSTL_STRING_H_
+#ifndef _STR_H_
+#define _STR_H_
 
 #include "utils.h"
 

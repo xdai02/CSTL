@@ -1,4 +1,4 @@
-#include "cstl_list.h"
+#include "list.h"
 #include "utils.h"
 
 typedef struct node_t {
@@ -36,11 +36,7 @@ static node_t *node_create(T elem) {
  * @return Returns the created list_t object if successful, otherwise returns NULL.
  */
 list_t *list_create(compare_t compare, destroy_t destroy) {
-    list_t *list = NULL;
-
-    return_value_if_fail(compare != NULL, NULL);
-
-    list = (list_t *)malloc(sizeof(list_t));
+    list_t *list = (list_t *)malloc(sizeof(list_t));
     return_value_if_fail(list != NULL, NULL);
 
     list->head = NULL;
@@ -205,6 +201,7 @@ int list_index_of(const list_t *list, T elem) {
     int index = 0;
 
     return_value_if_fail(list != NULL && elem != NULL, -1);
+    return_value_if_fail(list->compare != NULL, -1);
 
     node = list->head;
     while (node != NULL) {
@@ -241,6 +238,7 @@ size_t list_count(const list_t *list, T elem) {
     node_t *node = NULL;
 
     return_value_if_fail(list != NULL && elem != NULL, 0);
+    return_value_if_fail(list->compare != NULL, 0);
 
     node = list->head;
     while (node != NULL) {

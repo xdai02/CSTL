@@ -1,5 +1,5 @@
-#ifndef _STR_H_
-#define _STR_H_
+#ifndef _C_STR_H_
+#define _C_STR_H_
 
 #include "types.h"
 #include <stdio.h>

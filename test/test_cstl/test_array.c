@@ -1,4 +1,4 @@
-#include "test_cstl_array.h"
+#include "test_array.h"
 #include "coop.h"
 #include <assert.h>
 
@@ -8,8 +8,6 @@ void test_array_create() {
     assert(array_is_empty(array) == true);
     assert(array_size(array) == 0);
     array_destroy(array);
-    array = array_create(NULL, NULL);
-    assert(array == NULL);
 }
 
 void test_array_destroy() {

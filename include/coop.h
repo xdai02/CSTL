@@ -3,9 +3,11 @@
 
 #include "utils.h"
 #include "wrapper.h"
-#include "cstl_string.h"
 #include "iterator.h"
-#include "cstl_array.h"
-#include "cstl_list.h"
+#include "str.h"
+#include "array.h"
+#include "list.h"
+#include "stack.h"
+#include "deque.h"
 
 #endif

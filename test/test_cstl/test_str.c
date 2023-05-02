@@ -1,4 +1,4 @@
-#include "test_cstl_string.h"
+#include "test_str.h"
 #include "coop.h"
 #include <assert.h>
 

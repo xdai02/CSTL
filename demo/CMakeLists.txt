@@ -45,7 +45,8 @@ add_custom_target(clean_all
     COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/cmake_install.cmake"
     COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/Makefile"
     COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/CMakeCCompilerId"
-    COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_string"
+    COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_str"
     COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_array"
+    COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_list"
     COMMENT "Cleaning up CMake generated files"
 )

@@ -1,5 +1,5 @@
-#ifndef _CSTL_LIST_H_
-#define _CSTL_LIST_H_
+#ifndef _LIST_H_
+#define _LIST_H_
 
 #include "utils.h"
 #include "iterator.h"

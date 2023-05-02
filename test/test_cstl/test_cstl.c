@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "test_cstl.h"
 
-void test_cstl_string() {
+void test_str() {
     test_string_create();
     test_string_destroy();
     test_string_clone();
@@ -34,10 +34,10 @@ void test_cstl_string() {
     test_string_replace_string();
     test_string_split();
 
-    printf("[PASS] cstl_string\n");
+    printf("[PASS] str\n");
 }
 
-void test_cstl_array() {
+void test_array() {
     test_array_create();
     test_array_destroy();
     test_array_foreach();
@@ -56,10 +56,10 @@ void test_cstl_array() {
     test_array_sort();
     test_array_iterator();
 
-    printf("[PASS] cstl_array\n");
+    printf("[PASS] array\n");
 }
 
-void test_cstl_list() {
+void test_list() {
     test_list_create();
     test_list_destroy();
     test_list_foreach();
@@ -82,11 +82,11 @@ void test_cstl_list() {
     test_list_reverse();
     test_list_iterator();
 
-    printf("[PASS] cstl_list\n");
+    printf("[PASS] list\n");
 }
 
 void test_cstl() {
-    test_cstl_string();
-    test_cstl_array();
-    test_cstl_list();
+    test_str();
+    test_array();
+    test_list();
 }

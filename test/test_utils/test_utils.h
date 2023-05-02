@@ -3,7 +3,7 @@
 
 #include "test_numeric.h"
 #include "test_random.h"
-#include "test_str.h"
+#include "test_c_str.h"
 #include "test_wrapper.h"
 
 void test_utils();

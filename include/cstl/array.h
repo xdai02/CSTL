@@ -1,5 +1,5 @@
-#ifndef _CSTL_ARRAY_H_
-#define _CSTL_ARRAY_H_
+#ifndef _ARRAY_H_
+#define _ARRAY_H_
 
 #include "utils.h"
 #include "iterator.h"
