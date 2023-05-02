@@ -22,5 +22,7 @@ int main() {
     }
     printf("\n");
 
+    deque_destroy(deque);
+
     return 0;
 }

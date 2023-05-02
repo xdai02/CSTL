@@ -18,15 +18,15 @@
 
 ## cstl
 
-- [x] **cstl_string**: Implements a dynamic string type `string_t` with automatic memory management.
 - [x] **iterator**: Provides a common interface `iterator_t` for traversing various data structures.
-- [x] **cstl_array**: Implements a dynamic array `array_t` type with automatic resizing and memory management.
-- [x] **cstl_list**: Implements a doubly-linked list data structure `list_t` for efficient insertion and deletion operations.
-- [ ] **cstl_stack**: Implements a stack data structure `stack_t`, which is a Last-In-First-Out (LIFO) collection of elements.
-- [ ] **cstl_queue**: Implements a queue data structure `queue_t`, which is a First-In-First-Out (FIFO) collection of elements.
-- [ ] **cstl_deque**: Implements a double-ended queue (deque) data structure `deque_t`, which allows elements to be added or removed from both ends efficiently.
-- [ ] **cstl_set**: Implements a set data structure `set_t`, which is a collection of unique elements, without any specific order.
-- [ ] **cstl_map**: Provides a map data structure `map_t`, which is a collection of key-value pairs.
+- [x] **str**: Implements a dynamic string type `string_t` with automatic memory management.
+- [x] **array**: Implements a dynamic array `array_t` type with automatic resizing and memory management.
+- [x] **list**: Implements a doubly-linked list data structure `list_t` for efficient insertion and deletion operations.
+- [x] **stack**: Implements a stack data structure `stack_t`, which is a Last-In-First-Out (LIFO) collection of elements.
+- [x] **queue**: Implements a queue data structure `queue_t`, which is a First-In-First-Out (FIFO) collection of elements.
+- [x] **deque**: Implements a double-ended queue (deque) data structure `deque_t`, which allows elements to be added or removed from both ends efficiently.
+- [ ] **set**: Implements a set data structure `set_t`, which is a collection of unique elements, without any specific order.
+- [ ] **map**: Provides a map data structure `map_t`, which is a collection of key-value pairs.
 
 
 

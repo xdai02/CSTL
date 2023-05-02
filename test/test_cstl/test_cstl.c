@@ -106,8 +106,7 @@ void test_queue() {
     test_queue_clear();
     test_queue_enqueue();
     test_queue_dequeue();
-    test_queue_get_front();
-    test_queue_get_back();
+    test_queue_peek();
 
     printf("[PASS] queue\n");
 }

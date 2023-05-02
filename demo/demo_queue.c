@@ -15,5 +15,7 @@ int main() {
     }
     printf("\n");
 
+    queue_destroy(queue);
+
     return 0;
 }
