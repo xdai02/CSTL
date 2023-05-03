@@ -50,6 +50,11 @@ static void __destroy_node(node_t *node) {
     free(node);
 }
 
+static color_t __node_color(node_t *node) {
+    return_value_if_fail(node != NULL, BLACK);
+    return node->color;
+}
+
 red_black_tree_t *red_black_tree_create() {
     red_black_tree_t *tree = (red_black_tree_t *)malloc(sizeof(red_black_tree_t));
     return_value_if_fail(tree != NULL, NULL);
@@ -225,15 +230,176 @@ red_black_tree_t *red_black_tree_insert(red_black_tree_t *tree, int key) {
     return tree;
 }
 
+static node_t *__find_minimum(node_t *node) {
+    return_value_if_fail(node != NULL, NULL);
+    while (node->left != NULL) {
+        node = node->left;
+    }
+    return node;
+}
+
+static void __transplant(red_black_tree_t *tree, node_t *u, node_t *v) {
+    return_if_fail(tree != NULL);
+
+    if (u->parent == NULL) {
+        tree->root = v;
+    } else if (u == u->parent->left) {
+        u->parent->left = v;
+    } else {
+        u->parent->right = v;
+    }
+
+    if (v != NULL) {
+        v->parent = u->parent;
+    }
+}
+
+static void __remove_fixup(red_black_tree_t *tree, node_t *x) {
+    return_if_fail(tree != NULL && x != NULL);
+
+    while (x != tree->root && __node_color(x) == BLACK) {
+        if (x == x->parent->left) {
+            node_t *w = x->parent->right;
+            if (w == NULL) {
+                break;
+            }
+
+            if (__node_color(w) == RED) {
+                w->color = BLACK;
+                x->parent->color = RED;
+                __left_rotate(tree, x->parent);
+                w = x->parent->right;
+            }
+
+            if (w == NULL) {
+                break;
+            }
+
+            if (__node_color(w->left) == BLACK && __node_color(w->right) == BLACK) {
+                w->color = RED;
+                x = x->parent;
+            } else {
+                if (__node_color(w->right) == BLACK) {
+                    w->left->color = BLACK;
+                    w->color = RED;
+                    __right_rotate(tree, w);
+                    w = x->parent->right;
+                }
+
+                w->color = __node_color(x->parent);
+                x->parent->color = BLACK;
+                w->right->color = BLACK;
+                __left_rotate(tree, x->parent);
+                x = tree->root;
+            }
+        } else {
+            node_t *w = x->parent->left;
+            if (w == NULL) {
+                break;
+            }
+
+            if (__node_color(w) == RED) {
+                w->color = BLACK;
+                x->parent->color = RED;
+                __right_rotate(tree, x->parent);
+                w = x->parent->left;
+            }
+
+            if (w == NULL) {
+                break;
+            }
+
+            if (__node_color(w->right) == BLACK && __node_color(w->left) == BLACK) {
+                w->color = RED;
+                x = x->parent;
+            } else {
+                if (__node_color(w->left) == BLACK) {
+                    w->right->color = BLACK;
+                    w->color = RED;
+                    __left_rotate(tree, w);
+                    w = x->parent->left;
+                }
+
+                w->color = x->parent->color;
+                x->parent->color = BLACK;
+                w->left->color = BLACK;
+                __right_rotate(tree, x->parent);
+                x = tree->root;
+            }
+        }
+    }
+
+    x->color = BLACK;
+}
+
+red_black_tree_t *red_black_tree_remove(red_black_tree_t *tree, int key) {
+    return_value_if_fail(tree != NULL, NULL);
+
+    node_t *z = tree->root;
+    while (z != NULL) {
+        if (key < z->key) {
+            z = z->left;
+        } else if (key > z->key) {
+            z = z->right;
+        } else {
+            break;
+        }
+    }
+
+    if (z == NULL) {
+        return tree;  // Key not found in the tree
+    }
+
+    node_t *y = z;
+    color_t y_original_color = y->color;
+    node_t *x;
+
+    if (z->left == NULL) {
+        x = z->right;
+        __transplant(tree, z, z->right);
+    } else if (z->right == NULL) {
+        x = z->left;
+        __transplant(tree, z, z->left);
+    } else {
+        y = __find_minimum(z->right);
+        y_original_color = y->color;
+        x = y->right;
+
+        if (y->parent == z) {
+            if (x != NULL) {
+                x->parent = y;
+            }
+        } else {
+            __transplant(tree, y, y->right);
+            y->right = z->right;
+            y->right->parent = y;
+        }
+
+        __transplant(tree, z, y);
+        y->left = z->left;
+        y->left->parent = y;
+        y->color = z->color;
+    }
+
+    if (y_original_color == BLACK) {
+        __remove_fixup(tree, x);
+    }
+
+    free(z);
+    tree->size--;
+
+    return tree;
+}
+
 int main() {
     red_black_tree_t *tree = red_black_tree_create();
 
     srand(time(NULL));
-    const int N = 10000;
+    const int N = 100000;
     int num[N];
     for (int i = 0; i < N; i++) {
         num[i] = rand() % N;
-        printf("%d, ", num[i]);
+        // printf("%d, ", num[i]);
     }
     printf("\n");
 
@@ -241,14 +407,23 @@ int main() {
         red_black_tree_insert(tree, num[i]);
     }
 
+    // red_black_tree_inorder(tree);
+    printf("------------------\n");
+
+    // for (int i = 0; i < N; i++) {
+    //     int x = rand() % N;
+    //     printf("removing x: %d\n", x);
+    //     red_black_tree_remove(tree, x);
+    // }
+
+    while(!red_black_tree_is_empty(tree)) {
+        int x = rand() % N;
+        // printf("removing x: %d\n", x);
+        red_black_tree_remove(tree, x);
+    }
+
     red_black_tree_inorder(tree);
-
-    printf("size = %d\n", (int)red_black_tree_size(tree));
-    printf("empty = %d\n", red_black_tree_is_empty(tree));
-
-    red_black_tree_clear(tree);
-    printf("size = %d\n", (int)red_black_tree_size(tree));
-    printf("empty = %d\n", red_black_tree_is_empty(tree));
+    printf("------------------\n");
 
     red_black_tree_destroy(tree);
 
