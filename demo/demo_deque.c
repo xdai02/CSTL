@@ -13,11 +13,11 @@ int main() {
     Integer *integer;
     while (!deque_is_empty(deque)) {
         integer = deque_pop_front(deque);
-        printf("%d ", Integer_valueOf(integer));
+        printf("%d ", Integer_get(integer));
         Integer_delete(integer);
 
         integer = deque_pop_back(deque);
-        printf("%d ", Integer_valueOf(integer));
+        printf("%d ", Integer_get(integer));
         Integer_delete(integer);
     }
     printf("\n");

@@ -72,7 +72,7 @@ void test_stack_pop() {
     }
     for (i = 0; i < N; i++) {
         integer = (Integer *)stack_pop(stack);
-        assert(Integer_valueOf(integer) == N - i - 1);
+        assert(Integer_get(integer) == N - i - 1);
         Integer_delete(integer);
     }
     assert(stack_size(stack) == 0);
@@ -90,7 +90,7 @@ void test_stack_peek() {
         stack_push(stack, Integer_new(i));
     }
     for (i = 0; i < N; i++) {
-        assert(Integer_valueOf(stack_peek(stack)) == N - i - 1);
+        assert(Integer_get(stack_peek(stack)) == N - i - 1);
         integer = (Integer *)stack_pop(stack);
         Integer_delete(integer);
     }

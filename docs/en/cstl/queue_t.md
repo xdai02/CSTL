@@ -211,7 +211,7 @@ queue_t *queue = queue_create(Integer_delete);
 for (int i = 0; i < 10; i++) {
     queue_enqueue(queue, Integer_new(i));
 }
-printf("%d\n", Integer_valueOf(queue_peek(queue)));
+printf("%d\n", Integer_get(queue_peek(queue)));
 queue_destroy(queue);
 ```
 

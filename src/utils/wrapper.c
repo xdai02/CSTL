@@ -39,7 +39,7 @@ void Character_delete(void *ptr) {
  * @param character The pointer to the Character wrapper.
  * @return The primitive char value of the given Character wrapper.
  */
-char Character_valueOf(const Character *character) {
+char Character_get(const Character *character) {
     exit_if_fail(character != NULL);
     return character->value;
 }
@@ -117,7 +117,7 @@ void UnsignedCharacter_delete(void *ptr) {
  * @param uc The pointer to the UnsignedCharacter wrapper.
  * @return The primitive unsigned char value of the given UnsignedCharacter wrapper.
  */
-unsigned char UnsignedCharacter_valueOf(const UnsignedCharacter *uc) {
+unsigned char UnsignedCharacter_get(const UnsignedCharacter *uc) {
     exit_if_fail(uc != NULL);
     return uc->value;
 }
@@ -195,7 +195,7 @@ void Short_delete(void *ptr) {
  * @param s The pointer to the Short wrapper.
  * @return The primitive short value of the given Short wrapper.
  */
-short Short_valueOf(const Short *s) {
+short Short_get(const Short *s) {
     exit_if_fail(s != NULL);
     return s->value;
 }
@@ -273,7 +273,7 @@ void UnsignedShort_delete(void *ptr) {
  * @param us The pointer to the UnsignedShort wrapper.
  * @return The primitive unsigned short value of the given UnsignedShort wrapper.
  */
-unsigned short UnsignedShort_valueOf(const UnsignedShort *us) {
+unsigned short UnsignedShort_get(const UnsignedShort *us) {
     exit_if_fail(us != NULL);
     return us->value;
 }
@@ -351,7 +351,7 @@ void Integer_delete(void *ptr) {
  * @param integer The pointer to the Integer wrapper.
  * @return The primitive int value of the given Integer wrapper.
  */
-int Integer_valueOf(const Integer *integer) {
+int Integer_get(const Integer *integer) {
     exit_if_fail(integer != NULL);
     return integer->value;
 }
@@ -429,7 +429,7 @@ void UnsignedInteger_delete(void *ptr) {
  * @param ui The pointer to the UnsignedInteger wrapper.
  * @return The primitive unsigned int value of the given UnsignedInteger wrapper.
  */
-unsigned int UnsignedInteger_valueOf(const UnsignedInteger *ui) {
+unsigned int UnsignedInteger_get(const UnsignedInteger *ui) {
     exit_if_fail(ui != NULL);
     return ui->value;
 }
@@ -507,7 +507,7 @@ void Long_delete(void *ptr) {
  * @param l The pointer to the Long wrapper.
  * @return The primitive long value of the given Long wrapper.
  */
-long Long_valueOf(const Long *l) {
+long Long_get(const Long *l) {
     exit_if_fail(l != NULL);
     return l->value;
 }
@@ -585,7 +585,7 @@ void UnsignedLong_delete(void *ptr) {
  * @param ul The pointer to the UnsignedLong wrapper.
  * @return The primitive unsigned long value of the given UnsignedLong wrapper.
  */
-unsigned long UnsignedLong_valueOf(const UnsignedLong *ul) {
+unsigned long UnsignedLong_get(const UnsignedLong *ul) {
     exit_if_fail(ul != NULL);
     return ul->value;
 }
@@ -663,7 +663,7 @@ void Float_delete(void *ptr) {
  * @param f The pointer to the Float wrapper.
  * @return The primitive float value of the given Float wrapper.
  */
-float Float_valueOf(const Float *f) {
+float Float_get(const Float *f) {
     exit_if_fail(f != NULL);
     return f->value;
 }
@@ -750,7 +750,7 @@ void Double_delete(void *ptr) {
  * @param d The pointer to the Double wrapper.
  * @return The primitive double value of the given Double wrapper.
  */
-double Double_valueOf(const Double *d) {
+double Double_get(const Double *d) {
     exit_if_fail(d != NULL);
     return d->value;
 }
@@ -837,7 +837,7 @@ void Boolean_delete(void *ptr) {
  * @param boolean The pointer to the Boolean wrapper.
  * @return The primitive bool value of the given Boolean wrapper.
  */
-bool Boolean_valueOf(const Boolean *boolean) {
+bool Boolean_get(const Boolean *boolean) {
     exit_if_fail(boolean != NULL);
     return boolean->value;
 }

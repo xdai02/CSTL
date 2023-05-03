@@ -20,7 +20,7 @@ struct list_t {
  * @param elem The element.
  * @return Returns the created node_t object if successful, otherwise returns NULL.
  */
-static node_t *node_create(T elem) {
+static node_t *__node_create(T elem) {
     node_t *node = (node_t *)malloc(sizeof(node_t));
     return_value_if_fail(node != NULL, NULL);
     node->data = elem;
@@ -284,7 +284,7 @@ list_t *list_push_front(list_t *list, T elem) {
     return_value_if_fail(list != NULL, NULL);
     return_value_if_fail(elem != NULL, list);
 
-    node = node_create(elem);
+    node = __node_create(elem);
     return_value_if_fail(node != NULL, list);
 
     if (list->size == 0) {
@@ -312,7 +312,7 @@ list_t *list_push_back(list_t *list, T elem) {
     return_value_if_fail(list != NULL, NULL);
     return_value_if_fail(elem != NULL, list);
 
-    node = node_create(elem);
+    node = __node_create(elem);
     return_value_if_fail(node != NULL, list);
 
     if (list->size == 0) {
@@ -407,7 +407,7 @@ list_t *list_insert(list_t *list, size_t index, T elem) {
         node = __node_get(list, index);
         return_value_if_fail(node != NULL, list);
 
-        new_node = node_create(elem);
+        new_node = __node_create(elem);
         return_value_if_fail(new_node != NULL, list);
 
         new_node->prev = node->prev;

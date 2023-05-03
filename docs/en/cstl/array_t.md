@@ -102,13 +102,13 @@ void array_foreach(array_t *array, visit_t visit);
 // Callback function for printing an integer
 void Integer_print(T elem) {
     Integer *integer = (Integer *)elem;
-    printf("%d ", Integer_valueOf(integer));
+    printf("%d ", Integer_get(integer));
 }
 
 // Callback function for tripling an integer
 void Integer_triple(T elem) {
     Integer *integer = (Integer *)elem;
-    Integer_set(integer, Integer_valueOf(integer) * 3);
+    Integer_set(integer, Integer_get(integer) * 3);
 }
 
 int main() {
@@ -244,7 +244,7 @@ for (int i = 0; i < 10; i++) {
 }
 
 Integer *integer = (Integer *)array_get(array, 5);
-printf("%d\n", Integer_valueOf(integer));
+printf("%d\n", Integer_get(integer));
 
 array_destroy(array);
 ```
@@ -605,7 +605,7 @@ for (i = 0; i < 10; i++) {
 iterator_t *iterator = array_iterator_create(array);
 while (array_iterator_has_next(iterator)) {
     integer = (Integer *)array_iterator_next(iterator);
-    printf("%d ", Integer_valueOf(integer));
+    printf("%d ", Integer_get(integer));
 }
 
 array_iterator_destroy(iterator);

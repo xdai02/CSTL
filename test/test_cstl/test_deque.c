@@ -61,7 +61,7 @@ void test_deque_push_front() {
     }
     assert(deque_size(deque) == N);
     for (i = 0; i < N; i++) {
-        assert(Integer_valueOf(deque_get_front(deque)) == N - i - 1);
+        assert(Integer_get(deque_get_front(deque)) == N - i - 1);
         integer = (Integer *)deque_pop_front(deque);
         Integer_delete(integer);
     }
@@ -80,7 +80,7 @@ void test_deque_push_back() {
     }
     assert(deque_size(deque) == N);
     for (i = 0; i < N; i++) {
-        assert(Integer_valueOf(deque_get_back(deque)) == N - i - 1);
+        assert(Integer_get(deque_get_back(deque)) == N - i - 1);
         integer = (Integer *)deque_pop_back(deque);
         Integer_delete(integer);
     }
@@ -100,7 +100,7 @@ void test_deque_pop_front() {
     assert(deque_size(deque) == N);
     for (i = 0; i < N; i++) {
         integer = (Integer *)deque_pop_front(deque);
-        assert(Integer_valueOf(integer) == i);
+        assert(Integer_get(integer) == i);
         Integer_delete(integer);
     }
     deque_destroy(deque);
@@ -119,7 +119,7 @@ void test_deque_pop_back() {
     assert(deque_size(deque) == N);
     for (i = 0; i < N; i++) {
         integer = (Integer *)deque_pop_back(deque);
-        assert(Integer_valueOf(integer) == N - i - 1);
+        assert(Integer_get(integer) == N - i - 1);
         Integer_delete(integer);
     }
     deque_destroy(deque);
@@ -137,7 +137,7 @@ void test_deque_get_front() {
     }
     assert(deque_size(deque) == N);
     for (i = 0; i < N; i++) {
-        assert(Integer_valueOf(deque_get_front(deque)) == i);
+        assert(Integer_get(deque_get_front(deque)) == i);
         integer = (Integer *)deque_pop_front(deque);
         Integer_delete(integer);
     }
@@ -156,7 +156,7 @@ void test_deque_get_back() {
     }
     assert(deque_size(deque) == N);
     for (i = 0; i < N; i++) {
-        assert(Integer_valueOf(deque_get_back(deque)) == N - i - 1);
+        assert(Integer_get(deque_get_back(deque)) == N - i - 1);
         integer = (Integer *)deque_pop_back(deque);
         Integer_delete(integer);
     }

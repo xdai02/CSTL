@@ -38,12 +38,12 @@ void Character_delete(void *ptr);
 
 
 
-### Character_valueOf()
+### Character_get()
 
 - 原型
 
 ```c
-char Character_valueOf(const Character *character);
+char Character_get(const Character *character);
 ```
 
 - 描述
@@ -112,7 +112,7 @@ int Character_compare(const void *ptr1, const void *ptr2);
 Character *c1 = Character_new('A');
 Character *c2 = Character_new('B');
 
-printf("%c\n", Character_valueOf(c1));
+printf("%c\n", Character_get(c1));
 printf("%d\n", Character_compare(c1, c2));
 
 Character_set(c1, 'B');
@@ -158,12 +158,12 @@ void UnsignedCharacter_delete(void *ptr);
 
 
 
-### UnsignedCharacter_valueOf()
+### UnsignedCharacter_get()
 
 - 原型
 
 ```c
-unsigned char UnsignedCharacter_valueOf(const UnsignedCharacter *uc);
+unsigned char UnsignedCharacter_get(const UnsignedCharacter *uc);
 ```
 
 - 描述
@@ -232,7 +232,7 @@ int UnsignedCharacter_compare(const void *ptr1, const void *ptr2);
 UnsignedCharacter *uc1 = UnsignedCharacter_new('A');
 UnsignedCharacter *uc2 = UnsignedCharacter_new('B');
 
-printf("%u\n", UnsignedCharacter_valueOf(uc1));
+printf("%u\n", UnsignedCharacter_get(uc1));
 printf("%d\n", UnsignedCharacter_compare(uc1, uc2));
 
 UnsignedCharacter_set(uc1, 'B');
@@ -278,12 +278,12 @@ void Short_delete(void *ptr);
 
 
 
-### Short_valueOf()
+### Short_get()
 
 - 原型
 
 ```c
-short Short_valueOf(const Short *s);
+short Short_get(const Short *s);
 ```
 
 - 描述
@@ -352,7 +352,7 @@ int Short_compare(const void *ptr1, const void *ptr2);
 Short *s1 = Short_new(1);
 Short *s2 = Short_new(2);
 
-printf("%hi\n", Short_valueOf(s1));
+printf("%hi\n", Short_get(s1));
 printf("%d\n", Short_compare(s1, s2));
 
 Short_set(s1, 2);
@@ -398,12 +398,12 @@ void UnsignedShort_delete(void *ptr);
 
 
 
-### UnsignedShort_valueOf()
+### UnsignedShort_get()
 
 - 原型
 
 ```c
-unsigned short UnsignedShort_valueOf(const UnsignedShort *us);
+unsigned short UnsignedShort_get(const UnsignedShort *us);
 ```
 
 - 描述
@@ -472,7 +472,7 @@ int UnsignedShort_compare(const void *ptr1, const void *ptr2);
 UnsignedShort *us1 = UnsignedShort_new(1);
 UnsignedShort *us2 = UnsignedShort_new(2);
 
-printf("%hu\n", UnsignedShort_valueOf(us1));
+printf("%hu\n", UnsignedShort_get(us1));
 printf("%d\n", UnsignedShort_compare(us1, us2));
 
 UnsignedShort_set(us1, 2);
@@ -518,12 +518,12 @@ void Integer_delete(void *ptr);
 
 
 
-### Integer_valueOf()
+### Integer_get()
 
 - 原型
 
 ```c
-int Integer_valueOf(const Integer *integer);
+int Integer_get(const Integer *integer);
 ```
 
 - 描述
@@ -592,7 +592,7 @@ int Integer_compare(const void *ptr1, const void *ptr2);
 Integer *i1 = Integer_new(1);
 Integer *i2 = Integer_new(2);
 
-printf("%d\n", Integer_valueOf(i1));
+printf("%d\n", Integer_get(i1));
 printf("%d\n", Integer_compare(i1, i2));
 
 Integer_set(i1, 2);
@@ -638,12 +638,12 @@ void UnsignedInteger_delete(void *ptr);
 
 
 
-### UnsignedInteger_valueOf()
+### UnsignedInteger_get()
 
 - 原型
 
 ```c
-unsigned int UnsignedInteger_valueOf(const UnsignedInteger *ui);
+unsigned int UnsignedInteger_get(const UnsignedInteger *ui);
 ```
 
 - 描述
@@ -712,7 +712,7 @@ int UnsignedInteger_compare(const void *ptr1, const void *ptr2);
 UnsignedInteger *ui1 = UnsignedInteger_new(1U);
 UnsignedInteger *ui2 = UnsignedInteger_new(2U);
 
-printf("%u\n", UnsignedInteger_valueOf(ui1));
+printf("%u\n", UnsignedInteger_get(ui1));
 printf("%d\n", UnsignedInteger_compare(ui1, ui2));
 
 UnsignedInteger_set(ui1, 2U);
@@ -758,12 +758,12 @@ void Long_delete(void *ptr);
 
 
 
-### Long_valueOf()
+### Long_get()
 
 - 原型
 
 ```c
-long Long_valueOf(const Long *l);
+long Long_get(const Long *l);
 ```
 
 - 描述
@@ -832,7 +832,7 @@ int Long_compare(const void *ptr1, const void *ptr2);
 Long *l1 = Long_new(1L);
 Long *l2 = Long_new(2L);
 
-printf("%ld\n", Long_valueOf(l1));
+printf("%ld\n", Long_get(l1));
 printf("%d\n", Long_compare(l1, l2));
 
 Long_set(l1, 2L);
@@ -878,12 +878,12 @@ void UnsignedLong_delete(void *ptr);
 
 
 
-### UnsignedLong_valueOf()
+### UnsignedLong_get()
 
 - 原型
 
 ```c
-unsigned long UnsignedLong_valueOf(const UnsignedLong *ul);
+unsigned long UnsignedLong_get(const UnsignedLong *ul);
 ```
 
 - 描述
@@ -952,7 +952,7 @@ int UnsignedLong_compare(const void *ptr1, const void *ptr2);
 UnsignedLong *ul1 = UnsignedLong_new(1UL);
 UnsignedLong *ul2 = UnsignedLong_new(2UL);
 
-printf("%lu\n", UnsignedLong_valueOf(ul1));
+printf("%lu\n", UnsignedLong_get(ul1));
 printf("%d\n", UnsignedLong_compare(ul1, ul2));
 
 UnsignedLong_set(ul1, 2UL);
@@ -998,12 +998,12 @@ void Float_delete(void *ptr);
 
 
 
-### Float_valueOf()
+### Float_get()
 
 - 原型
 
 ```c
-float Float_valueOf(const Float *f);
+float Float_get(const Float *f);
 ```
 
 - 描述
@@ -1072,7 +1072,7 @@ int Float_compare(const void *ptr1, const void *ptr2);
 Float *f1 = Float_new(1.1f);
 Float *f2 = Float_new(2.2f);
 
-printf("%f\n", Float_valueOf(f1));
+printf("%f\n", Float_get(f1));
 printf("%d\n", Float_compare(f1, f2));
 
 Float_set(f1, 2.2f);
@@ -1118,12 +1118,12 @@ void Double_delete(void *ptr);
 
 
 
-### Double_valueOf()
+### Double_get()
 
 - 原型
 
 ```c
-double Double_valueOf(const Double *d);
+double Double_get(const Double *d);
 ```
 
 - 描述
@@ -1192,7 +1192,7 @@ int Double_compare(const void *ptr1, const void *ptr2);
 Double *d1 = Double_new(1.1);
 Double *d2 = Double_new(2.2);
 
-printf("%f\n", Double_valueOf(d1));
+printf("%f\n", Double_get(d1));
 printf("%d\n", Double_compare(d1, d2));
 
 Double_set(d1, 2.2);
@@ -1238,12 +1238,12 @@ void Boolean_delete(void *ptr);
 
 
 
-### Boolean_valueOf()
+### Boolean_get()
 
 - 原型
 
 ```c
-bool Boolean_valueOf(const Boolean *boolean);
+bool Boolean_get(const Boolean *boolean);
 ```
 
 - 描述
@@ -1312,7 +1312,7 @@ int Boolean_compare(const void *ptr1, const void *ptr2);
 Boolean *b1 = Boolean_new(true);
 Boolean *b2 = Boolean_new(false);
 
-printf("%d\n", Boolean_valueOf(b1));
+printf("%d\n", Boolean_get(b1));
 printf("%d\n", Boolean_compare(b1, b2));
 
 Boolean_set(b1, false);

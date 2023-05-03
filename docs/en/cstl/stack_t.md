@@ -211,7 +211,7 @@ stack_t *stack = stack_create(Integer_delete);
 for (int i = 0; i < 10; i++) {
     stack_push(stack, Integer_new(i));
 }
-printf("%d\n", Integer_valueOf(stack_peek(stack)));
+printf("%d\n", Integer_get(stack_peek(stack)));
 stack_destroy(stack);
 ```
 

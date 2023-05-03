@@ -102,13 +102,13 @@ void list_foreach(list_t *list, visit_t visit);
 // Callback function for printing an integer
 void Integer_print(T elem) {
     Integer *integer = (Integer *)elem;
-    printf("%d ", Integer_valueOf(integer));
+    printf("%d ", Integer_get(integer));
 }
 
 // Callback function for tripling an integer
 void Integer_triple(T elem) {
     Integer *integer = (Integer *)elem;
-    Integer_set(integer, Integer_valueOf(integer) * 3);
+    Integer_set(integer, Integer_get(integer) * 3);
 }
 
 int main() {
@@ -244,7 +244,7 @@ for (int i = 0; i < 10; i++) {
 }
 
 Integer *integer = (Integer *)list_get(list, 5);
-printf("%d\n", Integer_valueOf(integer));
+printf("%d\n", Integer_get(integer));
 
 list_destroy(list);
 ```
@@ -409,7 +409,7 @@ for (int i = 0; i < 10; i++) {
 }
 
 Integer *integer = (Integer *)list_get_front(list);
-printf("%d\n", Integer_valueOf(integer));
+printf("%d\n", Integer_get(integer));
 
 list_destroy(list);
 ```
@@ -440,7 +440,7 @@ for (int i = 0; i < 10; i++) {
 }
 
 Integer *integer = (Integer *)list_get_back(list);
-printf("%d\n", Integer_valueOf(integer));
+printf("%d\n", Integer_get(integer));
 
 list_destroy(list);
 ```
@@ -529,7 +529,7 @@ for (int i = 0; i < 10; i++) {
 }
 
 Integer *integer = (Integer *)list_pop_front(list);
-printf("%d\n", Integer_valueOf(integer));
+printf("%d\n", Integer_get(integer));
 
 list_destroy(list);
 ```
@@ -560,7 +560,7 @@ for (int i = 0; i < 10; i++) {
 }
 
 Integer *integer = (Integer *)list_pop_back(list);
-printf("%d\n", Integer_valueOf(integer));
+printf("%d\n", Integer_get(integer));
 
 list_destroy(list);
 ```
@@ -729,7 +729,7 @@ for (i = 0; i < 10; i++) {
 iterator_t *iterator = list_iterator_create(list);
 while (list_iterator_has_next(iterator)) {
     integer = (Integer *)list_iterator_next(iterator);
-    printf("%d ", Integer_valueOf(integer));
+    printf("%d ", Integer_get(integer));
 }
 
 list_iterator_destroy(iterator);

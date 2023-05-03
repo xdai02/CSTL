@@ -10,7 +10,7 @@ int main() {
 
     while (!queue_is_empty(queue)) {
         Integer *integer = queue_dequeue(queue);
-        printf("%d ", Integer_valueOf(integer));
+        printf("%d ", Integer_get(integer));
         Integer_delete(integer);
     }
     printf("\n");

@@ -72,7 +72,7 @@ void test_queue_dequeue() {
     }
     for (i = 0; i < N; i++) {
         integer = (Integer *)queue_dequeue(queue);
-        assert(Integer_valueOf(integer) == i);
+        assert(Integer_get(integer) == i);
         Integer_delete(integer);
     }
     assert(queue_size(queue) == 0);
@@ -90,7 +90,7 @@ void test_queue_peek() {
         queue_enqueue(queue, Integer_new(i));
     }
     for (i = 0; i < N; i++) {
-        assert(Integer_valueOf(queue_peek(queue)) == i);
+        assert(Integer_get(queue_peek(queue)) == i);
         integer = (Integer *)queue_dequeue(queue);
         Integer_delete(integer);
     }

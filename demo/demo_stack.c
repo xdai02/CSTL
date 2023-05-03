@@ -10,7 +10,7 @@ int main() {
 
     while (!stack_is_empty(stack)) {
         Integer *integer = stack_pop(stack);
-        printf("%d ", Integer_valueOf(integer));
+        printf("%d ", Integer_get(integer));
         Integer_delete(integer);
     }
     printf("\n");

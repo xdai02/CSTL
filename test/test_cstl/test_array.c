@@ -21,13 +21,13 @@ static int n = 0;
 
 static void Integer_store(T elem) {
     Integer *integer = (Integer *)elem;
-    buffer[n] = Integer_valueOf(integer);
+    buffer[n] = Integer_get(integer);
     n++;
 }
 
 static void Integer_triple(T elem) {
     Integer *integer = (Integer *)elem;
-    Integer_set(integer, Integer_valueOf(integer) * 3);
+    Integer_set(integer, Integer_get(integer) * 3);
 }
 
 void test_array_foreach() {
@@ -50,7 +50,7 @@ void test_array_foreach() {
     array_foreach(array, Integer_triple);
 
     for (i = 0; i < N; i++) {
-        assert(Integer_valueOf(array_get(array, i)) == i * 3);
+        assert(Integer_get(array_get(array, i)) == i * 3);
     }
 
     array_destroy(array);
@@ -97,7 +97,7 @@ void test_array_get() {
     }
     for (i = 'A'; i <= 'Z'; i++) {
         Character *c = (Character *)array_get(array, i - 'A');
-        assert(Character_valueOf(c) == i);
+        assert(Character_get(c) == i);
     }
     array_destroy(array);
 }
@@ -114,7 +114,7 @@ void test_array_set() {
     }
     for (i = 0; i < N; i++) {
         Long *l = (Long *)array_get(array, i);
-        assert(Long_valueOf(l) == i * 2);
+        assert(Long_get(l) == i * 2);
     }
     array_destroy(array);
 }
@@ -130,7 +130,7 @@ void test_array_append() {
     }
     for (i = 0; i < N; i++) {
         Integer *integer = (Integer *)array_get(array, i);
-        assert(Integer_valueOf(integer) == i);
+        assert(Integer_get(integer) == i);
     }
     array_destroy(array);
 
@@ -140,7 +140,7 @@ void test_array_append() {
     }
     for (i = 0; i < N; i++) {
         Float *f = (Float *)array_get(array, i);
-        assert(float_equal(Float_valueOf(f), i));
+        assert(float_equal(Float_get(f), i));
     }
     array_destroy(array);
 }
@@ -156,7 +156,7 @@ void test_array_insert() {
     }
     for (i = 0; i < N; i++) {
         Integer *integer = (Integer *)array_get(array, i);
-        assert(Integer_valueOf(integer) == i);
+        assert(Integer_get(integer) == i);
     }
     array_destroy(array);
 
@@ -166,11 +166,11 @@ void test_array_insert() {
     array_insert(array, 1, Double_new(3.3));
     array_insert(array, 3, Double_new(4.4));
     array_insert(array, 2, Double_new(5.5));
-    assert(double_equal(Double_valueOf((Double *)array_get(array, 0)), 2.2));
-    assert(double_equal(Double_valueOf((Double *)array_get(array, 1)), 3.3));
-    assert(double_equal(Double_valueOf((Double *)array_get(array, 2)), 5.5));
-    assert(double_equal(Double_valueOf((Double *)array_get(array, 3)), 1.1));
-    assert(double_equal(Double_valueOf((Double *)array_get(array, 4)), 4.4));
+    assert(double_equal(Double_get((Double *)array_get(array, 0)), 2.2));
+    assert(double_equal(Double_get((Double *)array_get(array, 1)), 3.3));
+    assert(double_equal(Double_get((Double *)array_get(array, 2)), 5.5));
+    assert(double_equal(Double_get((Double *)array_get(array, 3)), 1.1));
+    assert(double_equal(Double_get((Double *)array_get(array, 4)), 4.4));
     array_destroy(array);
 }
 
@@ -187,7 +187,7 @@ void test_array_remove() {
     }
     for (i = 0; i < N; i++) {
         integer = (Integer *)array_remove(array, 0);
-        assert(Integer_valueOf(integer) == i);
+        assert(Integer_get(integer) == i);
         Integer_delete(integer);
     }
     assert(array_size(array) == 0);
@@ -201,20 +201,20 @@ void test_array_remove() {
     array_append(array, Boolean_new(true));
 
     boolean = array_remove(array, 0);
-    assert(Boolean_valueOf(boolean) == true);
+    assert(Boolean_get(boolean) == true);
     Boolean_delete(boolean);
 
     boolean = array_remove(array, 2);
-    assert(Boolean_valueOf(boolean) == false);
+    assert(Boolean_get(boolean) == false);
     Boolean_delete(boolean);
 
     boolean = array_remove(array, 1);
-    assert(Boolean_valueOf(boolean) == true);
+    assert(Boolean_get(boolean) == true);
     Boolean_delete(boolean);
 
     assert(array_size(array) == 2);
-    assert(Boolean_valueOf((Boolean *)array_get(array, 0)) == false);
-    assert(Boolean_valueOf((Boolean *)array_get(array, 1)) == true);
+    assert(Boolean_get((Boolean *)array_get(array, 0)) == false);
+    assert(Boolean_get((Boolean *)array_get(array, 1)) == true);
     array_destroy(array);
 }
 
@@ -307,7 +307,7 @@ void test_array_reverse() {
     array_reverse(array);
     for (i = 0; i < N; i++) {
         Integer *integer = (Integer *)array_get(array, i);
-        assert(Integer_valueOf(integer) == N - i - 1);
+        assert(Integer_get(integer) == N - i - 1);
     }
     array_destroy(array);
 }
@@ -329,7 +329,7 @@ void test_array_sort() {
     for (i = 0; i < N - 1; i++) {
         integer1 = (Integer *)array_get(array, i);
         integer2 = (Integer *)array_get(array, i + 1);
-        assert(Integer_valueOf(integer1) <= Integer_valueOf(integer2));
+        assert(Integer_get(integer1) <= Integer_get(integer2));
     }
 
     array_destroy(array);
@@ -342,7 +342,7 @@ void test_array_sort() {
     for (i = 0; i < N - 1; i++) {
         double1 = (Double *)array_get(array, i);
         double2 = (Double *)array_get(array, i + 1);
-        assert(Double_valueOf(double1) <= Double_valueOf(double2));
+        assert(Double_get(double1) <= Double_get(double2));
     }
     array_destroy(array);
 }
@@ -364,7 +364,7 @@ void test_array_iterator() {
     i = 0;
     while (array_iterator_has_next(iterator)) {
         integer = (Integer *)array_iterator_next(iterator);
-        assert(Integer_valueOf(integer) == i);
+        assert(Integer_get(integer) == i);
         i++;
     }
 

@@ -4,13 +4,13 @@
 // Callback function for printing an integer
 void Integer_print(T elem) {
     Integer *integer = (Integer *)elem;
-    printf("%d ", Integer_valueOf(integer));
+    printf("%d ", Integer_get(integer));
 }
 
 // Callback function for tripling an integer
 void Integer_triple(T elem) {
     Integer *integer = (Integer *)elem;
-    Integer_set(integer, Integer_valueOf(integer) * 3);
+    Integer_set(integer, Integer_get(integer) * 3);
 }
 
 int main() {

@@ -265,7 +265,7 @@ deque_t *deque= deque_create(Integer_delete);
 for (int i = 0; i < 10; i++) {
     deque_push_back(deque, Integer_new(i));
 }
-printf("%d\n", Integer_valueOf(deque_get_front(deque)));
+printf("%d\n", Integer_get(deque_get_front(deque)));
 deque_destroy(deque);
 ```
 
@@ -292,7 +292,7 @@ deque_t *deque= deque_create(Integer_delete);
 for (int i = 0; i < 10; i++) {
     deque_push_back(deque, Integer_new(i));
 }
-printf("%d\n", Integer_valueOf(deque_get_back(deque)));
+printf("%d\n", Integer_get(deque_get_back(deque)));
 deque_destroy(deque);
 ```
 

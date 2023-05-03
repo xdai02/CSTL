@@ -21,13 +21,13 @@ static int n = 0;
 
 static void Integer_store(T elem) {
     Integer *integer = (Integer *)elem;
-    buffer[n] = Integer_valueOf(integer);
+    buffer[n] = Integer_get(integer);
     n++;
 }
 
 static void Integer_triple(T elem) {
     Integer *integer = (Integer *)elem;
-    Integer_set(integer, Integer_valueOf(integer) * 3);
+    Integer_set(integer, Integer_get(integer) * 3);
 }
 
 void test_list_foreach() {
@@ -50,7 +50,7 @@ void test_list_foreach() {
     list_foreach(list, Integer_triple);
 
     for (i = 0; i < N; i++) {
-        assert(Integer_valueOf(list_get(list, i)) == i * 3);
+        assert(Integer_get(list_get(list, i)) == i * 3);
     }
 
     list_destroy(list);
@@ -97,7 +97,7 @@ void test_list_get() {
     }
     for (i = 'A'; i <= 'Z'; i++) {
         Character *c = (Character *)list_get(list, i - 'A');
-        assert(Character_valueOf(c) == i);
+        assert(Character_get(c) == i);
     }
     list_destroy(list);
 }
@@ -115,7 +115,7 @@ void test_list_set() {
     }
     for (i = 0; i < N; i++) {
         Long *l = (Long *)list_get(list, i);
-        assert(Long_valueOf(l) == i * 2);
+        assert(Long_get(l) == i * 2);
     }
     list_destroy(list);
 }
@@ -211,7 +211,7 @@ void test_list_get_front() {
     }
 
     integer = (Integer *)list_get_front(list);
-    assert(Integer_valueOf(integer) == 0);
+    assert(Integer_get(integer) == 0);
 
     list_destroy(list);
 }
@@ -228,7 +228,7 @@ void test_list_get_back() {
     }
 
     integer = (Integer *)list_get_back(list);
-    assert(Integer_valueOf(integer) == N - 1);
+    assert(Integer_get(integer) == N - 1);
 
     list_destroy(list);
 }
@@ -246,7 +246,7 @@ void test_list_push_front() {
 
     for (i = 0; i < N; i++) {
         integer = (Integer *)list_get(list, i);
-        assert(Integer_valueOf(integer) == N - 1 - i);
+        assert(Integer_get(integer) == N - 1 - i);
     }
 
     list_destroy(list);
@@ -263,7 +263,7 @@ void test_list_push_back() {
     }
     for (i = 0; i < N; i++) {
         Integer *integer = (Integer *)list_get(list, i);
-        assert(Integer_valueOf(integer) == i);
+        assert(Integer_get(integer) == i);
     }
     list_destroy(list);
 
@@ -273,7 +273,7 @@ void test_list_push_back() {
     }
     for (i = 0; i < N; i++) {
         Float *f = (Float *)list_get(list, i);
-        assert(float_equal(Float_valueOf(f), i));
+        assert(float_equal(Float_get(f), i));
     }
     list_destroy(list);
 }
@@ -291,7 +291,7 @@ void test_list_pop_front() {
 
     for (i = 0; i < N; i++) {
         integer = (Integer *)list_pop_front(list);
-        assert(Integer_valueOf(integer) == i);
+        assert(Integer_get(integer) == i);
         Integer_delete(integer);
     }
 
@@ -311,7 +311,7 @@ void test_list_pop_back() {
 
     for (i = 0; i < N; i++) {
         integer = (Integer *)list_pop_back(list);
-        assert(Integer_valueOf(integer) == N - 1 - i);
+        assert(Integer_get(integer) == N - 1 - i);
         Integer_delete(integer);
     }
 
@@ -329,7 +329,7 @@ void test_list_insert() {
     }
     for (i = 0; i < N; i++) {
         Integer *integer = (Integer *)list_get(list, i);
-        assert(Integer_valueOf(integer) == i);
+        assert(Integer_get(integer) == i);
     }
     list_destroy(list);
 
@@ -339,11 +339,11 @@ void test_list_insert() {
     list_insert(list, 1, Double_new(3.3));
     list_insert(list, 3, Double_new(4.4));
     list_insert(list, 2, Double_new(5.5));
-    assert(double_equal(Double_valueOf((Double *)list_get(list, 0)), 2.2));
-    assert(double_equal(Double_valueOf((Double *)list_get(list, 1)), 3.3));
-    assert(double_equal(Double_valueOf((Double *)list_get(list, 2)), 5.5));
-    assert(double_equal(Double_valueOf((Double *)list_get(list, 3)), 1.1));
-    assert(double_equal(Double_valueOf((Double *)list_get(list, 4)), 4.4));
+    assert(double_equal(Double_get((Double *)list_get(list, 0)), 2.2));
+    assert(double_equal(Double_get((Double *)list_get(list, 1)), 3.3));
+    assert(double_equal(Double_get((Double *)list_get(list, 2)), 5.5));
+    assert(double_equal(Double_get((Double *)list_get(list, 3)), 1.1));
+    assert(double_equal(Double_get((Double *)list_get(list, 4)), 4.4));
     list_destroy(list);
 }
 
@@ -360,7 +360,7 @@ void test_list_remove() {
     }
     for (i = 0; i < N; i++) {
         integer = (Integer *)list_remove(list, 0);
-        assert(Integer_valueOf(integer) == i);
+        assert(Integer_get(integer) == i);
         Integer_delete(integer);
     }
     assert(list_size(list) == 0);
@@ -374,20 +374,20 @@ void test_list_remove() {
     list_push_back(list, Boolean_new(true));
 
     boolean = list_remove(list, 0);
-    assert(Boolean_valueOf(boolean) == true);
+    assert(Boolean_get(boolean) == true);
     Boolean_delete(boolean);
 
     boolean = list_remove(list, 2);
-    assert(Boolean_valueOf(boolean) == false);
+    assert(Boolean_get(boolean) == false);
     Boolean_delete(boolean);
 
     boolean = list_remove(list, 1);
-    assert(Boolean_valueOf(boolean) == true);
+    assert(Boolean_get(boolean) == true);
     Boolean_delete(boolean);
 
     assert(list_size(list) == 2);
-    assert(Boolean_valueOf((Boolean *)list_get(list, 0)) == false);
-    assert(Boolean_valueOf((Boolean *)list_get(list, 1)) == true);
+    assert(Boolean_get((Boolean *)list_get(list, 0)) == false);
+    assert(Boolean_get((Boolean *)list_get(list, 1)) == true);
     list_destroy(list);
 }
 
@@ -401,7 +401,7 @@ void test_list_reverse() {
     list_reverse(list);
     for (i = 0; i < N; i++) {
         Integer *integer = (Integer *)list_get(list, i);
-        assert(Integer_valueOf(integer) == N - i - 1);
+        assert(Integer_get(integer) == N - i - 1);
     }
     list_destroy(list);
 }
@@ -423,7 +423,7 @@ void test_list_iterator() {
     i = 0;
     while (list_iterator_has_next(iterator)) {
         integer = (Integer *)list_iterator_next(iterator);
-        assert(Integer_valueOf(integer) == i);
+        assert(Integer_get(integer) == i);
         i++;
     }
 
