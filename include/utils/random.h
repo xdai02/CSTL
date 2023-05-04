@@ -17,4 +17,20 @@ int randint(int min, int max);
  */
 double uniform(double min, double max);
 
+/**
+ * @brief Shuffle an array.
+ * @param array The array to be shuffled.
+ * @param n The length of the array.
+ * @param type The type of the array.
+ */
+#define shuffle(array, n, type)                 \
+    do {                                        \
+        int i;                                  \
+        int j;                                  \
+        for (i = (n)-1; i > 0; i--) {           \
+            j = randint(0, i);                  \
+            swap((array)[i], (array)[j], type); \
+        }                                       \
+    } while (0)
+
 #endif

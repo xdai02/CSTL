@@ -2,6 +2,8 @@
 #include "coop.h"
 #include <assert.h>
 
+#define N 1000
+
 void test_queue_create() {
     queue_t *queue = queue_create(UnsignedCharacter_delete);
     assert(queue != NULL);
@@ -11,7 +13,7 @@ void test_queue_create() {
 }
 
 void test_queue_destroy() {
-    queue_t *queue = queue_create(UnsignedCharacter_delete);
+    queue_t *queue = queue_create(UnsignedShort_delete);
     assert(queue != NULL);
     queue_destroy(queue);
 }
@@ -25,7 +27,6 @@ void test_queue_is_empty() {
 }
 
 void test_queue_size() {
-    const int N = 1000;
     int i = 0;
     queue_t *queue = queue_create(UnsignedLong_delete);
     assert(queue_size(queue) == 0);
@@ -37,7 +38,6 @@ void test_queue_size() {
 }
 
 void test_queue_clear() {
-    const int N = 100;
     int i = 0;
     queue_t *queue = queue_create(Short_delete);
     for (i = 0; i < N; i++) {
@@ -45,12 +45,11 @@ void test_queue_clear() {
     }
     assert(queue_size(queue) == N);
     queue_clear(queue);
-    assert(queue_size(queue) == 0);
+    assert(queue_is_empty(queue) == true);
     queue_destroy(queue);
 }
 
 void test_queue_enqueue() {
-    const int N = 100;
     int i = 0;
     queue_t *queue = queue_create(Integer_delete);
     for (i = 0; i < N; i++) {
@@ -61,7 +60,6 @@ void test_queue_enqueue() {
 }
 
 void test_queue_dequeue() {
-    const int N = 100;
     int i = 0;
     queue_t *queue = NULL;
     Integer *integer;
@@ -80,7 +78,6 @@ void test_queue_dequeue() {
 }
 
 void test_queue_peek() {
-    const int N = 100;
     int i = 0;
     queue_t *queue = NULL;
     Integer *integer;
@@ -94,6 +91,6 @@ void test_queue_peek() {
         integer = (Integer *)queue_dequeue(queue);
         Integer_delete(integer);
     }
-    assert(queue_size(queue) == 0);
+    assert(queue_is_empty(queue) == true);
     queue_destroy(queue);
 }

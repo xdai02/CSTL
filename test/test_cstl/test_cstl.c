@@ -127,6 +127,20 @@ void test_deque() {
     printf("[PASS] deque\n");
 }
 
+void test_red_black_tree() {
+    test_red_black_tree_create();
+    test_red_black_tree_destroy();
+    test_red_black_tree_is_empty();
+    test_red_black_tree_size();
+    test_red_black_tree_clear();
+    test_red_black_tree_contains();
+    test_red_black_tree_foreach();
+    test_red_black_tree_insert();
+    test_red_black_tree_remove();
+
+    printf("[PASS] red_black_tree\n");
+}
+
 void test_cstl() {
     test_str();
     test_array();
@@ -134,4 +148,5 @@ void test_cstl() {
     test_stack();
     test_queue();
     test_deque();
+    test_red_black_tree();
 }

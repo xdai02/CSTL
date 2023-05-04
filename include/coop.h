@@ -10,5 +10,6 @@
 #include "stack.h"
 #include "queue.h"
 #include "deque.h"
+#include "red_black_tree.h"
 
 #endif

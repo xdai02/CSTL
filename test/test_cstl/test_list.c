@@ -2,6 +2,8 @@
 #include "coop.h"
 #include <assert.h>
 
+#define N 1000
+
 void test_list_create() {
     list_t *list = list_create(UnsignedCharacter_compare, UnsignedCharacter_delete);
     assert(list != NULL);
@@ -16,7 +18,7 @@ void test_list_destroy() {
     list_destroy(list);
 }
 
-static int buffer[100] = {0};
+static int buffer[N] = {0};
 static int n = 0;
 
 static void Integer_store(T elem) {
@@ -31,7 +33,6 @@ static void Integer_triple(T elem) {
 }
 
 void test_list_foreach() {
-    const int N = 100;
     int i = 0;
     list_t *list = NULL;
 
@@ -65,7 +66,6 @@ void test_list_is_empty() {
 }
 
 void test_list_size() {
-    const int N = 1000;
     int i = 0;
     list_t *list = list_create(UnsignedLong_compare, UnsignedLong_delete);
     assert(list_size(list) == 0);
@@ -77,7 +77,6 @@ void test_list_size() {
 }
 
 void test_list_clear() {
-    const int N = 100;
     int i = 0;
     list_t *list = list_create(Short_compare, Short_delete);
     for (i = 0; i < N; i++) {
@@ -85,7 +84,7 @@ void test_list_clear() {
     }
     assert(list_size(list) == N);
     list_clear(list);
-    assert(list_size(list) == 0);
+    assert(list_is_empty(list) == true);
     list_destroy(list);
 }
 
@@ -103,7 +102,6 @@ void test_list_get() {
 }
 
 void test_list_set() {
-    const int N = 1000;
     int i = 0;
 
     list_t *list = list_create(Long_compare, Long_delete);
@@ -121,7 +119,6 @@ void test_list_set() {
 }
 
 void test_list_index_of() {
-    const int N = 100;
     int i = 0;
     Integer *integer;
 
@@ -138,7 +135,6 @@ void test_list_index_of() {
 }
 
 void test_list_contains() {
-    const int N = 100;
     int i = 0;
     Integer *integer;
 
@@ -161,14 +157,16 @@ void test_list_contains() {
 }
 
 void test_list_count() {
-    int arr[] = {9, 1, 2, 8, 2, 5, 2, 8, 9, 1, 2, 8, 2, 5, 2, 8};
-    const int N = sizeof(arr) / sizeof(arr[0]);
-
+    list_t *list = NULL;
+    Integer *integer;
     int i = 0;
-    Integer *integer = NULL;
+    int n;
 
-    list_t *list = list_create(Integer_compare, Integer_delete);
-    for (i = 0; i < N; i++) {
+    int arr[] = {9, 1, 2, 8, 2, 5, 2, 8, 9, 1, 2, 8, 2, 5, 2, 8};
+    n = sizeof(arr) / sizeof(arr[0]);
+
+    list = list_create(Integer_compare, Integer_delete);
+    for (i = 0; i < n; i++) {
         list_push_back(list, Integer_new(arr[i]));
     }
 
@@ -200,7 +198,6 @@ void test_list_count() {
 }
 
 void test_list_get_front() {
-    const int N = 10;
     int i = 0;
     list_t *list = NULL;
     Integer *integer;
@@ -217,7 +214,6 @@ void test_list_get_front() {
 }
 
 void test_list_get_back() {
-    const int N = 10;
     int i = 0;
     list_t *list = NULL;
     Integer *integer;
@@ -234,7 +230,6 @@ void test_list_get_back() {
 }
 
 void test_list_push_front() {
-    const int N = 1000;
     int i = 0;
     list_t *list = NULL;
     Integer *integer;
@@ -253,7 +248,6 @@ void test_list_push_front() {
 }
 
 void test_list_push_back() {
-    const int N = 1000;
     int i = 0;
     list_t *list = NULL;
 
@@ -279,7 +273,6 @@ void test_list_push_back() {
 }
 
 void test_list_pop_front() {
-    const int N = 1000;
     int i = 0;
     list_t *list = NULL;
     Integer *integer;
@@ -299,7 +292,6 @@ void test_list_pop_front() {
 }
 
 void test_list_pop_back() {
-    const int N = 1000;
     int i = 0;
     list_t *list = NULL;
     Integer *integer;
@@ -319,7 +311,6 @@ void test_list_pop_back() {
 }
 
 void test_list_insert() {
-    const int N = 1000;
     int i = 0;
     list_t *list = NULL;
 
@@ -348,7 +339,6 @@ void test_list_insert() {
 }
 
 void test_list_remove() {
-    const int N = 1000;
     int i = 0;
     Integer *integer;
     Boolean *boolean;
@@ -363,7 +353,7 @@ void test_list_remove() {
         assert(Integer_get(integer) == i);
         Integer_delete(integer);
     }
-    assert(list_size(list) == 0);
+    assert(list_is_empty(list) == true);
     list_destroy(list);
 
     list = list_create(Boolean_compare, Boolean_delete);
@@ -392,7 +382,6 @@ void test_list_remove() {
 }
 
 void test_list_reverse() {
-    const int N = 1000;
     int i = 0;
     list_t *list = list_create(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
@@ -407,7 +396,6 @@ void test_list_reverse() {
 }
 
 void test_list_iterator() {
-    const int N = 1000;
     int i = 0;
     list_t *list = NULL;
     iterator_t *iterator = NULL;

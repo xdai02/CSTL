@@ -3,5 +3,6 @@
 
 void test_randint();
 void test_uniform();
+void test_shuffle();
 
 #endif

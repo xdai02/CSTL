@@ -50,3 +50,17 @@ void test_uniform() {
         assert(x >= 2000.0 && x <= 5000.0);
     }
 }
+
+void test_shuffle() {
+    const int N = 100;
+    int *arr = (int *)malloc(N * sizeof(int));
+    int i = 0;
+    for (i = 0; i < N; i++) {
+        arr[i] = i;
+    }
+    shuffle(arr, N, int);
+    for (i = 0; i < N; i++) {
+        assert(arr[i] >= 0 && arr[i] < N);
+    }
+    free(arr);
+}

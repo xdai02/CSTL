@@ -2,6 +2,8 @@
 #include "coop.h"
 #include <assert.h>
 
+#define N 1000
+
 void test_stack_create() {
     stack_t *stack = stack_create(UnsignedCharacter_delete);
     assert(stack != NULL);
@@ -11,7 +13,7 @@ void test_stack_create() {
 }
 
 void test_stack_destroy() {
-    stack_t *stack = stack_create(UnsignedCharacter_delete);
+    stack_t *stack = stack_create(UnsignedShort_delete);
     assert(stack != NULL);
     stack_destroy(stack);
 }
@@ -25,7 +27,6 @@ void test_stack_is_empty() {
 }
 
 void test_stack_size() {
-    const int N = 1000;
     int i = 0;
     stack_t *stack = stack_create(UnsignedLong_delete);
     assert(stack_size(stack) == 0);
@@ -37,7 +38,6 @@ void test_stack_size() {
 }
 
 void test_stack_clear() {
-    const int N = 100;
     int i = 0;
     stack_t *stack = stack_create(Short_delete);
     for (i = 0; i < N; i++) {
@@ -45,12 +45,11 @@ void test_stack_clear() {
     }
     assert(stack_size(stack) == N);
     stack_clear(stack);
-    assert(stack_size(stack) == 0);
+    assert(stack_is_empty(stack) == true);
     stack_destroy(stack);
 }
 
 void test_stack_push() {
-    const int N = 100;
     int i = 0;
     stack_t *stack = stack_create(Integer_delete);
     for (i = 0; i < N; i++) {
@@ -61,7 +60,6 @@ void test_stack_push() {
 }
 
 void test_stack_pop() {
-    const int N = 100;
     int i = 0;
     stack_t *stack = NULL;
     Integer *integer;
@@ -80,7 +78,6 @@ void test_stack_pop() {
 }
 
 void test_stack_peek() {
-    const int N = 100;
     int i = 0;
     stack_t *stack = NULL;
     Integer *integer;
@@ -94,6 +91,6 @@ void test_stack_peek() {
         integer = (Integer *)stack_pop(stack);
         Integer_delete(integer);
     }
-    assert(stack_size(stack) == 0);
+    assert(stack_is_empty(stack) == true);
     stack_destroy(stack);
 }

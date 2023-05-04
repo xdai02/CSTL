@@ -14,6 +14,7 @@ void test_numeric() {
 void test_random() {
     test_randint();
     test_uniform();
+    test_shuffle();
 
     printf("[PASS] random\n");
 }

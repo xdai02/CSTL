@@ -6,6 +6,8 @@
 
 ## T
 
+- Prototype
+
 ```c
 #define T void*
 ```
@@ -33,6 +35,8 @@ array_t *array_create() {
 
 
 ## compare_t
+
+- Prototype
 
 ```c
 typedef int (*compare_t)(const T data1, const T data2);
@@ -66,6 +70,8 @@ int person_compare(const T data1, const T data2) {
 
 ## destroy_t
 
+- Prototype
+
 ```c
 typedef void (*destroy_t)(T data);
 ```
@@ -91,6 +97,8 @@ void mystring_destroy(T data) {
 
 ## visit_t
 
+- Prototype
+
 ```c
 typedef void (*visit_t)(T data);
 ```
@@ -115,5 +123,4 @@ void employee_print(T data) {
     printf("Employee Salary: %.2f\n", employee->salary);
 }
 ```
-
 

@@ -6,6 +6,8 @@
 
 ## bool
 
+- Prototype
+
 ```c
 typedef int bool;
 #define true 1

@@ -2,6 +2,8 @@
 #include "coop.h"
 #include <assert.h>
 
+#define N 1000
+
 void test_array_create() {
     array_t *array = array_create(UnsignedCharacter_compare, UnsignedCharacter_delete);
     assert(array != NULL);
@@ -16,7 +18,7 @@ void test_array_destroy() {
     array_destroy(array);
 }
 
-static int buffer[100] = {0};
+static int buffer[N] = {0};
 static int n = 0;
 
 static void Integer_store(T elem) {
@@ -31,7 +33,6 @@ static void Integer_triple(T elem) {
 }
 
 void test_array_foreach() {
-    const int N = 100;
     int i = 0;
     array_t *array = NULL;
 
@@ -65,7 +66,6 @@ void test_array_is_empty() {
 }
 
 void test_array_size() {
-    const int N = 1000;
     int i = 0;
     array_t *array = array_create(UnsignedLong_compare, UnsignedLong_delete);
     assert(array_size(array) == 0);
@@ -77,7 +77,6 @@ void test_array_size() {
 }
 
 void test_array_clear() {
-    const int N = 100;
     int i = 0;
     array_t *array = array_create(Short_compare, Short_delete);
     for (i = 0; i < N; i++) {
@@ -85,7 +84,7 @@ void test_array_clear() {
     }
     assert(array_size(array) == N);
     array_clear(array);
-    assert(array_size(array) == 0);
+    assert(array_is_empty(array) == true);
     array_destroy(array);
 }
 
@@ -103,7 +102,6 @@ void test_array_get() {
 }
 
 void test_array_set() {
-    const int N = 1000;
     int i = 0;
     array_t *array = array_create(Long_compare, Long_delete);
     for (i = 0; i < N; i++) {
@@ -120,7 +118,6 @@ void test_array_set() {
 }
 
 void test_array_append() {
-    const int N = 1000;
     int i = 0;
     array_t *array = NULL;
 
@@ -146,7 +143,6 @@ void test_array_append() {
 }
 
 void test_array_insert() {
-    const int N = 1000;
     int i = 0;
     array_t *array = NULL;
 
@@ -175,7 +171,6 @@ void test_array_insert() {
 }
 
 void test_array_remove() {
-    const int N = 1000;
     int i = 0;
     Integer *integer;
     Boolean *boolean;
@@ -190,7 +185,7 @@ void test_array_remove() {
         assert(Integer_get(integer) == i);
         Integer_delete(integer);
     }
-    assert(array_size(array) == 0);
+    assert(array_is_empty(array) == true);
     array_destroy(array);
 
     array = array_create(Boolean_compare, Boolean_delete);
@@ -219,7 +214,6 @@ void test_array_remove() {
 }
 
 void test_array_index_of() {
-    const int N = 100;
     int i = 0;
     Integer *integer;
 
@@ -236,7 +230,6 @@ void test_array_index_of() {
 }
 
 void test_array_contains() {
-    const int N = 100;
     int i = 0;
     Integer *integer;
 
@@ -254,19 +247,21 @@ void test_array_contains() {
         }
         Integer_delete(integer);
     }
-    
+
     array_destroy(array);
 }
 
 void test_array_count() {
-    int arr[] = {9, 1, 2, 8, 2, 5, 2, 8, 9, 1, 2, 8, 2, 5, 2, 8};
-    const int N = sizeof(arr) / sizeof(arr[0]);
-
+    array_t *array = NULL;
+    Integer *integer;
     int i = 0;
-    Integer *integer = NULL;
+    int n;
 
-    array_t *array = array_create(Integer_compare, Integer_delete);
-    for (i = 0; i < N; i++) {
+    int arr[] = {9, 1, 2, 8, 2, 5, 2, 8, 9, 1, 2, 8, 2, 5, 2, 8};
+    n = sizeof(arr) / sizeof(arr[0]);
+
+    array = array_create(Integer_compare, Integer_delete);
+    for (i = 0; i < n; i++) {
         array_append(array, Integer_new(arr[i]));
     }
 
@@ -298,7 +293,6 @@ void test_array_count() {
 }
 
 void test_array_reverse() {
-    const int N = 1000;
     int i = 0;
     array_t *array = array_create(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
@@ -313,7 +307,6 @@ void test_array_reverse() {
 }
 
 void test_array_sort() {
-    const int N = 100;
     int i = 0;
     array_t *array = NULL;
     Integer *integer1;
@@ -348,7 +341,6 @@ void test_array_sort() {
 }
 
 void test_array_iterator() {
-    const int N = 1000;
     int i = 0;
     array_t *array = NULL;
     iterator_t *iterator = NULL;

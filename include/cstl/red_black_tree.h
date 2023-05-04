@@ -47,7 +47,7 @@ red_black_tree_t *red_black_tree_clear(red_black_tree_t *tree);
  * @param key The key.
  * @return Returns true if the red_black_tree_t object contains the key, otherwise returns false.
  */
-bool red_black_tree_contains(const red_black_tree_t *tree, T key)
+bool red_black_tree_contains(const red_black_tree_t *tree, T key);
 
 /**
  * @brief Traverse the red_black_tree_t object.

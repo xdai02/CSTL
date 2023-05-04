@@ -6,6 +6,8 @@
 
 ## bool
 
+- 原型
+
 ```c
 typedef int bool;
 #define true 1

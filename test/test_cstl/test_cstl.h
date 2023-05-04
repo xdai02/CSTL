@@ -7,6 +7,7 @@
 #include "test_stack.h"
 #include "test_queue.h"
 #include "test_deque.h"
+#include "test_red_black_tree.h"
 
 void test_cstl();
 

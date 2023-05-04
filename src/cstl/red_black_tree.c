@@ -13,12 +13,12 @@ typedef struct node_t {
     struct node_t *parent;
 } node_t;
 
-typedef struct red_black_tree_t {
+struct red_black_tree_t {
     node_t *root;
     size_t size;
     compare_t compare;
     destroy_t destroy;
-} red_black_tree_t;
+};
 
 /**
  * @brief Create a node_t object.
@@ -124,7 +124,7 @@ size_t red_black_tree_size(const red_black_tree_t *tree) {
  */
 red_black_tree_t *red_black_tree_clear(red_black_tree_t *tree) {
     return_value_if_fail(tree != NULL, NULL);
-    __destroy_node(tree->root);
+    __node_destroy(tree, tree->root);
     tree->root = NULL;
     tree->size = 0;
     return tree;
@@ -178,43 +178,6 @@ void red_black_tree_foreach(red_black_tree_t *tree, visit_t visit) {
     return_if_fail(tree != NULL && visit != NULL);
     __inorder(tree->root, visit);
 }
-
-// TODO: DEBUG ONLY
-#if 0
-void red_black_tree_level_order(const red_black_tree_t *tree) {
-    return_if_fail(tree != NULL);
-    if (tree->root == NULL) {
-        return;
-    }
-
-    node_t *queue[tree->size * 2];  // Increase the queue size to account for NIL nodes
-    size_t front = 0;
-    size_t rear = 0;
-    queue[rear++] = tree->root;
-    while (front < rear) {
-        node_t *node = queue[front++];
-        if (node != NULL) {
-            printf("%d (%s)", node->key, node->color == RED ? "RED" : "BLACK");
-        } else {
-            printf("NIL");
-        }
-
-        if (node != NULL && node->left != NULL) {
-            queue[rear++] = node->left;
-        } else if (node != NULL) {
-            queue[rear++] = NULL;  // Enqueue NULL for left NIL node
-        }
-
-        if (node != NULL && node->right != NULL) {
-            queue[rear++] = node->right;
-        } else if (node != NULL) {
-            queue[rear++] = NULL;  // Enqueue NULL for right NIL node
-        }
-
-        printf("\n");
-    }
-}
-#endif
 
 /**
  * @brief Get the grandparent node of a node.
@@ -395,11 +358,15 @@ red_black_tree_t *red_black_tree_insert(red_black_tree_t *tree, T key) {
  * @return Returns the minimum node if exists, otherwise returns NULL.
  */
 static node_t *__red_black_tree_min_node(const node_t *node) {
+    node_t *min_node = NULL;
+
     return_value_if_fail(node != NULL, NULL);
-    while (node->left != NULL) {
-        node = node->left;
+
+    min_node = (node_t *)node;
+    while (min_node->left != NULL) {
+        min_node = min_node->left;
     }
-    return node;
+    return min_node;
 }
 
 /**
@@ -537,12 +504,11 @@ red_black_tree_t *red_black_tree_remove(red_black_tree_t *tree, T key) {
         }
     }
 
-    // key not found
+    /* key not found */
     return_value_if_fail(z != NULL, tree);
 
     y = z;
     y_original_color = y->color;
-    x;
 
     if (z->left == NULL) {
         x = z->right;
@@ -575,7 +541,11 @@ red_black_tree_t *red_black_tree_remove(red_black_tree_t *tree, T key) {
         __remove_fixup(tree, x);
     }
 
+    z->left = NULL;
+    z->right = NULL;
+    z->parent = NULL;
     __node_destroy(tree, z);
+
     tree->size--;
     return tree;
 }

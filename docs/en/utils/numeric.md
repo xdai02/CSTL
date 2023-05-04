@@ -6,8 +6,10 @@
 
 ## min()
 
+- Prototype
+
 ```c
-#define min(x, y) (((x) < (y)) ? (x) : (y))
+min(x, y)
 ```
 
 - Description
@@ -27,8 +29,10 @@ printf("%d\n", min(5, 10));
 
 ## max()
 
+- Prototype
+
 ```c
-#define max(x, y) (((x) > (y)) ? (x) : (y))
+max(x, y)
 ```
 
 - Description
@@ -48,13 +52,10 @@ printf("%d\n", max(5, 10));
 
 ## swap()
 
+- Prototype
+
 ```c
-#define swap(x, y, type) \
-    do {                 \
-        type temp = (x); \
-        (x) = (y);       \
-        (y) = temp;      \
-    } while (0)
+swap(x, y, type)
 ```
 
 - Description
@@ -124,5 +125,4 @@ if (double_equal(x, 3.14)) {
     // ...
 }
 ```
-
 

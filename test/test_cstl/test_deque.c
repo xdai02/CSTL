@@ -2,6 +2,8 @@
 #include "coop.h"
 #include <assert.h>
 
+#define N 1000
+
 void test_deque_create() {
     deque_t *deque = deque_create(UnsignedCharacter_delete);
     assert(deque != NULL);
@@ -11,7 +13,7 @@ void test_deque_create() {
 }
 
 void test_deque_destroy() {
-    deque_t *deque = deque_create(UnsignedCharacter_delete);
+    deque_t *deque = deque_create(UnsignedShort_delete);
     assert(deque != NULL);
     deque_destroy(deque);
 }
@@ -25,7 +27,6 @@ void test_deque_is_empty() {
 }
 
 void test_deque_size() {
-    const int N = 1000;
     int i = 0;
     deque_t *deque = deque_create(UnsignedLong_delete);
     assert(deque_size(deque) == 0);
@@ -37,7 +38,6 @@ void test_deque_size() {
 }
 
 void test_deque_clear() {
-    const int N = 100;
     int i = 0;
     deque_t *deque = deque_create(Short_delete);
     for (i = 0; i < N; i++) {
@@ -45,12 +45,11 @@ void test_deque_clear() {
     }
     assert(deque_size(deque) == N);
     deque_clear(deque);
-    assert(deque_size(deque) == 0);
+    assert(deque_is_empty(deque) == true);
     deque_destroy(deque);
 }
 
 void test_deque_push_front() {
-    const int N = 100;
     int i = 0;
     deque_t *deque = NULL;
     Integer *integer;
@@ -69,7 +68,6 @@ void test_deque_push_front() {
 }
 
 void test_deque_push_back() {
-    const int N = 100;
     int i = 0;
     deque_t *deque = NULL;
     Integer *integer;
@@ -88,7 +86,6 @@ void test_deque_push_back() {
 }
 
 void test_deque_pop_front() {
-    const int N = 100;
     int i = 0;
     deque_t *deque = NULL;
     Integer *integer;
@@ -107,7 +104,6 @@ void test_deque_pop_front() {
 }
 
 void test_deque_pop_back() {
-    const int N = 100;
     int i = 0;
     deque_t *deque = NULL;
     Integer *integer;
@@ -126,7 +122,6 @@ void test_deque_pop_back() {
 }
 
 void test_deque_get_front() {
-    const int N = 100;
     int i = 0;
     deque_t *deque = NULL;
     Integer *integer;
@@ -145,7 +140,6 @@ void test_deque_get_front() {
 }
 
 void test_deque_get_back() {
-    const int N = 100;
     int i = 0;
     deque_t *deque = NULL;
     Integer *integer;

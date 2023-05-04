@@ -6,11 +6,10 @@
 
 ## return_if_fail()
 
+- Prototype
+
 ```c
-#define return_if_fail(expr) \
-    if (!(expr)) {           \
-        return;              \
-    }
+return_if_fail(expr)
 ```
 
 - Description
@@ -33,11 +32,10 @@ void array_print(int *arr, int n) {
 
 ## return_value_if_fail()
 
+- Prototype
+
 ```c
-#define return_value_if_fail(expr, ret) \
-    if (!(expr)) {                      \
-        return (ret);                   \
-    }
+return_value_if_fail(expr, ret)
 ```
 
 - Description
@@ -59,11 +57,10 @@ char *str_clear(char *str) {
 
 ## exit_if_fail()
 
+- Prototype
+
 ```c
-#define exit_if_fail(expr)  \
-    if (!(expr)) {          \
-        exit(EXIT_FAILURE); \
-    }
+exit_if_fail(expr)
 ```
 
 - Description

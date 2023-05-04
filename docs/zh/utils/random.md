@@ -48,3 +48,27 @@ double uniform(double min, double max);
 printf("%f\n", uniform(0, 1));
 ```
 
+
+
+## shuffle()
+
+- 原型
+
+```c
+shuffle(array, n, type)
+```
+
+- 描述
+    - 随机打乱数组。
+- Parameters
+    - `array`：待打乱数组。
+    - `n`：数组长度。
+    - `type`：数组类型。
+- 用例
+
+```c
+int arr[] = {1, 2, 3, 4, 5};
+int n = sizeof(arr) / sizeof(arr[0]);
+shuffle(arr, n, int);
+```
+

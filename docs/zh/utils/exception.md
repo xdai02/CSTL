@@ -6,11 +6,10 @@
 
 ## return_if_fail()
 
+- 原型
+
 ```c
-#define return_if_fail(expr) \
-    if (!(expr)) {           \
-        return;              \
-    }
+return_if_fail(expr)
 ```
 
 - 描述
@@ -33,11 +32,10 @@ void array_print(int *arr, int n) {
 
 ## return_value_if_fail()
 
+- 原型
+
 ```c
-#define return_value_if_fail(expr, ret) \
-    if (!(expr)) {                      \
-        return (ret);                   \
-    }
+return_value_if_fail(expr, ret)
 ```
 
 - 描述
@@ -59,11 +57,10 @@ char *str_clear(char *str) {
 
 ## exit_if_fail()
 
+- 原型
+
 ```c
-#define exit_if_fail(expr)  \
-    if (!(expr)) {          \
-        exit(EXIT_FAILURE); \
-    }
+exit_if_fail(expr)
 ```
 
 - 描述
@@ -78,5 +75,4 @@ float divide(int a, int b) {
     return (float)a / (float)b;
 }
 ```
-
 
