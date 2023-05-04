@@ -10,5 +10,6 @@ void test_red_black_tree_contains();
 void test_red_black_tree_foreach();
 void test_red_black_tree_insert();
 void test_red_black_tree_remove();
+void test_red_black_tree_iterator();
 
 #endif

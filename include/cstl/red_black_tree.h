@@ -2,6 +2,7 @@
 #define _RED_BLACK_TREE_H_
 
 #include "utils.h"
+#include "iterator.h"
 
 typedef struct red_black_tree_t red_black_tree_t;
 
@@ -72,5 +73,32 @@ red_black_tree_t *red_black_tree_insert(red_black_tree_t *tree, T key);
  * @return Returns the modified red_black_tree_t object.
  */
 red_black_tree_t *red_black_tree_remove(red_black_tree_t *tree, T key);
+
+/**
+ * @brief Create an iterator for an red_black_tree_t object.
+ * @param tree The red_black_tree_t object.
+ * @return Returns the iterator for container.
+ */
+iterator_t *red_black_tree_iterator_create(const red_black_tree_t *tree);
+
+/**
+ * @brief Destroy an iterator.
+ * @param iterator The iterator_t object.
+ */
+void red_black_tree_iterator_destroy(iterator_t *iterator);
+
+/**
+ * @brief Determine whether an iterator has the next element.
+ * @param iterator The iterator_t object.
+ * @return Returns true if the iterator has the next element, otherwise returns false.
+ */
+bool red_black_tree_iterator_has_next(const iterator_t *iterator);
+
+/**
+ * @brief Get the next element of an iterator.
+ * @param iterator The iterator_t object.
+ * @return Returns the next element of the iterator.
+ */
+T red_black_tree_iterator_next(iterator_t *iterator);
 
 #endif

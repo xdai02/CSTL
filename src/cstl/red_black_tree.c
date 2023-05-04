@@ -158,25 +158,25 @@ bool red_black_tree_contains(const red_black_tree_t *tree, T key) {
 }
 
 /**
- * @brief In-order traversal.
- * @param node The node_t object.
- * @param visit Callback function for visiting a data item.
- */
-static void __inorder(node_t *node, visit_t visit) {
-    return_if_fail(node != NULL && visit != NULL);
-    __inorder(node->left, visit);
-    visit(node->key);
-    __inorder(node->right, visit);
-}
-
-/**
  * @brief Traverse the red_black_tree_t object.
  * @param tree The red_black_tree_t object.
  * @param visit Callback function for visiting a data item.
  */
 void red_black_tree_foreach(red_black_tree_t *tree, visit_t visit) {
+    iterator_t *iterator = NULL;
+    T key = NULL;
+
     return_if_fail(tree != NULL && visit != NULL);
-    __inorder(tree->root, visit);
+
+    iterator = red_black_tree_iterator_create(tree);
+    return_if_fail(iterator != NULL);
+
+    while (red_black_tree_iterator_has_next(iterator)) {
+        key = red_black_tree_iterator_next(iterator);
+        visit(key);
+    }
+
+    red_black_tree_iterator_destroy(iterator);
 }
 
 /**
@@ -357,7 +357,7 @@ red_black_tree_t *red_black_tree_insert(red_black_tree_t *tree, T key) {
  * @param node The node_t object.
  * @return Returns the minimum node if exists, otherwise returns NULL.
  */
-static node_t *__red_black_tree_min_node(const node_t *node) {
+static node_t *__min_node(const node_t *node) {
     node_t *min_node = NULL;
 
     return_value_if_fail(node != NULL, NULL);
@@ -517,7 +517,7 @@ red_black_tree_t *red_black_tree_remove(red_black_tree_t *tree, T key) {
         x = z->left;
         __transplant(tree, z, z->left);
     } else {
-        y = __red_black_tree_min_node(z->right);
+        y = __min_node(z->right);
         y_original_color = y->color;
         x = y->right;
 
@@ -548,4 +548,79 @@ red_black_tree_t *red_black_tree_remove(red_black_tree_t *tree, T key) {
 
     tree->size--;
     return tree;
+}
+
+/**
+ * @brief Get the successor of a node.
+ * @param node The node_t object.
+ * @return Returns the successor of a node if exists, otherwise returns NULL.
+ */
+static node_t *__successor(node_t *node) {
+    node_t *successor = NULL;
+
+    return_value_if_fail(node != NULL, NULL);
+
+    if (node->right != NULL) {
+        return __min_node(node->right);
+    }
+
+    successor = node->parent;
+    while (successor != NULL && node == successor->right) {
+        node = successor;
+        successor = successor->parent;
+    }
+    return successor;
+}
+
+/**
+ * @brief Create an iterator for an red_black_tree_t object.
+ * @param tree The red_black_tree_t object.
+ * @return Returns the iterator for container.
+ */
+iterator_t *red_black_tree_iterator_create(const red_black_tree_t *tree) {
+    iterator_t *iterator = NULL;
+
+    return_value_if_fail(tree != NULL, NULL);
+
+    iterator = (iterator_t *)malloc(sizeof(iterator_t));
+    return_value_if_fail(iterator != NULL, NULL);
+
+    iterator->container = (void *)tree;
+    iterator->current = __min_node(tree->root);
+    return iterator;
+}
+
+/**
+ * @brief Destroy an iterator.
+ * @param iterator The iterator_t object.
+ */
+void red_black_tree_iterator_destroy(iterator_t *iterator) {
+    return_if_fail(iterator != NULL);
+    free(iterator);
+}
+
+/**
+ * @brief Determine whether an iterator has the next element.
+ * @param iterator The iterator_t object.
+ * @return Returns true if the iterator has the next element, otherwise returns false.
+ */
+bool red_black_tree_iterator_has_next(const iterator_t *iterator) {
+    return_value_if_fail(iterator != NULL, false);
+    return iterator->current != NULL;
+}
+
+/**
+ * @brief Get the next element of an iterator.
+ * @param iterator The iterator_t object.
+ * @return Returns the next element of the iterator.
+ */
+T red_black_tree_iterator_next(iterator_t *iterator) {
+    T elem = NULL;
+
+    return_value_if_fail(iterator != NULL, NULL);
+    return_value_if_fail(red_black_tree_iterator_has_next(iterator), NULL);
+
+    elem = ((node_t *)iterator->current)->key;
+    iterator->current = __successor(iterator->current);
+    return elem;
 }

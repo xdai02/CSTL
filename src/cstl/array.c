@@ -1,5 +1,4 @@
 #include "array.h"
-#include "utils.h"
 
 struct array_t {
     T *data;
@@ -346,7 +345,7 @@ bool array_iterator_has_next(const iterator_t *iterator) {
 
     return_value_if_fail(iterator != NULL, false);
 
-    array = (array_t *)iterator->container;
+    array = iterator->container;
     return (size_t)iterator->current < array->size;
 }
 
@@ -362,7 +361,7 @@ T array_iterator_next(iterator_t *iterator) {
     return_value_if_fail(iterator != NULL, NULL);
     return_value_if_fail(array_iterator_has_next(iterator), NULL);
 
-    array = (array_t *)iterator->container;
+    array = iterator->container;
     elem = array->data[(size_t)iterator->current];
     iterator->current = (void *)((size_t)iterator->current + 1);
     return elem;

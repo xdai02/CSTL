@@ -1,5 +1,4 @@
 #include "str.h"
-#include "utils.h"
 
 struct string_t {
     char *string;

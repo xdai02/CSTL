@@ -1,6 +1,5 @@
 #include "deque.h"
 #include "list.h"
-#include "utils.h"
 
 struct deque_t {
     list_t *list;

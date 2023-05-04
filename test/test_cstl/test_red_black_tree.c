@@ -215,3 +215,27 @@ void test_red_black_tree_remove() {
     assert(red_black_tree_size(tree) == N - 1);
     red_black_tree_destroy(tree);
 }
+
+void test_red_black_tree_iterator() {
+    int i = 0;
+    red_black_tree_t *tree = NULL;
+    iterator_t *iterator = NULL;
+    Integer *integer;
+
+    tree = red_black_tree_create(Integer_compare, Integer_delete);
+    for (i = 0; i < N; i++) {
+        red_black_tree_insert(tree, Integer_new(i));
+    }
+
+    iterator = red_black_tree_iterator_create(tree);
+
+    i = 0;
+    while (red_black_tree_iterator_has_next(iterator)) {
+        integer = (Integer *)red_black_tree_iterator_next(iterator);
+        assert(Integer_get(integer) == i);
+        i++;
+    }
+
+    red_black_tree_iterator_destroy(iterator);
+    red_black_tree_destroy(tree);
+}

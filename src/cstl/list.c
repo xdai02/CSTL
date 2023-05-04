@@ -1,5 +1,4 @@
 #include "list.h"
-#include "utils.h"
 
 typedef struct node_t {
     T data;

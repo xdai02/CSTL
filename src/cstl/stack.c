@@ -1,6 +1,5 @@
 #include "stack.h"
 #include "array.h"
-#include "utils.h"
 
 struct stack_t {
     array_t *array;

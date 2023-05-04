@@ -1,6 +1,5 @@
 #include "queue.h"
 #include "list.h"
-#include "utils.h"
 
 struct queue_t {
     list_t *list;

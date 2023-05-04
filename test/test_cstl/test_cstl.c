@@ -137,6 +137,7 @@ void test_red_black_tree() {
     test_red_black_tree_foreach();
     test_red_black_tree_insert();
     test_red_black_tree_remove();
+    test_red_black_tree_iterator();
 
     printf("[PASS] red_black_tree\n");
 }
