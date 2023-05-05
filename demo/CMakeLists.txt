@@ -51,5 +51,7 @@ add_custom_target(clean_all
     COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_stack"
     COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_queue"
     COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_deque"
+    COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_set"
+    COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_map"
     COMMENT "Cleaning up CMake generated files"
 )

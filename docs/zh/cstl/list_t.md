@@ -308,7 +308,7 @@ for (int i = 0; i < 10; i++) {
 
 Integer *target = Integer_new(5);
 printf("%d\n", list_index_of(list, target));
-Integer_delete(targer);
+Integer_delete(target);
 
 list_destroy(list);
 ```
@@ -340,10 +340,10 @@ for (int i = 0; i < 10; i++) {
 }
 
 Integer *target = Integer_new(5);
-if (list_contains(list, targer)) {
+if (list_contains(list, target)) {
     // ...
 }
-Integer_delete(targer);
+Integer_delete(target);
 
 list_destroy(list);
 ```
@@ -378,7 +378,7 @@ list_push_back(list, Integer_new(2));
 
 Integer *target = Integer_new(2);
 printf("%d\n", list_count(list, target));
-Integer_delete(targer);
+Integer_delete(target);
 
 list_destroy(list);
 ```
@@ -728,7 +728,7 @@ for (i = 0; i < 10; i++) {
 
 iterator_t *iterator = list_iterator_create(list);
 while (list_iterator_has_next(iterator)) {
-    integer = (Integer *)list_iterator_next(iterator);
+    Integer *integer = (Integer *)list_iterator_next(iterator);
     printf("%d ", Integer_get(integer));
 }
 

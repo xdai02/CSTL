@@ -45,7 +45,7 @@ void stack_destroy(stack_t *stack);
 ```
 
 - Description
-    - Destroy an `stack_t` object.
+    - Destroy a `stack_t` object.
 - Parameters
     - `stack`: The `stack_t` object.
 - Usage
@@ -66,7 +66,7 @@ bool stack_is_empty(const stack_t *stack);
 ```
 
 - Description
-    - Determine whether an `stack_t` object is empty.
+    - Determine whether a `stack_t` object is empty.
 - Parameters
     - `stack`: The `stack_t` object.
 - Return
@@ -92,7 +92,7 @@ size_t stack_size(const stack_t *stack);
 ```
 
 - Description
-    - Get the size of an `stack_t` object.
+    - Get the size of a `stack_t` object.
 - Parameters
     - `stack`: The `stack_t` object.
 - Return
@@ -116,7 +116,7 @@ stack_t *stack_clear(stack_t *stack);
 ```
 
 - Description
-    - Clear an `stack_t` object.
+    - Clear a `stack_t` object.
 - Parameters
     - `stack`: The `stack_t` object.
 - Return

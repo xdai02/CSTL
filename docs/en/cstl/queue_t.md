@@ -45,7 +45,7 @@ void queue_destroy(queue_t *queue);
 ```
 
 - Description
-    - Destroy an `queue_t` object.
+    - Destroy a `queue_t` object.
 - Parameters
     - `queue`: The `queue_t` object.
 - Usage
@@ -66,7 +66,7 @@ bool queue_is_empty(const queue_t *queue);
 ```
 
 - Description
-    - Determine whether an `queue_t` object is empty.
+    - Determine whether a `queue_t` object is empty.
 - Parameters
     - `queue`: The `queue_t` object.
 - Return
@@ -92,7 +92,7 @@ size_t queue_size(const queue_t *queue);
 ```
 
 - Description
-    - Get the size of an `queue_t` object.
+    - Get the size of a `queue_t` object.
 - Parameters
     - `queue`: The `queue_t` object.
 - Return
@@ -116,7 +116,7 @@ queue_t *queue_clear(queue_t *queue);
 ```
 
 - Description
-    - Clear an `queue_t` object.
+    - Clear a `queue_t` object.
 - Parameters
     - `queue`: The `queue_t` object.
 - Return
@@ -145,7 +145,7 @@ queue_t *queue_enqueue(queue_t *queue, T elem);
 ```
 
 - Description
-    - Enqueue an element to an `queue_t` object.
+    - Enqueue an element to a `queue_t` object.
 - Parameters
     - `queue`: The `queue_t` object.
     - `elem`: The element.
@@ -172,7 +172,7 @@ T queue_dequeue(queue_t *queue);
 ```
 
 - Description
-    - Dequeue an element from an `queue_t` object.
+    - Dequeue an element from a `queue_t` object.
 - Parameters
     - `queue`: The `queue_t` object.
 - Return
@@ -199,7 +199,7 @@ T queue_peek(const queue_t *queue);
 ```
 
 - Description
-    - Get the front element of an `queue_t` object.
+    - Get the front element of a `queue_t` object.
 - Parameters
     - `queue`: The `queue_t` object.
 - Return

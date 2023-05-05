@@ -45,7 +45,7 @@ void deque_destroy(deque_t *deque);
 ```
 
 - Description
-    - Destroy an `deque_t` object.
+    - Destroy a `deque_t` object.
 - Parameters
     - `deque`: The `deque_t` object.
 - Usage
@@ -66,7 +66,7 @@ bool deque_is_empty(const deque_t *deque);
 ```
 
 - Description
-    - Determine whether an `deque_t` object is empty.
+    - Determine whether a `deque_t` object is empty.
 - Parameters
     - `deque`: The `deque_t` object.
 - Return
@@ -92,7 +92,7 @@ size_t deque_size(const deque_t *deque);
 ```
 
 - Description
-    - Get the size of an `queue_t` object.
+    - Get the size of a `queue_t` object.
 - Parameters
     - `queue`: The `queue_t` object.
 - Return
@@ -116,7 +116,7 @@ deque_t *deque_clear(deque_t *deque);
 ```
 
 - Description
-    - Clear an `deque_t` object.
+    - Clear a `deque_t` object.
 - Parameters
     - `deque`: The `deque_t` object.
 - Return
@@ -145,7 +145,7 @@ deque_t *deque_push_front(deque_t *deque, T elem);
 ```
 
 - Description
-    - Push an element to the front of an `deque_t` object.
+    - Push an element to the front of a `deque_t` object.
 - Parameters
     - `deque`: The `deque_t` object.
     - `elem`: The element.
@@ -172,7 +172,7 @@ deque_t *deque_push_back(deque_t *deque, T elem);
 ```
 
 - Description
-    - Push an element to the back of an `deque_t` object.
+    - Push an element to the back of a `deque_t` object.
 - Parameters
     - `deque`: The `deque_t` object.
     - `elem`: The element.
@@ -199,7 +199,7 @@ T deque_pop_front(deque_t *deque);
 ```
 
 - Description
-    - Pop an element from the front of an `deque_t` object.
+    - Pop an element from the front of a `deque_t` object.
 - Parameters
     - `deque`: The `deque_t` object.
 - Return
@@ -226,7 +226,7 @@ T deque_pop_back(deque_t *deque);
 ```
 
 - Description
-    - Pop an element from the back of an `deque_t` object.
+    - Pop an element from the back of a `deque_t` object.
 - Parameters
     - `deque`: The `deque_t` object.
 - Return
@@ -253,7 +253,7 @@ T deque_get_front(const deque_t *deque);
 ```
 
 - Description
-    - Get the front element of an `deque_t` object.
+    - Get the front element of a `deque_t` object.
 - Parameters
     - `deque`: The `deque_t` object.
 - Return
@@ -280,7 +280,7 @@ T deque_get_back(deque_t *deque);
 ```
 
 - Description
-    - Get the front element of an `deque_t` object.
+    - Get the front element of a `deque_t` object.
 - Parameters
     - `deque`: The `deque_t` object.
 - Return

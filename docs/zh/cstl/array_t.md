@@ -394,7 +394,7 @@ for (int i = 0; i < 10; i++) {
 
 Integer *target = Integer_new(5);
 printf("%d\n", array_index_of(array, target));
-Integer_delete(targer);
+Integer_delete(target);
 
 array_destroy(array);
 ```
@@ -426,10 +426,10 @@ for (int i = 0; i < 10; i++) {
 }
 
 Integer *target = Integer_new(5);
-if (array_contains(array, targer)) {
+if (array_contains(array, target)) {
     // ...
 }
-Integer_delete(targer);
+Integer_delete(target);
 
 array_destroy(array);
 ```
@@ -464,7 +464,7 @@ array_append(array, Integer_new(2));
 
 Integer *target = Integer_new(2);
 printf("%d\n", array_count(array, target));
-Integer_delete(targer);
+Integer_delete(target);
 
 array_destroy(array);
 ```
@@ -604,7 +604,7 @@ for (i = 0; i < 10; i++) {
 
 iterator_t *iterator = array_iterator_create(array);
 while (array_iterator_has_next(iterator)) {
-    integer = (Integer *)array_iterator_next(iterator);
+    Integer *integer = (Integer *)array_iterator_next(iterator);
     printf("%d ", Integer_get(integer));
 }
 

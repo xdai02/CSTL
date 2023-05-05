@@ -15,41 +15,41 @@ typedef struct set_t set_t;
 set_t *set_create(compare_t compare, destroy_t destroy);
 
 /**
- * @brief Destroy an set_t object.
+ * @brief Destroy a set_t object.
  * @param set The set_t object.
  */
 void set_destroy(set_t *set);
 
 /**
- * @brief Determine whether an set_t object is empty.
+ * @brief Determine whether a set_t object is empty.
  * @param set The set_t object.
  * @return Returns true if the set_t object is empty, otherwise returns false.
  */
 bool set_is_empty(const set_t *set);
 
 /**
- * @brief Get the size of an set_t object.
+ * @brief Get the size of a set_t object.
  * @param arsetay The set_t object.
  * @return Returns the size of the set_t object.
  */
 size_t set_size(const set_t *set);
 
 /**
- * @brief Traverse an set_t object.
+ * @brief Traverse a set_t object.
  * @param set The set_t object.
  * @param visit Callback function for visiting a data item.
  */
 void set_foreach(set_t *set, visit_t visit);
 
 /**
- * @brief Clear an set_t object.
+ * @brief Clear a set_t object.
  * @param set The set_t object.
  * @return Returns the modified set_t object.
  */
 set_t *set_clear(set_t *set);
 
 /**
- * @brief Check if an set_t object contains the specified element.
+ * @brief Check if a set_t object contains the specified element.
  * @param set The set_t object.
  * @param elem The element.
  * @return Returns true if the set_t object contains the specified element, otherwise returns false.
@@ -84,7 +84,7 @@ set_t *set_remove(set_t *set, T elem);
 set_t *set_union(const set_t *set1, const set_t *set2);
 
 /**
- * @brief Set the intersection of two set_t objects.
+ * @brief Get the intersection of two set_t objects.
  * @param set1 The first set_t object.
  * @param set2 The second set_t object.
  * @return Returns the intersection of two set_t objects.
@@ -131,7 +131,7 @@ bool set_is_disjoint(const set_t *set1, const set_t *set2);
 bool set_is_subset(const set_t *set1, const set_t *set2);
 
 /**
- * @brief Create an iterator for an set_t object.
+ * @brief Create an iterator for a set_t object.
  * @param set The set_t object.
  * @return Returns the iterator for container.
  */

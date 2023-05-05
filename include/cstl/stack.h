@@ -13,27 +13,27 @@ typedef struct stack_t stack_t;
 stack_t *stack_create(destroy_t destroy);
 
 /**
- * @brief Destroy an stack_t object.
+ * @brief Destroy a stack_t object.
  * @param stack The stack_t object.
  */
 void stack_destroy(stack_t *stack);
 
 /**
- * @brief Determine whether an stack_t object is empty.
+ * @brief Determine whether a stack_t object is empty.
  * @param stack The stack_t object.
  * @return Returns true if the stack_t object is empty, otherwise returns false.
  */
 bool stack_is_empty(const stack_t *stack);
 
 /**
- * @brief Get the size of an stack_t object.
+ * @brief Get the size of a stack_t object.
  * @param stack The stack_t object.
  * @return Returns the size of the stack_t object.
  */
 size_t stack_size(const stack_t *stack);
 
 /**
- * @brief Clear an stack_t object.
+ * @brief Clear a stack_t object.
  * @param stack The stack_t object.
  * @return Returns the modified stack_t object.
  */

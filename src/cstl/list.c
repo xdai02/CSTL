@@ -478,7 +478,7 @@ list_t *list_reverse(list_t *list) {
 }
 
 /**
- * @brief Create an iterator for an list_t object.
+ * @brief Create an iterator for a list_t object.
  * @param list The list_t object.
  * @return Returns the iterator for container.
  */
