@@ -35,6 +35,13 @@ bool set_is_empty(const set_t *set);
 size_t set_size(const set_t *set);
 
 /**
+ * @brief Traverse an set_t object.
+ * @param set The set_t object.
+ * @param visit Callback function for visiting a data item.
+ */
+void set_foreach(set_t *set, visit_t visit);
+
+/**
  * @brief Clear an set_t object.
  * @param set The set_t object.
  * @return Returns the modified set_t object.
@@ -135,13 +142,6 @@ iterator_t *set_iterator_create(const set_t *set);
  * @param iterator The iterator_t object.
  */
 void set_iterator_destroy(iterator_t *iterator);
-
-/**
- * @brief Traverse an set_t object.
- * @param set The set_t object.
- * @param visit Callback function for visiting a data item.
- */
-void set_foreach(set_t *set, visit_t visit);
 
 /**
  * @brief Determine whether an iterator has the next element.
