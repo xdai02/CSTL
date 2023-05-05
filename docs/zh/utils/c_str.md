@@ -322,7 +322,7 @@ char *str_substring(const char *str, size_t start, size_t end);
 - 返回值
     - 截取的子串。
 - 注意
-    - 调用者必须释放返回的子串。
+    - 调用者**必须**释放返回的子串。
 
 - 用例
 
@@ -554,7 +554,7 @@ char **str_split(const char *str, const char *delimiter);
     - 以`NULL`结尾的字符串数组。
 - 注意
     - 返回的字符串数组以`NULL`结尾。
-    - 调用者必须释放返回的字符串数组。
+    - 调用者**必须**释放返回的字符串数组。
 
 - 用例
 

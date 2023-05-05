@@ -43,10 +43,10 @@ red_black_tree_t *red_black_tree_clear(red_black_tree_t *tree);
 
 /**
  * @brief Checks whether the red_black_tree_t object contains the key.
- * @note Caller must free the parameter key (if applicable).
  * @param tree The red_black_tree_t object.
  * @param key The key.
  * @return Returns true if the red_black_tree_t object contains the key, otherwise returns false.
+ * @note Caller MUST free the parameter key (if applicable).
  */
 bool red_black_tree_contains(const red_black_tree_t *tree, T key);
 
@@ -67,10 +67,10 @@ red_black_tree_t *red_black_tree_insert(red_black_tree_t *tree, T key);
 
 /**
  * @brief Removes a key from the red_black_tree_t object.
- * @note Caller must free the parameter key (if applicable).
  * @param tree The red_black_tree_t object.
  * @param key The key.
  * @return Returns the modified red_black_tree_t object.
+ * @note Caller MUST free the parameter key (if applicable).
  */
 red_black_tree_t *red_black_tree_remove(red_black_tree_t *tree, T key);
 

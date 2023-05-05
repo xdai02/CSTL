@@ -508,8 +508,8 @@ char *string_substring(const string_t *string, int start, int end)
     - `end`：子串结束下标（不包含）。
 - 返回值
     - 指定范围内的子串。
-- Note
-    - 调用者必须释放返回的子串。
+- 注意
+    - 调用者**必须**释放返回的子串。
 
 - 用例
 
@@ -757,9 +757,9 @@ char **string_split(const string_t *string, const char *delimiter);
     - `delimiter`：分隔符。
 - 返回值
     - 以`NULL`结尾的字符串数组。
-- Note
+- 注意
     - 返回的字符串数组以`NULL`结尾。
-    - 调用者必须释放返回的字符串数组。
+    - 调用者**必须**释放返回的字符串数组。
 
 - 用例
 

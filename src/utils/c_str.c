@@ -222,7 +222,7 @@ char *str_strip(char *str) {
  * @param start The start index of the substring (inclusive).
  * @param end The end index of the substring (exclusive).
  * @return The substring of the specified string.
- * @note The returned string must be freed by the caller.
+ * @note Caller MUST free the returned string.
  */
 char *str_substring(const char *str, size_t start, size_t end) {
     size_t len;
@@ -430,7 +430,7 @@ char *str_replace_string(char *str, const char *old_str, const char *new_str) {
  * @param delimiter The delimiter.
  * @return An array of strings ends with NULL.
  * @note The returned array ends with NULL.
- * @note The returned array must be freed by the caller.
+ * @note Caller MUST free the returned array.
  */
 char **str_split(const char *str, const char *delimiter) {
     char *temp = NULL;

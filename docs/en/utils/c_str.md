@@ -322,7 +322,7 @@ char *str_substring(const char *str, size_t start, size_t end);
 - Return
     - The substring of the specified string.
 - Note
-    - The returned string must be freed by the caller.
+    - Caller MUST free the returned string.
 
 - Usage
 
@@ -554,7 +554,7 @@ char **str_split(const char *str, const char *delimiter);
     - An array of strings ends with `NULL`.
 - Note
     - The returned array ends with `NULL`.
-    - The returned array must be freed by the caller.
+    - Caller MUST free the returned array.
 
 - Usage
 
