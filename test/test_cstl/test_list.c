@@ -18,6 +18,25 @@ void test_list_destroy() {
     list_destroy(list);
 }
 
+void test_list_is_empty() {
+    list_t *list = list_create(UnsignedInteger_compare, UnsignedInteger_delete);
+    assert(list_is_empty(list) == true);
+    list_push_back(list, UnsignedInteger_new(0));
+    assert(list_is_empty(list) == false);
+    list_destroy(list);
+}
+
+void test_list_size() {
+    int i = 0;
+    list_t *list = list_create(UnsignedLong_compare, UnsignedLong_delete);
+    assert(list_size(list) == 0);
+    for (i = 0; i < N; i++) {
+        list_push_back(list, UnsignedLong_new(i));
+    }
+    assert(list_size(list) == N);
+    list_destroy(list);
+}
+
 static int buffer[N] = {0};
 static int n = 0;
 
@@ -54,25 +73,6 @@ void test_list_foreach() {
         assert(Integer_get(list_get(list, i)) == i * 3);
     }
 
-    list_destroy(list);
-}
-
-void test_list_is_empty() {
-    list_t *list = list_create(UnsignedInteger_compare, UnsignedInteger_delete);
-    assert(list_is_empty(list) == true);
-    list_push_back(list, UnsignedInteger_new(0));
-    assert(list_is_empty(list) == false);
-    list_destroy(list);
-}
-
-void test_list_size() {
-    int i = 0;
-    list_t *list = list_create(UnsignedLong_compare, UnsignedLong_delete);
-    assert(list_size(list) == 0);
-    for (i = 0; i < N; i++) {
-        list_push_back(list, UnsignedLong_new(i));
-    }
-    assert(list_size(list) == N);
     list_destroy(list);
 }
 

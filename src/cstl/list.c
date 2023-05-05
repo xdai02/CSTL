@@ -58,21 +58,6 @@ void list_destroy(list_t *list) {
 }
 
 /**
- * @brief Traverse the list_t object.
- * @param list The list_t object.
- * @param visit Callback function for visiting a data item.
- */
-void list_foreach(list_t *list, visit_t visit) {
-    node_t *node = NULL;
-    return_if_fail(list != NULL && visit != NULL);
-    node = list->head;
-    while (node != NULL) {
-        visit(node->data);
-        node = node->next;
-    }
-}
-
-/**
  * @brief Determine whether the list_t object is empty.
  * @param list The list_t object.
  * @return Returns true if the list_t object is empty, otherwise returns false.
@@ -90,6 +75,21 @@ bool list_is_empty(const list_t *list) {
 size_t list_size(const list_t *list) {
     return_value_if_fail(list != NULL, 0);
     return list->size;
+}
+
+/**
+ * @brief Traverse the list_t object.
+ * @param list The list_t object.
+ * @param visit Callback function for visiting a data item.
+ */
+void list_foreach(list_t *list, visit_t visit) {
+    node_t *node = NULL;
+    return_if_fail(list != NULL && visit != NULL);
+    node = list->head;
+    while (node != NULL) {
+        visit(node->data);
+        node = node->next;
+    }
 }
 
 /**

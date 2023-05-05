@@ -21,13 +21,6 @@ array_t *array_create(compare_t compare, destroy_t destroy);
 void array_destroy(array_t *array);
 
 /**
- * @brief Traverse an array_t object.
- * @param array The array_t object.
- * @param visit Callback function for visiting a data item.
- */
-void array_foreach(array_t *array, visit_t visit);
-
-/**
  * @brief Determine whether an array_t object is empty.
  * @param array The array_t object.
  * @return Returns true if the array_t object is empty, otherwise returns false.
@@ -40,6 +33,13 @@ bool array_is_empty(const array_t *array);
  * @return Returns the size of the array_t object.
  */
 size_t array_size(const array_t *array);
+
+/**
+ * @brief Traverse an array_t object.
+ * @param array The array_t object.
+ * @param visit Callback function for visiting a data item.
+ */
+void array_foreach(array_t *array, visit_t visit);
 
 /**
  * @brief Clear an array_t object.

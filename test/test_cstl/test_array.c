@@ -18,6 +18,25 @@ void test_array_destroy() {
     array_destroy(array);
 }
 
+void test_array_is_empty() {
+    array_t *array = array_create(UnsignedInteger_compare, UnsignedInteger_delete);
+    assert(array_is_empty(array) == true);
+    array_append(array, UnsignedInteger_new(0));
+    assert(array_is_empty(array) == false);
+    array_destroy(array);
+}
+
+void test_array_size() {
+    int i = 0;
+    array_t *array = array_create(UnsignedLong_compare, UnsignedLong_delete);
+    assert(array_size(array) == 0);
+    for (i = 0; i < N; i++) {
+        array_append(array, UnsignedLong_new(i));
+    }
+    assert(array_size(array) == N);
+    array_destroy(array);
+}
+
 static int buffer[N] = {0};
 static int n = 0;
 
@@ -54,25 +73,6 @@ void test_array_foreach() {
         assert(Integer_get(array_get(array, i)) == i * 3);
     }
 
-    array_destroy(array);
-}
-
-void test_array_is_empty() {
-    array_t *array = array_create(UnsignedInteger_compare, UnsignedInteger_delete);
-    assert(array_is_empty(array) == true);
-    array_append(array, UnsignedInteger_new(0));
-    assert(array_is_empty(array) == false);
-    array_destroy(array);
-}
-
-void test_array_size() {
-    int i = 0;
-    array_t *array = array_create(UnsignedLong_compare, UnsignedLong_delete);
-    assert(array_size(array) == 0);
-    for (i = 0; i < N; i++) {
-        array_append(array, UnsignedLong_new(i));
-    }
-    assert(array_size(array) == N);
     array_destroy(array);
 }
 

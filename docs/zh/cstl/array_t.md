@@ -83,6 +83,56 @@ array_destroy(array);
 
 
 
+## array_is_empty()
+
+- 原型
+
+```c
+bool array_is_empty(const array_t *array);
+```
+
+- 描述
+    - 判断`array_t`对象是否为空。
+- 参数
+    - `array`：`array_t`对象。
+- 返回值
+    - 如果`array_t`对象为空返回`true`，否则返回`false`。
+- 用例
+
+```c
+array_t *array = array_create(Integer_compare, Integer_delete);
+if (array_is_empty(array)) {
+    // ...
+}
+array_destroy(array);
+```
+
+
+
+## array_size()
+
+- 原型
+
+```c
+size_t array_size(const array_t *array);
+```
+
+- 描述
+    - 获取`array_t`对象的大小。
+- 参数
+    - `array`：`array_t`对象。
+- 返回值
+    - 返回`array_t`对象的大小。
+- 用例
+
+```c
+array_t *array = array_create(Integer_compare, Integer_delete);
+printf("%d\n", array_size(array));
+array_destroy(array);
+```
+
+
+
 ## array_foreach()
 
 - 原型
@@ -136,56 +186,6 @@ int main() {
 
     return 0;
 }
-```
-
-
-
-## array_is_empty()
-
-- 原型
-
-```c
-bool array_is_empty(const array_t *array);
-```
-
-- 描述
-    - 判断`array_t`对象是否为空。
-- 参数
-    - `array`：`array_t`对象。
-- 返回值
-    - 如果`array_t`对象为空返回`true`，否则返回`false`。
-- 用例
-
-```c
-array_t *array = array_create(Integer_compare, Integer_delete);
-if (array_is_empty(array)) {
-    // ...
-}
-array_destroy(array);
-```
-
-
-
-## array_size()
-
-- 原型
-
-```c
-size_t array_size(const array_t *array);
-```
-
-- 描述
-    - 获取`array_t`对象的大小。
-- 参数
-    - `array`：`array_t`对象。
-- 返回值
-    - 返回`array_t`对象的大小。
-- 用例
-
-```c
-array_t *array = array_create(Integer_compare, Integer_delete);
-printf("%d\n", array_size(array));
-array_destroy(array);
 ```
 
 

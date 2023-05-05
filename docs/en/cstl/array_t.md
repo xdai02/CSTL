@@ -83,6 +83,56 @@ array_destroy(array);
 
 
 
+## array_is_empty()
+
+- Prototype
+
+```c
+bool array_is_empty(const array_t *array);
+```
+
+- Description
+    - Determine whether an `array_t` object is empty.
+- Parameters
+    - `array`: The `array_t` object.
+- Return
+    - Returns `true` if the `array_t` object is empty, otherwise returns `false`.
+- Usage
+
+```c
+array_t *array = array_create(Integer_compare, Integer_delete);
+if (array_is_empty(array)) {
+    // ...
+}
+array_destroy(array);
+```
+
+
+
+## array_size()
+
+- Prototype
+
+```c
+size_t array_size(const array_t *array);
+```
+
+- Description
+    - Get the size of an `array_t` object.
+- Parameters
+    - `array`: The `array_t` object.
+- Return
+    - Returns the size of the `array_t` object.
+- Usage
+
+```c
+array_t *array = array_create(Integer_compare, Integer_delete);
+printf("%d\n", array_size(array));
+array_destroy(array);
+```
+
+
+
 ## array_foreach()
 
 - Prototype
@@ -136,56 +186,6 @@ int main() {
 
     return 0;
 }
-```
-
-
-
-## array_is_empty()
-
-- Prototype
-
-```c
-bool array_is_empty(const array_t *array);
-```
-
-- Description
-    - Determine whether an `array_t` object is empty.
-- Parameters
-    - `array`: The `array_t` object.
-- Return
-    - Returns `true` if the `array_t` object is empty, otherwise returns `false`.
-- Usage
-
-```c
-array_t *array = array_create(Integer_compare, Integer_delete);
-if (array_is_empty(array)) {
-    // ...
-}
-array_destroy(array);
-```
-
-
-
-## array_size()
-
-- Prototype
-
-```c
-size_t array_size(const array_t *array);
-```
-
-- Description
-    - Get the size of an `array_t` object.
-- Parameters
-    - `array`: The `array_t` object.
-- Return
-    - Returns the size of the `array_t` object.
-- Usage
-
-```c
-array_t *array = array_create(Integer_compare, Integer_delete);
-printf("%d\n", array_size(array));
-array_destroy(array);
 ```
 
 

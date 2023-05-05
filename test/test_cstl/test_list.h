@@ -3,9 +3,9 @@
 
 void test_list_create();
 void test_list_destroy();
-void test_list_foreach();
 void test_list_is_empty();
 void test_list_size();
+void test_list_foreach();
 void test_list_clear();
 void test_list_get();
 void test_list_set();

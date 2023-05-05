@@ -83,6 +83,56 @@ list_destroy(list);
 
 
 
+## list_is_empty()
+
+- 原型
+
+```c
+bool list_is_empty(const list_t *list);
+```
+
+- 描述
+    - 判断`list_t`对象是否为空。
+- 参数
+    - `list`：`list_t`对象。
+- 返回值
+    - 如果`list_t`对象为空返回`true`，否则返回`false`。
+- 用例
+
+```c
+list_t *list = list_create(Integer_compare, Integer_delete);
+if (list_is_empty(list)) {
+    // ...
+}
+list_destroy(list);
+```
+
+
+
+## list_size()
+
+- 原型
+
+```c
+size_t list_size(const list_t *list);
+```
+
+- 描述
+    - 获取`list_t`对象的大小。
+- 参数
+    - `list`：`list_t`对象。
+- 返回值
+    - 返回`list_t`对象的大小。
+- 用例
+
+```c
+list_t *list = list_create(Integer_compare, Integer_delete);
+printf("%d\n", list_size(list));
+list_destroy(list);
+```
+
+
+
 ## list_foreach()
 
 - 原型
@@ -136,56 +186,6 @@ int main() {
 
     return 0;
 }
-```
-
-
-
-## list_is_empty()
-
-- 原型
-
-```c
-bool list_is_empty(const list_t *list);
-```
-
-- 描述
-    - 判断`list_t`对象是否为空。
-- 参数
-    - `list`：`list_t`对象。
-- 返回值
-    - 如果`list_t`对象为空返回`true`，否则返回`false`。
-- 用例
-
-```c
-list_t *list = list_create(Integer_compare, Integer_delete);
-if (list_is_empty(list)) {
-    // ...
-}
-list_destroy(list);
-```
-
-
-
-## list_size()
-
-- 原型
-
-```c
-size_t list_size(const list_t *list);
-```
-
-- 描述
-    - 获取`list_t`对象的大小。
-- 参数
-    - `list`：`list_t`对象。
-- 返回值
-    - 返回`list_t`对象的大小。
-- 用例
-
-```c
-list_t *list = list_create(Integer_compare, Integer_delete);
-printf("%d\n", list_size(list));
-list_destroy(list);
 ```
 
 

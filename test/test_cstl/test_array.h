@@ -3,9 +3,9 @@
 
 void test_array_create();
 void test_array_destroy();
-void test_array_foreach();
 void test_array_is_empty();
 void test_array_size();
+void test_array_foreach();
 void test_array_clear();
 void test_array_get();
 void test_array_set();

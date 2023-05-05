@@ -21,13 +21,6 @@ list_t *list_create(compare_t compare, destroy_t destroy);
 void list_destroy(list_t *list);
 
 /**
- * @brief Traverse the list_t object.
- * @param list The list_t object.
- * @param visit Callback function for visiting a data item.
- */
-void list_foreach(list_t *list, visit_t visit);
-
-/**
  * @brief Determine whether the list_t object is empty.
  * @param list The list_t object.
  * @return Returns true if the list_t object is empty, otherwise returns false.
@@ -40,6 +33,13 @@ bool list_is_empty(const list_t *list);
  * @return Returns the size of the list_t object.
  */
 size_t list_size(const list_t *list);
+
+/**
+ * @brief Traverse the list_t object.
+ * @param list The list_t object.
+ * @param visit Callback function for visiting a data item.
+ */
+void list_foreach(list_t *list, visit_t visit);
 
 /**
  * @brief Clear the list_t object.

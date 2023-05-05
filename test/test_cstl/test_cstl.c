@@ -40,9 +40,9 @@ void test_str() {
 void test_array() {
     test_array_create();
     test_array_destroy();
-    test_array_foreach();
     test_array_is_empty();
     test_array_size();
+    test_array_foreach();
     test_array_clear();
     test_array_get();
     test_array_set();
@@ -62,9 +62,9 @@ void test_array() {
 void test_list() {
     test_list_create();
     test_list_destroy();
-    test_list_foreach();
     test_list_is_empty();
     test_list_size();
+    test_list_foreach();
     test_list_clear();
     test_list_get();
     test_list_set();
@@ -142,6 +142,27 @@ void test_red_black_tree() {
     printf("[PASS] red_black_tree\n");
 }
 
+void test_set() {
+    test_set_create();
+    test_set_destroy();
+    test_set_is_empty();
+    test_set_size();
+    test_set_foreach();
+    test_set_clear();
+    test_set_contains();
+    test_set_add();
+    test_set_remove();
+    test_set_union();
+    test_set_intersection();
+    test_set_difference();
+    test_set_symmetric_difference();
+    test_set_is_disjoint();
+    test_set_is_subset();
+    test_set_iterator();
+
+    printf("[PASS] set\n");
+}
+
 void test_cstl() {
     test_str();
     test_array();
@@ -150,4 +171,5 @@ void test_cstl() {
     test_queue();
     test_deque();
     test_red_black_tree();
+    test_set();
 }

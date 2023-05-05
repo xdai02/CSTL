@@ -14,9 +14,11 @@ struct set_t {
  * @return Returns the created set_t object if successful, otherwise returns NULL.
  */
 set_t *set_create(compare_t compare, destroy_t destroy) {
+    set_t *set = NULL;
+
     return_value_if_fail(compare != NULL, NULL);
 
-    set_t *set = (set_t *)malloc(sizeof(set_t));
+    set = (set_t *)malloc(sizeof(set_t));
     return_value_if_fail(set != NULL, NULL);
 
     set->tree = red_black_tree_create(compare, destroy);
@@ -61,13 +63,22 @@ size_t set_size(const set_t *set) {
 }
 
 /**
+ * @brief Traverse an set_t object.
+ * @param set The set_t object.
+ * @param visit Callback function for visiting a data item.
+ */
+void set_foreach(set_t *set, visit_t visit) {
+}
+
+/**
  * @brief Clear an set_t object.
  * @param set The set_t object.
  * @return Returns the modified set_t object.
  */
 set_t *set_clear(set_t *set) {
     return_value_if_fail(set != NULL, NULL);
-    return red_black_tree_clear(set->tree);
+    red_black_tree_clear(set->tree);
+    return set;
 }
 
 /**
@@ -75,6 +86,7 @@ set_t *set_clear(set_t *set) {
  * @param set The set_t object.
  * @param elem The element.
  * @return Returns true if the set_t object contains the specified element, otherwise returns false.
+ * @note Caller MUST free the parameter key (if applicable).
  */
 bool set_contains(const set_t *set, T elem) {
     return_value_if_fail(set != NULL && elem != NULL, false);
@@ -89,7 +101,8 @@ bool set_contains(const set_t *set, T elem) {
  */
 set_t *set_add(set_t *set, T elem) {
     return_value_if_fail(set != NULL && elem != NULL, set);
-    return red_black_tree_insert(set->tree, elem);
+    red_black_tree_insert(set->tree, elem);
+    return set;
 }
 
 /**
@@ -101,7 +114,8 @@ set_t *set_add(set_t *set, T elem) {
  */
 set_t *set_remove(set_t *set, T elem) {
     return_value_if_fail(set != NULL && elem != NULL, set);
-    return red_black_tree_remove(set->tree, elem);
+    red_black_tree_remove(set->tree, elem);
+    return set;
 }
 
 /**
@@ -116,8 +130,8 @@ set_t *set_union(const set_t *set1, const set_t *set2) {
     iterator_t *iter = NULL;
     T elem = NULL;
 
-    return_value_if_fail(set1 != NULL, set2);
-    return_value_if_fail(set2 != NULL, set1);
+    return_value_if_fail(set1 != NULL, (set_t *)set2);
+    return_value_if_fail(set2 != NULL, (set_t *)set1);
 
     union_set = set_create(set1->compare, NULL);
     return_value_if_fail(union_set != NULL, NULL);
@@ -184,7 +198,7 @@ set_t *set_difference(const set_t *set1, const set_t *set2) {
     iterator_t *iter = NULL;
     T elem = NULL;
 
-    return_value_if_fail(set2 != NULL, set1);
+    return_value_if_fail(set2 != NULL, (set_t *)set1);
     return_value_if_fail(set1 != NULL, NULL);
 
     difference_set = set_create(set1->compare, NULL);
@@ -216,8 +230,8 @@ set_t *set_symmetric_difference(const set_t *set1, const set_t *set2) {
     set_t *intersection_set = NULL;
     set_t *symmetric_difference_set = NULL;
 
-    return_value_if_fail(set1 != NULL, set2);
-    return_value_if_fail(set2 != NULL, set1);
+    return_value_if_fail(set1 != NULL, (set_t *)set2);
+    return_value_if_fail(set2 != NULL, (set_t *)set1);
 
     union_set = set_union(set1, set2);
     intersection_set = set_intersection(set1, set2);
@@ -272,4 +286,44 @@ bool set_is_subset(const set_t *set1, const set_t *set2) {
     }
     red_black_tree_iterator_destroy(iter);
     return is_subset;
+}
+
+/**
+ * @brief Create an iterator for an set_t object.
+ * @param set The set_t object.
+ * @return Returns the iterator for container.
+ */
+iterator_t *set_iterator_create(const set_t *set) {
+    return_value_if_fail(set != NULL, NULL);
+    return red_black_tree_iterator_create(set->tree);
+}
+
+/**
+ * @brief Destroy an iterator.
+ * @param iterator The iterator_t object.
+ */
+void set_iterator_destroy(iterator_t *iterator) {
+    return_if_fail(iterator != NULL);
+    red_black_tree_iterator_destroy(iterator);
+}
+
+/**
+ * @brief Determine whether an iterator has the next element.
+ * @param iterator The iterator_t object.
+ * @return Returns true if the iterator has the next element, otherwise returns false.
+ */
+bool set_iterator_has_next(const iterator_t *iterator) {
+    return_value_if_fail(iterator != NULL, false);
+    return red_black_tree_iterator_has_next(iterator);
+}
+
+/**
+ * @brief Get the next element of an iterator.
+ * @param iterator The iterator_t object.
+ * @return Returns the next element of the iterator.
+ */
+T set_iterator_next(iterator_t *iterator) {
+    return_value_if_fail(iterator != NULL, NULL);
+    return_value_if_fail(set_iterator_has_next(iterator), NULL);
+    return red_black_tree_iterator_next(iterator);
 }

@@ -83,6 +83,56 @@ list_destroy(list);
 
 
 
+## list_is_empty()
+
+- Prototype
+
+```c
+bool list_is_empty(const list_t *list);
+```
+
+- Description
+    - Determine whether a `list_t` object is empty.
+- Parameters
+    - `list`: The `list_t` object.
+- Return
+    - Returns `true` if the `list_t` object is empty, otherwise returns `false`.
+- Usage
+
+```c
+list_t *list = list_create(Integer_compare, Integer_delete);
+if (list_is_empty(list)) {
+    // ...
+}
+list_destroy(list);
+```
+
+
+
+## list_size()
+
+- Prototype
+
+```c
+size_t list_size(const list_t *list);
+```
+
+- Description
+    - Get the size of a `list_t` object.
+- Parameters
+    - `list`: The `list_t` object.
+- Return
+    - Returns the size of the `list_t` object.
+- Usage
+
+```c
+list_t *list = list_create(Integer_compare, Integer_delete);
+printf("%d\n", list_size(list));
+list_destroy(list);
+```
+
+
+
 ## list_foreach()
 
 - Prototype
@@ -136,56 +186,6 @@ int main() {
 
     return 0;
 }
-```
-
-
-
-## list_is_empty()
-
-- Prototype
-
-```c
-bool list_is_empty(const list_t *list);
-```
-
-- Description
-    - Determine whether a `list_t` object is empty.
-- Parameters
-    - `list`: The `list_t` object.
-- Return
-    - Returns `true` if the `list_t` object is empty, otherwise returns `false`.
-- Usage
-
-```c
-list_t *list = list_create(Integer_compare, Integer_delete);
-if (list_is_empty(list)) {
-    // ...
-}
-list_destroy(list);
-```
-
-
-
-## list_size()
-
-- Prototype
-
-```c
-size_t list_size(const list_t *list);
-```
-
-- Description
-    - Get the size of a `list_t` object.
-- Parameters
-    - `list`: The `list_t` object.
-- Return
-    - Returns the size of the `list_t` object.
-- Usage
-
-```c
-list_t *list = list_create(Integer_compare, Integer_delete);
-printf("%d\n", list_size(list));
-list_destroy(list);
 ```
 
 

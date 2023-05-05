@@ -46,6 +46,7 @@ set_t *set_clear(set_t *set);
  * @param set The set_t object.
  * @param elem The element.
  * @return Returns true if the set_t object contains the specified element, otherwise returns false.
+ * @note Caller MUST free the parameter key (if applicable).
  */
 bool set_contains(const set_t *set, T elem);
 
@@ -121,5 +122,39 @@ bool set_is_disjoint(const set_t *set1, const set_t *set2);
  * @return Returns true if set1 is a subset of set2, otherwise returns false.
  */
 bool set_is_subset(const set_t *set1, const set_t *set2);
+
+/**
+ * @brief Create an iterator for an set_t object.
+ * @param set The set_t object.
+ * @return Returns the iterator for container.
+ */
+iterator_t *set_iterator_create(const set_t *set);
+
+/**
+ * @brief Destroy an iterator.
+ * @param iterator The iterator_t object.
+ */
+void set_iterator_destroy(iterator_t *iterator);
+
+/**
+ * @brief Traverse an set_t object.
+ * @param set The set_t object.
+ * @param visit Callback function for visiting a data item.
+ */
+void set_foreach(set_t *set, visit_t visit);
+
+/**
+ * @brief Determine whether an iterator has the next element.
+ * @param iterator The iterator_t object.
+ * @return Returns true if the iterator has the next element, otherwise returns false.
+ */
+bool set_iterator_has_next(const iterator_t *iterator);
+
+/**
+ * @brief Get the next element of an iterator.
+ * @param iterator The iterator_t object.
+ * @return Returns the next element of the iterator.
+ */
+T set_iterator_next(iterator_t *iterator);
 
 #endif
