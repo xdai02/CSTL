@@ -114,12 +114,15 @@ void test_red_black_tree_foreach() {
         red_black_tree_insert(tree, Integer_new(i));
     }
 
+    n = 0;
     red_black_tree_foreach(tree, Integer_store);
 
     assert(n == N);
     for (i = 0; i < N; i++) {
         assert(buffer[i] == i);
     }
+
+    n = 0;
     red_black_tree_foreach(tree, Integer_triple);
     red_black_tree_foreach(tree, Integer_store);
 

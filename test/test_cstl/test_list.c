@@ -60,6 +60,7 @@ void test_list_foreach() {
         list_push_back(list, Integer_new(i));
     }
 
+    n = 0;
     list_foreach(list, Integer_store);
 
     assert(n == N);

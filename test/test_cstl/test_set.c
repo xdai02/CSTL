@@ -18,8 +18,6 @@ void test_set_destroy() {
     set_destroy(set);
 }
 
-
-
 void test_set_is_empty() {
     set_t *set = set_create(UnsignedInteger_compare, UnsignedInteger_delete);
     assert(set_is_empty(set) == true);
@@ -50,8 +48,47 @@ void test_set_size() {
     set_destroy(set);
 }
 
+static int buffer[N] = {0};
+static int n = 0;
+
+static void Integer_store(T elem) {
+    Integer *integer = (Integer *)elem;
+    buffer[n] = Integer_get(integer);
+    n++;
+}
+
+static void Integer_triple(T elem) {
+    Integer *integer = (Integer *)elem;
+    Integer_set(integer, Integer_get(integer) * 3);
+}
+
 void test_set_foreach() {
-    
+    int i = 0;
+    set_t *set = NULL;
+
+    set = set_create(Integer_compare, Integer_delete);
+    for (i = 0; i < N; i++) {
+        set_add(set, Integer_new(i));
+    }
+
+    n = 0;
+    set_foreach(set, Integer_store);
+
+    assert(n == N);
+    for (i = 0; i < N; i++) {
+        assert(buffer[i] == i);
+    }
+
+    n = 0;
+    set_foreach(set, Integer_triple);
+    set_foreach(set, Integer_store);
+
+    assert(n == N);
+    for (i = 0; i < N; i++) {
+        assert(buffer[i] == 3 * i);
+    }
+
+    set_destroy(set);
 }
 
 void test_set_clear() {
@@ -178,56 +215,755 @@ void test_set_union() {
     set_t *set1 = NULL;
     set_t *set2 = NULL;
     set_t *set3 = NULL;
+    iterator_t *iterator = NULL;
+    Integer *integer;
+    int i = 0;
 
     set1 = set_create(Integer_compare, Integer_delete);
     set2 = set_create(Integer_compare, Integer_delete);
 
-    for (int i = 0; i < N / 2; i++) {
+    for (i = 0; i < N / 2; i++) {
         set_add(set1, Integer_new(i));
     }
-    for (int i = N / 2; i < N; i++) {
+    for (i = N / 2; i < N; i++) {
         set_add(set2, Integer_new(i));
     }
 
     set3 = set_union(set1, set2);
+    assert(set_size(set3) == N);
 
+    iterator = set_iterator_create(set3);
+    while (set_iterator_has_next(iterator)) {
+        integer = set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
+    }
+
+    set_iterator_destroy(iterator);
+    set_destroy(set1);
+    set_destroy(set2);
+    set_destroy(set3);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N; i++) {
+        set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        set_add(set2, Integer_new(i + 1));
+    }
+
+    set3 = set_union(set1, set2);
+    assert(set_size(set3) == N + 1);
+
+    iterator = set_iterator_create(set3);
+    while (set_iterator_has_next(iterator)) {
+        integer = set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) <= N);
+    }
+
+    set_iterator_destroy(iterator);
+    set_destroy(set1);
+    set_destroy(set2);
+    set_destroy(set3);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N; i++) {
+        set_add(set1, Integer_new(i));
+    }
+
+    set3 = set_union(set1, set2);
+    assert(set_size(set3) == N);
+
+    iterator = set_iterator_create(set3);
+    while (set_iterator_has_next(iterator)) {
+        integer = set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
+    }
+
+    set_iterator_destroy(iterator);
+    set_destroy(set1);
+    set_destroy(set2);
+    set_destroy(set3);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N; i++) {
+        set_add(set2, Integer_new(i));
+    }
+
+    set3 = set_union(set1, set2);
+    assert(set_size(set3) == N);
+
+    iterator = set_iterator_create(set3);
+    while (set_iterator_has_next(iterator)) {
+        integer = set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
+    }
+
+    set_iterator_destroy(iterator);
+    set_destroy(set1);
+    set_destroy(set2);
+    set_destroy(set3);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    set3 = set_union(set1, set2);
+    assert(set_is_empty(set3) == true);
+    set_destroy(set1);
+    set_destroy(set2);
+    set_destroy(set3);
+
+    set3 = set_union(NULL, NULL);
+    assert(set3 == NULL);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    for (i = 0; i < N; i++) {
+        set_add(set1, Integer_new(i));
+    }
+    set3 = set_union(set1, NULL);
+    assert(set3 != NULL);
+    assert(set_size(set3) == N);
+    set_destroy(set1);
+    set_destroy(set3);
+
+    set2 = set_create(Integer_compare, Integer_delete);
+    for (i = 0; i < N; i++) {
+        set_add(set2, Integer_new(i));
+    }
+    set3 = set_union(NULL, set2);
+    assert(set3 != NULL);
+    assert(set_size(set3) == N);
+    set_destroy(set2);
+    set_destroy(set3);
 }
 
 void test_set_intersection() {
+    set_t *set1 = NULL;
+    set_t *set2 = NULL;
+    set_t *set3 = NULL;
+    iterator_t *iterator = NULL;
+    Integer *integer;
+    int i = 0;
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N; i++) {
+        set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        set_add(set2, Integer_new(i));
+    }
+
+    set3 = set_intersection(set1, set2);
+    assert(set_size(set3) == N);
+
+    iterator = set_iterator_create(set3);
+    while (set_iterator_has_next(iterator)) {
+        integer = set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) <= N);
+    }
+
+    set_iterator_destroy(iterator);
+    set_destroy(set1);
+    set_destroy(set2);
+    set_destroy(set3);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N / 2; i++) {
+        set_add(set1, Integer_new(i));
+    }
+    for (i = N / 2; i < N; i++) {
+        set_add(set2, Integer_new(i));
+    }
+
+    set3 = set_intersection(set1, set2);
+    assert(set_is_empty(set3) == true);
+
+    set_destroy(set1);
+    set_destroy(set2);
+    set_destroy(set3);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N; i++) {
+        set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        set_add(set2, Integer_new(i + 1));
+    }
+
+    set3 = set_intersection(set1, set2);
+    assert(set_size(set3) == N - 1);
+
+    iterator = set_iterator_create(set3);
+    while (set_iterator_has_next(iterator)) {
+        integer = set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 1 && Integer_get(integer) < N);
+    }
+
+    set_iterator_destroy(iterator);
+    set_destroy(set1);
+    set_destroy(set2);
+    set_destroy(set3);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N; i++) {
+        set_add(set1, Integer_new(i));
+    }
+
+    set3 = set_intersection(set1, set2);
+    assert(set_is_empty(set3) == true);
+
+    set_destroy(set1);
+    set_destroy(set2);
+    set_destroy(set3);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N; i++) {
+        set_add(set2, Integer_new(i));
+    }
+
+    set3 = set_intersection(set1, set2);
+    assert(set_is_empty(set3) == true);
+
+    set_destroy(set1);
+    set_destroy(set2);
+    set_destroy(set3);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+    set3 = set_intersection(set1, set2);
+    assert(set_is_empty(set3) == true);
+    set_destroy(set1);
+    set_destroy(set2);
+    set_destroy(set3);
+
+    set3 = set_intersection(NULL, NULL);
+    assert(set3 == NULL);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    for (i = 0; i < N; i++) {
+        set_add(set1, Integer_new(i));
+    }
+    set3 = set_intersection(set1, NULL);
+    assert(set3 != NULL);
+    assert(set_is_empty(set3) == true);
+    set_destroy(set1);
+    set_destroy(set3);
+
+    set2 = set_create(Integer_compare, Integer_delete);
+    for (i = 0; i < N; i++) {
+        set_add(set2, Integer_new(i));
+    }
+    set3 = set_intersection(NULL, set2);
+    assert(set3 != NULL);
+    assert(set_is_empty(set3) == true);
+    set_destroy(set2);
+    set_destroy(set3);
 }
 
 void test_set_difference() {
+    set_t *set1 = NULL;
+    set_t *set2 = NULL;
+    set_t *set3 = NULL;
+    iterator_t *iterator = NULL;
+    Integer *integer;
+    int i = 0;
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N; i++) {
+        set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        set_add(set2, Integer_new(i));
+    }
+
+    set3 = set_difference(set1, set2);
+    assert(set_is_empty(set3) == true);
+
+    set_destroy(set1);
+    set_destroy(set2);
+    set_destroy(set3);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N / 2; i++) {
+        set_add(set1, Integer_new(i));
+    }
+    for (i = N / 2; i < N; i++) {
+        set_add(set2, Integer_new(i));
+    }
+
+    set3 = set_difference(set1, set2);
+    assert(set_size(set3) == N / 2);
+
+    iterator = set_iterator_create(set3);
+    while (set_iterator_has_next(iterator)) {
+        integer = set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) < N / 2);
+    }
+
+    set_iterator_destroy(iterator);
+    set_destroy(set1);
+    set_destroy(set2);
+    set_destroy(set3);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N; i++) {
+        set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        set_add(set2, Integer_new(i + 1));
+    }
+
+    set3 = set_difference(set1, set2);
+    assert(set_size(set3) == 1);
+
+    iterator = set_iterator_create(set3);
+    while (set_iterator_has_next(iterator)) {
+        integer = set_iterator_next(iterator);
+        assert(Integer_get(integer) == 0);
+    }
+
+    set_iterator_destroy(iterator);
+    set_destroy(set1);
+    set_destroy(set2);
+    set_destroy(set3);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N; i++) {
+        set_add(set1, Integer_new(i));
+    }
+
+    set3 = set_difference(set1, set2);
+    assert(set_size(set3) == N);
+
+    iterator = set_iterator_create(set3);
+    while (set_iterator_has_next(iterator)) {
+        integer = set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
+    }
+
+    set_iterator_destroy(iterator);
+    set_destroy(set1);
+    set_destroy(set2);
+    set_destroy(set3);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N; i++) {
+        set_add(set2, Integer_new(i));
+    }
+
+    set3 = set_difference(set1, set2);
+    assert(set_is_empty(set3) == true);
+
+    set_destroy(set1);
+    set_destroy(set2);
+    set_destroy(set3);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+    set3 = set_difference(set1, set2);
+    assert(set_is_empty(set3) == true);
+    set_destroy(set1);
+    set_destroy(set2);
+    set_destroy(set3);
+
+    set3 = set_difference(NULL, NULL);
+    assert(set3 == NULL);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    for (i = 0; i < N; i++) {
+        set_add(set1, Integer_new(i));
+    }
+
+    set3 = set_difference(set1, NULL);
+    assert(set3 != NULL);
+    assert(set_size(set3) == N);
+
+    iterator = set_iterator_create(set3);
+    while (set_iterator_has_next(iterator)) {
+        integer = set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
+    }
+
+    set_iterator_destroy(iterator);
+    set_destroy(set1);
+    set_destroy(set3);
+
+    set2 = set_create(Integer_compare, Integer_delete);
+    for (i = 0; i < N; i++) {
+        set_add(set2, Integer_new(i));
+    }
+    set3 = set_difference(NULL, set2);
+    assert(set3 == NULL);
+    set_destroy(set2);
 }
 
 void test_set_symmetric_difference() {
+    set_t *set1 = NULL;
+    set_t *set2 = NULL;
+    set_t *set3 = NULL;
+    iterator_t *iterator = NULL;
+    Integer *integer;
+    int i = 0;
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N; i++) {
+        set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        set_add(set2, Integer_new(i));
+    }
+
+    set3 = set_symmetric_difference(set1, set2);
+    assert(set_is_empty(set3) == true);
+
+    set_destroy(set1);
+    set_destroy(set2);
+    set_destroy(set3);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N / 2; i++) {
+        set_add(set1, Integer_new(i));
+    }
+    for (i = N / 2; i < N; i++) {
+        set_add(set2, Integer_new(i));
+    }
+
+    set3 = set_symmetric_difference(set1, set2);
+    assert(set_size(set3) == N);
+
+    iterator = set_iterator_create(set3);
+    while (set_iterator_has_next(iterator)) {
+        integer = set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
+    }
+
+    set_iterator_destroy(iterator);
+    set_destroy(set1);
+    set_destroy(set2);
+    set_destroy(set3);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N; i++) {
+        set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        set_add(set2, Integer_new(i + 1));
+    }
+
+    set3 = set_symmetric_difference(set1, set2);
+    assert(set_size(set3) == 2);
+
+    iterator = set_iterator_create(set3);
+    while (set_iterator_has_next(iterator)) {
+        integer = set_iterator_next(iterator);
+        assert(Integer_get(integer) == 0 || Integer_get(integer) == N);
+    }
+
+    set_iterator_destroy(iterator);
+    set_destroy(set1);
+    set_destroy(set2);
+    set_destroy(set3);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N; i++) {
+        set_add(set1, Integer_new(i));
+    }
+
+    set3 = set_symmetric_difference(set1, set2);
+    assert(set_size(set3) == N);
+
+    iterator = set_iterator_create(set3);
+    while (set_iterator_has_next(iterator)) {
+        integer = set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
+    }
+
+    set_iterator_destroy(iterator);
+    set_destroy(set1);
+    set_destroy(set2);
+    set_destroy(set3);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N; i++) {
+        set_add(set2, Integer_new(i));
+    }
+
+    set3 = set_symmetric_difference(set1, set2);
+    assert(set_size(set3) == N);
+
+    iterator = set_iterator_create(set3);
+    while (set_iterator_has_next(iterator)) {
+        integer = set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
+    }
+
+    set_iterator_destroy(iterator);
+    set_destroy(set1);
+    set_destroy(set2);
+    set_destroy(set3);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+    set3 = set_symmetric_difference(set1, set2);
+    assert(set_is_empty(set3) == true);
+    set_destroy(set1);
+    set_destroy(set2);
+    set_destroy(set3);
+
+    set3 = set_symmetric_difference(NULL, NULL);
+    assert(set3 == NULL);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    for (i = 0; i < N; i++) {
+        set_add(set1, Integer_new(i));
+    }
+
+    set3 = set_symmetric_difference(set1, NULL);
+    assert(set3 != NULL);
+    assert(set_size(set3) == N);
+
+    iterator = set_iterator_create(set3);
+    while (set_iterator_has_next(iterator)) {
+        integer = set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
+    }
+
+    set_iterator_destroy(iterator);
+    set_destroy(set1);
+    set_destroy(set3);
+
+    set2 = set_create(Integer_compare, Integer_delete);
+    for (i = 0; i < N; i++) {
+        set_add(set2, Integer_new(i));
+    }
+    set3 = set_symmetric_difference(NULL, set2);
+    assert(set3 != NULL);
+    assert(set_size(set3) == N);
+
+    iterator = set_iterator_create(set3);
+    while (set_iterator_has_next(iterator)) {
+        integer = set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
+    }
+
+    set_iterator_destroy(iterator);
+    set_destroy(set2);
+    set_destroy(set3);
 }
 
 void test_set_is_disjoint() {
+    set_t *set1 = NULL;
+    set_t *set2 = NULL;
+    int i = 0;
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N; i++) {
+        set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        set_add(set2, Integer_new(i));
+    }
+
+    assert(set_is_disjoint(set1, set2) == false);
+    set_destroy(set1);
+    set_destroy(set2);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N / 2; i++) {
+        set_add(set1, Integer_new(i));
+    }
+    for (i = N / 2; i < N; i++) {
+        set_add(set2, Integer_new(i));
+    }
+
+    assert(set_is_disjoint(set1, set2) == true);
+    set_destroy(set1);
+    set_destroy(set2);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N; i++) {
+        set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        set_add(set2, Integer_new(i + 1));
+    }
+
+    assert(set_is_disjoint(set1, set2) == false);
+    set_destroy(set1);
+    set_destroy(set2);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+    for (i = 0; i < N; i++) {
+        set_add(set1, Integer_new(i));
+    }
+    assert(set_is_disjoint(set1, set2) == true);
+    set_destroy(set1);
+    set_destroy(set2);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+    for (i = 0; i < N; i++) {
+        set_add(set2, Integer_new(i));
+    }
+    assert(set_is_disjoint(set1, set2) == true);
+    set_destroy(set1);
+    set_destroy(set2);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+    assert(set_is_disjoint(set1, set2) == true);
+    set_destroy(set1);
+    set_destroy(set2);
 }
 
 void test_set_is_subset() {
+    set_t *set1 = NULL;
+    set_t *set2 = NULL;
+    int i = 0;
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N / 2; i++) {
+        set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        set_add(set2, Integer_new(i));
+    }
+
+    assert(set_is_subset(set1, set2) == true);
+    set_destroy(set1);
+    set_destroy(set2);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N; i++) {
+        set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        set_add(set2, Integer_new(i));
+    }
+
+    assert(set_is_subset(set1, set2) == true);
+    set_destroy(set1);
+    set_destroy(set2);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N / 2; i++) {
+        set_add(set1, Integer_new(i));
+    }
+    for (i = N / 2; i < N; i++) {
+        set_add(set2, Integer_new(i));
+    }
+
+    assert(set_is_subset(set1, set2) == false);
+    set_destroy(set1);
+    set_destroy(set2);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+
+    for (i = 0; i < N; i++) {
+        set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        set_add(set2, Integer_new(i + 1));
+    }
+
+    assert(set_is_subset(set1, set2) == false);
+    set_destroy(set1);
+    set_destroy(set2);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+    for (i = 0; i < N; i++) {
+        set_add(set1, Integer_new(i));
+    }
+    assert(set_is_subset(set1, set2) == false);
+    set_destroy(set1);
+    set_destroy(set2);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+    for (i = 0; i < N; i++) {
+        set_add(set2, Integer_new(i));
+    }
+    assert(set_is_subset(set1, set2) == true);
+    set_destroy(set1);
+    set_destroy(set2);
+
+    set1 = set_create(Integer_compare, Integer_delete);
+    set2 = set_create(Integer_compare, Integer_delete);
+    assert(set_is_subset(set1, set2) == true);
+    set_destroy(set1);
+    set_destroy(set2);
 }
 
 void test_set_iterator() {
     int i = 0;
-    red_black_tree_t *tree = NULL;
+    set_t *set = NULL;
     iterator_t *iterator = NULL;
     Integer *integer;
 
-    tree = red_black_tree_create(Integer_compare, Integer_delete);
+    set = set_create(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
-        red_black_tree_insert(tree, Integer_new(i));
+        set_add(set, Integer_new(i));
     }
 
-    iterator = red_black_tree_iterator_create(tree);
+    iterator = set_iterator_create(set);
 
     i = 0;
-    while (red_black_tree_iterator_has_next(iterator)) {
-        integer = (Integer *)red_black_tree_iterator_next(iterator);
+    while (set_iterator_has_next(iterator)) {
+        integer = (Integer *)set_iterator_next(iterator);
         assert(Integer_get(integer) == i);
         i++;
     }
 
-    red_black_tree_iterator_destroy(iterator);
-    red_black_tree_destroy(tree);
+    set_iterator_destroy(iterator);
+    set_destroy(set);
 }

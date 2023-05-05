@@ -46,7 +46,7 @@ set_t *set_clear(set_t *set);
  * @param set The set_t object.
  * @param elem The element.
  * @return Returns true if the set_t object contains the specified element, otherwise returns false.
- * @note Caller MUST free the parameter key (if applicable).
+ * @note Caller MUST free the parameter `elem` (if applicable).
  */
 bool set_contains(const set_t *set, T elem);
 
@@ -63,7 +63,7 @@ set_t *set_add(set_t *set, T elem);
  * @param set The set_t object.
  * @param elem The element.
  * @return Returns the modified set_t object.
- * @note Caller MUST free the parameter elem (if applicable).
+ * @note Caller MUST free the parameter `elem` (if applicable).
  */
 set_t *set_remove(set_t *set, T elem);
 

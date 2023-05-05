@@ -135,13 +135,14 @@ red_black_tree_t *red_black_tree_clear(red_black_tree_t *tree) {
  * @param tree The red_black_tree_t object.
  * @param key The key.
  * @return Returns true if the red_black_tree_t object contains the key, otherwise returns false.
- * @note Caller MUST free the parameter key (if applicable).
+ * @note Caller MUST free the parameter `key` (if applicable).
  */
 bool red_black_tree_contains(const red_black_tree_t *tree, T key) {
     node_t *node = NULL;
     int cmp;
 
     return_value_if_fail(tree != NULL, false);
+    return_value_if_fail(tree->compare != NULL, false);
 
     node = tree->root;
     while (node != NULL) {
@@ -315,6 +316,7 @@ red_black_tree_t *red_black_tree_insert(red_black_tree_t *tree, T key) {
     int cmp;
 
     return_value_if_fail(tree != NULL && key != NULL, tree);
+    return_value_if_fail(tree->compare != NULL, tree);
 
     node = __node_create(key, RED, NULL, NULL, NULL);
     return_value_if_fail(node != NULL, tree);
@@ -481,7 +483,7 @@ static void __remove_fixup(red_black_tree_t *tree, node_t *x) {
  * @param tree The red_black_tree_t object.
  * @param key The key.
  * @return Returns the modified red_black_tree_t object.
- * @note Caller MUST free the parameter key (if applicable).
+ * @note Caller MUST free the parameter `key` (if applicable).
  */
 red_black_tree_t *red_black_tree_remove(red_black_tree_t *tree, T key) {
     node_t *x = NULL;
@@ -491,6 +493,7 @@ red_black_tree_t *red_black_tree_remove(red_black_tree_t *tree, T key) {
     int cmp;
 
     return_value_if_fail(tree != NULL && key != NULL, tree);
+    return_value_if_fail(tree->compare != NULL, tree);
 
     z = tree->root;
     while (z != NULL) {

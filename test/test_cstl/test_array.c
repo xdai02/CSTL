@@ -60,6 +60,7 @@ void test_array_foreach() {
         array_append(array, Integer_new(i));
     }
 
+    n = 0;
     array_foreach(array, Integer_store);
 
     assert(n == N);
