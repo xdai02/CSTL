@@ -31,6 +31,17 @@ file(GLOB_RECURSE COOP_SOURCES "${SRC_DIR}/*.c")
 add_library(coop OBJECT ${COOP_SOURCES})
 target_include_directories(coop PUBLIC ${INC_DIR} ${INC_DIR}/utils ${INC_DIR}/cstl)
 
+# Build the static and shared library
+include_directories(include)
+include_directories(include/cstl)
+include_directories(include/utils)
+
+add_library(coop_static STATIC ${COOP_SOURCES})
+add_library(coop_shared SHARED ${COOP_SOURCES})
+
+set_target_properties(coop_static PROPERTIES OUTPUT_NAME coop)
+set_target_properties(coop_shared PROPERTIES OUTPUT_NAME coop)
+
 # Build the test executable
 file(GLOB_RECURSE TEST_SOURCES "${TEST_DIR}/*.c")
 add_executable(test_coop ${TEST_SOURCES})
