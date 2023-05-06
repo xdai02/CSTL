@@ -1,7 +1,7 @@
 #ifndef _ORDERED_SET_H_
 #define _ORDERED_SET_H_
 
-#include "utils.h"
+#include "utils/utils.h"
 #include "iterator.h"
 
 typedef struct ordered_set_t ordered_set_t;

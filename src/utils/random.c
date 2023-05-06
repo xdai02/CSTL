@@ -1,5 +1,5 @@
-#include "random.h"
-#include "types.h"
+#include "utils/random.h"
+#include "utils/types.h"
 #include <stdlib.h>
 #include <time.h>
 

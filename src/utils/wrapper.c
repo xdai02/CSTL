@@ -1,6 +1,6 @@
-#include "wrapper.h"
-#include "exception.h"
-#include "numeric.h"
+#include "utils/wrapper.h"
+#include "utils/exception.h"
+#include "utils/numeric.h"
 #include <stdlib.h>
 #include <string.h>
 

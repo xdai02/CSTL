@@ -1,7 +1,7 @@
 #ifndef _STR_H_
 #define _STR_H_
 
-#include "utils.h"
+#include "utils/utils.h"
 
 typedef struct string_t string_t;
 

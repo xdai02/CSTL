@@ -1,4 +1,4 @@
-#include "array.h"
+#include "cstl/array.h"
 
 struct array_t {
     T *data;

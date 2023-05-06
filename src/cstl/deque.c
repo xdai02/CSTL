@@ -1,5 +1,5 @@
-#include "deque.h"
-#include "list.h"
+#include "cstl/deque.h"
+#include "cstl/list.h"
 
 struct deque_t {
     list_t *list;

@@ -1,7 +1,7 @@
 #ifndef _LIST_H_
 #define _LIST_H_
 
-#include "utils.h"
+#include "utils/utils.h"
 #include "iterator.h"
 
 typedef struct list_t list_t;

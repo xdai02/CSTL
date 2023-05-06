@@ -23,7 +23,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 # Build the coop library
 file(GLOB_RECURSE COOP_SOURCES "${SRC_DIR}/*.c")
 add_library(coop OBJECT ${COOP_SOURCES})
-target_include_directories(coop PUBLIC ${INC_DIR} ${INC_DIR}/utils ${INC_DIR}/cstl)
+target_include_directories(coop PUBLIC ${INC_DIR})
 
 # Get all .c files in the 'demo' directory
 file(GLOB_RECURSE DEMO_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.c")
@@ -35,7 +35,7 @@ foreach(demo_src ${DEMO_SOURCES})
     
     # Create an executable for each .c file in the 'demo' directory
     add_executable(${demo_name} ${demo_src} $<TARGET_OBJECTS:coop>)
-    target_include_directories(${demo_name} PRIVATE ${INC_DIR} ${INC_DIR}/utils ${INC_DIR}/cstl)
+    target_include_directories(${demo_name} PRIVATE ${INC_DIR})
 endforeach()
 
 # Clean up CMake generated files
@@ -51,7 +51,6 @@ add_custom_target(clean_all
     COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_stack"
     COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_queue"
     COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_deque"
-    COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_set"
-    COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_map"
+    COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_ordered_set"
     COMMENT "Cleaning up CMake generated files"
 )

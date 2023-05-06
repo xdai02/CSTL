@@ -1,7 +1,7 @@
 #ifndef _ARRAY_H_
 #define _ARRAY_H_
 
-#include "utils.h"
+#include "utils/utils.h"
 #include "iterator.h"
 
 typedef struct array_t array_t;
