@@ -142,25 +142,25 @@ void test_red_black_tree() {
     printf("[PASS] red_black_tree\n");
 }
 
-void test_set() {
-    test_set_create();
-    test_set_destroy();
-    test_set_is_empty();
-    test_set_size();
-    test_set_foreach();
-    test_set_clear();
-    test_set_contains();
-    test_set_add();
-    test_set_remove();
-    test_set_union();
-    test_set_intersection();
-    test_set_difference();
-    test_set_symmetric_difference();
-    test_set_is_disjoint();
-    test_set_is_subset();
-    test_set_iterator();
+void test_ordered_set() {
+    test_ordered_set_create();
+    test_ordered_set_destroy();
+    test_ordered_set_is_empty();
+    test_ordered_set_size();
+    test_ordered_set_foreach();
+    test_ordered_set_clear();
+    test_ordered_set_contains();
+    test_ordered_set_add();
+    test_ordered_set_remove();
+    test_ordered_set_union();
+    test_ordered_set_intersection();
+    test_ordered_set_difference();
+    test_ordered_set_symmetric_difference();
+    test_ordered_set_is_disjoint();
+    test_ordered_set_is_subset();
+    test_ordered_set_iterator();
 
-    printf("[PASS] set\n");
+    printf("[PASS] ordered_set\n");
 }
 
 void test_cstl() {
@@ -171,5 +171,5 @@ void test_cstl() {
     test_queue();
     test_deque();
     test_red_black_tree();
-    test_set();
+    test_ordered_set();
 }

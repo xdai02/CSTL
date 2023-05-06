@@ -280,7 +280,7 @@ array_t *array_reverse(array_t *array) {
 /**
  * @brief Callback function for comparing elements.
  */
-static compare_t compare;
+static compare_t __compare = NULL;
 
 /**
  * @brief Private function for comparing elements.
@@ -290,8 +290,9 @@ static compare_t compare;
  *         Returns 0 if the first element is equal to the second element.
  *         Returns positive value if the first element is greater than the second element.
  */
-static int __compare(const T a, const T b) {
-    return compare(*(T *)a, *(T *)b);
+static int __T_compare(const T a, const T b) {
+    exit_if_fail(a != NULL && b != NULL && __compare != NULL);
+    return __compare(*(const T *)a, *(const T *)b);
 }
 
 /**
@@ -303,8 +304,8 @@ array_t *array_sort(array_t *array) {
     return_value_if_fail(array != NULL, array);
     return_value_if_fail(array->compare != NULL, array);
 
-    compare = array->compare;
-    qsort(array->data, array->size, sizeof(T), __compare);
+    __compare = array->compare;
+    qsort(array->data, array->size, sizeof(T), __T_compare);
     return array;
 }
 

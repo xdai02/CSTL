@@ -234,7 +234,7 @@ bool array_iterator_has_next(const iterator_t *iterator);
 T array_iterator_next(iterator_t *iterator);
 ```
 
-- [x] **list**: Generic doubly-linked list `list_t`.
+- [x] **list**: Generic doubly linked list `list_t`.
 
 ```c
 typedef struct list_t list_t;
@@ -265,7 +265,7 @@ bool list_iterator_has_next(const iterator_t *iterator);
 T list_iterator_next(iterator_t *iterator);
 ```
 
-- [x] **stack**: Generic LIFO `stack_t`.
+- [x] **stack**: Generic array based LIFO `stack_t`.
 
 ```c
 typedef struct stack_t stack_t;
@@ -280,7 +280,7 @@ T stack_pop(stack_t *stack);
 T stack_peek(const stack_t *stack);
 ```
 
-- [x] **queue**: Generic FIFO `queue_t`.
+- [x] **queue**: Generic doubly linked list based FIFO `queue_t`.
 
 ```c
 typedef struct queue_t queue_t;
@@ -295,7 +295,7 @@ T queue_dequeue(queue_t *queue);
 T queue_peek(const queue_t *queue);
 ```
 
-- [x] **deque**: Generic `deque_t`.
+- [x] **deque**: Generic doubly linked list based `deque_t`.
 
 ```c
 typedef struct deque_t deque_t;
@@ -333,36 +333,52 @@ bool red_black_tree_iterator_has_next(const iterator_t *iterator);
 T red_black_tree_iterator_next(iterator_t *iterator);
 ```
 
-- [x] **set**: Generic ordered `set_t`.
+- [x] **ordered_set**: Generic red black tree based `ordered_set_t`.
 
 ```c
-typedef struct set_t set_t;
+typedef struct ordered_set_t ordered_set_t;
 
-set_t *set_create(compare_t compare, destroy_t destroy);
-void set_destroy(set_t *set);
-bool set_is_empty(const set_t *set);
-size_t set_size(const set_t *set);
-void set_foreach(set_t *set, visit_t visit);
-set_t *set_clear(set_t *set);
-bool set_contains(const set_t *set, T elem);
-set_t *set_add(set_t *set, T elem);
-set_t *set_remove(set_t *set, T elem);
-set_t *set_union(const set_t *set1, const set_t *set2);
-set_t *set_intersection(const set_t *set1, const set_t *set2);
-set_t *set_difference(const set_t *set1, const set_t *set2);
-set_t *set_symmetric_difference(const set_t *set1, const set_t *set2);
-bool set_is_disjoint(const set_t *set1, const set_t *set2);
-bool set_is_subset(const set_t *set1, const set_t *set2);
-iterator_t *set_iterator_create(const set_t *set);
-void set_iterator_destroy(iterator_t *iterator);
-bool set_iterator_has_next(const iterator_t *iterator);
-T set_iterator_next(iterator_t *iterator);
+ordered_set_t *ordered_set_create(compare_t compare, destroy_t destroy);
+void ordered_set_destroy(ordered_set_t *set);
+bool ordered_set_is_empty(const ordered_set_t *set);
+size_t ordered_set_size(const ordered_set_t *set);
+void ordered_set_foreach(ordered_set_t *set, visit_t visit);
+ordered_set_t *ordered_set_clear(ordered_set_t *set);
+bool ordered_set_contains(const ordered_set_t *set, T elem);
+ordered_set_t *ordered_set_add(ordered_set_t *set, T elem);
+ordered_set_t *ordered_set_remove(ordered_set_t *set, T elem);
+ordered_set_t *ordered_set_union(const ordered_set_t *set1, const ordered_set_t *set2);
+ordered_set_t *ordered_set_intersection(const ordered_set_t *set1, const ordered_set_t *set2);
+ordered_set_t *ordered_set_difference(const ordered_set_t *set1, const ordered_set_t *set2);
+ordered_set_t *ordered_set_symmetric_difference(const ordered_set_t *set1, const ordered_set_t *set2);
+bool ordered_set_is_disjoint(const ordered_set_t *set1, const ordered_set_t *set2);
+bool ordered_set_is_subset(const ordered_set_t *set1, const ordered_set_t *set2);
+iterator_t *ordered_set_iterator_create(const ordered_set_t *set);
+void ordered_set_iterator_destroy(iterator_t *iterator);
+bool ordered_set_iterator_has_next(const iterator_t *iterator);
+T ordered_set_iterator_next(iterator_t *iterator);
 ```
 
-- [ ] **map**: Generic `map_t` for key-value pairs.
+- [ ] **unordered_set**: Generic hash table based `unordered_set_t`.
 
 ```c
-typedef struct map_t map_t;
+typedef struct unordered_set_t unordered_set_t;
+
+// TODO
+```
+
+- [ ] **ordered_map**: Generic red black tree based `ordered_map_t` for key-value pairs.
+
+```c
+typedef struct ordered_map_t ordered_map_t;
+
+// TODO
+```
+
+- [ ] **unordered_map**: Generic hash table based `unordered_map_t` for key-value pairs.
+
+```c
+typedef struct unordered_map_t unordered_map_t;
 
 // TODO
 ```
