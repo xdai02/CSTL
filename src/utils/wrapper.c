@@ -1,8 +1,7 @@
 #include "utils/wrapper.h"
 #include "utils/exception.h"
 #include "utils/numeric.h"
-#include <stdlib.h>
-#include <string.h>
+#include <stdint.h>
 
 /**
  * @brief A wrapper for the primitive data type char.
@@ -80,6 +79,18 @@ int Character_compare(const void *ptr1, const void *ptr2) {
     character1 = (Character *)ptr1;
     character2 = (Character *)ptr2;
     return character1->value - character2->value;
+}
+
+/**
+ * @brief Returns the hash code of the given Character wrapper.
+ * @param ptr The pointer to the Character wrapper.
+ * @return The hash code of the given Character wrapper.
+ */
+size_t Character_hash(const void *ptr) {
+    Character *character = NULL;
+    exit_if_fail(ptr != NULL);
+    character = (Character *)ptr;
+    return (size_t)character->value;
 }
 
 /**
@@ -161,6 +172,18 @@ int UnsignedCharacter_compare(const void *ptr1, const void *ptr2) {
 }
 
 /**
+ * @brief Returns the hash code of the given UnsignedCharacter wrapper.
+ * @param ptr The pointer to the UnsignedCharacter wrapper.
+ * @return The hash code of the given UnsignedCharacter wrapper.
+ */
+size_t UnsignedCharacter_hash(const void *ptr) {
+    UnsignedCharacter *uc = NULL;
+    exit_if_fail(ptr != NULL);
+    uc = (UnsignedCharacter *)ptr;
+    return (size_t)uc->value;
+}
+
+/**
  * @brief A wrapper for the primitive data type short.
  */
 struct Short {
@@ -236,6 +259,18 @@ int Short_compare(const void *ptr1, const void *ptr2) {
     short1 = (Short *)ptr1;
     short2 = (Short *)ptr2;
     return short1->value - short2->value;
+}
+
+/**
+ * @brief Returns the hash code of the given Short wrapper.
+ * @param ptr The pointer to the Short wrapper.
+ * @return The hash code of the given Short wrapper.
+ */
+size_t Short_hash(const void *ptr) {
+    Short *s = NULL;
+    exit_if_fail(ptr != NULL);
+    s = (Short *)ptr;
+    return (size_t)s->value;
 }
 
 /**
@@ -317,6 +352,18 @@ int UnsignedShort_compare(const void *ptr1, const void *ptr2) {
 }
 
 /**
+ * @brief Returns the hash code of the given UnsignedShort wrapper.
+ * @param ptr The pointer to the UnsignedShort wrapper.
+ * @return The hash code of the given UnsignedShort wrapper.
+ */
+size_t UnsignedShort_hash(const void *ptr) {
+    UnsignedShort *us = NULL;
+    exit_if_fail(ptr != NULL);
+    us = (UnsignedShort *)ptr;
+    return (size_t)us->value;
+}
+
+/**
  * @brief A wrapper for the primitive data type int.
  */
 struct Integer {
@@ -392,6 +439,18 @@ int Integer_compare(const void *ptr1, const void *ptr2) {
     integer1 = (Integer *)ptr1;
     integer2 = (Integer *)ptr2;
     return integer1->value - integer2->value;
+}
+
+/**
+ * @brief Returns the hash code of the given Integer wrapper.
+ * @param ptr The pointer to the Integer wrapper.
+ * @return The hash code of the given Integer wrapper.
+ */
+size_t Integer_hash(const void *ptr) {
+    Integer *integer = NULL;
+    exit_if_fail(ptr != NULL);
+    integer = (Integer *)ptr;
+    return (size_t)integer->value;
 }
 
 /**
@@ -473,6 +532,18 @@ int UnsignedInteger_compare(const void *ptr1, const void *ptr2) {
 }
 
 /**
+ * @brief Returns the hash code of the given UnsignedInteger wrapper.
+ * @param ptr The pointer to the UnsignedInteger wrapper.
+ * @return The hash code of the given UnsignedInteger wrapper.
+ */
+size_t UnsignedInteger_hash(const void *ptr) {
+    UnsignedInteger *ui = NULL;
+    exit_if_fail(ptr != NULL);
+    ui = (UnsignedInteger *)ptr;
+    return (size_t)ui->value;
+}
+
+/**
  * @brief A wrapper for the primitive data type long.
  */
 struct Long {
@@ -551,6 +622,18 @@ int Long_compare(const void *ptr1, const void *ptr2) {
 }
 
 /**
+ * @brief Returns the hash code of the given Long wrapper.
+ * @param ptr The pointer to the Long wrapper.
+ * @return The hash code of the given Long wrapper.
+ */
+size_t Long_hash(const void *ptr) {
+    Long *l = NULL;
+    exit_if_fail(ptr != NULL);
+    l = (Long *)ptr;
+    return (size_t)l->value;
+}
+
+/**
  * @brief A wrapper for the primitive data type unsigned long.
  */
 struct UnsignedLong {
@@ -626,6 +709,18 @@ int UnsignedLong_compare(const void *ptr1, const void *ptr2) {
     ul1 = (UnsignedLong *)ptr1;
     ul2 = (UnsignedLong *)ptr2;
     return ul1->value - ul2->value;
+}
+
+/**
+ * @brief Returns the hash code of the given UnsignedLong wrapper.
+ * @param ptr The pointer to the UnsignedLong wrapper.
+ * @return The hash code of the given UnsignedLong wrapper.
+ */
+size_t UnsignedLong_hash(const void *ptr) {
+    UnsignedLong *ul = NULL;
+    exit_if_fail(ptr != NULL);
+    ul = (UnsignedLong *)ptr;
+    return (size_t)ul->value;
 }
 
 /**
@@ -716,6 +811,21 @@ int Float_compare(const void *ptr1, const void *ptr2) {
 }
 
 /**
+ * @brief Returns the hash code of the given Float wrapper.
+ * @param ptr The pointer to the Float wrapper.
+ * @return The hash code of the given Float wrapper.
+ */
+size_t Float_hash(const void *ptr) {
+    Float *f = NULL;
+    uint32_t bits;
+
+    exit_if_fail(ptr != NULL);
+    f = (Float *)ptr;
+    bits = *((uint32_t *)&f->value);
+    return (size_t)bits;
+}
+
+/**
  * @brief A wrapper for the primitive data type long long.
  */
 struct Double {
@@ -803,6 +913,21 @@ int Double_compare(const void *ptr1, const void *ptr2) {
 }
 
 /**
+ * @brief Returns the hash code of the given Double wrapper.
+ * @param ptr The pointer to the Double wrapper.
+ * @return The hash code of the given Double wrapper.
+ */
+size_t Double_hash(const void *ptr) {
+    Double *d = NULL;
+    uint64_t bits;
+
+    exit_if_fail(ptr != NULL);
+    d = (Double *)ptr;
+    bits = *((uint64_t *)&d->value);
+    return (size_t)bits;
+}
+
+/**
  * @brief A wrapper for the primitive data type bool.
  */
 struct Boolean {
@@ -878,4 +1003,16 @@ int Boolean_compare(const void *ptr1, const void *ptr2) {
     boolean1 = (Boolean *)ptr1;
     boolean2 = (Boolean *)ptr2;
     return boolean1->value - boolean2->value;
+}
+
+/**
+ * @brief Returns the hash code of the given Boolean wrapper.
+ * @param ptr The pointer to the Boolean wrapper.
+ * @return The hash code of the given Boolean wrapper.
+ */
+size_t Boolean_hash(const void *ptr) {
+    Boolean *boolean = NULL;
+    exit_if_fail(ptr != NULL);
+    boolean = (Boolean *)ptr;
+    return (size_t)boolean->value;
 }

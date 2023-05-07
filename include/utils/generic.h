@@ -27,4 +27,10 @@ typedef void (*destroy_t)(T data);
  */
 typedef void (*visit_t)(T data);
 
+/**
+ * @brief A generic function pointer type for hashing a data item.
+ * @param data The data item to be hashed.
+ */
+typedef size_t (*hash_t)(const T data);
+
 #endif

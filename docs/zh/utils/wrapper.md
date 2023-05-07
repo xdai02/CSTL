@@ -106,6 +106,23 @@ int Character_compare(const void *ptr1, const void *ptr2);
     - 如果`ptr1 < ptr2`，返回负整数。
     - 如果`ptr1 == ptr2`，返回0。
     - 如果`ptr1 > ptr2`，返回正整数。
+
+
+
+### Character_hash()
+
+- 原型
+
+```c
+size_t Character_hash(const void *ptr);
+```
+
+- 描述
+    - 返回`Character`包装类的哈希值。
+- 参数
+    - `ptr`：包装类指针。
+- 返回值
+    - 返回`Character`包装类的哈希值。
 - 用例
 
 ```c
@@ -226,6 +243,23 @@ int UnsignedCharacter_compare(const void *ptr1, const void *ptr2);
     - 如果`ptr1 < ptr2`，返回负整数。
     - 如果`ptr1 == ptr2`，返回0。
     - 如果`ptr1 > ptr2`，返回正整数。
+
+
+
+### UnsignedCharacter_hash()
+
+- 原型
+
+```c
+size_t UnsignedCharacter_hash(const void *ptr);
+```
+
+- 描述
+    - 返回`UnsignedCharacter`包装类的哈希值。
+- 参数
+    - `ptr`：包装类指针。
+- 返回值
+    - 返回`UnsignedCharacter`包装类的哈希值。
 - 用例
 
 ```c
@@ -346,6 +380,23 @@ int Short_compare(const void *ptr1, const void *ptr2);
     - 如果`ptr1 < ptr2`，返回负整数。
     - 如果`ptr1 == ptr2`，返回0。
     - 如果`ptr1 > ptr2`，返回正整数。
+
+
+
+### Short_hash()
+
+- 原型
+
+```c
+size_t Short_hash(const void *ptr);
+```
+
+- 描述
+    - 返回`Short`包装类的哈希值。
+- 参数
+    - `ptr`：包装类指针。
+- 返回值
+    - 返回`Short`包装类的哈希值。
 - 用例
 
 ```c
@@ -466,6 +517,23 @@ int UnsignedShort_compare(const void *ptr1, const void *ptr2);
     - 如果`ptr1 < ptr2`，返回负整数。
     - 如果`ptr1 == ptr2`，返回0。
     - 如果`ptr1 > ptr2`，返回正整数。
+
+
+
+### UnsignedShort_hash()
+
+- 原型
+
+```c
+size_t UnsignedShort_hash(const void *ptr);
+```
+
+- 描述
+    - 返回`UnsignedShort`包装类的哈希值。
+- 参数
+    - `ptr`：包装类指针。
+- 返回值
+    - 返回`UnsignedShort`包装类的哈希值。
 - 用例
 
 ```c
@@ -586,6 +654,23 @@ int Integer_compare(const void *ptr1, const void *ptr2);
     - 如果`ptr1 < ptr2`，返回负整数。
     - 如果`ptr1 == ptr2`，返回0。
     - 如果`ptr1 > ptr2`，返回正整数。
+
+
+
+### Integer_hash()
+
+- 原型
+
+```c
+size_t Integer_hash(const void *ptr);
+```
+
+- 描述
+    - 返回`Integer`包装类的哈希值。
+- 参数
+    - `ptr`：包装类指针。
+- 返回值
+    - 返回`Integer`包装类的哈希值。
 - 用例
 
 ```c
@@ -706,6 +791,23 @@ int UnsignedInteger_compare(const void *ptr1, const void *ptr2);
     - 如果`ptr1 < ptr2`，返回负整数。
     - 如果`ptr1 == ptr2`，返回0。
     - 如果`ptr1 > ptr2`，返回正整数。
+
+
+
+### UnsignedInteger_hash()
+
+- 原型
+
+```c
+size_t UnsignedInteger_hash(const void *ptr);
+```
+
+- 描述
+    - 返回`UnsignedInteger`包装类的哈希值。
+- 参数
+    - `ptr`：包装类指针。
+- 返回值
+    - 返回`UnsignedInteger`包装类的哈希值。
 - 用例
 
 ```c
@@ -826,6 +928,23 @@ int Long_compare(const void *ptr1, const void *ptr2);
     - 如果`ptr1 < ptr2`，返回负整数。
     - 如果`ptr1 == ptr2`，返回0。
     - 如果`ptr1 > ptr2`，返回正整数。
+
+
+
+### Long_hash()
+
+- 原型
+
+```c
+size_t Long_hash(const void *ptr);
+```
+
+- 描述
+    - 返回`Long`包装类的哈希值。
+- 参数
+    - `ptr`：包装类指针。
+- 返回值
+    - 返回`Long`包装类的哈希值。
 - 用例
 
 ```c
@@ -946,6 +1065,23 @@ int UnsignedLong_compare(const void *ptr1, const void *ptr2);
     - 如果`ptr1 < ptr2`，返回负整数。
     - 如果`ptr1 == ptr2`，返回0。
     - 如果`ptr1 > ptr2`，返回正整数。
+
+
+
+### UnsignedLong_hash()
+
+- 原型
+
+```c
+size_t UnsignedLong_hash(const void *ptr);
+```
+
+- 描述
+    - 返回`UnsignedLong`包装类的哈希值。
+- 参数
+    - `ptr`：包装类指针。
+- 返回值
+    - 返回`UnsignedLong`包装类的哈希值。
 - 用例
 
 ```c
@@ -1066,6 +1202,23 @@ int Float_compare(const void *ptr1, const void *ptr2);
     - 如果`ptr1 < ptr2`，返回负整数。
     - 如果`ptr1 == ptr2`，返回0。
     - 如果`ptr1 > ptr2`，返回正整数。
+
+
+
+### Float_hash()
+
+- 原型
+
+```c
+size_t Float_hash(const void *ptr);
+```
+
+- 描述
+    - 返回`Float`包装类的哈希值。
+- 参数
+    - `ptr`：包装类指针。
+- 返回值
+    - 返回`Float`包装类的哈希值。
 - 用例
 
 ```c
@@ -1186,6 +1339,23 @@ int Double_compare(const void *ptr1, const void *ptr2);
     - 如果`ptr1 < ptr2`，返回负整数。
     - 如果`ptr1 == ptr2`，返回0。
     - 如果`ptr1 > ptr2`，返回正整数。
+
+
+
+### Double_hash()
+
+- 原型
+
+```c
+size_t Double_hash(const void *ptr);
+```
+
+- 描述
+    - 返回`Double`包装类的哈希值。
+- 参数
+    - `ptr`：包装类指针。
+- 返回值
+    - 返回`Double`包装类的哈希值。
 - 用例
 
 ```c
@@ -1306,6 +1476,23 @@ int Boolean_compare(const void *ptr1, const void *ptr2);
     - 如果`ptr1 < ptr2`，返回负整数。
     - 如果`ptr1 == ptr2`，返回0。
     - 如果`ptr1 > ptr2`，返回正整数。
+
+
+
+### Boolean_hash()
+
+- 原型
+
+```c
+size_t Boolean_hash(const void *ptr);
+```
+
+- 描述
+    - 返回`Boolean`包装类的哈希值。
+- 参数
+    - `ptr`：包装类指针。
+- 返回值
+    - 返回`Boolean`包装类的哈希值。
 - 用例
 
 ```c

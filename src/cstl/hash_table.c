@@ -13,6 +13,7 @@ struct hash_table_t {
     compare_t compare;
     destroy_t destroy_key;
     destroy_t destroy_value;
+    hash_t hash;
 };
 
 static const int DEFAULT_CAPACITY = 16;
@@ -33,7 +34,8 @@ static pair_t *__pair_create(T key, T value) {
 static destroy_t __destroy_key = NULL;
 static destroy_t __destroy_value = NULL;
 
-static void __pair_destroy(pair_t *pair) {
+static void __pair_destroy(T elem) {
+    pair_t *pair = (pair_t *)elem;
     return_if_fail(pair != NULL);
 
     if (__destroy_key != NULL) {
@@ -46,12 +48,19 @@ static void __pair_destroy(pair_t *pair) {
 }
 
 static size_t __hash(const hash_table_t *hash_table, const T key) {
+    size_t hash_value = 0;
+
     exit_if_fail(hash_table != NULL && key != NULL);
 
-    // TODO
+    if (hash_table->hash != NULL) {
+        hash_value = hash_table->hash(key);
+    } else {
+        hash_value = (size_t)key;
+    }
+    return hash_value % hash_table->capacity;
 }
 
-hash_table_t *hash_table_create(compare_t compare, destroy_t destroy_key, destroy_t destroy_value) {
+hash_table_t *hash_table_create(compare_t compare, destroy_t destroy_key, destroy_t destroy_value, hash_t hash) {
     hash_table_t *hash_table = NULL;
     size_t i = 0;
     size_t j = 0;
@@ -84,6 +93,7 @@ hash_table_t *hash_table_create(compare_t compare, destroy_t destroy_key, destro
     hash_table->compare = compare;
     hash_table->destroy_key = destroy_key;
     hash_table->destroy_value = destroy_value;
+    hash_table->hash = hash;
 
     return hash_table;
 }
@@ -98,4 +108,26 @@ void hash_table_destroy(hash_table_t *hash_table) {
     }
     free(hash_table->buckets);
     free(hash_table);
+}
+
+bool hash_table_is_empty(const hash_table_t *hash_table) {
+    return_value_if_fail(hash_table != NULL, true);
+    return hash_table->size == 0;
+}
+
+size_t hash_table_size(const hash_table_t *hash_table) {
+    return_value_if_fail(hash_table != NULL, 0);
+    return hash_table->size;
+}
+
+hash_table_t *hash_table_clear(hash_table_t *hash_table) {
+    size_t i = 0;
+
+    return_value_if_fail(hash_table != NULL, NULL);
+
+    for (i = 0; i < hash_table->capacity; i++) {
+        list_clear(hash_table->buckets[i]);
+    }
+    hash_table->size = 0;
+    return hash_table;
 }

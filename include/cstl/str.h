@@ -97,6 +97,13 @@ bool string_equal_ignore_case(const string_t *string1, const string_t *string2);
 int string_compare(const string_t *string1, const string_t *string2);
 
 /**
+ * @brief Returns the hash code of the given string_t object.
+ * @param string The string_t object.
+ * @return The hash code of the given string_t object.
+ */
+size_t string_hash(const string_t *string);
+
+/**
  * @brief Convert the string_t object to lowercase.
  * @param string The string_t object.
  * @return Returns the modified string_t object.

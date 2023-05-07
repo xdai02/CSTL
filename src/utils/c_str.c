@@ -44,6 +44,23 @@ bool str_equal_ignore_case(const char *s1, const char *s2) {
 }
 
 /**
+ * @brief Returns the hash code of the given string_t object.
+ * @param string The string_t object.
+ * @return The hash code of the given string_t object.
+ */
+size_t str_hash(const char *str) {
+    size_t hash_value = 5381;
+    int c;
+
+    exit_if_fail(str != NULL);
+
+    while ((c = *str++) != '\0') {
+        hash_value = ((hash_value << 5) + hash_value) + c;
+    }
+    return hash_value;
+}
+
+/**
  * @brief Convert the string to lowercase.
  * @param str The string to be converted.
  * @return The converted string.

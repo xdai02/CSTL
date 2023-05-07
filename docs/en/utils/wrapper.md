@@ -108,6 +108,23 @@ int Character_compare(const void *ptr1, const void *ptr2);
     - Returns a negative integer if `ptr1 < ptr2`.
     - Returns 0 if `ptr1 == ptr2`.
     - Returns a positive integer if `ptr1 > ptr2`.
+
+
+
+### Character_hash()
+
+- Prototype
+
+```c
+size_t Character_hash(const void *ptr);
+```
+
+- Description
+    - Returns the hash code of the given `Character` wrapper.
+- Parameters
+    - `ptr`: The pointer to the `Character` wrapper.
+- Return
+    - The hash code of the given `Character` wrapper.
 - Usage
 
 ```c
@@ -230,6 +247,23 @@ int UnsignedCharacter_compare(const void *ptr1, const void *ptr2);
     - Returns a negative integer if `ptr1 < ptr2`.
     - Returns 0 if `ptr1 == ptr2`.
     - Returns a positive integer if `ptr1 > ptr2`.
+
+
+
+### UnsignedCharacter_hash()
+
+- Prototype
+
+```c
+size_t UnsignedCharacter_hash(const void *ptr);
+```
+
+- Description
+    - Returns the hash code of the given `UnsignedCharacter` wrapper.
+- Parameters
+    - `ptr`: The pointer to the `UnsignedCharacter` wrapper.
+- Return
+    - The hash code of the given `UnsignedCharacter` wrapper.
 - Usage
 
 ```c
@@ -352,6 +386,23 @@ int Short_compare(const void *ptr1, const void *ptr2);
     - Returns a negative integer if `ptr1 < ptr2`.
     - Returns 0 if `ptr1 == ptr2`.
     - Returns a positive integer if `ptr1 > ptr2`.
+
+
+
+### Short_hash()
+
+- Prototype
+
+```c
+size_t Short_hash(const void *ptr);
+```
+
+- Description
+    - Returns the hash code of the given `Short` wrapper.
+- Parameters
+    - `ptr`: The pointer to the `Short` wrapper.
+- Return
+    - The hash code of the given `Short` wrapper.
 - Usage
 
 ```c
@@ -474,6 +525,23 @@ int UnsignedShort_compare(const void *ptr1, const void *ptr2);
     - Returns a negative integer if `ptr1 < ptr2`.
     - Returns 0 if `ptr1 == ptr2`.
     - Returns a positive integer if `ptr1 > ptr2`.
+
+
+
+### UnsignedShort_hash()
+
+- Prototype
+
+```c
+size_t UnsignedShort_hash(const void *ptr);
+```
+
+- Description
+    - Returns the hash code of the given `UnsignedShort` wrapper.
+- Parameters
+    - `ptr`: The pointer to the `UnsignedShort` wrapper.
+- Return
+    - The hash code of the given `UnsignedShort` wrapper.
 - Usage
 
 ```c
@@ -596,6 +664,23 @@ int Integer_compare(const void *ptr1, const void *ptr2);
     - Returns a negative integer if `ptr1 < ptr2`.
     - Returns 0 if `ptr1 == ptr2`.
     - Returns a positive integer if `ptr1 > ptr2`.
+
+
+
+### Integer_hash()
+
+- Prototype
+
+```c
+size_t Integer_hash(const void *ptr);
+```
+
+- Description
+    - Returns the hash code of the given `Integer` wrapper.
+- Parameters
+    - `ptr`: The pointer to the `Integer` wrapper.
+- Return
+    - The hash code of the given `Integer` wrapper.
 - Usage
 
 ```c
@@ -718,6 +803,23 @@ int UnsignedInteger_compare(const void *ptr1, const void *ptr2);
     - Returns a negative integer if `ptr1 < ptr2`.
     - Returns 0 if `ptr1 == ptr2`.
     - Returns a positive integer if `ptr1 > ptr2`.
+
+
+
+### UnsignedInteger_hash()
+
+- Prototype
+
+```c
+size_t UnsignedInteger_hash(const void *ptr);
+```
+
+- Description
+    - Returns the hash code of the given `UnsignedInteger` wrapper.
+- Parameters
+    - `ptr`: The pointer to the `UnsignedInteger` wrapper.
+- Return
+    - The hash code of the given `UnsignedInteger` wrapper.
 - Usage
 
 ```c
@@ -840,6 +942,23 @@ int Long_compare(const void *ptr1, const void *ptr2);
     - Returns a negative integer if `ptr1 < ptr2`.
     - Returns 0 if `ptr1 == ptr2`.
     - Returns a positive integer if `ptr1 > ptr2`.
+
+
+
+### Long_hash()
+
+- Prototype
+
+```c
+size_t Long_hash(const void *ptr);
+```
+
+- Description
+    - Returns the hash code of the given `Long` wrapper.
+- Parameters
+    - `ptr`: The pointer to the `Long` wrapper.
+- Return
+    - The hash code of the given `Long` wrapper.
 - Usage
 
 ```c
@@ -962,6 +1081,23 @@ int UnsignedLong_compare(const void *ptr1, const void *ptr2);
     - Returns a negative integer if `ptr1 < ptr2`.
     - Returns 0 if `ptr1 == ptr2`.
     - Returns a positive integer if `ptr1 > ptr2`.
+
+
+
+### UnsignedLong_hash()
+
+- Prototype
+
+```c
+size_t UnsignedLong_hash(const void *ptr);
+```
+
+- Description
+    - Returns the hash code of the given `UnsignedLong` wrapper.
+- Parameters
+    - `ptr`: The pointer to the `UnsignedLong` wrapper.
+- Return
+    - The hash code of the given `UnsignedLong` wrapper.
 - Usage
 
 ```c
@@ -1084,6 +1220,23 @@ int Float_compare(const void *ptr1, const void *ptr2);
     - Returns a negative integer if `ptr1 < ptr2`.
     - Returns 0 if `ptr1 == ptr2`.
     - Returns a positive integer if `ptr1 > ptr2`.
+
+
+
+### Float_hash()
+
+- Prototype
+
+```c
+size_t Float_hash(const void *ptr);
+```
+
+- Description
+    - Returns the hash code of the given `Float` wrapper.
+- Parameters
+    - `ptr`: The pointer to the `Float` wrapper.
+- Return
+    - The hash code of the given `Float` wrapper.
 - Usage
 
 ```c
@@ -1206,6 +1359,23 @@ int Double_compare(const void *ptr1, const void *ptr2);
     - Returns a negative integer if `ptr1 < ptr2`.
     - Returns 0 if `ptr1 == ptr2`.
     - Returns a positive integer if `ptr1 > ptr2`.
+
+
+
+### Double_hash()
+
+- Prototype
+
+```c
+size_t Double_hash(const void *ptr);
+```
+
+- Description
+    - Returns the hash code of the given `Double` wrapper.
+- Parameters
+    - `ptr`: The pointer to the `Double` wrapper.
+- Return
+    - The hash code of the given `Double` wrapper.
 - Usage
 
 ```c
@@ -1328,6 +1498,23 @@ int Boolean_compare(const void *ptr1, const void *ptr2);
     - Returns a negative integer if `ptr1 < ptr2`.
     - Returns 0 if `ptr1 == ptr2`.
     - Returns a positive integer if `ptr1 > ptr2`.
+
+
+
+### Boolean_hash()
+
+- Prototype
+
+```c
+size_t Boolean_hash(const void *ptr);
+```
+
+- Description
+    - Returns the hash code of the given `Boolean` wrapper.
+- Parameters
+    - `ptr`: The pointer to the `Boolean` wrapper.
+- Return
+    - The hash code of the given `Boolean` wrapper.
 - Usage
 
 ```c

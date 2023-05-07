@@ -162,6 +162,7 @@ int Boolean_compare(const void *ptr1, const void *ptr2);
 typedef int (*compare_t)(const T data1, const T data2);
 typedef void (*destroy_t)(T data);
 typedef void (*visit_t)(T data);
+typedef size_t (*hash_t)(const T data);
 ```
 
 

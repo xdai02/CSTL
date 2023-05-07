@@ -2,6 +2,7 @@
 #define _WRAPPER_H_
 
 #include "types.h"
+#include <stddef.h>
 
 /**
  * @brief A wrapper for the primitive data type char.
@@ -54,6 +55,13 @@ bool Character_equals(const Character *character1, const Character *character2);
 int Character_compare(const void *ptr1, const void *ptr2);
 
 /**
+ * @brief Returns the hash code of the given Character wrapper.
+ * @param ptr The pointer to the Character wrapper.
+ * @return The hash code of the given Character wrapper.
+ */
+size_t Character_hash(const void *ptr);
+
+/**
  * @brief A wrapper for the primitive data type unsigned char.
  */
 typedef struct UnsignedCharacter UnsignedCharacter;
@@ -102,6 +110,13 @@ bool UnsignedCharacter_equals(const UnsignedCharacter *uc1, const UnsignedCharac
  *         Returns a positive integer if ptr1 > ptr2.
  */
 int UnsignedCharacter_compare(const void *ptr1, const void *ptr2);
+
+/**
+ * @brief Returns the hash code of the given UnsignedCharacter wrapper.
+ * @param ptr The pointer to the UnsignedCharacter wrapper.
+ * @return The hash code of the given UnsignedCharacter wrapper.
+ */
+size_t UnsignedCharacter_hash(const void *ptr);
 
 /**
  * @brief A wrapper for the primitive data type short.
@@ -154,6 +169,13 @@ bool Short_equals(const Short *s1, const Short *s2);
 int Short_compare(const void *ptr1, const void *ptr2);
 
 /**
+ * @brief Returns the hash code of the given Short wrapper.
+ * @param ptr The pointer to the Short wrapper.
+ * @return The hash code of the given Short wrapper.
+ */
+size_t Short_hash(const void *ptr);
+
+/**
  * @brief A wrapper for the primitive data type unsigned short.
  */
 typedef struct UnsignedShort UnsignedShort;
@@ -202,6 +224,13 @@ bool UnsignedShort_equals(const UnsignedShort *us1, const UnsignedShort *us2);
  *         Returns a positive integer if ptr1 > ptr2.
  */
 int UnsignedShort_compare(const void *ptr1, const void *ptr2);
+
+/**
+ * @brief Returns the hash code of the given UnsignedShort wrapper.
+ * @param ptr The pointer to the UnsignedShort wrapper.
+ * @return The hash code of the given UnsignedShort wrapper.
+ */
+size_t UnsignedShort_hash(const void *ptr);
 
 /**
  * @brief A wrapper for the primitive data type int.
@@ -254,6 +283,13 @@ bool Integer_equals(const Integer *integer1, const Integer *integer2);
 int Integer_compare(const void *ptr1, const void *ptr2);
 
 /**
+ * @brief Returns the hash code of the given Integer wrapper.
+ * @param ptr The pointer to the Integer wrapper.
+ * @return The hash code of the given Integer wrapper.
+ */
+size_t Integer_hash(const void *ptr);
+
+/**
  * @brief A wrapper for the primitive data type unsigned int.
  */
 typedef struct UnsignedInteger UnsignedInteger;
@@ -302,6 +338,13 @@ bool UnsignedInteger_equals(const UnsignedInteger *ui1, const UnsignedInteger *u
  *         Returns a positive integer if ptr1 > ptr2.
  */
 int UnsignedInteger_compare(const void *ptr1, const void *ptr2);
+
+/**
+ * @brief Returns the hash code of the given UnsignedInteger wrapper.
+ * @param ptr The pointer to the UnsignedInteger wrapper.
+ * @return The hash code of the given UnsignedInteger wrapper.
+ */
+size_t UnsignedInteger_hash(const void *ptr);
 
 /**
  * @brief A wrapper for the primitive data type long.
@@ -354,6 +397,13 @@ bool Long_equals(const Long *long1, const Long *long2);
 int Long_compare(const void *ptr1, const void *ptr2);
 
 /**
+ * @brief Returns the hash code of the given Long wrapper.
+ * @param ptr The pointer to the Long wrapper.
+ * @return The hash code of the given Long wrapper.
+ */
+size_t Long_hash(const void *ptr);
+
+/**
  * @brief A wrapper for the primitive data type unsigned long.
  */
 typedef struct UnsignedLong UnsignedLong;
@@ -402,6 +452,13 @@ bool UnsignedLong_equals(const UnsignedLong *ul1, const UnsignedLong *ul2);
  *         Returns a positive integer if ptr1 > ptr2.
  */
 int UnsignedLong_compare(const void *ptr1, const void *ptr2);
+
+/**
+ * @brief Returns the hash code of the given UnsignedLong wrapper.
+ * @param ptr The pointer to the UnsignedLong wrapper.
+ * @return The hash code of the given UnsignedLong wrapper.
+ */
+size_t UnsignedLong_hash(const void *ptr);
 
 /**
  * @brief A wrapper for the primitive data type long long.
@@ -454,6 +511,13 @@ bool Float_equals(const Float *float1, const Float *float2);
 int Float_compare(const void *ptr1, const void *ptr2);
 
 /**
+ * @brief Returns the hash code of the given Float wrapper.
+ * @param ptr The pointer to the Float wrapper.
+ * @return The hash code of the given Float wrapper.
+ */
+size_t Float_hash(const void *ptr);
+
+/**
  * @brief A wrapper for the primitive data type long long.
  */
 typedef struct Double Double;
@@ -504,6 +568,13 @@ bool Double_equals(const Double *double1, const Double *double2);
 int Double_compare(const void *ptr1, const void *ptr2);
 
 /**
+ * @brief Returns the hash code of the given Double wrapper.
+ * @param ptr The pointer to the Double wrapper.
+ * @return The hash code of the given Double wrapper.
+ */
+size_t Double_hash(const void *ptr);
+
+/**
  * @brief A wrapper for the primitive data type bool.
  */
 typedef struct Boolean Boolean;
@@ -552,5 +623,12 @@ bool Boolean_equals(const Boolean *boolean1, const Boolean *boolean2);
  *         Returns a positive integer if ptr1 > ptr2.
  */
 int Boolean_compare(const void *ptr1, const void *ptr2);
+
+/**
+ * @brief Returns the hash code of the given Boolean wrapper.
+ * @param ptr The pointer to the Boolean wrapper.
+ * @return The hash code of the given Boolean wrapper.
+ */
+size_t Boolean_hash(const void *ptr);
 
 #endif

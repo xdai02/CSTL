@@ -1,13 +1,11 @@
 #include <stdio.h>
 #include "coop.h"
 
-// Callback function for printing an integer
 void Integer_print(T elem) {
     Integer *integer = (Integer *)elem;
     printf("%d ", Integer_get(integer));
 }
 
-// Callback function for tripling an integer
 void Integer_triple(T elem) {
     Integer *integer = (Integer *)elem;
     Integer_set(integer, Integer_get(integer) * 3);
@@ -20,11 +18,9 @@ int main() {
         array_append(array, Integer_new(i));
     }
 
-    // Print the array
     array_foreach(array, Integer_print);
     printf("\n");
 
-    // Triple the integers in the array
     array_foreach(array, Integer_triple);
 
     array_foreach(array, Integer_print);
