@@ -12,6 +12,7 @@ void test_string_set_char_at();
 void test_string_clear();
 void test_string_equal();
 void test_string_equal_ignore_case();
+void test_string_compare();
 void test_string_tolower();
 void test_string_toupper();
 void test_string_starts_with();

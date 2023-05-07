@@ -8,6 +8,8 @@ struct array_t {
     destroy_t destroy;
 };
 
+static const int DEFAULT_CAPACITY = 16;
+
 /**
  * @brief Create an array_t object.
  * @param compare Callback function for comparing two data items.
@@ -15,19 +17,17 @@ struct array_t {
  * @return Returns the created array_t object if successful, otherwise returns NULL.
  */
 array_t *array_create(compare_t compare, destroy_t destroy) {
-    const int INITIAL_CAPACITY = 16;
-
     array_t *array = (array_t *)malloc(sizeof(array_t));
     return_value_if_fail(array != NULL, NULL);
 
-    array->data = (T *)malloc(sizeof(T) * INITIAL_CAPACITY);
+    array->data = (T *)malloc(sizeof(T) * DEFAULT_CAPACITY);
     if (array->data == NULL) {
         free(array);
         return NULL;
     }
 
     array->size = 0;
-    array->capacity = INITIAL_CAPACITY;
+    array->capacity = DEFAULT_CAPACITY;
     array->compare = compare;
     array->destroy = destroy;
     return array;
@@ -83,15 +83,13 @@ void array_foreach(array_t *array, visit_t visit) {
  * @return Returns the modified array_t object.
  */
 array_t *array_clear(array_t *array) {
-    const int INITIAL_CAPACITY = 16;
-
     return_value_if_fail(array != NULL, NULL);
 
     array_foreach(array, array->destroy);
 
-    array->data = (T *)realloc(array->data, sizeof(T) * INITIAL_CAPACITY);
+    array->data = (T *)realloc(array->data, sizeof(T) * DEFAULT_CAPACITY);
     array->size = 0;
-    array->capacity = INITIAL_CAPACITY;
+    array->capacity = DEFAULT_CAPACITY;
     return array;
 }
 
@@ -277,9 +275,6 @@ array_t *array_reverse(array_t *array) {
     return array;
 }
 
-/**
- * @brief Callback function for comparing elements.
- */
 static compare_t __compare = NULL;
 
 /**

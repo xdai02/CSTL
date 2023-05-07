@@ -6,6 +6,8 @@ struct string_t {
     size_t capacity;
 };
 
+static const int DEFAULT_CAPACITY = 16;
+
 /**
  * @brief Create a string_t object.
  * @param str The primitive string.
@@ -70,13 +72,12 @@ static bool __string_resize_to(string_t *string, size_t new_capacity) {
  * @return Returns false if the memory allocation fails, otherwise returns true.
  */
 static bool __string_resize(string_t *string) {
-    const int INITIAL_CAPACITY = 16;
     size_t new_capacity;
 
     return_value_if_fail(string != NULL, false);
 
     if (string->length == 0) {
-        new_capacity = INITIAL_CAPACITY;
+        new_capacity = DEFAULT_CAPACITY;
     } else if (string->length < string->capacity / 2) {
         new_capacity = string->capacity / 2 + 1;
     } else if (string->length + 1 >= string->capacity) {
@@ -192,6 +193,19 @@ bool string_equal(const string_t *string1, const string_t *string2) {
 bool string_equal_ignore_case(const string_t *string1, const string_t *string2) {
     return_value_if_fail(string1 != NULL && string2 != NULL, false);
     return str_equal_ignore_case(string1->string, string2->string);
+}
+
+/**
+ * @brief Compares two string_t objects.
+ * @param string1 The first string_t object.
+ * @param string2 The second string_t object.
+ * @return Returns a negative integer if string1 < string2.
+ *         Returns 0 if string1 == string2.
+ *         Returns a positive integer if string1 > string2.
+ */
+int string_compare(const string_t *string1, const string_t *string2) {
+    exit_if_fail(string1 != NULL && string2 != NULL);
+    return strcmp(string1->string, string2->string);
 }
 
 /**

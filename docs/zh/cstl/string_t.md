@@ -268,6 +268,33 @@ if (string_equal_ignore_case(s1, s2)) {
 
 
 
+## string_compare()
+
+- 原型
+
+```c
+int string_compare(const string_t *string1, const string_t *string2);
+```
+
+- 描述
+    - 比较两个`string_t`对象。
+- 参数
+    - `string1`：第一个`string_t`对象。
+    - `string2`：第二个`string_t`对象。
+- 返回值
+    - 如果`string1 < ptr2`，返回负整数。
+    - 如果`string1 == ptr2`，返回0。
+    - 如果`string1 > ptr2`，返回正整数。
+- 用例
+
+```c
+string_t *s1 = string_create("Hello World");
+string_t *s2 = string_create("HELLO WORLD");
+printf("%d\n", string_compare(s1, s2));
+```
+
+
+
 ## string_tolower()
 
 - 原型

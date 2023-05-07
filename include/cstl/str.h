@@ -87,6 +87,16 @@ bool string_equal(const string_t *string1, const string_t *string2);
 bool string_equal_ignore_case(const string_t *string1, const string_t *string2);
 
 /**
+ * @brief Compares two string_t objects.
+ * @param string1 The first string_t object.
+ * @param string2 The second string_t object.
+ * @return Returns a negative integer if string1 < string2.
+ *         Returns 0 if string1 == string2.
+ *         Returns a positive integer if string1 > string2.
+ */
+int string_compare(const string_t *string1, const string_t *string2);
+
+/**
  * @brief Convert the string_t object to lowercase.
  * @param string The string_t object.
  * @return Returns the modified string_t object.

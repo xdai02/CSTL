@@ -9,6 +9,7 @@
 #include "queue.h"
 #include "deque.h"
 #include "red_black_tree.h"
+#include "hash_table.h"
 #include "ordered_set.h"
 
 #endif

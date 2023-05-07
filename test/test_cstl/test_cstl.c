@@ -13,6 +13,7 @@ void test_str() {
     test_string_clear();
     test_string_equal();
     test_string_equal_ignore_case();
+    test_string_compare();
     test_string_tolower();
     test_string_toupper();
     test_string_starts_with();

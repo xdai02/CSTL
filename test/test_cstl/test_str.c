@@ -154,6 +154,29 @@ void test_string_equal_ignore_case() {
     string_destroy(s2);
 }
 
+void test_string_compare() {
+    string_t *s1 = NULL;
+    string_t *s2 = NULL;
+
+    s1 = string_create("Hello World");
+    s2 = string_create("Hello World");
+    assert(string_compare(s1, s2) == 0);
+    string_destroy(s1);
+    string_destroy(s2);
+
+    s1 = string_create("Hello World");
+    s2 = string_create("HELLO WORLD");
+    assert(string_compare(s1, s2) > 0);
+    string_destroy(s1);
+    string_destroy(s2);
+
+    s1 = string_create("Hello World");
+    s2 = string_create("hello world!");
+    assert(string_compare(s1, s2) < 0);
+    string_destroy(s1);
+    string_destroy(s2);
+}
+
 void test_string_tolower() {
     string_t *s1 = NULL;
     string_t *s2 = NULL;

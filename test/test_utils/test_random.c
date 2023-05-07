@@ -2,8 +2,9 @@
 #include "coop.h"
 #include <assert.h>
 
+#define N 1000
+
 void test_randint() {
-    const int N = 10000;
     const int MIN = -500;
     const int MAX = 500;
     int i = 0;
@@ -31,7 +32,6 @@ void test_randint() {
 }
 
 void test_uniform() {
-    const int N = 1000;
     int i = 0;
     double x;
 
@@ -52,7 +52,6 @@ void test_uniform() {
 }
 
 void test_shuffle() {
-    const int N = 100;
     int *arr = (int *)malloc(N * sizeof(int));
     int i = 0;
     for (i = 0; i < N; i++) {

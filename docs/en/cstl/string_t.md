@@ -268,6 +268,33 @@ if (string_equal_ignore_case(s1, s2)) {
 
 
 
+## string_compare()
+
+- Prototype
+
+```c
+int string_compare(const string_t *string1, const string_t *string2);
+```
+
+- Description
+    - Compares two `string_t` objects.
+- Parameters
+    - `string1`: The first `string_t` object.
+    - `string2`: The second `string_t` object.
+- Return
+    - Returns a negative integer if `string1 < string2`.
+    - Returns 0 if `string1 == string2`.
+    - Returns a positive integer if `string1 > string2`.
+- Usage
+
+```c
+string_t *s1 = string_create("Hello World");
+string_t *s2 = string_create("HELLO WORLD");
+printf("%d\n", string_compare(s1, s2));
+```
+
+
+
 ## string_tolower()
 
 - Prototype
