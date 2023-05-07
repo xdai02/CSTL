@@ -265,7 +265,7 @@ bool list_iterator_has_next(const iterator_t *iterator);
 T list_iterator_next(iterator_t *iterator);
 ```
 
-- [x] **stack**: Generic array based LIFO `stack_t`.
+- [x] **stack**: Array based LIFO `stack_t`.
 
 ```c
 typedef struct stack_t stack_t;
@@ -295,7 +295,7 @@ T queue_dequeue(queue_t *queue);
 T queue_peek(const queue_t *queue);
 ```
 
-- [x] **deque**: Generic doubly linked list based `deque_t`.
+- [x] **deque**: Doubly linked list based `deque_t`.
 
 ```c
 typedef struct deque_t deque_t;
@@ -313,7 +313,7 @@ T deque_get_front(const deque_t *deque);
 T deque_get_back(const deque_t *deque);
 ```
 
-- [x] **red black tree**: Generic `red_black_tree_t`.
+- [x] **red_black_tree**: `red_black_tree_t`.
 
 ```c
 typedef struct red_black_tree_t red_black_tree_t;
@@ -333,7 +333,15 @@ bool red_black_tree_iterator_has_next(const iterator_t *iterator);
 T red_black_tree_iterator_next(iterator_t *iterator);
 ```
 
-- [x] **ordered_set**: Generic red black tree based `ordered_set_t`.
+- [ ] **hash_table**:  `hash_table_t` that resolves collisions using separate chaining.
+
+```c
+typedef struct hash_table_t hash_table_t;
+
+// TODO
+```
+
+- [x] **ordered_set**: Red black tree based `ordered_set_t`.
 
 ```c
 typedef struct ordered_set_t ordered_set_t;
@@ -359,7 +367,7 @@ bool ordered_set_iterator_has_next(const iterator_t *iterator);
 T ordered_set_iterator_next(iterator_t *iterator);
 ```
 
-- [ ] **unordered_set**: Generic hash table based `unordered_set_t`.
+- [ ] **unordered_set**: Hash table based `unordered_set_t`.
 
 ```c
 typedef struct unordered_set_t unordered_set_t;
@@ -367,7 +375,7 @@ typedef struct unordered_set_t unordered_set_t;
 // TODO
 ```
 
-- [ ] **ordered_map**: Generic red black tree based `ordered_map_t` for key-value pairs.
+- [ ] **ordered_map**: Red black tree based `ordered_map_t` for key-value pairs.
 
 ```c
 typedef struct ordered_map_t ordered_map_t;
@@ -375,7 +383,7 @@ typedef struct ordered_map_t ordered_map_t;
 // TODO
 ```
 
-- [ ] **unordered_map**: Generic hash table based `unordered_map_t` for key-value pairs.
+- [ ] **unordered_map**: Hash table based `unordered_map_t` for key-value pairs.
 
 ```c
 typedef struct unordered_map_t unordered_map_t;
@@ -409,4 +417,76 @@ make
 ```shell
 make clean_all
 ```
+
+
+
+# Library
+
+1. Generate static/shared library.
+
+```shell
+cmake ./
+```
+
+2. Project structure
+
+```shell
+COOP
+├── bin
+│   └── libcoop.a
+│   └── libcoop.so
+│   └── test_coop
+├── include
+│   └── coop.h
+├── src
+```
+
+3. Put your code (e.g. *main.c*) together with the `COOP` library.
+
+```shell
+├── COOP
+│   └── bin
+│   └── include
+│   └── src
+├── main.c
+```
+
+4. Sample code in *main.c*
+
+```c
+#include <stdio.h>
+#include <coop.h>
+
+int main() {
+	array_t *arr = array_create(Integer_compare, Integer_delete);
+	for(int i = 0; i < 10; i++) {
+		array_append(arr, Integer_new(i));
+	}
+
+	for(int i = 0; i < 10; i++) {
+		Integer *integer = array_get(arr, i);
+		printf("%d ", Integer_get(integer));
+	}
+
+	array_destroy(arr);
+	return 0;
+}
+```
+
+5. Compilation
+
+    - Link to **static** library
+
+        ```shell
+        gcc -Wall main.c -o main_static -ICOOP/include -static -LCOOP/bin -lcoop
+        ./main_static
+        ```
+
+    - Link to **shared** library
+
+        ```shell
+        export LD_LIBRARY_PATH=COOP/bin:$LD_LIBRARY_PATH
+        gcc -Wall main.c -o main_shared -ICOOP/include -LCOOP -lcoop
+        ./main_shared
+        ```
 

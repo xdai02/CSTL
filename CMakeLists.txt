@@ -34,8 +34,17 @@ target_include_directories(coop PUBLIC ${INC_DIR})
 add_library(coop_static STATIC $<TARGET_OBJECTS:coop>)
 add_library(coop_shared SHARED $<TARGET_OBJECTS:coop>)
 
-set_target_properties(coop_static PROPERTIES OUTPUT_NAME coop)
-set_target_properties(coop_shared PROPERTIES OUTPUT_NAME coop)
+set_target_properties(
+    coop_static PROPERTIES
+    OUTPUT_NAME coop
+    LIBRARY_OUTPUT_DIRECTORY ${BIN_DIR}
+    ARCHIVE_OUTPUT_DIRECTORY ${BIN_DIR}
+)
+set_target_properties(
+    coop_shared PROPERTIES
+    OUTPUT_NAME coop
+    LIBRARY_OUTPUT_DIRECTORY ${BIN_DIR}
+)
 
 # Build the test executable
 file(GLOB_RECURSE TEST_SOURCES "${TEST_DIR}/*.c")
