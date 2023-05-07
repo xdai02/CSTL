@@ -17,7 +17,6 @@ endif()
 set(INC_DIR "${CMAKE_SOURCE_DIR}/include")
 set(SRC_DIR "${CMAKE_SOURCE_DIR}/src")
 set(TEST_DIR "${CMAKE_SOURCE_DIR}/test")
-set(DEMO_DIR, "${CMAKE_SOURCE_DIR}/demo")
 set(BIN_DIR "${CMAKE_SOURCE_DIR}/bin")
 
 # Create bin directory
@@ -32,10 +31,8 @@ add_library(coop OBJECT ${COOP_SOURCES})
 target_include_directories(coop PUBLIC ${INC_DIR})
 
 # Build the static and shared library
-include_directories(include)
-
-add_library(coop_static STATIC ${COOP_SOURCES})
-add_library(coop_shared SHARED ${COOP_SOURCES})
+add_library(coop_static STATIC $<TARGET_OBJECTS:coop>)
+add_library(coop_shared SHARED $<TARGET_OBJECTS:coop>)
 
 set_target_properties(coop_static PROPERTIES OUTPUT_NAME coop)
 set_target_properties(coop_shared PROPERTIES OUTPUT_NAME coop)

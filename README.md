@@ -401,7 +401,7 @@ make
 cd demo
 cmake ./
 make
-./[module_name]
+./bin/demo_[module_name]
 ```
 
 - Clean intermediate files

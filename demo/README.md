@@ -12,7 +12,7 @@ The code in this demo section adopts the **C99** standard. If you need to use ot
 cd demo
 cmake ./
 make
-./demo_[module_name]
+./bin/demo_[module_name]
 ```
 
 - Clean intermediate files

@@ -16,9 +16,13 @@ endif()
 # Set up directories
 set(INC_DIR "${CMAKE_SOURCE_DIR}/../include")
 set(SRC_DIR "${CMAKE_SOURCE_DIR}/../src")
+set(BIN_DIR "${CMAKE_SOURCE_DIR}/bin")
+
+# Create bin directory
+file(MAKE_DIRECTORY ${BIN_DIR})
 
 # Set output directory for binaries
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN_DIR})
 
 # Build the coop library
 file(GLOB_RECURSE COOP_SOURCES "${SRC_DIR}/*.c")
@@ -45,12 +49,6 @@ add_custom_target(clean_all
     COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/cmake_install.cmake"
     COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/Makefile"
     COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/CMakeCCompilerId"
-    COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_str"
-    COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_array"
-    COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_list"
-    COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_stack"
-    COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_queue"
-    COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_deque"
-    COMMAND ${CMAKE_COMMAND} -E remove "${CMAKE_BINARY_DIR}/demo_ordered_set"
+    COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_BINARY_DIR}/bin"
     COMMENT "Cleaning up CMake generated files"
 )
