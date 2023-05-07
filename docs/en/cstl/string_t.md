@@ -268,6 +268,29 @@ if (string_equal_ignore_case(s1, s2)) {
 
 
 
+## string_hash()
+
+- Prototype
+
+```c
+size_t string_hash(const string_t *string);
+```
+
+- Description
+    - Returns the hash code of the given `string_t` object.
+- Parameters
+    - `string`: The `string_t` object.
+- Return
+    - The hash code of the given `string_t` object.
+- Usage
+
+```c
+string_t *string = string_create("hello");
+printf("%d\n", string_hash(string));
+```
+
+
+
 ## string_compare()
 
 - Prototype

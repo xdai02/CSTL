@@ -82,6 +82,29 @@ if (str_equal_ignore_case(s1, s2)) {
 
 
 
+## str_hash()
+
+- 原型
+
+```c
+size_t str_hash(const char *str);
+```
+
+- 描述
+    - 返回字符串的哈希值。
+- 参数
+    - `str`：待哈希字符串。
+- 返回值
+    - 返回字符串的哈希值。
+- 用例
+
+```c
+char str[] = "hello";
+printf("%d\n", str_hash(str));
+```
+
+
+
 ## str_tolower()
 
 - 原型

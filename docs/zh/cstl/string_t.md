@@ -268,6 +268,29 @@ if (string_equal_ignore_case(s1, s2)) {
 
 
 
+## string_hash()
+
+- 原型
+
+```c
+size_t string_hash(const string_t *string);
+```
+
+- 描述
+    - 返回`string_t`对象的哈希值。
+- 参数
+    - `string`：待哈希的`string_t`对象。
+- 返回值
+    - 返回`string_t`对象的哈希值。
+- 用例
+
+```c
+string_t *string = string_create("hello");
+printf("%d\n", string_hash(string));
+```
+
+
+
 ## string_compare()
 
 - 原型

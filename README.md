@@ -42,6 +42,7 @@ shuffle(array, n, type);
 char *str_clear(char *str);
 bool str_equal(const char *s1, const char *s2);
 bool str_equal_ignore_case(const char *s1, const char *s2);
+size_t str_hash(const char *str);
 char *str_tolower(char *str);
 char *str_toupper(char *str);
 bool str_starts_with(const char *str, const char *prefix);
@@ -73,6 +74,7 @@ char Character_get(const Character *character);
 void Character_set(Character *character, char value);
 bool Character_equals(const Character *character1, const Character *character2);
 int Character_compare(const void *ptr1, const void *ptr2);
+size_t Character_hash(const void *ptr);
 
 typedef struct UnsignedCharacter UnsignedCharacter;
 UnsignedCharacter *UnsignedCharacter_new(unsigned char value);
@@ -81,6 +83,7 @@ unsigned char UnsignedCharacter_get(const UnsignedCharacter *uc);
 void UnsignedCharacter_set(UnsignedCharacter *uc, unsigned char value);
 bool UnsignedCharacter_equals(const UnsignedCharacter *uc1, const UnsignedCharacter *uc2);
 int UnsignedCharacter_compare(const void *ptr1, const void *ptr2);
+size_t UnsignedCharacter_hash(const void *ptr);
 
 typedef struct Short Short;
 Short *Short_new(short value);
@@ -89,6 +92,7 @@ short Short_get(const Short *s);
 void Short_set(Short *s, short value);
 bool Short_equals(const Short *s1, const Short *s2);
 int Short_compare(const void *ptr1, const void *ptr2);
+size_t Short_hash(const void *ptr);
 
 typedef struct UnsignedShort UnsignedShort;
 UnsignedShort *UnsignedShort_new(unsigned short value);
@@ -97,6 +101,7 @@ unsigned short UnsignedShort_get(const UnsignedShort *us);
 void UnsignedShort_set(UnsignedShort *us, unsigned short value);
 bool UnsignedShort_equals(const UnsignedShort *us1, const UnsignedShort *us2);
 int UnsignedShort_compare(const void *ptr1, const void *ptr2);
+size_t UnsignedShort_hash(const void *ptr);
 
 typedef struct Integer Integer;
 Integer *Integer_new(int value);
@@ -105,6 +110,7 @@ int Integer_get(const Integer *integer);
 void Integer_set(Integer *integer, int value);
 bool Integer_equals(const Integer *integer1, const Integer *integer2);
 int Integer_compare(const void *ptr1, const void *ptr2);
+size_t Integer_hash(const void *ptr);
 
 typedef struct UnsignedInteger UnsignedInteger;
 UnsignedInteger *UnsignedInteger_new(unsigned int value);
@@ -113,6 +119,7 @@ unsigned int UnsignedInteger_get(const UnsignedInteger *ui);
 void UnsignedInteger_set(UnsignedInteger *ui, unsigned int value);
 bool UnsignedInteger_equals(const UnsignedInteger *ui1, const UnsignedInteger *ui2);
 int UnsignedInteger_compare(const void *ptr1, const void *ptr2);
+size_t UnsignedInteger_hash(const void *ptr);
 
 typedef struct Long Long;
 Long *Long_new(long value);
@@ -121,6 +128,7 @@ long Long_get(const Long *l);
 void Long_set(Long *l, long value);
 bool Long_equals(const Long *long1, const Long *long2);
 int Long_compare(const void *ptr1, const void *ptr2);
+size_t Long_hash(const void *ptr);
 
 typedef struct UnsignedLong UnsignedLong;
 UnsignedLong *UnsignedLong_new(unsigned long value);
@@ -129,6 +137,7 @@ unsigned long UnsignedLong_get(const UnsignedLong *ul);
 void UnsignedLong_set(UnsignedLong *ul, unsigned long value);
 bool UnsignedLong_equals(const UnsignedLong *ul1, const UnsignedLong *ul2);
 int UnsignedLong_compare(const void *ptr1, const void *ptr2);
+size_t UnsignedLong_hash(const void *ptr);
 
 typedef struct Float Float;
 Float *Float_new(float value);
@@ -137,6 +146,7 @@ float Float_get(const Float *f);
 void Float_set(Float *f, float value);
 bool Float_equals(const Float *float1, const Float *float2);
 int Float_compare(const void *ptr1, const void *ptr2);
+size_t Float_hash(const void *ptr);
 
 typedef struct Double Double;
 Double *Double_new(double value);
@@ -145,6 +155,7 @@ double Double_get(const Double *d);
 void Double_set(Double *d, double value);
 bool Double_equals(const Double *double1, const Double *double2);
 int Double_compare(const void *ptr1, const void *ptr2);
+size_t Double_hash(const void *ptr);
 
 typedef struct Boolean Boolean;
 Boolean *Boolean_new(bool value);
@@ -153,6 +164,7 @@ bool Boolean_get(const Boolean *boolean);
 void Boolean_set(Boolean *boolean, bool value);
 bool Boolean_equals(const Boolean *boolean1, const Boolean *boolean2);
 int Boolean_compare(const void *ptr1, const void *ptr2);
+size_t Boolean_hash(const void *ptr);
 ```
 
 - [x] **generic**: Callback function interfaces for generic programming.
@@ -186,6 +198,7 @@ string_t *string_set_char_at(string_t *string, size_t index, char c);
 string_t *string_clear(string_t *string);
 bool string_equal(const string_t *string1, const string_t *string2);
 bool string_equal_ignore_case(const string_t *string1, const string_t *string2);
+size_t string_hash(const string_t *string);
 int string_compare(const string_t *string1, const string_t *string2);
 string_t *string_tolower(string_t *string);
 string_t *string_toupper(string_t *string);

@@ -44,9 +44,9 @@ bool str_equal_ignore_case(const char *s1, const char *s2) {
 }
 
 /**
- * @brief Returns the hash code of the given string_t object.
- * @param string The string_t object.
- * @return The hash code of the given string_t object.
+ * @brief Returns the hash code of the given string.
+ * @param str The string to be hashed.
+ * @return The hash code of the given string.
  */
 size_t str_hash(const char *str) {
     size_t hash_value = 5381;

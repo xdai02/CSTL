@@ -82,6 +82,29 @@ if (str_equal_ignore_case(s1, s2)) {
 
 
 
+## str_hash()
+
+- Prototype
+
+```c
+size_t str_hash(const char *str);
+```
+
+- Description
+    - Returns the hash code of the given string.
+- Parameters
+    - `str`: The string to be hashed.
+- Return
+    - The hash code of the given string.
+- Usage
+
+```c
+char str[] = "hello";
+printf("%d\n", str_hash(str));
+```
+
+
+
 ## str_tolower()
 
 - Prototype
