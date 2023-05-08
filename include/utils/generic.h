@@ -28,6 +28,13 @@ typedef void (*destroy_t)(T data);
 typedef void (*visit_t)(T data);
 
 /**
+ * @brief A generic function pointer type for visiting a key-value pair.
+ * @param key The key of the pair to be visited.
+ * @param value The value of the pair to be visited.
+ */
+typedef void (*visit_pair_t)(T key, T value);
+
+/**
  * @brief A generic function pointer type for hashing a data item.
  * @param data The data item to be hashed.
  */

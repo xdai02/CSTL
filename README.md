@@ -174,6 +174,7 @@ size_t Boolean_hash(const void *ptr);
 typedef int (*compare_t)(const T data1, const T data2);
 typedef void (*destroy_t)(T data);
 typedef void (*visit_t)(T data);
+typedef void (*visit_pair_t)(T key, T value);
 typedef size_t (*hash_t)(const T data);
 ```
 

@@ -251,6 +251,7 @@ hash_table_t *hash_table_put(hash_table_t *hash_table, T key, T value) {
     return hash_table;
 }
 
+/* @note Caller MUST free the parameter `key` (if applicable). */
 hash_table_t *hash_table_remove(hash_table_t *hash_table, T key) {
     size_t index = 0;
     list_t *bucket = NULL;

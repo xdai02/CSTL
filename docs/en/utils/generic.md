@@ -124,3 +124,56 @@ void employee_print(T data) {
 }
 ```
 
+
+
+## visit_pair_t
+
+- Prototype
+
+```c
+typedef void (*visit_pair_t)(T key, T value);
+```
+
+- Description
+    - A generic function pointer type for visiting a key-value pair.
+- Parameters
+    - `key`: The key of the pair to be visited.
+    - `value`: The value of the pair to be visited.
+- Usage
+
+```c
+void key_value_print(T key, T value) {
+    Integer *k = (Integer *)key;
+    Integer *v = (Integer *)value;
+    printf("key=%d, value=%d\n", Integer_get(k), Integer_get(v));
+}
+```
+
+
+
+## hash_t
+
+- Prototype
+
+```c
+typedef size_t (*hash_t)(const T data);
+```
+
+- Description
+    - A generic function pointer type for hashing a data item.
+- Parameters
+    - `data`: The data item to be hashed.
+- Usage
+
+```c
+typedef struct Point {
+    int x;
+    int y;
+} Point;
+
+size_t Point_hash(const T data) {
+    const Point *point = data;
+    return (size_t)(point->x + point->y);
+}
+```
+
