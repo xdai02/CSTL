@@ -349,12 +349,20 @@ bool red_black_tree_iterator_has_next(const iterator_t *iterator);
 T red_black_tree_iterator_next(iterator_t *iterator);
 ```
 
-- [ ] **hash_table**:  `hash_table_t` that resolves collisions using separate chaining.
+- [x] **hash_table**:  `hash_table_t` that resolves collisions using separate chaining.
 
 ```c
 typedef struct hash_table_t hash_table_t;
 
-// TODO
+hash_table_t *hash_table_create(compare_t compare, destroy_t destroy_key, destroy_t destroy_value, hash_t hash);
+void hash_table_destroy(hash_table_t *hash_table);
+bool hash_table_is_empty(const hash_table_t *hash_table);
+size_t hash_table_size(const hash_table_t *hash_table);
+void hash_table_foreach(hash_table_t *hash_table, visit_pair_t visit);
+hash_table_t *hash_table_clear(hash_table_t *hash_table);
+hash_table_t *hash_table_put(hash_table_t *hash_table, T key, T value);
+hash_table_t *hash_table_remove(hash_table_t *hash_table, T key);
+T hash_table_get(const hash_table_t *hash_table, T key);
 ```
 
 - [x] **ordered_set**: Red black tree based `ordered_set_t`.

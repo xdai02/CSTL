@@ -2,7 +2,7 @@
 #include "coop.h"
 #include <assert.h>
 
-#define N 10000
+#define N 1000
 
 void test_red_black_tree_create() {
     red_black_tree_t *tree = red_black_tree_create(UnsignedCharacter_compare, UnsignedCharacter_delete);

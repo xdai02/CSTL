@@ -62,6 +62,14 @@ static size_t __hash(const hash_table_t *hash_table, T key) {
     return hash_value % hash_table->capacity;
 }
 
+/**
+ * @brief Create a hash_table_t object.
+ * @param compare Callback function for comparing two keys.
+ * @param destroy_key Callback function for destroying a key.
+ * @param destroy_value Callback function for destroying a value.
+ * @param hash Callback function for hashing a key.
+ * @return Returns the created hash_table_t object if successful, otherwise returns NULL.
+ */
 hash_table_t *hash_table_create(compare_t compare, destroy_t destroy_key, destroy_t destroy_value, hash_t hash) {
     hash_table_t *hash_table = NULL;
     size_t i = 0;
@@ -100,6 +108,10 @@ hash_table_t *hash_table_create(compare_t compare, destroy_t destroy_key, destro
     return hash_table;
 }
 
+/**
+ * @brief Destroy a hash_table_t object.
+ * @param hash_table The hash_table_t object.
+ */
 void hash_table_destroy(hash_table_t *hash_table) {
     size_t i = 0;
 
@@ -115,16 +127,56 @@ void hash_table_destroy(hash_table_t *hash_table) {
     free(hash_table);
 }
 
+/**
+ * @brief Determine whether a hash_table_t object is empty.
+ * @param hash_table The hash_table_t object.
+ * @return Returns true if the hash_table_t object is empty, otherwise returns false.
+ */
 bool hash_table_is_empty(const hash_table_t *hash_table) {
     return_value_if_fail(hash_table != NULL, true);
     return hash_table->size == 0;
 }
 
+/**
+ * @brief Get the size of a hash_table_t object.
+ * @param hash_table The hash_table_t object.
+ * @return Returns the size of the hash_table_t object.
+ */
 size_t hash_table_size(const hash_table_t *hash_table) {
     return_value_if_fail(hash_table != NULL, 0);
     return hash_table->size;
 }
 
+/**
+ * @brief Traverse a hash_table_t object.
+ * @param hash_table The hash_table_t object.
+ * @param visit Callback function for visiting a key-value pair.
+ */
+void hash_table_foreach(hash_table_t *hash_table, visit_pair_t visit) {
+    size_t i = 0;
+    iterator_t *iterator = NULL;
+    pair_t *pair;
+
+    return_if_fail(hash_table != NULL && visit != NULL);
+
+    for (i = 0; i < hash_table->capacity; i++) {
+        iterator = list_iterator_create(hash_table->buckets[i]);
+        return_if_fail(iterator != NULL);
+
+        while (list_iterator_has_next(iterator)) {
+            pair = (pair_t *)list_iterator_next(iterator);
+            visit(pair->key, pair->value);
+        }
+
+        list_iterator_destroy(iterator);
+    }
+}
+
+/**
+ * @brief Clear a hash_table_t object.
+ * @param hash_table The hash_table_t object.
+ * @return Returns the modified hash_table_t object.
+ */
 hash_table_t *hash_table_clear(hash_table_t *hash_table) {
     size_t i = 0;
 

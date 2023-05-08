@@ -148,6 +148,7 @@ void test_hash_table() {
     test_hash_table_destroy();
     test_hash_table_is_empty();
     test_hash_table_size();
+    test_hash_table_foreach();
     test_hash_table_clear();
     test_hash_table_put();
     test_hash_table_remove();

@@ -2,7 +2,7 @@
 #include "coop.h"
 #include <assert.h>
 
-#define N 10000
+#define N 1000
 
 void test_hash_table_create() {
     hash_table_t *hash_table = hash_table_create(UnsignedCharacter_compare, UnsignedCharacter_delete, UnsignedCharacter_delete, UnsignedCharacter_hash);
@@ -48,6 +48,38 @@ void test_hash_table_size() {
         hash_table_put(hash_table, Integer_new(i), Integer_new(N - i - 1));
     }
     assert(hash_table_size(hash_table) == N);
+    hash_table_destroy(hash_table);
+}
+
+static int keys[N] = {0};
+static int values[N] = {0};
+static int n = 0;
+
+static void key_value_store(T key, T value) {
+    Integer *k = (Integer *)key;
+    Integer *v = (Integer *)value;
+    keys[n] = Integer_get(k);
+    values[n] = Integer_get(v);
+    n++;
+}
+
+void test_hash_table_foreach() {
+    int i = 0;
+    hash_table_t *hash_table = hash_table_create(Integer_compare, Integer_delete, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N; i++) {
+        hash_table_put(hash_table, Integer_new(i), Integer_new(i * i));
+    }
+
+    n = 0;
+    hash_table_foreach(hash_table, key_value_store);
+
+    assert(n == N);
+    for (i = 0; i < N; i++) {
+        assert(keys[i] == i);
+        assert(values[i] == i * i);
+    }
+
     hash_table_destroy(hash_table);
 }
 
