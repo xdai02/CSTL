@@ -1,12 +1,14 @@
 #include "cstl/str.h"
 
+#define DEFAULT_CAPACITY 16
+#define SHRINK_FACTOR 2
+#define GROWTH_FACTOR (3 / 2)
+
 struct string_t {
     char *string;
     size_t length;
     size_t capacity;
 };
-
-static const int DEFAULT_CAPACITY = 16;
 
 /**
  * @brief Create a string_t object.
@@ -78,10 +80,10 @@ static bool __string_resize(string_t *string) {
 
     if (string->length == 0) {
         new_capacity = DEFAULT_CAPACITY;
-    } else if (string->length < string->capacity / 2) {
-        new_capacity = string->capacity / 2 + 1;
+    } else if (string->length < string->capacity / SHRINK_FACTOR) {
+        new_capacity = string->capacity / SHRINK_FACTOR + 1;
     } else if (string->length + 1 >= string->capacity) {
-        new_capacity = string->capacity * 3 / 2 + 1;
+        new_capacity = string->capacity * GROWTH_FACTOR + 1;
     } else {
         return true;
     }

@@ -1,5 +1,9 @@
 #include "cstl/array.h"
 
+#define DEFAULT_CAPACITY 16
+#define SHRINK_FACTOR 2
+#define GROWTH_FACTOR (3 / 2)
+
 struct array_t {
     T *data;
     size_t size;
@@ -7,8 +11,6 @@ struct array_t {
     compare_t compare;
     destroy_t destroy;
 };
-
-static const int DEFAULT_CAPACITY = 16;
 
 /**
  * @brief Create an array_t object.
@@ -132,19 +134,21 @@ array_t *array_set(array_t *array, size_t index, T elem) {
  */
 static bool __array_resize(array_t *array) {
     size_t new_capacity;
+    T *new_data = NULL;
 
     return_value_if_fail(array != NULL, false);
 
-    if (array->size < array->capacity / 2) {
-        new_capacity = array->capacity / 2 + 1;
+    if (array->size < array->capacity / SHRINK_FACTOR) {
+        new_capacity = array->capacity / SHRINK_FACTOR + 1;
     } else if (array->size >= array->capacity) {
-        new_capacity = array->capacity * 3 / 2 + 1;
+        new_capacity = array->capacity * GROWTH_FACTOR + 1;
     } else {
         return true;
     }
 
-    array->data = (T *)realloc(array->data, sizeof(T) * new_capacity);
-    return_value_if_fail(array->data != NULL, false);
+    new_data = (T *)realloc(array->data, sizeof(T) * new_capacity);
+    return_value_if_fail(new_data != NULL, false);
+    array->data = new_data;
     array->capacity = new_capacity;
     return true;
 }

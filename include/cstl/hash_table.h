@@ -11,5 +11,8 @@ void hash_table_destroy(hash_table_t *hash_table);
 bool hash_table_is_empty(const hash_table_t *hash_table);
 size_t hash_table_size(const hash_table_t *hash_table);
 hash_table_t *hash_table_clear(hash_table_t *hash_table);
+hash_table_t *hash_table_put(hash_table_t *hash_table, T key, T value);
+hash_table_t *hash_table_remove(hash_table_t *hash_table, T key);
+T hash_table_get(const hash_table_t *hash_table, T key);
 
 #endif
