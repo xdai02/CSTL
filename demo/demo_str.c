@@ -14,7 +14,7 @@ int main() {
         i++;
     }
 
-    // Caller must free the memory for each generated token.
+    // Caller MUST free the memory for each generated token.
     i = 0;
     while (tokens[i] != NULL) {
         free(tokens[i]);

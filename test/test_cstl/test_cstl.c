@@ -143,6 +143,19 @@ void test_red_black_tree() {
     printf("[PASS] red_black_tree\n");
 }
 
+void test_hash_table() {
+    test_hash_table_create();
+    test_hash_table_destroy();
+    test_hash_table_is_empty();
+    test_hash_table_size();
+    test_hash_table_clear();
+    test_hash_table_put();
+    test_hash_table_remove();
+    test_hash_table_get();
+
+    printf("[PASS] hash_table\n");
+}
+
 void test_ordered_set() {
     test_ordered_set_create();
     test_ordered_set_destroy();
@@ -172,5 +185,6 @@ void test_cstl() {
     test_queue();
     test_deque();
     test_red_black_tree();
+    test_hash_table();
     test_ordered_set();
 }
