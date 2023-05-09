@@ -21,7 +21,7 @@ struct hash_table_t {
  * @param value The value of the pair.
  * @return Returns the created pair_t object if successful, otherwise returns NULL.
  */
-static pair_t *__pair_create(T key, T value) {
+static pair_t *__pair_new(T key, T value) {
     pair_t *pair = NULL;
 
     return_value_if_fail(key != NULL && value != NULL, NULL);
@@ -41,7 +41,7 @@ static destroy_t __destroy_value = NULL;
  * @brief Destroy a pair_t object.
  * @param data The pair_t object.
  */
-static void __pair_destroy(T data) {
+static void __pair_delete(T data) {
     pair_t *pair = (pair_t *)data;
     return_if_fail(pair != NULL);
 
@@ -98,7 +98,7 @@ hash_table_t *hash_table_new(compare_t compare, destroy_t destroy_key, destroy_t
     }
 
     for (i = 0; i < DEFAULT_CAPACITY; i++) {
-        hash_table->buckets[i] = list_new(compare, __pair_destroy);
+        hash_table->buckets[i] = list_new(compare, __pair_delete);
         if (hash_table->buckets[i] == NULL) {
             for (j = 0; j < i; j++) {
                 list_delete(hash_table->buckets[j]);
@@ -171,7 +171,7 @@ void hash_table_foreach(hash_table_t *hash_table, visit_pair_t visit) {
     return_if_fail(hash_table != NULL && visit != NULL);
 
     for (i = 0; i < hash_table->capacity; i++) {
-        iterator = list_iterator_create(hash_table->buckets[i]);
+        iterator = list_iterator_new(hash_table->buckets[i]);
         return_if_fail(iterator != NULL);
 
         while (list_iterator_has_next(iterator)) {
@@ -179,7 +179,7 @@ void hash_table_foreach(hash_table_t *hash_table, visit_pair_t visit) {
             visit(pair->key, pair->value);
         }
 
-        list_iterator_destroy(iterator);
+        list_iterator_delete(iterator);
     }
 }
 
@@ -226,7 +226,7 @@ static bool __hash_table_resize(hash_table_t *hash_table) {
     return_value_if_fail(new_buckets != NULL, false);
 
     for (i = 0; i < new_capacity; i++) {
-        new_buckets[i] = list_new(hash_table->compare, __pair_destroy);
+        new_buckets[i] = list_new(hash_table->compare, __pair_delete);
         if (new_buckets[i] == NULL) {
             for (j = 0; j < i; j++) {
                 list_delete(new_buckets[j]);
@@ -241,7 +241,7 @@ static bool __hash_table_resize(hash_table_t *hash_table) {
 
     /* Rehash */
     for (i = 0; i < old_capacity; i++) {
-        iterator = list_iterator_create(hash_table->buckets[i]);
+        iterator = list_iterator_new(hash_table->buckets[i]);
         if (iterator == NULL) {
             for (j = 0; j < new_capacity; j++) {
                 list_delete(new_buckets[j]);
@@ -261,7 +261,7 @@ static bool __hash_table_resize(hash_table_t *hash_table) {
             list_pop_front(hash_table->buckets[i]);
         }
 
-        list_iterator_destroy(iterator);
+        list_iterator_delete(iterator);
         list_delete(hash_table->buckets[i]);
     }
 
@@ -289,7 +289,7 @@ hash_table_t *hash_table_put(hash_table_t *hash_table, T key, T value) {
     index = __hash(hash_table, key);
     bucket = hash_table->buckets[index];
 
-    iterator = list_iterator_create(bucket);
+    iterator = list_iterator_new(bucket);
     return_value_if_fail(iterator != NULL, hash_table);
 
     while (list_iterator_has_next(iterator)) {
@@ -304,21 +304,21 @@ hash_table_t *hash_table_put(hash_table_t *hash_table, T key, T value) {
                 hash_table->destroy_value(pair->value);
             }
             pair->value = value;
-            list_iterator_destroy(iterator);
+            list_iterator_delete(iterator);
             return hash_table;
         }
     }
 
     /* Key not found, insert a new pair */
-    pair = __pair_create(key, value);
+    pair = __pair_new(key, value);
     if (pair == NULL) {
-        list_iterator_destroy(iterator);
+        list_iterator_delete(iterator);
         return hash_table;
     }
 
     list_push_back(bucket, pair);
     hash_table->size++;
-    list_iterator_destroy(iterator);
+    list_iterator_delete(iterator);
 
     if ((float)hash_table->size / hash_table->capacity > LOAD_FACTOR_THRESHOLD) {
         return_value_if_fail(__hash_table_resize(hash_table), hash_table);
@@ -346,7 +346,7 @@ hash_table_t *hash_table_remove(hash_table_t *hash_table, T key) {
     index = __hash(hash_table, key);
     bucket = hash_table->buckets[index];
 
-    iterator = list_iterator_create(bucket);
+    iterator = list_iterator_new(bucket);
     return_value_if_fail(iterator != NULL, hash_table);
 
     i = 0;
@@ -356,14 +356,14 @@ hash_table_t *hash_table_remove(hash_table_t *hash_table, T key) {
             pair = list_remove(bucket, i);
             __destroy_key = hash_table->destroy_key;
             __destroy_value = hash_table->destroy_value;
-            __pair_destroy(pair);
+            __pair_delete(pair);
             hash_table->size--;
             break;
         }
         i++;
     }
 
-    list_iterator_destroy(iterator);
+    list_iterator_delete(iterator);
     return hash_table;
 }
 
@@ -386,7 +386,7 @@ T hash_table_get(const hash_table_t *hash_table, T key) {
     index = __hash(hash_table, key);
     bucket = hash_table->buckets[index];
 
-    iterator = list_iterator_create(bucket);
+    iterator = list_iterator_new(bucket);
     return_value_if_fail(iterator != NULL, NULL);
 
     while (list_iterator_has_next(iterator)) {
@@ -397,7 +397,7 @@ T hash_table_get(const hash_table_t *hash_table, T key) {
         }
     }
 
-    list_iterator_destroy(iterator);
+    list_iterator_delete(iterator);
     return value;
 }
 
@@ -411,7 +411,7 @@ typedef struct hash_table_iterator_state_t {
  * @param hash_table The hash_table_t object.
  * @return Returns the iterator for container.
  */
-iterator_t *hash_table_iterator_create(const hash_table_t *hash_table) {
+iterator_t *hash_table_iterator_new(const hash_table_t *hash_table) {
     iterator_t *iterator = NULL;
     hash_table_iterator_state_t *state = NULL;
 
@@ -427,7 +427,7 @@ iterator_t *hash_table_iterator_create(const hash_table_t *hash_table) {
     }
 
     state->bucket_index = 0;
-    state->list_iterator = list_iterator_create(hash_table->buckets[0]);
+    state->list_iterator = list_iterator_new(hash_table->buckets[0]);
     if (state->list_iterator == NULL) {
         free(state);
         free(iterator);
@@ -443,7 +443,7 @@ iterator_t *hash_table_iterator_create(const hash_table_t *hash_table) {
  * @brief Destroy an iterator.
  * @param iterator The iterator_t object.
  */
-void hash_table_iterator_destroy(iterator_t *iterator) {
+void hash_table_iterator_delete(iterator_t *iterator) {
     hash_table_iterator_state_t *state = NULL;
 
     return_if_fail(iterator != NULL);
@@ -451,7 +451,7 @@ void hash_table_iterator_destroy(iterator_t *iterator) {
     if (iterator->current != NULL) {
         state = iterator->current;
         if (state->list_iterator != NULL) {
-            list_iterator_destroy(state->list_iterator);
+            list_iterator_delete(state->list_iterator);
         }
         free(state);
     }
@@ -508,9 +508,9 @@ pair_t *hash_table_iterator_next(iterator_t *iterator) {
     for (i = state->bucket_index + 1; i < hash_table->capacity; i++) {
         if (!list_is_empty(hash_table->buckets[i])) {
             /* Destroy the old iterator and create a new one */
-            list_iterator_destroy(state->list_iterator);
+            list_iterator_delete(state->list_iterator);
             state->bucket_index = i;
-            state->list_iterator = list_iterator_create(hash_table->buckets[i]);
+            state->list_iterator = list_iterator_new(hash_table->buckets[i]);
             return_value_if_fail(state->list_iterator != NULL, NULL);
             return list_iterator_next(state->list_iterator);
         }

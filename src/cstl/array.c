@@ -313,7 +313,7 @@ array_t *array_sort(array_t *array) {
  * @param array The array_t object.
  * @return Returns the iterator for container.
  */
-iterator_t *array_iterator_create(const array_t *array) {
+iterator_t *array_iterator_new(const array_t *array) {
     iterator_t *iterator = NULL;
 
     return_value_if_fail(array != NULL, NULL);
@@ -330,7 +330,7 @@ iterator_t *array_iterator_create(const array_t *array) {
  * @brief Destroy an iterator.
  * @param iterator The iterator_t object.
  */
-void array_iterator_destroy(iterator_t *iterator) {
+void array_iterator_delete(iterator_t *iterator) {
     return_if_fail(iterator != NULL);
     free(iterator);
 }

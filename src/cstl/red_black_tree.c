@@ -29,7 +29,7 @@ struct red_black_tree_t {
  * @param parent The pointer to the parent.
  * @return Returns the node_t object if create successfully, otherwise returns NULL.
  */
-static node_t *__node_create(T key, color_t color, node_t *left, node_t *right, node_t *parent) {
+static node_t *__node_new(T key, color_t color, node_t *left, node_t *right, node_t *parent) {
     node_t *node = (node_t *)malloc(sizeof(node_t));
     return_value_if_fail(node != NULL, NULL);
 
@@ -46,10 +46,10 @@ static node_t *__node_create(T key, color_t color, node_t *left, node_t *right, 
  * @param tree The red_black_tree_t object.
  * @param node The node_t object.
  */
-static void __node_destroy(red_black_tree_t *tree, node_t *node) {
+static void __node_delete(red_black_tree_t *tree, node_t *node) {
     return_if_fail(tree != NULL && node != NULL);
-    __node_destroy(tree, node->left);
-    __node_destroy(tree, node->right);
+    __node_delete(tree, node->left);
+    __node_delete(tree, node->right);
     if (tree->destroy != NULL) {
         tree->destroy(node->key);
     }
@@ -93,7 +93,7 @@ red_black_tree_t *red_black_tree_new(compare_t compare, destroy_t destroy) {
  */
 void red_black_tree_delete(red_black_tree_t *tree) {
     return_if_fail(tree != NULL);
-    __node_destroy(tree, tree->root);
+    __node_delete(tree, tree->root);
     free(tree);
 }
 
@@ -124,7 +124,7 @@ size_t red_black_tree_size(const red_black_tree_t *tree) {
  */
 red_black_tree_t *red_black_tree_clear(red_black_tree_t *tree) {
     return_value_if_fail(tree != NULL, NULL);
-    __node_destroy(tree, tree->root);
+    __node_delete(tree, tree->root);
     tree->root = NULL;
     tree->size = 0;
     return tree;
@@ -169,7 +169,7 @@ void red_black_tree_foreach(red_black_tree_t *tree, visit_t visit) {
 
     return_if_fail(tree != NULL && visit != NULL);
 
-    iterator = red_black_tree_iterator_create(tree);
+    iterator = red_black_tree_iterator_new(tree);
     return_if_fail(iterator != NULL);
 
     while (red_black_tree_iterator_has_next(iterator)) {
@@ -177,7 +177,7 @@ void red_black_tree_foreach(red_black_tree_t *tree, visit_t visit) {
         visit(key);
     }
 
-    red_black_tree_iterator_destroy(iterator);
+    red_black_tree_iterator_delete(iterator);
 }
 
 /**
@@ -318,7 +318,7 @@ red_black_tree_t *red_black_tree_insert(red_black_tree_t *tree, T key) {
     return_value_if_fail(tree != NULL && key != NULL, tree);
     return_value_if_fail(tree->compare != NULL, tree);
 
-    node = __node_create(key, RED, NULL, NULL, NULL);
+    node = __node_new(key, RED, NULL, NULL, NULL);
     return_value_if_fail(node != NULL, tree);
 
     if (tree->root == NULL) {
@@ -335,7 +335,7 @@ red_black_tree_t *red_black_tree_insert(red_black_tree_t *tree, T key) {
             } else if (cmp > 0) {
                 current = current->right;
             } else {
-                __node_destroy(tree, node);
+                __node_delete(tree, node);
                 return tree;
             }
         }
@@ -547,7 +547,7 @@ red_black_tree_t *red_black_tree_remove(red_black_tree_t *tree, T key) {
     z->left = NULL;
     z->right = NULL;
     z->parent = NULL;
-    __node_destroy(tree, z);
+    __node_delete(tree, z);
 
     tree->size--;
     return tree;
@@ -580,7 +580,7 @@ static node_t *__successor(node_t *node) {
  * @param tree The red_black_tree_t object.
  * @return Returns the iterator for container.
  */
-iterator_t *red_black_tree_iterator_create(const red_black_tree_t *tree) {
+iterator_t *red_black_tree_iterator_new(const red_black_tree_t *tree) {
     iterator_t *iterator = NULL;
 
     return_value_if_fail(tree != NULL, NULL);
@@ -597,7 +597,7 @@ iterator_t *red_black_tree_iterator_create(const red_black_tree_t *tree) {
  * @brief Destroy an iterator.
  * @param iterator The iterator_t object.
  */
-void red_black_tree_iterator_destroy(iterator_t *iterator) {
+void red_black_tree_iterator_delete(iterator_t *iterator) {
     return_if_fail(iterator != NULL);
     free(iterator);
 }

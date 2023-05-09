@@ -15,14 +15,14 @@ int main() {
 
     ordered_set_t *set3 = ordered_set_intersection(set1, set2);
 
-    iterator_t *iterator = ordered_set_iterator_create(set3);
+    iterator_t *iterator = ordered_set_iterator_new(set3);
     while (ordered_set_iterator_has_next(iterator)) {
         Integer *integer = ordered_set_iterator_next(iterator);
         printf("%d ", Integer_get(integer));
     }
     printf("\n");
 
-    ordered_set_iterator_destroy(iterator);
+    ordered_set_iterator_delete(iterator);
     ordered_set_delete(set1);
     ordered_set_delete(set2);
     ordered_set_delete(set3);

@@ -407,7 +407,7 @@ void test_list_iterator() {
         list_push_back(list, Integer_new(i));
     }
 
-    iterator = list_iterator_create(list);
+    iterator = list_iterator_new(list);
 
     i = 0;
     while (list_iterator_has_next(iterator)) {
@@ -416,6 +416,6 @@ void test_list_iterator() {
         i++;
     }
 
-    list_iterator_destroy(iterator);
+    list_iterator_delete(iterator);
     list_delete(list);
 }

@@ -101,7 +101,7 @@ typedef struct Point {
     int y;
 } Point;
 
-static Point *Point_create(int x, int y) {
+static Point *Point_new(int x, int y) {
     Point *point = (Point *)malloc(sizeof(Point));
     point->x = x;
     point->y = y;
@@ -210,67 +210,67 @@ void test_hash_table_put() {
     hash_table_delete(hash_table);
 
     hash_table = hash_table_new(Point_compare, Point_delete, Character_delete, Point_hash);
-    hash_table_put(hash_table, Point_create(1, 1), Character_new('A'));
-    hash_table_put(hash_table, Point_create(1, 2), Character_new('B'));
-    hash_table_put(hash_table, Point_create(2, 1), Character_new('C'));
-    hash_table_put(hash_table, Point_create(2, 2), Character_new('D'));
+    hash_table_put(hash_table, Point_new(1, 1), Character_new('A'));
+    hash_table_put(hash_table, Point_new(1, 2), Character_new('B'));
+    hash_table_put(hash_table, Point_new(2, 1), Character_new('C'));
+    hash_table_put(hash_table, Point_new(2, 2), Character_new('D'));
     assert(hash_table_size(hash_table) == 4);
 
-    point = Point_create(1, 1);
+    point = Point_new(1, 1);
     character = (Character *)hash_table_get(hash_table, point);
     assert(character != NULL);
     assert(Character_get(character) == 'A');
     Point_delete(point);
 
-    point = Point_create(1, 2);
+    point = Point_new(1, 2);
     character = (Character *)hash_table_get(hash_table, point);
     assert(character != NULL);
     assert(Character_get(character) == 'B');
     Point_delete(point);
 
-    point = Point_create(2, 1);
+    point = Point_new(2, 1);
     character = (Character *)hash_table_get(hash_table, point);
     assert(character != NULL);
     assert(Character_get(character) == 'C');
     Point_delete(point);
 
-    point = Point_create(2, 2);
+    point = Point_new(2, 2);
     character = (Character *)hash_table_get(hash_table, point);
     assert(character != NULL);
     assert(Character_get(character) == 'D');
     Point_delete(point);
 
-    hash_table_put(hash_table, Point_create(1, 1), Character_new('a'));
-    hash_table_put(hash_table, Point_create(2, 1), Character_new('c'));
-    hash_table_put(hash_table, Point_create(3, 3), Character_new('E'));
+    hash_table_put(hash_table, Point_new(1, 1), Character_new('a'));
+    hash_table_put(hash_table, Point_new(2, 1), Character_new('c'));
+    hash_table_put(hash_table, Point_new(3, 3), Character_new('E'));
 
     assert(hash_table_size(hash_table) == 5);
 
-    point = Point_create(1, 1);
+    point = Point_new(1, 1);
     character = (Character *)hash_table_get(hash_table, point);
     assert(character != NULL);
     assert(Character_get(character) == 'a');
     Point_delete(point);
 
-    point = Point_create(1, 2);
+    point = Point_new(1, 2);
     character = (Character *)hash_table_get(hash_table, point);
     assert(character != NULL);
     assert(Character_get(character) == 'B');
     Point_delete(point);
 
-    point = Point_create(2, 1);
+    point = Point_new(2, 1);
     character = (Character *)hash_table_get(hash_table, point);
     assert(character != NULL);
     assert(Character_get(character) == 'c');
     Point_delete(point);
 
-    point = Point_create(2, 2);
+    point = Point_new(2, 2);
     character = (Character *)hash_table_get(hash_table, point);
     assert(character != NULL);
     assert(Character_get(character) == 'D');
     Point_delete(point);
 
-    point = Point_create(3, 3);
+    point = Point_new(3, 3);
     character = (Character *)hash_table_get(hash_table, point);
     assert(character != NULL);
     assert(Character_get(character) == 'E');
@@ -331,36 +331,36 @@ void test_hash_table_remove() {
     hash_table_delete(hash_table);
 
     hash_table = hash_table_new(Point_compare, Point_delete, Character_delete, Point_hash);
-    hash_table_put(hash_table, Point_create(1, 1), Character_new('A'));
-    hash_table_put(hash_table, Point_create(1, 2), Character_new('B'));
-    hash_table_put(hash_table, Point_create(2, 1), Character_new('C'));
-    hash_table_put(hash_table, Point_create(2, 2), Character_new('D'));
+    hash_table_put(hash_table, Point_new(1, 1), Character_new('A'));
+    hash_table_put(hash_table, Point_new(1, 2), Character_new('B'));
+    hash_table_put(hash_table, Point_new(2, 1), Character_new('C'));
+    hash_table_put(hash_table, Point_new(2, 2), Character_new('D'));
 
-    point = Point_create(1, 1);
+    point = Point_new(1, 1);
     hash_table_remove(hash_table, point);
     Point_delete(point);
 
-    point = Point_create(1, 2);
+    point = Point_new(1, 2);
     hash_table_remove(hash_table, point);
     Point_delete(point);
 
-    point = Point_create(3, 1);
+    point = Point_new(3, 1);
     hash_table_remove(hash_table, point);
     Point_delete(point);
 
-    point = Point_create(3, 2);
+    point = Point_new(3, 2);
     hash_table_remove(hash_table, point);
     Point_delete(point);
 
     assert(hash_table_size(hash_table) == 2);
 
-    point = Point_create(2, 1);
+    point = Point_new(2, 1);
     character = (Character *)hash_table_get(hash_table, point);
     assert(character != NULL);
     assert(Character_get(character) == 'C');
     Point_delete(point);
 
-    point = Point_create(2, 2);
+    point = Point_new(2, 2);
     character = (Character *)hash_table_get(hash_table, point);
     assert(character != NULL);
     assert(Character_get(character) == 'D');
@@ -419,39 +419,39 @@ void test_hash_table_get() {
     hash_table_delete(hash_table);
 
     hash_table = hash_table_new(Point_compare, Point_delete, Character_delete, Point_hash);
-    hash_table_put(hash_table, Point_create(1, 1), Character_new('A'));
-    hash_table_put(hash_table, Point_create(1, 2), Character_new('B'));
-    hash_table_put(hash_table, Point_create(2, 1), Character_new('C'));
-    hash_table_put(hash_table, Point_create(2, 2), Character_new('D'));
-    hash_table_put(hash_table, Point_create(1, 1), Character_new('a'));
-    hash_table_put(hash_table, Point_create(2, 1), Character_new('c'));
-    hash_table_put(hash_table, Point_create(3, 3), Character_new('E'));
+    hash_table_put(hash_table, Point_new(1, 1), Character_new('A'));
+    hash_table_put(hash_table, Point_new(1, 2), Character_new('B'));
+    hash_table_put(hash_table, Point_new(2, 1), Character_new('C'));
+    hash_table_put(hash_table, Point_new(2, 2), Character_new('D'));
+    hash_table_put(hash_table, Point_new(1, 1), Character_new('a'));
+    hash_table_put(hash_table, Point_new(2, 1), Character_new('c'));
+    hash_table_put(hash_table, Point_new(3, 3), Character_new('E'));
 
-    point = Point_create(1, 1);
+    point = Point_new(1, 1);
     character = (Character *)hash_table_get(hash_table, point);
     assert(character != NULL);
     assert(Character_get(character) == 'a');
     Point_delete(point);
 
-    point = Point_create(1, 2);
+    point = Point_new(1, 2);
     character = (Character *)hash_table_get(hash_table, point);
     assert(character != NULL);
     assert(Character_get(character) == 'B');
     Point_delete(point);
 
-    point = Point_create(2, 1);
+    point = Point_new(2, 1);
     character = (Character *)hash_table_get(hash_table, point);
     assert(character != NULL);
     assert(Character_get(character) == 'c');
     Point_delete(point);
 
-    point = Point_create(2, 2);
+    point = Point_new(2, 2);
     character = (Character *)hash_table_get(hash_table, point);
     assert(character != NULL);
     assert(Character_get(character) == 'D');
     Point_delete(point);
 
-    point = Point_create(3, 3);
+    point = Point_new(3, 3);
     character = (Character *)hash_table_get(hash_table, point);
     assert(character != NULL);
     assert(Character_get(character) == 'E');

@@ -531,12 +531,12 @@ array_delete(array);
 
 
 
-## array_iterator_create()
+## array_iterator_new()
 
 - Prototype
 
 ```c
-iterator_t *array_iterator_create(const array_t *array);
+iterator_t *array_iterator_new(const array_t *array);
 ```
 
 - Description
@@ -548,12 +548,12 @@ iterator_t *array_iterator_create(const array_t *array);
 
 
 
-## array_iterator_destroy()
+## array_iterator_delete()
 
 - Prototype
 
 ```c
-void array_iterator_destroy(iterator_t *iterator);
+void array_iterator_delete(iterator_t *iterator);
 ```
 
 - Description
@@ -602,13 +602,13 @@ for (i = 0; i < 10; i++) {
     array_append(array, Integer_new(i));
 }
 
-iterator_t *iterator = array_iterator_create(array);
+iterator_t *iterator = array_iterator_new(array);
 while (array_iterator_has_next(iterator)) {
     Integer *integer = (Integer *)array_iterator_next(iterator);
     printf("%d ", Integer_get(integer));
 }
 
-array_iterator_destroy(iterator);
+array_iterator_delete(iterator);
 array_delete(array);
 ```
 

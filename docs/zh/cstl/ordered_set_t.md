@@ -562,12 +562,12 @@ ordered_set_delete(set2);
 
 
 
-## ordered_set_iterator_create()
+## ordered_set_iterator_new()
 
 - 原型
 
 ```c
-iterator_t *ordered_set_iterator_create(const ordered_set_t *set);
+iterator_t *ordered_set_iterator_new(const ordered_set_t *set);
 ```
 
 - 描述
@@ -579,12 +579,12 @@ iterator_t *ordered_set_iterator_create(const ordered_set_t *set);
 
 
 
-## ordered_set_iterator_destroy()
+## ordered_set_iterator_delete()
 
 - 原型
 
 ```c
-void ordered_set_iterator_destroy(iterator_t *iterator);
+void ordered_set_iterator_delete(iterator_t *iterator);
 ```
 
 - 描述
@@ -633,13 +633,13 @@ for (i = 0; i < 10; i++) {
     ordered_set_add(array, Integer_new(i));
 }
 
-iterator_t *iterator = ordered_set_iterator_create(array);
+iterator_t *iterator = ordered_set_iterator_new(array);
 while (ordered_set_iterator_has_next(iterator)) {
     Integer *integer = (Integer *)ordered_set_iterator_next(iterator);
     printf("%d ", Integer_get(integer));
 }
 
-ordered_set_iterator_destroy(iterator);
+ordered_set_iterator_delete(iterator);
 ordered_set_delete(set);
 ```
 

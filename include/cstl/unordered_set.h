@@ -136,13 +136,13 @@ bool unordered_set_is_subset(const unordered_set_t *set1, const unordered_set_t 
  * @param set The unordered_set_t object.
  * @return Returns the iterator for container.
  */
-iterator_t *unordered_set_iterator_create(const unordered_set_t *set);
+iterator_t *unordered_set_iterator_new(const unordered_set_t *set);
 
 /**
  * @brief Destroy an iterator.
  * @param iterator The iterator_t object.
  */
-void unordered_set_iterator_destroy(iterator_t *iterator);
+void unordered_set_iterator_delete(iterator_t *iterator);
 
 /**
  * @brief Determine whether an iterator has the next element.

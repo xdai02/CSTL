@@ -140,23 +140,23 @@ ordered_set_t *ordered_set_union(const ordered_set_t *set1, const ordered_set_t 
     return_value_if_fail(union_set != NULL, NULL);
 
     if (set1 != NULL) {
-        iterator = red_black_tree_iterator_create(set1->tree);
+        iterator = red_black_tree_iterator_new(set1->tree);
         return_value_if_fail(iterator != NULL, NULL);
         while (red_black_tree_iterator_has_next(iterator)) {
             elem = red_black_tree_iterator_next(iterator);
             ordered_set_add(union_set, elem);
         }
-        red_black_tree_iterator_destroy(iterator);
+        red_black_tree_iterator_delete(iterator);
     }
 
     if (set2 != NULL) {
-        iterator = red_black_tree_iterator_create(set2->tree);
+        iterator = red_black_tree_iterator_new(set2->tree);
         return_value_if_fail(iterator != NULL, NULL);
         while (red_black_tree_iterator_has_next(iterator)) {
             elem = red_black_tree_iterator_next(iterator);
             ordered_set_add(union_set, elem);
         }
-        red_black_tree_iterator_destroy(iterator);
+        red_black_tree_iterator_delete(iterator);
     }
 
     return union_set;
@@ -185,7 +185,7 @@ ordered_set_t *ordered_set_intersection(const ordered_set_t *set1, const ordered
 
     return_value_if(set1 == NULL || set2 == NULL, intersection_set);
 
-    iterator = red_black_tree_iterator_create(set1->tree);
+    iterator = red_black_tree_iterator_new(set1->tree);
     return_value_if_fail(iterator != NULL, NULL);
     while (red_black_tree_iterator_has_next(iterator)) {
         elem = red_black_tree_iterator_next(iterator);
@@ -193,7 +193,7 @@ ordered_set_t *ordered_set_intersection(const ordered_set_t *set1, const ordered
             ordered_set_add(intersection_set, elem);
         }
     }
-    red_black_tree_iterator_destroy(iterator);
+    red_black_tree_iterator_delete(iterator);
 
     return intersection_set;
 }
@@ -216,7 +216,7 @@ ordered_set_t *ordered_set_difference(const ordered_set_t *set1, const ordered_s
     difference_set = ordered_set_new(set1->compare, NULL);
     return_value_if_fail(difference_set != NULL, NULL);
 
-    iterator = red_black_tree_iterator_create(set1->tree);
+    iterator = red_black_tree_iterator_new(set1->tree);
     return_value_if_fail(iterator != NULL, NULL);
     while (red_black_tree_iterator_has_next(iterator)) {
         elem = red_black_tree_iterator_next(iterator);
@@ -224,7 +224,7 @@ ordered_set_t *ordered_set_difference(const ordered_set_t *set1, const ordered_s
             ordered_set_add(difference_set, elem);
         }
     }
-    red_black_tree_iterator_destroy(iterator);
+    red_black_tree_iterator_delete(iterator);
 
     return difference_set;
 }
@@ -287,7 +287,7 @@ bool ordered_set_is_subset(const ordered_set_t *set1, const ordered_set_t *set2)
     return_value_if(set1 == NULL, true);
     return_value_if(set2 == NULL, false);
 
-    iterator = red_black_tree_iterator_create(set1->tree);
+    iterator = red_black_tree_iterator_new(set1->tree);
     while (red_black_tree_iterator_has_next(iterator)) {
         elem = red_black_tree_iterator_next(iterator);
         if (!ordered_set_contains(set2, elem)) {
@@ -295,7 +295,7 @@ bool ordered_set_is_subset(const ordered_set_t *set1, const ordered_set_t *set2)
             break;
         }
     }
-    red_black_tree_iterator_destroy(iterator);
+    red_black_tree_iterator_delete(iterator);
     return is_subset;
 }
 
@@ -304,18 +304,18 @@ bool ordered_set_is_subset(const ordered_set_t *set1, const ordered_set_t *set2)
  * @param set The ordered_set_t object.
  * @return Returns the iterator for container.
  */
-iterator_t *ordered_set_iterator_create(const ordered_set_t *set) {
+iterator_t *ordered_set_iterator_new(const ordered_set_t *set) {
     return_value_if_fail(set != NULL, NULL);
-    return red_black_tree_iterator_create(set->tree);
+    return red_black_tree_iterator_new(set->tree);
 }
 
 /**
  * @brief Destroy an iterator.
  * @param iterator The iterator_t object.
  */
-void ordered_set_iterator_destroy(iterator_t *iterator) {
+void ordered_set_iterator_delete(iterator_t *iterator) {
     return_if_fail(iterator != NULL);
-    red_black_tree_iterator_destroy(iterator);
+    red_black_tree_iterator_delete(iterator);
 }
 
 /**

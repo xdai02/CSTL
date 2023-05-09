@@ -232,13 +232,13 @@ void test_ordered_set_union() {
     set3 = ordered_set_union(set1, set2);
     assert(ordered_set_size(set3) == N);
 
-    iterator = ordered_set_iterator_create(set3);
+    iterator = ordered_set_iterator_new(set3);
     while (ordered_set_iterator_has_next(iterator)) {
         integer = (Integer *)ordered_set_iterator_next(iterator);
         assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
     }
 
-    ordered_set_iterator_destroy(iterator);
+    ordered_set_iterator_delete(iterator);
     ordered_set_delete(set1);
     ordered_set_delete(set2);
     ordered_set_delete(set3);
@@ -256,13 +256,13 @@ void test_ordered_set_union() {
     set3 = ordered_set_union(set1, set2);
     assert(ordered_set_size(set3) == N + 1);
 
-    iterator = ordered_set_iterator_create(set3);
+    iterator = ordered_set_iterator_new(set3);
     while (ordered_set_iterator_has_next(iterator)) {
         integer = (Integer *)ordered_set_iterator_next(iterator);
         assert(Integer_get(integer) >= 0 && Integer_get(integer) <= N);
     }
 
-    ordered_set_iterator_destroy(iterator);
+    ordered_set_iterator_delete(iterator);
     ordered_set_delete(set1);
     ordered_set_delete(set2);
     ordered_set_delete(set3);
@@ -277,13 +277,13 @@ void test_ordered_set_union() {
     set3 = ordered_set_union(set1, set2);
     assert(ordered_set_size(set3) == N);
 
-    iterator = ordered_set_iterator_create(set3);
+    iterator = ordered_set_iterator_new(set3);
     while (ordered_set_iterator_has_next(iterator)) {
         integer = (Integer *)ordered_set_iterator_next(iterator);
         assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
     }
 
-    ordered_set_iterator_destroy(iterator);
+    ordered_set_iterator_delete(iterator);
     ordered_set_delete(set1);
     ordered_set_delete(set2);
     ordered_set_delete(set3);
@@ -298,13 +298,13 @@ void test_ordered_set_union() {
     set3 = ordered_set_union(set1, set2);
     assert(ordered_set_size(set3) == N);
 
-    iterator = ordered_set_iterator_create(set3);
+    iterator = ordered_set_iterator_new(set3);
     while (ordered_set_iterator_has_next(iterator)) {
         integer = (Integer *)ordered_set_iterator_next(iterator);
         assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
     }
 
-    ordered_set_iterator_destroy(iterator);
+    ordered_set_iterator_delete(iterator);
     ordered_set_delete(set1);
     ordered_set_delete(set2);
     ordered_set_delete(set3);
@@ -363,13 +363,13 @@ void test_ordered_set_intersection() {
     set3 = ordered_set_intersection(set1, set2);
     assert(ordered_set_size(set3) == N);
 
-    iterator = ordered_set_iterator_create(set3);
+    iterator = ordered_set_iterator_new(set3);
     while (ordered_set_iterator_has_next(iterator)) {
         integer = (Integer *)ordered_set_iterator_next(iterator);
         assert(Integer_get(integer) >= 0 && Integer_get(integer) <= N);
     }
 
-    ordered_set_iterator_destroy(iterator);
+    ordered_set_iterator_delete(iterator);
     ordered_set_delete(set1);
     ordered_set_delete(set2);
     ordered_set_delete(set3);
@@ -404,13 +404,13 @@ void test_ordered_set_intersection() {
     set3 = ordered_set_intersection(set1, set2);
     assert(ordered_set_size(set3) == N - 1);
 
-    iterator = ordered_set_iterator_create(set3);
+    iterator = ordered_set_iterator_new(set3);
     while (ordered_set_iterator_has_next(iterator)) {
         integer = (Integer *)ordered_set_iterator_next(iterator);
         assert(Integer_get(integer) >= 1 && Integer_get(integer) < N);
     }
 
-    ordered_set_iterator_destroy(iterator);
+    ordered_set_iterator_delete(iterator);
     ordered_set_delete(set1);
     ordered_set_delete(set2);
     ordered_set_delete(set3);
@@ -513,13 +513,13 @@ void test_ordered_set_difference() {
     set3 = ordered_set_difference(set1, set2);
     assert(ordered_set_size(set3) == N / 2);
 
-    iterator = ordered_set_iterator_create(set3);
+    iterator = ordered_set_iterator_new(set3);
     while (ordered_set_iterator_has_next(iterator)) {
         integer = (Integer *)ordered_set_iterator_next(iterator);
         assert(Integer_get(integer) >= 0 && Integer_get(integer) < N / 2);
     }
 
-    ordered_set_iterator_destroy(iterator);
+    ordered_set_iterator_delete(iterator);
     ordered_set_delete(set1);
     ordered_set_delete(set2);
     ordered_set_delete(set3);
@@ -537,13 +537,13 @@ void test_ordered_set_difference() {
     set3 = ordered_set_difference(set1, set2);
     assert(ordered_set_size(set3) == 1);
 
-    iterator = ordered_set_iterator_create(set3);
+    iterator = ordered_set_iterator_new(set3);
     while (ordered_set_iterator_has_next(iterator)) {
         integer = (Integer *)ordered_set_iterator_next(iterator);
         assert(Integer_get(integer) == 0);
     }
 
-    ordered_set_iterator_destroy(iterator);
+    ordered_set_iterator_delete(iterator);
     ordered_set_delete(set1);
     ordered_set_delete(set2);
     ordered_set_delete(set3);
@@ -558,13 +558,13 @@ void test_ordered_set_difference() {
     set3 = ordered_set_difference(set1, set2);
     assert(ordered_set_size(set3) == N);
 
-    iterator = ordered_set_iterator_create(set3);
+    iterator = ordered_set_iterator_new(set3);
     while (ordered_set_iterator_has_next(iterator)) {
         integer = (Integer *)ordered_set_iterator_next(iterator);
         assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
     }
 
-    ordered_set_iterator_destroy(iterator);
+    ordered_set_iterator_delete(iterator);
     ordered_set_delete(set1);
     ordered_set_delete(set2);
     ordered_set_delete(set3);
@@ -603,13 +603,13 @@ void test_ordered_set_difference() {
     assert(set3 != NULL);
     assert(ordered_set_size(set3) == N);
 
-    iterator = ordered_set_iterator_create(set3);
+    iterator = ordered_set_iterator_new(set3);
     while (ordered_set_iterator_has_next(iterator)) {
         integer = (Integer *)ordered_set_iterator_next(iterator);
         assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
     }
 
-    ordered_set_iterator_destroy(iterator);
+    ordered_set_iterator_delete(iterator);
     ordered_set_delete(set1);
     ordered_set_delete(set3);
 
@@ -660,13 +660,13 @@ void test_ordered_set_symmetric_difference() {
     set3 = ordered_set_symmetric_difference(set1, set2);
     assert(ordered_set_size(set3) == N);
 
-    iterator = ordered_set_iterator_create(set3);
+    iterator = ordered_set_iterator_new(set3);
     while (ordered_set_iterator_has_next(iterator)) {
         integer = (Integer *)ordered_set_iterator_next(iterator);
         assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
     }
 
-    ordered_set_iterator_destroy(iterator);
+    ordered_set_iterator_delete(iterator);
     ordered_set_delete(set1);
     ordered_set_delete(set2);
     ordered_set_delete(set3);
@@ -684,13 +684,13 @@ void test_ordered_set_symmetric_difference() {
     set3 = ordered_set_symmetric_difference(set1, set2);
     assert(ordered_set_size(set3) == 2);
 
-    iterator = ordered_set_iterator_create(set3);
+    iterator = ordered_set_iterator_new(set3);
     while (ordered_set_iterator_has_next(iterator)) {
         integer = (Integer *)ordered_set_iterator_next(iterator);
         assert(Integer_get(integer) == 0 || Integer_get(integer) == N);
     }
 
-    ordered_set_iterator_destroy(iterator);
+    ordered_set_iterator_delete(iterator);
     ordered_set_delete(set1);
     ordered_set_delete(set2);
     ordered_set_delete(set3);
@@ -705,13 +705,13 @@ void test_ordered_set_symmetric_difference() {
     set3 = ordered_set_symmetric_difference(set1, set2);
     assert(ordered_set_size(set3) == N);
 
-    iterator = ordered_set_iterator_create(set3);
+    iterator = ordered_set_iterator_new(set3);
     while (ordered_set_iterator_has_next(iterator)) {
         integer = (Integer *)ordered_set_iterator_next(iterator);
         assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
     }
 
-    ordered_set_iterator_destroy(iterator);
+    ordered_set_iterator_delete(iterator);
     ordered_set_delete(set1);
     ordered_set_delete(set2);
     ordered_set_delete(set3);
@@ -726,13 +726,13 @@ void test_ordered_set_symmetric_difference() {
     set3 = ordered_set_symmetric_difference(set1, set2);
     assert(ordered_set_size(set3) == N);
 
-    iterator = ordered_set_iterator_create(set3);
+    iterator = ordered_set_iterator_new(set3);
     while (ordered_set_iterator_has_next(iterator)) {
         integer = (Integer *)ordered_set_iterator_next(iterator);
         assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
     }
 
-    ordered_set_iterator_destroy(iterator);
+    ordered_set_iterator_delete(iterator);
     ordered_set_delete(set1);
     ordered_set_delete(set2);
     ordered_set_delete(set3);
@@ -757,13 +757,13 @@ void test_ordered_set_symmetric_difference() {
     assert(set3 != NULL);
     assert(ordered_set_size(set3) == N);
 
-    iterator = ordered_set_iterator_create(set3);
+    iterator = ordered_set_iterator_new(set3);
     while (ordered_set_iterator_has_next(iterator)) {
         integer = (Integer *)ordered_set_iterator_next(iterator);
         assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
     }
 
-    ordered_set_iterator_destroy(iterator);
+    ordered_set_iterator_delete(iterator);
     ordered_set_delete(set1);
     ordered_set_delete(set3);
 
@@ -775,13 +775,13 @@ void test_ordered_set_symmetric_difference() {
     assert(set3 != NULL);
     assert(ordered_set_size(set3) == N);
 
-    iterator = ordered_set_iterator_create(set3);
+    iterator = ordered_set_iterator_new(set3);
     while (ordered_set_iterator_has_next(iterator)) {
         integer = (Integer *)ordered_set_iterator_next(iterator);
         assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
     }
 
-    ordered_set_iterator_destroy(iterator);
+    ordered_set_iterator_delete(iterator);
     ordered_set_delete(set2);
     ordered_set_delete(set3);
 }
@@ -955,7 +955,7 @@ void test_ordered_set_iterator() {
         ordered_set_add(set, Integer_new(i));
     }
 
-    iterator = ordered_set_iterator_create(set);
+    iterator = ordered_set_iterator_new(set);
 
     i = 0;
     while (ordered_set_iterator_has_next(iterator)) {
@@ -964,6 +964,6 @@ void test_ordered_set_iterator() {
         i++;
     }
 
-    ordered_set_iterator_destroy(iterator);
+    ordered_set_iterator_delete(iterator);
     ordered_set_delete(set);
 }

@@ -87,13 +87,13 @@ T hash_table_get(const hash_table_t *hash_table, T key);
  * @param hash_table The hash_table_t object.
  * @return Returns the iterator for container.
  */
-iterator_t *hash_table_iterator_create(const hash_table_t *hash_table);
+iterator_t *hash_table_iterator_new(const hash_table_t *hash_table);
 
 /**
  * @brief Destroy an iterator.
  * @param iterator The iterator_t object.
  */
-void hash_table_iterator_destroy(iterator_t *iterator);
+void hash_table_iterator_delete(iterator_t *iterator);
 
 /**
  * @brief Determine whether an iterator has the next pair.

@@ -135,13 +135,13 @@ bool ordered_set_is_subset(const ordered_set_t *set1, const ordered_set_t *set2)
  * @param set The ordered_set_t object.
  * @return Returns the iterator for container.
  */
-iterator_t *ordered_set_iterator_create(const ordered_set_t *set);
+iterator_t *ordered_set_iterator_new(const ordered_set_t *set);
 
 /**
  * @brief Destroy an iterator.
  * @param iterator The iterator_t object.
  */
-void ordered_set_iterator_destroy(iterator_t *iterator);
+void ordered_set_iterator_delete(iterator_t *iterator);
 
 /**
  * @brief Determine whether an iterator has the next element.

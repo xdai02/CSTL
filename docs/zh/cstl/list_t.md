@@ -655,12 +655,12 @@ list_delete(list);
 
 
 
-## list_iterator_create()
+## list_iterator_new()
 
 - 原型
 
 ```c
-iterator_t *list_iterator_create(const list_t *list);
+iterator_t *list_iterator_new(const list_t *list);
 ```
 
 - 描述
@@ -672,12 +672,12 @@ iterator_t *list_iterator_create(const list_t *list);
 
 
 
-## list_iterator_destroy()
+## list_iterator_delete()
 
 - 原型
 
 ```c
-void list_iterator_destroy(iterator_t *iterator);
+void list_iterator_delete(iterator_t *iterator);
 ```
 
 - 描述
@@ -726,13 +726,13 @@ for (i = 0; i < 10; i++) {
     list_push_back(list, Integer_new(i));
 }
 
-iterator_t *iterator = list_iterator_create(list);
+iterator_t *iterator = list_iterator_new(list);
 while (list_iterator_has_next(iterator)) {
     Integer *integer = (Integer *)list_iterator_next(iterator);
     printf("%d ", Integer_get(integer));
 }
 
-list_iterator_destroy(iterator);
+list_iterator_delete(iterator);
 list_delete(list);
 ```
 

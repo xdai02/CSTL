@@ -162,13 +162,13 @@ list_t *list_reverse(list_t *list);
  * @param list The list_t object.
  * @return Returns the iterator for container.
  */
-iterator_t *list_iterator_create(const list_t *list);
+iterator_t *list_iterator_new(const list_t *list);
 
 /**
  * @brief Destroy an iterator.
  * @param iterator The iterator_t object.
  */
-void list_iterator_destroy(iterator_t *iterator);
+void list_iterator_delete(iterator_t *iterator);
 
 /**
  * @brief Determine whether an iterator has the next element.

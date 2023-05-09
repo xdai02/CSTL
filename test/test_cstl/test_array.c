@@ -352,7 +352,7 @@ void test_array_iterator() {
         array_append(array, Integer_new(i));
     }
 
-    iterator = array_iterator_create(array);
+    iterator = array_iterator_new(array);
 
     i = 0;
     while (array_iterator_has_next(iterator)) {
@@ -361,6 +361,6 @@ void test_array_iterator() {
         i++;
     }
 
-    array_iterator_destroy(iterator);
+    array_iterator_delete(iterator);
     array_delete(array);
 }

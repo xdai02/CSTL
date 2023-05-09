@@ -244,8 +244,8 @@ bool array_contains(const array_t *array, T elem);
 size_t array_count(const array_t *array, T elem);
 array_t *array_reverse(array_t *array);
 array_t *array_sort(array_t *array);
-iterator_t *array_iterator_create(const array_t *array);
-void array_iterator_destroy(iterator_t *iterator);
+iterator_t *array_iterator_new(const array_t *array);
+void array_iterator_delete(iterator_t *iterator);
 bool array_iterator_has_next(const iterator_t *iterator);
 T array_iterator_next(iterator_t *iterator);
 ```
@@ -275,8 +275,8 @@ T list_pop_back(list_t *list);
 list_t *list_insert(list_t *list, size_t index, T elem);
 T list_remove(list_t *list, size_t index);
 list_t *list_reverse(list_t *list);
-iterator_t *list_iterator_create(const list_t *list);
-void list_iterator_destroy(iterator_t *iterator);
+iterator_t *list_iterator_new(const list_t *list);
+void list_iterator_delete(iterator_t *iterator);
 bool list_iterator_has_next(const iterator_t *iterator);
 T list_iterator_next(iterator_t *iterator);
 ```
@@ -343,8 +343,8 @@ bool red_black_tree_contains(const red_black_tree_t *tree, T key);
 void red_black_tree_foreach(red_black_tree_t *tree, visit_t visit);
 red_black_tree_t *red_black_tree_insert(red_black_tree_t *tree, T key);
 red_black_tree_t *red_black_tree_remove(red_black_tree_t *tree, T key);
-iterator_t *red_black_tree_iterator_create(const red_black_tree_t *tree);
-void red_black_tree_iterator_destroy(iterator_t *iterator);
+iterator_t *red_black_tree_iterator_new(const red_black_tree_t *tree);
+void red_black_tree_iterator_delete(iterator_t *iterator);
 bool red_black_tree_iterator_has_next(const iterator_t *iterator);
 T red_black_tree_iterator_next(iterator_t *iterator);
 ```
@@ -385,8 +385,8 @@ ordered_set_t *ordered_set_difference(const ordered_set_t *set1, const ordered_s
 ordered_set_t *ordered_set_symmetric_difference(const ordered_set_t *set1, const ordered_set_t *set2);
 bool ordered_set_is_disjoint(const ordered_set_t *set1, const ordered_set_t *set2);
 bool ordered_set_is_subset(const ordered_set_t *set1, const ordered_set_t *set2);
-iterator_t *ordered_set_iterator_create(const ordered_set_t *set);
-void ordered_set_iterator_destroy(iterator_t *iterator);
+iterator_t *ordered_set_iterator_new(const ordered_set_t *set);
+void ordered_set_iterator_delete(iterator_t *iterator);
 bool ordered_set_iterator_has_next(const iterator_t *iterator);
 T ordered_set_iterator_next(iterator_t *iterator);
 ```

@@ -230,7 +230,7 @@ void test_red_black_tree_iterator() {
         red_black_tree_insert(tree, Integer_new(i));
     }
 
-    iterator = red_black_tree_iterator_create(tree);
+    iterator = red_black_tree_iterator_new(tree);
 
     i = 0;
     while (red_black_tree_iterator_has_next(iterator)) {
@@ -239,6 +239,6 @@ void test_red_black_tree_iterator() {
         i++;
     }
 
-    red_black_tree_iterator_destroy(iterator);
+    red_black_tree_iterator_delete(iterator);
     red_black_tree_delete(tree);
 }

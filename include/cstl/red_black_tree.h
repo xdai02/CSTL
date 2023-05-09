@@ -79,13 +79,13 @@ red_black_tree_t *red_black_tree_remove(red_black_tree_t *tree, T key);
  * @param tree The red_black_tree_t object.
  * @return Returns the iterator for container.
  */
-iterator_t *red_black_tree_iterator_create(const red_black_tree_t *tree);
+iterator_t *red_black_tree_iterator_new(const red_black_tree_t *tree);
 
 /**
  * @brief Destroy an iterator.
  * @param iterator The iterator_t object.
  */
-void red_black_tree_iterator_destroy(iterator_t *iterator);
+void red_black_tree_iterator_delete(iterator_t *iterator);
 
 /**
  * @brief Determine whether an iterator has the next element.
