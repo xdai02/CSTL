@@ -1,8 +1,8 @@
 #ifndef _TEST_ORDERED_SET_H_
 #define _TEST_ORDERED_SET_H_
 
-void test_ordered_set_create();
-void test_ordered_set_destroy();
+void test_ordered_set_new();
+void test_ordered_set_delete();
 void test_ordered_set_is_empty();
 void test_ordered_set_size();
 void test_ordered_set_foreach();

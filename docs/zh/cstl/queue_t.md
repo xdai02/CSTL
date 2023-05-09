@@ -4,12 +4,12 @@
 
 
 
-## queue_create()
+## queue_new()
 
 - 原型
 
 ```c
-queue_t *queue_create(destroy_t destroy);
+queue_t *queue_new(destroy_t destroy);
 ```
 
 - 描述
@@ -22,26 +22,26 @@ queue_t *queue_create(destroy_t destroy);
 
 ```c
 // Create an integer queue using Integer wrapper
-queue_t *queue1 = queue_create(Integer_delete);
+queue_t *queue1 = queue_new(Integer_delete);
 
 // Create a double queue using Double wrapper
-queue_t *queue2 = queue_create(Double_delete);
+queue_t *queue2 = queue_new(Double_delete);
 
 // Create a boolean queue using Boolean wrapper
-queue_t *queue3 = queue_create(Boolean_delete);
+queue_t *queue3 = queue_new(Boolean_delete);
 
 // Create a character queue using Character wrapper
-queue_t *queue4 = queue_create(Character_delete);
+queue_t *queue4 = queue_new(Character_delete);
 ```
 
 
 
-## queue_destroy()
+## queue_delete()
 
 - 原型
 
 ```c
-void queue_destroy(queue_t *queue);
+void queue_delete(queue_t *queue);
 ```
 
 - 描述
@@ -51,8 +51,8 @@ void queue_destroy(queue_t *queue);
 - 用例
 
 ```c
-queue_t *queue = queue_create(Integer_delete);
-queue_destroy(queue);
+queue_t *queue = queue_new(Integer_delete);
+queue_delete(queue);
 ```
 
 
@@ -74,11 +74,11 @@ bool queue_is_empty(const queue_t *queue);
 - 用例
 
 ```c
-queue_t *queue = queue_create(Integer_delete);
+queue_t *queue = queue_new(Integer_delete);
 if (queue_is_empty(queue)) {
     // ...
 }
-queue_destroy(queue);
+queue_delete(queue);
 ```
 
 
@@ -100,9 +100,9 @@ size_t queue_size(const queue_t *queue);
 - 用例
 
 ```c
-queue_t *queue = queue_create(Integer_delete);
+queue_t *queue = queue_new(Integer_delete);
 printf("%d\n", queue_size(queue));
-queue_destroy(queue);
+queue_delete(queue);
 ```
 
 
@@ -124,14 +124,14 @@ queue_t *queue_clear(queue_t *queue);
 - 用例
 
 ```c
-queue_t *queue = queue_create(Integer_delete);
+queue_t *queue = queue_new(Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     queue_enqueue(queue, Integer_new(i));
 }
 
 queue_clear(queue);
-queue_destroy(queue);
+queue_delete(queue);
 ```
 
 
@@ -154,11 +154,11 @@ queue_t *queue_enqueue(queue_t *queue, T elem);
 - 用例
 
 ```c
-queue_t *queue = queue_create(Integer_delete);
+queue_t *queue = queue_new(Integer_delete);
 for (int i = 0; i < 10; i++) {
     queue_enqueue(queue, Integer_new(i));
 }
-queue_destroy(queue);
+queue_delete(queue);
 ```
 
 
@@ -180,12 +180,12 @@ T queue_dequeue(queue_t *queue);
 - 用例
 
 ```c
-queue_t *queue = queue_create(Integer_delete);
+queue_t *queue = queue_new(Integer_delete);
 for (int i = 0; i < 10; i++) {
     queue_enqueue(queue, Integer_new(i));
 }
 queue_dequeue(queue);
-queue_destroy(queue);
+queue_delete(queue);
 ```
 
 
@@ -207,12 +207,12 @@ T queue_peek(const queue_t *queue);
 - 用例
 
 ```c
-queue_t *queue = queue_create(Integer_delete);
+queue_t *queue = queue_new(Integer_delete);
 for (int i = 0; i < 10; i++) {
     queue_enqueue(queue, Integer_new(i));
 }
 printf("%d\n", Integer_get(queue_peek(queue)));
-queue_destroy(queue);
+queue_delete(queue);
 ```
 
 

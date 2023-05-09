@@ -1,8 +1,8 @@
 #ifndef _TEST_LIST_H_
 #define _TEST_LIST_H_
 
-void test_list_create();
-void test_list_destroy();
+void test_list_new();
+void test_list_delete();
 void test_list_is_empty();
 void test_list_size();
 void test_list_foreach();

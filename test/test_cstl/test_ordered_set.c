@@ -4,48 +4,48 @@
 
 #define N 1000
 
-void test_ordered_set_create() {
-    ordered_set_t *set = ordered_set_create(UnsignedCharacter_compare, UnsignedCharacter_delete);
+void test_ordered_set_new() {
+    ordered_set_t *set = ordered_set_new(UnsignedCharacter_compare, UnsignedCharacter_delete);
     assert(set != NULL);
     assert(ordered_set_is_empty(set) == true);
     assert(ordered_set_size(set) == 0);
-    ordered_set_destroy(set);
+    ordered_set_delete(set);
 }
 
-void test_ordered_set_destroy() {
-    ordered_set_t *set = ordered_set_create(UnsignedShort_compare, UnsignedShort_delete);
+void test_ordered_set_delete() {
+    ordered_set_t *set = ordered_set_new(UnsignedShort_compare, UnsignedShort_delete);
     assert(set != NULL);
-    ordered_set_destroy(set);
+    ordered_set_delete(set);
 }
 
 void test_ordered_set_is_empty() {
-    ordered_set_t *set = ordered_set_create(UnsignedInteger_compare, UnsignedInteger_delete);
+    ordered_set_t *set = ordered_set_new(UnsignedInteger_compare, UnsignedInteger_delete);
     assert(ordered_set_is_empty(set) == true);
     ordered_set_add(set, UnsignedInteger_new(0));
     assert(ordered_set_is_empty(set) == false);
-    ordered_set_destroy(set);
+    ordered_set_delete(set);
 }
 
 void test_ordered_set_size() {
     int i = 0;
     ordered_set_t *set = NULL;
 
-    set = ordered_set_create(UnsignedLong_compare, UnsignedLong_delete);
+    set = ordered_set_new(UnsignedLong_compare, UnsignedLong_delete);
     assert(ordered_set_size(set) == 0);
     for (i = 0; i < N; i++) {
         ordered_set_add(set, UnsignedLong_new(i));
     }
     assert(ordered_set_size(set) == N);
-    ordered_set_destroy(set);
+    ordered_set_delete(set);
 
-    set = ordered_set_create(Integer_compare, Integer_delete);
+    set = ordered_set_new(Integer_compare, Integer_delete);
     assert(ordered_set_size(set) == 0);
     for (i = 0; i < N; i++) {
         ordered_set_add(set, Integer_new(i));
         ordered_set_add(set, Integer_new(i));
     }
     assert(ordered_set_size(set) == N);
-    ordered_set_destroy(set);
+    ordered_set_delete(set);
 }
 
 static int buffer[N] = {0};
@@ -66,7 +66,7 @@ void test_ordered_set_foreach() {
     int i = 0;
     ordered_set_t *set = NULL;
 
-    set = ordered_set_create(Integer_compare, Integer_delete);
+    set = ordered_set_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         ordered_set_add(set, Integer_new(i));
     }
@@ -88,19 +88,19 @@ void test_ordered_set_foreach() {
         assert(buffer[i] == 3 * i);
     }
 
-    ordered_set_destroy(set);
+    ordered_set_delete(set);
 }
 
 void test_ordered_set_clear() {
     int i = 0;
-    ordered_set_t *set = ordered_set_create(Short_compare, Short_delete);
+    ordered_set_t *set = ordered_set_new(Short_compare, Short_delete);
     for (i = 0; i < N; i++) {
         ordered_set_add(set, Short_new(i));
     }
     assert(ordered_set_size(set) == N);
     ordered_set_clear(set);
     assert(ordered_set_is_empty(set) == true);
-    ordered_set_destroy(set);
+    ordered_set_delete(set);
 }
 
 void test_ordered_set_contains() {
@@ -108,7 +108,7 @@ void test_ordered_set_contains() {
     ordered_set_t *set = NULL;
     Integer *integer;
 
-    set = ordered_set_create(Integer_compare, Integer_delete);
+    set = ordered_set_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         ordered_set_add(set, Integer_new(i));
     }
@@ -123,29 +123,29 @@ void test_ordered_set_contains() {
         Integer_delete(integer);
     }
 
-    ordered_set_destroy(set);
+    ordered_set_delete(set);
 }
 
 void test_ordered_set_add() {
     int i = 0;
     ordered_set_t *set = NULL;
 
-    set = ordered_set_create(Integer_compare, Integer_delete);
+    set = ordered_set_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         ordered_set_add(set, Integer_new(i));
     }
     assert(ordered_set_size(set) == N);
-    ordered_set_destroy(set);
+    ordered_set_delete(set);
 
-    set = ordered_set_create(Integer_compare, Integer_delete);
+    set = ordered_set_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         ordered_set_add(set, Integer_new(i));
         ordered_set_add(set, Integer_new(i));
     }
     assert(ordered_set_size(set) == N);
-    ordered_set_destroy(set);
+    ordered_set_delete(set);
 
-    set = ordered_set_create(Integer_compare, Integer_delete);
+    set = ordered_set_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i += 2) {
         ordered_set_add(set, Integer_new(i));
     }
@@ -153,7 +153,7 @@ void test_ordered_set_add() {
         ordered_set_add(set, Integer_new(i));
     }
     assert(ordered_set_size(set) == N);
-    ordered_set_destroy(set);
+    ordered_set_delete(set);
 }
 
 void test_ordered_set_remove() {
@@ -161,7 +161,7 @@ void test_ordered_set_remove() {
     ordered_set_t *set = NULL;
     Integer *integer;
 
-    set = ordered_set_create(Integer_compare, Integer_delete);
+    set = ordered_set_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         ordered_set_add(set, Integer_new(i));
     }
@@ -171,9 +171,9 @@ void test_ordered_set_remove() {
         Integer_delete(integer);
     }
     assert(ordered_set_is_empty(set) == true);
-    ordered_set_destroy(set);
+    ordered_set_delete(set);
 
-    set = ordered_set_create(Integer_compare, Integer_delete);
+    set = ordered_set_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         ordered_set_add(set, Integer_new(i));
     }
@@ -184,9 +184,9 @@ void test_ordered_set_remove() {
         Integer_delete(integer);
     }
     assert(ordered_set_is_empty(set) == true);
-    ordered_set_destroy(set);
+    ordered_set_delete(set);
 
-    set = ordered_set_create(Integer_compare, Integer_delete);
+    set = ordered_set_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         ordered_set_add(set, Integer_new(i));
     }
@@ -196,9 +196,9 @@ void test_ordered_set_remove() {
         Integer_delete(integer);
     }
     assert(ordered_set_size(set) == N / 2);
-    ordered_set_destroy(set);
+    ordered_set_delete(set);
 
-    set = ordered_set_create(Integer_compare, Integer_delete);
+    set = ordered_set_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         ordered_set_add(set, Integer_new(i));
     }
@@ -208,7 +208,7 @@ void test_ordered_set_remove() {
         Integer_delete(integer);
     }
     assert(ordered_set_size(set) == N - 1);
-    ordered_set_destroy(set);
+    ordered_set_delete(set);
 }
 
 void test_ordered_set_union() {
@@ -219,8 +219,8 @@ void test_ordered_set_union() {
     Integer *integer;
     int i = 0;
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N / 2; i++) {
         ordered_set_add(set1, Integer_new(i));
@@ -239,12 +239,12 @@ void test_ordered_set_union() {
     }
 
     ordered_set_iterator_destroy(iterator);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N; i++) {
         ordered_set_add(set1, Integer_new(i));
@@ -263,12 +263,12 @@ void test_ordered_set_union() {
     }
 
     ordered_set_iterator_destroy(iterator);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N; i++) {
         ordered_set_add(set1, Integer_new(i));
@@ -284,12 +284,12 @@ void test_ordered_set_union() {
     }
 
     ordered_set_iterator_destroy(iterator);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N; i++) {
         ordered_set_add(set2, Integer_new(i));
@@ -305,41 +305,41 @@ void test_ordered_set_union() {
     }
 
     ordered_set_iterator_destroy(iterator);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     set3 = ordered_set_union(set1, set2);
     assert(ordered_set_is_empty(set3) == true);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 
     set3 = ordered_set_union(NULL, NULL);
     assert(set3 == NULL);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         ordered_set_add(set1, Integer_new(i));
     }
     set3 = ordered_set_union(set1, NULL);
     assert(set3 != NULL);
     assert(ordered_set_size(set3) == N);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set3);
 
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         ordered_set_add(set2, Integer_new(i));
     }
     set3 = ordered_set_union(NULL, set2);
     assert(set3 != NULL);
     assert(ordered_set_size(set3) == N);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 }
 
 void test_ordered_set_intersection() {
@@ -350,8 +350,8 @@ void test_ordered_set_intersection() {
     Integer *integer;
     int i = 0;
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N; i++) {
         ordered_set_add(set1, Integer_new(i));
@@ -370,12 +370,12 @@ void test_ordered_set_intersection() {
     }
 
     ordered_set_iterator_destroy(iterator);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N / 2; i++) {
         ordered_set_add(set1, Integer_new(i));
@@ -387,12 +387,12 @@ void test_ordered_set_intersection() {
     set3 = ordered_set_intersection(set1, set2);
     assert(ordered_set_is_empty(set3) == true);
 
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N; i++) {
         ordered_set_add(set1, Integer_new(i));
@@ -411,12 +411,12 @@ void test_ordered_set_intersection() {
     }
 
     ordered_set_iterator_destroy(iterator);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N; i++) {
         ordered_set_add(set1, Integer_new(i));
@@ -425,12 +425,12 @@ void test_ordered_set_intersection() {
     set3 = ordered_set_intersection(set1, set2);
     assert(ordered_set_is_empty(set3) == true);
 
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N; i++) {
         ordered_set_add(set2, Integer_new(i));
@@ -439,40 +439,40 @@ void test_ordered_set_intersection() {
     set3 = ordered_set_intersection(set1, set2);
     assert(ordered_set_is_empty(set3) == true);
 
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
     set3 = ordered_set_intersection(set1, set2);
     assert(ordered_set_is_empty(set3) == true);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 
     set3 = ordered_set_intersection(NULL, NULL);
     assert(set3 == NULL);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         ordered_set_add(set1, Integer_new(i));
     }
     set3 = ordered_set_intersection(set1, NULL);
     assert(set3 != NULL);
     assert(ordered_set_is_empty(set3) == true);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set3);
 
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         ordered_set_add(set2, Integer_new(i));
     }
     set3 = ordered_set_intersection(NULL, set2);
     assert(set3 != NULL);
     assert(ordered_set_is_empty(set3) == true);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 }
 
 void test_ordered_set_difference() {
@@ -483,8 +483,8 @@ void test_ordered_set_difference() {
     Integer *integer;
     int i = 0;
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N; i++) {
         ordered_set_add(set1, Integer_new(i));
@@ -496,12 +496,12 @@ void test_ordered_set_difference() {
     set3 = ordered_set_difference(set1, set2);
     assert(ordered_set_is_empty(set3) == true);
 
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N / 2; i++) {
         ordered_set_add(set1, Integer_new(i));
@@ -520,12 +520,12 @@ void test_ordered_set_difference() {
     }
 
     ordered_set_iterator_destroy(iterator);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N; i++) {
         ordered_set_add(set1, Integer_new(i));
@@ -544,12 +544,12 @@ void test_ordered_set_difference() {
     }
 
     ordered_set_iterator_destroy(iterator);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N; i++) {
         ordered_set_add(set1, Integer_new(i));
@@ -565,12 +565,12 @@ void test_ordered_set_difference() {
     }
 
     ordered_set_iterator_destroy(iterator);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N; i++) {
         ordered_set_add(set2, Integer_new(i));
@@ -579,22 +579,22 @@ void test_ordered_set_difference() {
     set3 = ordered_set_difference(set1, set2);
     assert(ordered_set_is_empty(set3) == true);
 
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
     set3 = ordered_set_difference(set1, set2);
     assert(ordered_set_is_empty(set3) == true);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 
     set3 = ordered_set_difference(NULL, NULL);
     assert(set3 == NULL);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         ordered_set_add(set1, Integer_new(i));
     }
@@ -610,16 +610,16 @@ void test_ordered_set_difference() {
     }
 
     ordered_set_iterator_destroy(iterator);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set3);
 
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         ordered_set_add(set2, Integer_new(i));
     }
     set3 = ordered_set_difference(NULL, set2);
     assert(set3 == NULL);
-    ordered_set_destroy(set2);
+    ordered_set_delete(set2);
 }
 
 void test_ordered_set_symmetric_difference() {
@@ -630,8 +630,8 @@ void test_ordered_set_symmetric_difference() {
     Integer *integer;
     int i = 0;
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N; i++) {
         ordered_set_add(set1, Integer_new(i));
@@ -643,12 +643,12 @@ void test_ordered_set_symmetric_difference() {
     set3 = ordered_set_symmetric_difference(set1, set2);
     assert(ordered_set_is_empty(set3) == true);
 
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N / 2; i++) {
         ordered_set_add(set1, Integer_new(i));
@@ -667,12 +667,12 @@ void test_ordered_set_symmetric_difference() {
     }
 
     ordered_set_iterator_destroy(iterator);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N; i++) {
         ordered_set_add(set1, Integer_new(i));
@@ -691,12 +691,12 @@ void test_ordered_set_symmetric_difference() {
     }
 
     ordered_set_iterator_destroy(iterator);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N; i++) {
         ordered_set_add(set1, Integer_new(i));
@@ -712,12 +712,12 @@ void test_ordered_set_symmetric_difference() {
     }
 
     ordered_set_iterator_destroy(iterator);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N; i++) {
         ordered_set_add(set2, Integer_new(i));
@@ -733,22 +733,22 @@ void test_ordered_set_symmetric_difference() {
     }
 
     ordered_set_iterator_destroy(iterator);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
     set3 = ordered_set_symmetric_difference(set1, set2);
     assert(ordered_set_is_empty(set3) == true);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 
     set3 = ordered_set_symmetric_difference(NULL, NULL);
     assert(set3 == NULL);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         ordered_set_add(set1, Integer_new(i));
     }
@@ -764,10 +764,10 @@ void test_ordered_set_symmetric_difference() {
     }
 
     ordered_set_iterator_destroy(iterator);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set1);
+    ordered_set_delete(set3);
 
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         ordered_set_add(set2, Integer_new(i));
     }
@@ -782,8 +782,8 @@ void test_ordered_set_symmetric_difference() {
     }
 
     ordered_set_iterator_destroy(iterator);
-    ordered_set_destroy(set2);
-    ordered_set_destroy(set3);
+    ordered_set_delete(set2);
+    ordered_set_delete(set3);
 }
 
 void test_ordered_set_is_disjoint() {
@@ -791,8 +791,8 @@ void test_ordered_set_is_disjoint() {
     ordered_set_t *set2 = NULL;
     int i = 0;
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N; i++) {
         ordered_set_add(set1, Integer_new(i));
@@ -802,11 +802,11 @@ void test_ordered_set_is_disjoint() {
     }
 
     assert(ordered_set_is_disjoint(set1, set2) == false);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N / 2; i++) {
         ordered_set_add(set1, Integer_new(i));
@@ -816,11 +816,11 @@ void test_ordered_set_is_disjoint() {
     }
 
     assert(ordered_set_is_disjoint(set1, set2) == true);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N; i++) {
         ordered_set_add(set1, Integer_new(i));
@@ -830,32 +830,32 @@ void test_ordered_set_is_disjoint() {
     }
 
     assert(ordered_set_is_disjoint(set1, set2) == false);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         ordered_set_add(set1, Integer_new(i));
     }
     assert(ordered_set_is_disjoint(set1, set2) == true);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         ordered_set_add(set2, Integer_new(i));
     }
     assert(ordered_set_is_disjoint(set1, set2) == true);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
     assert(ordered_set_is_disjoint(set1, set2) == true);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
 }
 
 void test_ordered_set_is_subset() {
@@ -863,8 +863,8 @@ void test_ordered_set_is_subset() {
     ordered_set_t *set2 = NULL;
     int i = 0;
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N / 2; i++) {
         ordered_set_add(set1, Integer_new(i));
@@ -874,11 +874,11 @@ void test_ordered_set_is_subset() {
     }
 
     assert(ordered_set_is_subset(set1, set2) == true);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N; i++) {
         ordered_set_add(set1, Integer_new(i));
@@ -888,11 +888,11 @@ void test_ordered_set_is_subset() {
     }
 
     assert(ordered_set_is_subset(set1, set2) == true);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N / 2; i++) {
         ordered_set_add(set1, Integer_new(i));
@@ -902,11 +902,11 @@ void test_ordered_set_is_subset() {
     }
 
     assert(ordered_set_is_subset(set1, set2) == false);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
 
     for (i = 0; i < N; i++) {
         ordered_set_add(set1, Integer_new(i));
@@ -916,32 +916,32 @@ void test_ordered_set_is_subset() {
     }
 
     assert(ordered_set_is_subset(set1, set2) == false);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         ordered_set_add(set1, Integer_new(i));
     }
     assert(ordered_set_is_subset(set1, set2) == false);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         ordered_set_add(set2, Integer_new(i));
     }
     assert(ordered_set_is_subset(set1, set2) == true);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
 
-    set1 = ordered_set_create(Integer_compare, Integer_delete);
-    set2 = ordered_set_create(Integer_compare, Integer_delete);
+    set1 = ordered_set_new(Integer_compare, Integer_delete);
+    set2 = ordered_set_new(Integer_compare, Integer_delete);
     assert(ordered_set_is_subset(set1, set2) == true);
-    ordered_set_destroy(set1);
-    ordered_set_destroy(set2);
+    ordered_set_delete(set1);
+    ordered_set_delete(set2);
 }
 
 void test_ordered_set_iterator() {
@@ -950,7 +950,7 @@ void test_ordered_set_iterator() {
     iterator_t *iterator = NULL;
     Integer *integer;
 
-    set = ordered_set_create(Integer_compare, Integer_delete);
+    set = ordered_set_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         ordered_set_add(set, Integer_new(i));
     }
@@ -965,5 +965,5 @@ void test_ordered_set_iterator() {
     }
 
     ordered_set_iterator_destroy(iterator);
-    ordered_set_destroy(set);
+    ordered_set_delete(set);
 }

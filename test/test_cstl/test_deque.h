@@ -1,8 +1,8 @@
 #ifndef _TEST_DEQUE_H_
 #define _TEST_DEQUE_H_
 
-void test_deque_create();
-void test_deque_destroy();
+void test_deque_new();
+void test_deque_delete();
 void test_deque_is_empty();
 void test_deque_size();
 void test_deque_clear();

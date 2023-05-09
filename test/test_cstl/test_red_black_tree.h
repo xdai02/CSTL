@@ -1,8 +1,8 @@
 #ifndef _TEST_RED_BLACK_TREE_H_
 #define _TEST_RED_BLACK_TREE_H_
 
-void test_red_black_tree_create();
-void test_red_black_tree_destroy();
+void test_red_black_tree_new();
+void test_red_black_tree_delete();
 void test_red_black_tree_is_empty();
 void test_red_black_tree_size();
 void test_red_black_tree_clear();

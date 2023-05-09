@@ -10,11 +10,11 @@ struct queue_t {
  * @param destroy Callback function for destroying a data item.
  * @return Returns the created queue_t object if successful, otherwise return NULL.
  */
-queue_t *queue_create(destroy_t destroy) {
+queue_t *queue_new(destroy_t destroy) {
     queue_t *queue = (queue_t *)malloc(sizeof(queue_t));
     return_value_if_fail(queue != NULL, NULL);
 
-    queue->list = list_create(NULL, destroy);
+    queue->list = list_new(NULL, destroy);
     if (queue->list == NULL) {
         free(queue);
         return NULL;
@@ -27,9 +27,9 @@ queue_t *queue_create(destroy_t destroy) {
  * @brief Destroy a queue_t object.
  * @param queue The queue_t object.
  */
-void queue_destroy(queue_t *queue) {
+void queue_delete(queue_t *queue) {
     return_if_fail(queue != NULL);
-    list_destroy(queue->list);
+    list_delete(queue->list);
     free(queue);
 }
 

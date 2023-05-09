@@ -10,13 +10,13 @@ typedef struct stack_t stack_t;
  * @param destroy Callback function for destroying a data item.
  * @return Returns the created stack_t object if successful, otherwise return NULL.
  */
-stack_t *stack_create(destroy_t destroy);
+stack_t *stack_new(destroy_t destroy);
 
 /**
  * @brief Destroy a stack_t object.
  * @param stack The stack_t object.
  */
-void stack_destroy(stack_t *stack);
+void stack_delete(stack_t *stack);
 
 /**
  * @brief Determine whether a stack_t object is empty.

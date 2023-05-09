@@ -4,12 +4,12 @@
 
 
 
-## deque_create()
+## deque_new()
 
 - Prototype
 
 ```c
-deque_t *deque_create(destroy_t destroy);
+deque_t *deque_new(destroy_t destroy);
 ```
 
 - Description
@@ -22,26 +22,26 @@ deque_t *deque_create(destroy_t destroy);
 
 ```c
 // Create an integer deque using Integer wrapper
-deque_t *deque1 = deque_create(Integer_delete);
+deque_t *deque1 = deque_new(Integer_delete);
 
 // Create a double deque using Double wrapper
-deque_t *deque2 = deque_create(Double_delete);
+deque_t *deque2 = deque_new(Double_delete);
 
 // Create a boolean deque using Boolean wrapper
-deque_t *deque3 = deque_create(Boolean_delete);
+deque_t *deque3 = deque_new(Boolean_delete);
 
 // Create a character deque using Character wrapper
-deque_t *deque4 = deque_create(Character_delete);
+deque_t *deque4 = deque_new(Character_delete);
 ```
 
 
 
-## deque_destroy()
+## deque_delete()
 
 - Prototype
 
 ```c
-void deque_destroy(deque_t *deque);
+void deque_delete(deque_t *deque);
 ```
 
 - Description
@@ -51,8 +51,8 @@ void deque_destroy(deque_t *deque);
 - Usage
 
 ```c
-deque_t *deque = deque_create(Integer_delete);
-deque_destroy(deque);
+deque_t *deque = deque_new(Integer_delete);
+deque_delete(deque);
 ```
 
 
@@ -74,11 +74,11 @@ bool deque_is_empty(const deque_t *deque);
 - Usage
 
 ```c
-deque_t *deque = deque_create(Integer_delete);
+deque_t *deque = deque_new(Integer_delete);
 if (deque_is_empty(deque)) {
     // ...
 }
-deque_destroy(deque);
+deque_delete(deque);
 ```
 
 
@@ -100,9 +100,9 @@ size_t deque_size(const deque_t *deque);
 - Usage
 
 ```c
-queue_t *queue = queue_create(Integer_delete);
+queue_t *queue = queue_new(Integer_delete);
 printf("%d\n", queue_size(queue));
-queue_destroy(queue);
+queue_delete(queue);
 ```
 
 
@@ -124,14 +124,14 @@ deque_t *deque_clear(deque_t *deque);
 - Usage
 
 ```c
-deque_t *deque = deque_create(Integer_delete);
+deque_t *deque = deque_new(Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     deque_push_back(deque, Integer_new(i));
 }
 
 deque_clear(deque);
-deque_destroy(deque);
+deque_delete(deque);
 ```
 
 
@@ -154,11 +154,11 @@ deque_t *deque_push_front(deque_t *deque, T elem);
 - Usage
 
 ```c
-deque_t *deque = deque_create(Integer_delete);
+deque_t *deque = deque_new(Integer_delete);
 for (int i = 0; i < 10; i++) {
     deque_push_front(deque, Integer_new(i));
 }
-deque_destroy(deque);
+deque_delete(deque);
 ```
 
 
@@ -181,11 +181,11 @@ deque_t *deque_push_back(deque_t *deque, T elem);
 - Usage
 
 ```c
-deque_t *deque = deque_create(Integer_delete);
+deque_t *deque = deque_new(Integer_delete);
 for (int i = 0; i < 10; i++) {
     deque_push_back(deque, Integer_new(i));
 }
-deque_destroy(deque);
+deque_delete(deque);
 ```
 
 
@@ -207,12 +207,12 @@ T deque_pop_front(deque_t *deque);
 - Usage
 
 ```c
-deque_t *deque= deque_create(Integer_delete);
+deque_t *deque= deque_new(Integer_delete);
 for (int i = 0; i < 10; i++) {
     deque_push_back(deque, Integer_new(i));
 }
 deque_pop_front(deque);
-deque_destroy(deque);
+deque_delete(deque);
 ```
 
 
@@ -234,12 +234,12 @@ T deque_pop_back(deque_t *deque);
 - Usage
 
 ```c
-deque_t *deque= deque_create(Integer_delete);
+deque_t *deque= deque_new(Integer_delete);
 for (int i = 0; i < 10; i++) {
     deque_push_back(deque, Integer_new(i));
 }
 deque_pop_back(deque);
-deque_destroy(deque);
+deque_delete(deque);
 ```
 
 
@@ -261,12 +261,12 @@ T deque_get_front(const deque_t *deque);
 - Usage
 
 ```c
-deque_t *deque= deque_create(Integer_delete);
+deque_t *deque= deque_new(Integer_delete);
 for (int i = 0; i < 10; i++) {
     deque_push_back(deque, Integer_new(i));
 }
 printf("%d\n", Integer_get(deque_get_front(deque)));
-deque_destroy(deque);
+deque_delete(deque);
 ```
 
 
@@ -288,11 +288,11 @@ T deque_get_back(deque_t *deque);
 - Usage
 
 ```c
-deque_t *deque= deque_create(Integer_delete);
+deque_t *deque= deque_new(Integer_delete);
 for (int i = 0; i < 10; i++) {
     deque_push_back(deque, Integer_new(i));
 }
 printf("%d\n", Integer_get(deque_get_back(deque)));
-deque_destroy(deque);
+deque_delete(deque);
 ```
 

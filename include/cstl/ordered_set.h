@@ -12,13 +12,13 @@ typedef struct ordered_set_t ordered_set_t;
  * @param destroy Callback function for destroying a data item.
  * @return Returns the created ordered_set_t object if successful, otherwise returns NULL.
  */
-ordered_set_t *ordered_set_create(compare_t compare, destroy_t destroy);
+ordered_set_t *ordered_set_new(compare_t compare, destroy_t destroy);
 
 /**
  * @brief Destroy an ordered_set_t object.
  * @param set The ordered_set_t object.
  */
-void ordered_set_destroy(ordered_set_t *set);
+void ordered_set_delete(ordered_set_t *set);
 
 /**
  * @brief Determine whether an ordered_set_t object is empty.

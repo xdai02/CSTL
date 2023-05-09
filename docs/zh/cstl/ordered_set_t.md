@@ -4,12 +4,12 @@
 
 
 
-## ordered_set_create()
+## ordered_set_new()
 
 - 原型
 
 ```c
-ordered_set_t *ordered_set_create(compare_t compare, destroy_t destroy);
+ordered_set_t *ordered_set_new(compare_t compare, destroy_t destroy);
 ```
 
 - 描述
@@ -23,16 +23,16 @@ ordered_set_t *ordered_set_create(compare_t compare, destroy_t destroy);
 
 ```c
 // Create an integer set using Integer wrapper
-ordered_set_t *set1 = ordered_set_create(Integer_compare, Integer_delete);
+ordered_set_t *set1 = ordered_set_new(Integer_compare, Integer_delete);
 
 // Create a double set using Double wrapper
-ordered_set_t *set2 = ordered_set_create(Double_compare, Double_delete);
+ordered_set_t *set2 = ordered_set_new(Double_compare, Double_delete);
 
 // Create a boolean set using Boolean wrapper
-ordered_set_t *set3 = ordered_set_create(Boolean_compare, Boolean_delete);
+ordered_set_t *set3 = ordered_set_new(Boolean_compare, Boolean_delete);
 
 // Create a character set using Character wrapper
-ordered_set_t *set4 = ordered_set_create(Character_compare, Character_delete);
+ordered_set_t *set4 = ordered_set_new(Character_compare, Character_delete);
 ```
 
 ```c
@@ -55,19 +55,19 @@ void Employee_delete(void *ptr) {
 }
 
 // Create a set of employees
-ordered_set_t *employees = ordered_set_create(Employee_compare, Employee_delete);
+ordered_set_t *employees = ordered_set_new(Employee_compare, Employee_delete);
 
 // ...
 ```
 
 
 
-## ordered_set_destroy()
+## ordered_set_delete()
 
 - 原型
 
 ```c
-void ordered_set_destroy(ordered_set_t *set);
+void ordered_set_delete(ordered_set_t *set);
 ```
 
 - 描述
@@ -77,8 +77,8 @@ void ordered_set_destroy(ordered_set_t *set);
 - 用例
 
 ```c
-ordered_set_t *set = ordered_set_create(Integer_compare, Integer_delete);
-ordered_set_destroy(set);
+ordered_set_t *set = ordered_set_new(Integer_compare, Integer_delete);
+ordered_set_delete(set);
 ```
 
 
@@ -100,11 +100,11 @@ bool ordered_set_is_empty(const ordered_set_t *set);
 - 用例
 
 ```c
-ordered_set_t *set = ordered_set_create(Integer_compare, Integer_delete);
+ordered_set_t *set = ordered_set_new(Integer_compare, Integer_delete);
 if (ordered_set_is_empty(set)) {
     // ...
 }
-ordered_set_destroy(set);
+ordered_set_delete(set);
 ```
 
 
@@ -126,9 +126,9 @@ size_t ordered_set_size(const ordered_set_t *set);
 - 用例
 
 ```c
-ordered_set_t *set = ordered_set_create(Integer_compare, Integer_delete);
+ordered_set_t *set = ordered_set_new(Integer_compare, Integer_delete);
 printf("%d\n", ordered_set_size(set));
-ordered_set_destroy(set);
+ordered_set_delete(set);
 ```
 
 
@@ -163,7 +163,7 @@ void Integer_triple(T elem) {
 
 int main() {
     // Create a set of integers
-    ordered_set_t *set = ordered_set_create(Integer_compare, Integer_delete);
+    ordered_set_t *set = ordered_set_new(Integer_compare, Integer_delete);
 
     for (int i = 0; i < 10; i++) {
         // Add the integer object to the set
@@ -182,7 +182,7 @@ int main() {
     printf("\n");
 
     // Destroy the set
-    ordered_set_destroy(set);
+    ordered_set_delete(set);
 
     return 0;
 }
@@ -207,14 +207,14 @@ ordered_set_t *ordered_set_clear(ordered_set_t *set);
 - 用例
 
 ```c
-ordered_set_t *set = ordered_set_create(Integer_compare, Integer_delete);
+ordered_set_t *set = ordered_set_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     ordered_set_add(set, Integer_new(i));
 }
 
 ordered_set_clear(set);
-ordered_set_destroy(set);
+ordered_set_delete(set);
 ```
 
 
@@ -240,7 +240,7 @@ bool ordered_set_contains(const ordered_set_t *set, T elem);
 - 用例
 
 ```c
-ordered_set_t *set = ordered_set_create(Integer_compare, Integer_delete);
+ordered_set_t *set = ordered_set_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     ordered_set_add(set, Integer_new(i));
@@ -252,7 +252,7 @@ if (ordered_set_contains(set, target)) {
 }
 Integer_delete(target);
 
-ordered_set_destroy(set);
+ordered_set_delete(set);
 ```
 
 
@@ -275,11 +275,11 @@ ordered_set_t *ordered_set_add(ordered_set_t *set, T elem);
 - 用例
 
 ```c
-ordered_set_t *set = ordered_set_create(Integer_compare, Integer_delete);
+ordered_set_t *set = ordered_set_new(Integer_compare, Integer_delete);
 for (int i = 0; i < 10; i++) {
     ordered_set_add(set, Integer_new(i));
 }
-ordered_set_destroy(set);
+ordered_set_delete(set);
 ```
 
 
@@ -305,7 +305,7 @@ ordered_set_t *ordered_set_remove(ordered_set_t *set, T elem);
 - 用例
 
 ```c
-ordered_set_t *set = ordered_set_create(Integer_compare, Integer_delete);
+ordered_set_t *set = ordered_set_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     ordered_set_add(set, Integer_new(i));
@@ -315,7 +315,7 @@ Integer *integer = Integer_new(5);
 ordered_set_remove(array, integer);
 Integer_delete(integer);
 
-ordered_set_destroy(set);
+ordered_set_delete(set);
 ```
 
 
@@ -340,8 +340,8 @@ ordered_set_t *ordered_set_union(const ordered_set_t *set1, const ordered_set_t 
 - 用例
 
 ```c
-ordered_set_t *set1 = ordered_set_create(Integer_compare, Integer_delete);
-ordered_set_t *set2 = ordered_set_create(Integer_compare, Integer_delete);
+ordered_set_t *set1 = ordered_set_new(Integer_compare, Integer_delete);
+ordered_set_t *set2 = ordered_set_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     ordered_set_add(set1, Integer_new(i));
@@ -353,9 +353,9 @@ for (int i = 5; i < 15; i++) {
 
 ordered_set_t *set3 = ordered_set_union(set1, set2);
 
-ordered_set_destroy(set1);
-ordered_set_destroy(set2);
-ordered_set_destroy(set2);
+ordered_set_delete(set1);
+ordered_set_delete(set2);
+ordered_set_delete(set2);
 ```
 
 
@@ -380,8 +380,8 @@ ordered_set_t *ordered_set_intersection(const ordered_set_t *set1, const ordered
 - 用例
 
 ```c
-ordered_set_t *set1 = ordered_set_create(Integer_compare, Integer_delete);
-ordered_set_t *set2 = ordered_set_create(Integer_compare, Integer_delete);
+ordered_set_t *set1 = ordered_set_new(Integer_compare, Integer_delete);
+ordered_set_t *set2 = ordered_set_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     ordered_set_add(set1, Integer_new(i));
@@ -393,9 +393,9 @@ for (int i = 5; i < 15; i++) {
 
 ordered_set_t *set3 = ordered_set_intersection(set1, set2);
 
-ordered_set_destroy(set1);
-ordered_set_destroy(set2);
-ordered_set_destroy(set2);
+ordered_set_delete(set1);
+ordered_set_delete(set2);
+ordered_set_delete(set2);
 ```
 
 
@@ -421,8 +421,8 @@ ordered_set_t *ordered_set_difference(const ordered_set_t *set1, const ordered_s
 - 用例
 
 ```c
-ordered_set_t *set1 = ordered_set_create(Integer_compare, Integer_delete);
-ordered_set_t *set2 = ordered_set_create(Integer_compare, Integer_delete);
+ordered_set_t *set1 = ordered_set_new(Integer_compare, Integer_delete);
+ordered_set_t *set2 = ordered_set_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     ordered_set_add(set1, Integer_new(i));
@@ -434,9 +434,9 @@ for (int i = 5; i < 15; i++) {
 
 ordered_set_t *set3 = ordered_set_difference(set1, set2);
 
-ordered_set_destroy(set1);
-ordered_set_destroy(set2);
-ordered_set_destroy(set2);
+ordered_set_delete(set1);
+ordered_set_delete(set2);
+ordered_set_delete(set2);
 ```
 
 
@@ -462,8 +462,8 @@ ordered_set_t *ordered_set_symmetric_difference(const ordered_set_t *set1, const
 - 用例
 
 ```c
-ordered_set_t *set1 = ordered_set_create(Integer_compare, Integer_delete);
-ordered_set_t *set2 = ordered_set_create(Integer_compare, Integer_delete);
+ordered_set_t *set1 = ordered_set_new(Integer_compare, Integer_delete);
+ordered_set_t *set2 = ordered_set_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     ordered_set_add(set1, Integer_new(i));
@@ -475,9 +475,9 @@ for (int i = 5; i < 15; i++) {
 
 ordered_set_t *set3 = ordered_set_symmetric_difference(set1, set2);
 
-ordered_set_destroy(set1);
-ordered_set_destroy(set2);
-ordered_set_destroy(set2);
+ordered_set_delete(set1);
+ordered_set_delete(set2);
+ordered_set_delete(set2);
 ```
 
 
@@ -501,8 +501,8 @@ bool ordered_set_is_disjoint(const ordered_set_t *set1, const ordered_set_t *set
 - 用例
 
 ```c
-ordered_set_t *set1 = ordered_set_create(Integer_compare, Integer_delete);
-ordered_set_t *set2 = ordered_set_create(Integer_compare, Integer_delete);
+ordered_set_t *set1 = ordered_set_new(Integer_compare, Integer_delete);
+ordered_set_t *set2 = ordered_set_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     ordered_set_add(set1, Integer_new(i));
@@ -516,8 +516,8 @@ if (ordered_set_is_disjoint(set1, set2)) {
     // ...
 }
 
-ordered_set_destroy(set1);
-ordered_set_destroy(set2);
+ordered_set_delete(set1);
+ordered_set_delete(set2);
 ```
 
 
@@ -541,8 +541,8 @@ bool ordered_set_is_subset(const ordered_set_t *set1, const ordered_set_t *set2)
 - 用例
 
 ```c
-ordered_set_t *set1 = ordered_set_create(Integer_compare, Integer_delete);
-ordered_set_t *set2 = ordered_set_create(Integer_compare, Integer_delete);
+ordered_set_t *set1 = ordered_set_new(Integer_compare, Integer_delete);
+ordered_set_t *set2 = ordered_set_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 5; i++) {
     ordered_set_add(set1, Integer_new(i));
@@ -556,8 +556,8 @@ if (ordered_set_is_subset(set1, set2)) {
     // ...
 }
 
-ordered_set_destroy(set1);
-ordered_set_destroy(set2);
+ordered_set_delete(set1);
+ordered_set_delete(set2);
 ```
 
 
@@ -628,7 +628,7 @@ T ordered_set_iterator_next(iterator_t *iterator);
 - 用例
 
 ```c
-ordered_set_t *set = ordered_set_create(Integer_compare, Integer_delete);
+ordered_set_t *set = ordered_set_new(Integer_compare, Integer_delete);
 for (i = 0; i < 10; i++) {
     ordered_set_add(array, Integer_new(i));
 }
@@ -640,6 +640,6 @@ while (ordered_set_iterator_has_next(iterator)) {
 }
 
 ordered_set_iterator_destroy(iterator);
-ordered_set_destroy(set);
+ordered_set_delete(set);
 ```
 

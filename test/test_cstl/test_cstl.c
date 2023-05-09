@@ -2,8 +2,8 @@
 #include "test_cstl.h"
 
 void test_str() {
-    test_string_create();
-    test_string_destroy();
+    test_string_new();
+    test_string_delete();
     test_string_clone();
     test_string_length();
     test_string_is_empty();
@@ -39,8 +39,8 @@ void test_str() {
 }
 
 void test_array() {
-    test_array_create();
-    test_array_destroy();
+    test_array_new();
+    test_array_delete();
     test_array_is_empty();
     test_array_size();
     test_array_foreach();
@@ -61,8 +61,8 @@ void test_array() {
 }
 
 void test_list() {
-    test_list_create();
-    test_list_destroy();
+    test_list_new();
+    test_list_delete();
     test_list_is_empty();
     test_list_size();
     test_list_foreach();
@@ -87,8 +87,8 @@ void test_list() {
 }
 
 void test_stack() {
-    test_stack_create();
-    test_stack_destroy();
+    test_stack_new();
+    test_stack_delete();
     test_stack_is_empty();
     test_stack_size();
     test_stack_clear();
@@ -100,8 +100,8 @@ void test_stack() {
 }
 
 void test_queue() {
-    test_queue_create();
-    test_queue_destroy();
+    test_queue_new();
+    test_queue_delete();
     test_queue_is_empty();
     test_queue_size();
     test_queue_clear();
@@ -113,8 +113,8 @@ void test_queue() {
 }
 
 void test_deque() {
-    test_deque_create();
-    test_deque_destroy();
+    test_deque_new();
+    test_deque_delete();
     test_deque_is_empty();
     test_deque_size();
     test_deque_clear();
@@ -129,8 +129,8 @@ void test_deque() {
 }
 
 void test_red_black_tree() {
-    test_red_black_tree_create();
-    test_red_black_tree_destroy();
+    test_red_black_tree_new();
+    test_red_black_tree_delete();
     test_red_black_tree_is_empty();
     test_red_black_tree_size();
     test_red_black_tree_clear();
@@ -144,8 +144,8 @@ void test_red_black_tree() {
 }
 
 void test_hash_table() {
-    test_hash_table_create();
-    test_hash_table_destroy();
+    test_hash_table_new();
+    test_hash_table_delete();
     test_hash_table_is_empty();
     test_hash_table_size();
     test_hash_table_foreach();
@@ -153,13 +153,14 @@ void test_hash_table() {
     test_hash_table_put();
     test_hash_table_remove();
     test_hash_table_get();
+    test_hash_table_iterator();
 
     printf("[PASS] hash_table\n");
 }
 
 void test_ordered_set() {
-    test_ordered_set_create();
-    test_ordered_set_destroy();
+    test_ordered_set_new();
+    test_ordered_set_delete();
     test_ordered_set_is_empty();
     test_ordered_set_size();
     test_ordered_set_foreach();

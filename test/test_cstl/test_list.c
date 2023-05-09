@@ -4,37 +4,37 @@
 
 #define N 1000
 
-void test_list_create() {
-    list_t *list = list_create(UnsignedCharacter_compare, UnsignedCharacter_delete);
+void test_list_new() {
+    list_t *list = list_new(UnsignedCharacter_compare, UnsignedCharacter_delete);
     assert(list != NULL);
     assert(list_is_empty(list) == true);
     assert(list_size(list) == 0);
-    list_destroy(list);
+    list_delete(list);
 }
 
-void test_list_destroy() {
-    list_t *list = list_create(UnsignedShort_compare, UnsignedShort_delete);
+void test_list_delete() {
+    list_t *list = list_new(UnsignedShort_compare, UnsignedShort_delete);
     assert(list != NULL);
-    list_destroy(list);
+    list_delete(list);
 }
 
 void test_list_is_empty() {
-    list_t *list = list_create(UnsignedInteger_compare, UnsignedInteger_delete);
+    list_t *list = list_new(UnsignedInteger_compare, UnsignedInteger_delete);
     assert(list_is_empty(list) == true);
     list_push_back(list, UnsignedInteger_new(0));
     assert(list_is_empty(list) == false);
-    list_destroy(list);
+    list_delete(list);
 }
 
 void test_list_size() {
     int i = 0;
-    list_t *list = list_create(UnsignedLong_compare, UnsignedLong_delete);
+    list_t *list = list_new(UnsignedLong_compare, UnsignedLong_delete);
     assert(list_size(list) == 0);
     for (i = 0; i < N; i++) {
         list_push_back(list, UnsignedLong_new(i));
     }
     assert(list_size(list) == N);
-    list_destroy(list);
+    list_delete(list);
 }
 
 static int buffer[N] = {0};
@@ -55,7 +55,7 @@ void test_list_foreach() {
     int i = 0;
     list_t *list = NULL;
 
-    list = list_create(Integer_compare, Integer_delete);
+    list = list_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         list_push_back(list, Integer_new(i));
     }
@@ -74,24 +74,24 @@ void test_list_foreach() {
         assert(Integer_get(list_get(list, i)) == i * 3);
     }
 
-    list_destroy(list);
+    list_delete(list);
 }
 
 void test_list_clear() {
     int i = 0;
-    list_t *list = list_create(Short_compare, Short_delete);
+    list_t *list = list_new(Short_compare, Short_delete);
     for (i = 0; i < N; i++) {
         list_push_back(list, Short_new(i));
     }
     assert(list_size(list) == N);
     list_clear(list);
     assert(list_is_empty(list) == true);
-    list_destroy(list);
+    list_delete(list);
 }
 
 void test_list_get() {
     int i = 0;
-    list_t *list = list_create(Character_compare, Character_delete);
+    list_t *list = list_new(Character_compare, Character_delete);
     for (i = 'A'; i <= 'Z'; i++) {
         list_push_back(list, Character_new(i));
     }
@@ -99,13 +99,13 @@ void test_list_get() {
         Character *c = (Character *)list_get(list, i - 'A');
         assert(Character_get(c) == i);
     }
-    list_destroy(list);
+    list_delete(list);
 }
 
 void test_list_set() {
     int i = 0;
 
-    list_t *list = list_create(Long_compare, Long_delete);
+    list_t *list = list_new(Long_compare, Long_delete);
     for (i = 0; i < N; i++) {
         list_push_back(list, Long_new(i));
     }
@@ -116,14 +116,14 @@ void test_list_set() {
         Long *l = (Long *)list_get(list, i);
         assert(Long_get(l) == i * 2);
     }
-    list_destroy(list);
+    list_delete(list);
 }
 
 void test_list_index_of() {
     int i = 0;
     Integer *integer;
 
-    list_t *list = list_create(Integer_compare, Integer_delete);
+    list_t *list = list_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         list_push_back(list, Integer_new(i));
     }
@@ -132,14 +132,14 @@ void test_list_index_of() {
         assert(list_index_of(list, integer) == i);
         Integer_delete(integer);
     }
-    list_destroy(list);
+    list_delete(list);
 }
 
 void test_list_contains() {
     int i = 0;
     Integer *integer;
 
-    list_t *list = list_create(Integer_compare, Integer_delete);
+    list_t *list = list_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         list_push_back(list, Integer_new(i));
     }
@@ -154,7 +154,7 @@ void test_list_contains() {
         Integer_delete(integer);
     }
 
-    list_destroy(list);
+    list_delete(list);
 }
 
 void test_list_count() {
@@ -166,7 +166,7 @@ void test_list_count() {
     int arr[] = {9, 1, 2, 8, 2, 5, 2, 8, 9, 1, 2, 8, 2, 5, 2, 8};
     n = sizeof(arr) / sizeof(arr[0]);
 
-    list = list_create(Integer_compare, Integer_delete);
+    list = list_new(Integer_compare, Integer_delete);
     for (i = 0; i < n; i++) {
         list_push_back(list, Integer_new(arr[i]));
     }
@@ -195,7 +195,7 @@ void test_list_count() {
     assert(list_count(list, integer) == 2);
     Integer_delete(integer);
 
-    list_destroy(list);
+    list_delete(list);
 }
 
 void test_list_get_front() {
@@ -203,7 +203,7 @@ void test_list_get_front() {
     list_t *list = NULL;
     Integer *integer;
 
-    list = list_create(Integer_compare, Integer_delete);
+    list = list_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         list_push_back(list, Integer_new(i));
     }
@@ -211,7 +211,7 @@ void test_list_get_front() {
     integer = (Integer *)list_get_front(list);
     assert(Integer_get(integer) == 0);
 
-    list_destroy(list);
+    list_delete(list);
 }
 
 void test_list_get_back() {
@@ -219,7 +219,7 @@ void test_list_get_back() {
     list_t *list = NULL;
     Integer *integer;
 
-    list = list_create(Integer_compare, Integer_delete);
+    list = list_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         list_push_back(list, Integer_new(i));
     }
@@ -227,7 +227,7 @@ void test_list_get_back() {
     integer = (Integer *)list_get_back(list);
     assert(Integer_get(integer) == N - 1);
 
-    list_destroy(list);
+    list_delete(list);
 }
 
 void test_list_push_front() {
@@ -235,7 +235,7 @@ void test_list_push_front() {
     list_t *list = NULL;
     Integer *integer;
 
-    list = list_create(Integer_compare, Integer_delete);
+    list = list_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         list_push_front(list, Integer_new(i));
     }
@@ -245,14 +245,14 @@ void test_list_push_front() {
         assert(Integer_get(integer) == N - 1 - i);
     }
 
-    list_destroy(list);
+    list_delete(list);
 }
 
 void test_list_push_back() {
     int i = 0;
     list_t *list = NULL;
 
-    list = list_create(Integer_compare, Integer_delete);
+    list = list_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         list_push_back(list, Integer_new(i));
     }
@@ -260,9 +260,9 @@ void test_list_push_back() {
         Integer *integer = (Integer *)list_get(list, i);
         assert(Integer_get(integer) == i);
     }
-    list_destroy(list);
+    list_delete(list);
 
-    list = list_create(Float_compare, Float_delete);
+    list = list_new(Float_compare, Float_delete);
     for (i = 0; i < N; i++) {
         list_push_back(list, Float_new(i));
     }
@@ -270,7 +270,7 @@ void test_list_push_back() {
         Float *f = (Float *)list_get(list, i);
         assert(float_equal(Float_get(f), i));
     }
-    list_destroy(list);
+    list_delete(list);
 }
 
 void test_list_pop_front() {
@@ -278,7 +278,7 @@ void test_list_pop_front() {
     list_t *list = NULL;
     Integer *integer;
 
-    list = list_create(Integer_compare, Integer_delete);
+    list = list_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         list_push_back(list, Integer_new(i));
     }
@@ -289,7 +289,7 @@ void test_list_pop_front() {
         Integer_delete(integer);
     }
 
-    list_destroy(list);
+    list_delete(list);
 }
 
 void test_list_pop_back() {
@@ -297,7 +297,7 @@ void test_list_pop_back() {
     list_t *list = NULL;
     Integer *integer;
 
-    list = list_create(Integer_compare, Integer_delete);
+    list = list_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         list_push_back(list, Integer_new(i));
     }
@@ -308,14 +308,14 @@ void test_list_pop_back() {
         Integer_delete(integer);
     }
 
-    list_destroy(list);
+    list_delete(list);
 }
 
 void test_list_insert() {
     int i = 0;
     list_t *list = NULL;
 
-    list = list_create(Integer_compare, Integer_delete);
+    list = list_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         list_insert(list, i, Integer_new(i));
     }
@@ -323,9 +323,9 @@ void test_list_insert() {
         Integer *integer = (Integer *)list_get(list, i);
         assert(Integer_get(integer) == i);
     }
-    list_destroy(list);
+    list_delete(list);
 
-    list = list_create(Double_compare, Double_delete);
+    list = list_new(Double_compare, Double_delete);
     list_insert(list, 0, Double_new(1.1));
     list_insert(list, 0, Double_new(2.2));
     list_insert(list, 1, Double_new(3.3));
@@ -336,7 +336,7 @@ void test_list_insert() {
     assert(double_equal(Double_get((Double *)list_get(list, 2)), 5.5));
     assert(double_equal(Double_get((Double *)list_get(list, 3)), 1.1));
     assert(double_equal(Double_get((Double *)list_get(list, 4)), 4.4));
-    list_destroy(list);
+    list_delete(list);
 }
 
 void test_list_remove() {
@@ -345,7 +345,7 @@ void test_list_remove() {
     Boolean *boolean;
     list_t *list = NULL;
 
-    list = list_create(Integer_compare, Integer_delete);
+    list = list_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         list_push_back(list, Integer_new(i));
     }
@@ -355,9 +355,9 @@ void test_list_remove() {
         Integer_delete(integer);
     }
     assert(list_is_empty(list) == true);
-    list_destroy(list);
+    list_delete(list);
 
-    list = list_create(Boolean_compare, Boolean_delete);
+    list = list_new(Boolean_compare, Boolean_delete);
     list_push_back(list, Boolean_new(true));
     list_push_back(list, Boolean_new(false));
     list_push_back(list, Boolean_new(true));
@@ -379,12 +379,12 @@ void test_list_remove() {
     assert(list_size(list) == 2);
     assert(Boolean_get((Boolean *)list_get(list, 0)) == false);
     assert(Boolean_get((Boolean *)list_get(list, 1)) == true);
-    list_destroy(list);
+    list_delete(list);
 }
 
 void test_list_reverse() {
     int i = 0;
-    list_t *list = list_create(Integer_compare, Integer_delete);
+    list_t *list = list_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         list_push_back(list, Integer_new(i));
     }
@@ -393,7 +393,7 @@ void test_list_reverse() {
         Integer *integer = (Integer *)list_get(list, i);
         assert(Integer_get(integer) == N - i - 1);
     }
-    list_destroy(list);
+    list_delete(list);
 }
 
 void test_list_iterator() {
@@ -402,7 +402,7 @@ void test_list_iterator() {
     iterator_t *iterator = NULL;
     Integer *integer;
 
-    list = list_create(Integer_compare, Integer_delete);
+    list = list_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         list_push_back(list, Integer_new(i));
     }
@@ -417,5 +417,5 @@ void test_list_iterator() {
     }
 
     list_iterator_destroy(iterator);
-    list_destroy(list);
+    list_delete(list);
 }

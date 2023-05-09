@@ -4,49 +4,49 @@
 
 #define N 1000
 
-void test_deque_create() {
-    deque_t *deque = deque_create(UnsignedCharacter_delete);
+void test_deque_new() {
+    deque_t *deque = deque_new(UnsignedCharacter_delete);
     assert(deque != NULL);
     assert(deque_is_empty(deque) == true);
     assert(deque_size(deque) == 0);
-    deque_destroy(deque);
+    deque_delete(deque);
 }
 
-void test_deque_destroy() {
-    deque_t *deque = deque_create(UnsignedShort_delete);
+void test_deque_delete() {
+    deque_t *deque = deque_new(UnsignedShort_delete);
     assert(deque != NULL);
-    deque_destroy(deque);
+    deque_delete(deque);
 }
 
 void test_deque_is_empty() {
-    deque_t *deque = deque_create(UnsignedInteger_delete);
+    deque_t *deque = deque_new(UnsignedInteger_delete);
     assert(deque_is_empty(deque) == true);
     deque_push_back(deque, UnsignedInteger_new(0));
     assert(deque_is_empty(deque) == false);
-    deque_destroy(deque);
+    deque_delete(deque);
 }
 
 void test_deque_size() {
     int i = 0;
-    deque_t *deque = deque_create(UnsignedLong_delete);
+    deque_t *deque = deque_new(UnsignedLong_delete);
     assert(deque_size(deque) == 0);
     for (i = 0; i < N; i++) {
         deque_push_back(deque, UnsignedLong_new(i));
     }
     assert(deque_size(deque) == N);
-    deque_destroy(deque);
+    deque_delete(deque);
 }
 
 void test_deque_clear() {
     int i = 0;
-    deque_t *deque = deque_create(Short_delete);
+    deque_t *deque = deque_new(Short_delete);
     for (i = 0; i < N; i++) {
         deque_push_back(deque, Short_new(i));
     }
     assert(deque_size(deque) == N);
     deque_clear(deque);
     assert(deque_is_empty(deque) == true);
-    deque_destroy(deque);
+    deque_delete(deque);
 }
 
 void test_deque_push_front() {
@@ -54,7 +54,7 @@ void test_deque_push_front() {
     deque_t *deque = NULL;
     Integer *integer;
 
-    deque = deque_create(Integer_delete);
+    deque = deque_new(Integer_delete);
     for (i = 0; i < N; i++) {
         deque_push_front(deque, Integer_new(i));
     }
@@ -64,7 +64,7 @@ void test_deque_push_front() {
         integer = (Integer *)deque_pop_front(deque);
         Integer_delete(integer);
     }
-    deque_destroy(deque);
+    deque_delete(deque);
 }
 
 void test_deque_push_back() {
@@ -72,7 +72,7 @@ void test_deque_push_back() {
     deque_t *deque = NULL;
     Integer *integer;
 
-    deque = deque_create(Integer_delete);
+    deque = deque_new(Integer_delete);
     for (i = 0; i < N; i++) {
         deque_push_back(deque, Integer_new(i));
     }
@@ -82,7 +82,7 @@ void test_deque_push_back() {
         integer = (Integer *)deque_pop_back(deque);
         Integer_delete(integer);
     }
-    deque_destroy(deque);
+    deque_delete(deque);
 }
 
 void test_deque_pop_front() {
@@ -90,7 +90,7 @@ void test_deque_pop_front() {
     deque_t *deque = NULL;
     Integer *integer;
 
-    deque = deque_create(Integer_delete);
+    deque = deque_new(Integer_delete);
     for (i = 0; i < N; i++) {
         deque_push_back(deque, Integer_new(i));
     }
@@ -100,7 +100,7 @@ void test_deque_pop_front() {
         assert(Integer_get(integer) == i);
         Integer_delete(integer);
     }
-    deque_destroy(deque);
+    deque_delete(deque);
 }
 
 void test_deque_pop_back() {
@@ -108,7 +108,7 @@ void test_deque_pop_back() {
     deque_t *deque = NULL;
     Integer *integer;
 
-    deque = deque_create(Integer_delete);
+    deque = deque_new(Integer_delete);
     for (i = 0; i < N; i++) {
         deque_push_back(deque, Integer_new(i));
     }
@@ -118,7 +118,7 @@ void test_deque_pop_back() {
         assert(Integer_get(integer) == N - i - 1);
         Integer_delete(integer);
     }
-    deque_destroy(deque);
+    deque_delete(deque);
 }
 
 void test_deque_get_front() {
@@ -126,7 +126,7 @@ void test_deque_get_front() {
     deque_t *deque = NULL;
     Integer *integer;
 
-    deque = deque_create(Integer_delete);
+    deque = deque_new(Integer_delete);
     for (i = 0; i < N; i++) {
         deque_push_back(deque, Integer_new(i));
     }
@@ -136,7 +136,7 @@ void test_deque_get_front() {
         integer = (Integer *)deque_pop_front(deque);
         Integer_delete(integer);
     }
-    deque_destroy(deque);
+    deque_delete(deque);
 }
 
 void test_deque_get_back() {
@@ -144,7 +144,7 @@ void test_deque_get_back() {
     deque_t *deque = NULL;
     Integer *integer;
 
-    deque = deque_create(Integer_delete);
+    deque = deque_new(Integer_delete);
     for (i = 0; i < N; i++) {
         deque_push_back(deque, Integer_new(i));
     }
@@ -154,5 +154,5 @@ void test_deque_get_back() {
         integer = (Integer *)deque_pop_back(deque);
         Integer_delete(integer);
     }
-    deque_destroy(deque);
+    deque_delete(deque);
 }

@@ -5,11 +5,6 @@
 #define GROWTH_FACTOR 2
 #define LOAD_FACTOR_THRESHOLD 0.75
 
-typedef struct pair_t {
-    T key;
-    T value;
-} pair_t;
-
 struct hash_table_t {
     list_t **buckets;
     size_t size;
@@ -20,6 +15,12 @@ struct hash_table_t {
     hash_t hash;
 };
 
+/**
+ * @brief Create a pair_t object.
+ * @param key The key of the pair.
+ * @param value The value of the pair.
+ * @return Returns the created pair_t object if successful, otherwise returns NULL.
+ */
 static pair_t *__pair_create(T key, T value) {
     pair_t *pair = NULL;
 
@@ -36,8 +37,12 @@ static pair_t *__pair_create(T key, T value) {
 static destroy_t __destroy_key = NULL;
 static destroy_t __destroy_value = NULL;
 
-static void __pair_destroy(T elem) {
-    pair_t *pair = (pair_t *)elem;
+/**
+ * @brief Destroy a pair_t object.
+ * @param data The pair_t object.
+ */
+static void __pair_destroy(T data) {
+    pair_t *pair = (pair_t *)data;
     return_if_fail(pair != NULL);
 
     if (__destroy_key != NULL) {
@@ -49,6 +54,12 @@ static void __pair_destroy(T elem) {
     free(pair);
 }
 
+/**
+ * @brief Get the hash value of a key.
+ * @param hash_table The hash_table_t object.
+ * @param key The key.
+ * @return Returns the hash value of the key.
+ */
 static size_t __hash(const hash_table_t *hash_table, T key) {
     size_t hash_value = 0;
 
@@ -70,7 +81,7 @@ static size_t __hash(const hash_table_t *hash_table, T key) {
  * @param hash Callback function for hashing a key.
  * @return Returns the created hash_table_t object if successful, otherwise returns NULL.
  */
-hash_table_t *hash_table_create(compare_t compare, destroy_t destroy_key, destroy_t destroy_value, hash_t hash) {
+hash_table_t *hash_table_new(compare_t compare, destroy_t destroy_key, destroy_t destroy_value, hash_t hash) {
     hash_table_t *hash_table = NULL;
     size_t i = 0;
     size_t j = 0;
@@ -87,10 +98,10 @@ hash_table_t *hash_table_create(compare_t compare, destroy_t destroy_key, destro
     }
 
     for (i = 0; i < DEFAULT_CAPACITY; i++) {
-        hash_table->buckets[i] = list_create(compare, __pair_destroy);
+        hash_table->buckets[i] = list_new(compare, __pair_destroy);
         if (hash_table->buckets[i] == NULL) {
             for (j = 0; j < i; j++) {
-                list_destroy(hash_table->buckets[j]);
+                list_delete(hash_table->buckets[j]);
             }
             free(hash_table->buckets);
             free(hash_table);
@@ -112,7 +123,7 @@ hash_table_t *hash_table_create(compare_t compare, destroy_t destroy_key, destro
  * @brief Destroy a hash_table_t object.
  * @param hash_table The hash_table_t object.
  */
-void hash_table_destroy(hash_table_t *hash_table) {
+void hash_table_delete(hash_table_t *hash_table) {
     size_t i = 0;
 
     return_if_fail(hash_table != NULL);
@@ -121,7 +132,7 @@ void hash_table_destroy(hash_table_t *hash_table) {
     __destroy_value = hash_table->destroy_value;
 
     for (i = 0; i < hash_table->capacity; i++) {
-        list_destroy(hash_table->buckets[i]);
+        list_delete(hash_table->buckets[i]);
     }
     free(hash_table->buckets);
     free(hash_table);
@@ -192,6 +203,12 @@ hash_table_t *hash_table_clear(hash_table_t *hash_table) {
     return hash_table;
 }
 
+/**
+ * @brief Resize a hash_table_t object.
+ *        Double the hash_table_t object if the load factor is greater than 0.75.
+ * @param hash_table The hash_table_t object.
+ * @return Returns true if memory reallocation is successful, otherwise returns false.
+ */
 static bool __hash_table_resize(hash_table_t *hash_table) {
     size_t old_capacity;
     size_t new_capacity;
@@ -209,10 +226,10 @@ static bool __hash_table_resize(hash_table_t *hash_table) {
     return_value_if_fail(new_buckets != NULL, false);
 
     for (i = 0; i < new_capacity; i++) {
-        new_buckets[i] = list_create(hash_table->compare, __pair_destroy);
+        new_buckets[i] = list_new(hash_table->compare, __pair_destroy);
         if (new_buckets[i] == NULL) {
             for (j = 0; j < i; j++) {
-                list_destroy(new_buckets[j]);
+                list_delete(new_buckets[j]);
             }
             free(new_buckets);
             return false;
@@ -227,7 +244,7 @@ static bool __hash_table_resize(hash_table_t *hash_table) {
         iterator = list_iterator_create(hash_table->buckets[i]);
         if (iterator == NULL) {
             for (j = 0; j < new_capacity; j++) {
-                list_destroy(new_buckets[j]);
+                list_delete(new_buckets[j]);
             }
             free(new_buckets);
             hash_table->capacity = old_capacity;
@@ -245,7 +262,7 @@ static bool __hash_table_resize(hash_table_t *hash_table) {
         }
 
         list_iterator_destroy(iterator);
-        list_destroy(hash_table->buckets[i]);
+        list_delete(hash_table->buckets[i]);
     }
 
     free(hash_table->buckets);
@@ -253,6 +270,13 @@ static bool __hash_table_resize(hash_table_t *hash_table) {
     return true;
 }
 
+/**
+ * @brief Put a key-value pair into a hash_table_t object.
+ * @param hash_table The hash_table_t object.
+ * @param key The key.
+ * @param value The value.
+ * @return Returns the modified hash_table_t object.
+ */
 hash_table_t *hash_table_put(hash_table_t *hash_table, T key, T value) {
     size_t index = 0;
     list_t *bucket = NULL;
@@ -303,7 +327,13 @@ hash_table_t *hash_table_put(hash_table_t *hash_table, T key, T value) {
     return hash_table;
 }
 
-/* @note Caller MUST free the parameter `key` (if applicable). */
+/**
+ * @brief Remove a key-value pair from a hash_table_t object by given key.
+ * @param hash_table The hash_table_t object.
+ * @param key The key.
+ * @return Returns the modified hash_table_t object.
+ * @note Caller MUST free the parameter `key` (if applicable).
+ */
 hash_table_t *hash_table_remove(hash_table_t *hash_table, T key) {
     size_t index = 0;
     list_t *bucket = NULL;
@@ -337,7 +367,13 @@ hash_table_t *hash_table_remove(hash_table_t *hash_table, T key) {
     return hash_table;
 }
 
-/* @note Caller MUST free the parameter `key` (if applicable). */
+/**
+ * @brief Get the value of a key-value pair by given key.
+ * @param hash_table The hash_table_t object.
+ * @param key The key.
+ * @return Returns the value of the key-value pair if found, otherwise NULL.
+ * @note Caller MUST free the parameter `key` (if applicable).
+ */
 T hash_table_get(const hash_table_t *hash_table, T key) {
     size_t index = 0;
     list_t *bucket = NULL;
@@ -363,4 +399,122 @@ T hash_table_get(const hash_table_t *hash_table, T key) {
 
     list_iterator_destroy(iterator);
     return value;
+}
+
+typedef struct hash_table_iterator_state_t {
+    size_t bucket_index;
+    iterator_t *list_iterator;
+} hash_table_iterator_state_t;
+
+/**
+ * @brief Create an iterator for a hash_table_t object.
+ * @param hash_table The hash_table_t object.
+ * @return Returns the iterator for container.
+ */
+iterator_t *hash_table_iterator_create(const hash_table_t *hash_table) {
+    iterator_t *iterator = NULL;
+    hash_table_iterator_state_t *state = NULL;
+
+    return_value_if_fail(hash_table != NULL, NULL);
+
+    iterator = (iterator_t *)malloc(sizeof(iterator_t));
+    return_value_if_fail(iterator != NULL, NULL);
+
+    state = (hash_table_iterator_state_t *)malloc(sizeof(hash_table_iterator_state_t));
+    if (state == NULL) {
+        free(iterator);
+        return NULL;
+    }
+
+    state->bucket_index = 0;
+    state->list_iterator = list_iterator_create(hash_table->buckets[0]);
+    if (state->list_iterator == NULL) {
+        free(state);
+        free(iterator);
+        return NULL;
+    }
+
+    iterator->container = (void *)hash_table;
+    iterator->current = (void *)state;
+    return iterator;
+}
+
+/**
+ * @brief Destroy an iterator.
+ * @param iterator The iterator_t object.
+ */
+void hash_table_iterator_destroy(iterator_t *iterator) {
+    hash_table_iterator_state_t *state = NULL;
+
+    return_if_fail(iterator != NULL);
+
+    if (iterator->current != NULL) {
+        state = iterator->current;
+        if (state->list_iterator != NULL) {
+            list_iterator_destroy(state->list_iterator);
+        }
+        free(state);
+    }
+    free(iterator);
+}
+
+/**
+ * @brief Determine whether an iterator has the next pair.
+ * @param iterator The iterator_t object.
+ * @return Returns true if the iterator has the next pair, otherwise returns false.
+ */
+bool hash_table_iterator_has_next(const iterator_t *iterator) {
+    hash_table_iterator_state_t *state = NULL;
+    hash_table_t *hash_table = NULL;
+    size_t i = 0;
+
+    return_value_if_fail(iterator != NULL, false);
+    return_value_if_fail(iterator->current != NULL, false);
+
+    state = (hash_table_iterator_state_t *)iterator->current;
+    if (list_iterator_has_next(state->list_iterator)) {
+        return true;
+    }
+
+    hash_table = (hash_table_t *)iterator->container;
+    for (i = state->bucket_index + 1; i < hash_table->capacity; i++) {
+        if (!list_is_empty(hash_table->buckets[i])) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
+ * @brief Get the next pair of an iterator.
+ * @param iterator The iterator_t object.
+ * @return Returns the next pair of the iterator.
+ */
+pair_t *hash_table_iterator_next(iterator_t *iterator) {
+    hash_table_iterator_state_t *state = NULL;
+    hash_table_t *hash_table = NULL;
+    size_t i = 0;
+
+    return_value_if_fail(iterator != NULL, NULL);
+    return_value_if_fail(iterator->current != NULL, NULL);
+
+    state = (hash_table_iterator_state_t *)iterator->current;
+    if (list_iterator_has_next(state->list_iterator)) {
+        return list_iterator_next(state->list_iterator);
+    }
+
+    hash_table = (hash_table_t *)iterator->container;
+    for (i = state->bucket_index + 1; i < hash_table->capacity; i++) {
+        if (!list_is_empty(hash_table->buckets[i])) {
+            /* Destroy the old iterator and create a new one */
+            list_iterator_destroy(state->list_iterator);
+            state->bucket_index = i;
+            state->list_iterator = list_iterator_create(hash_table->buckets[i]);
+            return_value_if_fail(state->list_iterator != NULL, NULL);
+            return list_iterator_next(state->list_iterator);
+        }
+    }
+
+    return NULL;
 }

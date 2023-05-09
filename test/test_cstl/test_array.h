@@ -1,8 +1,8 @@
 #ifndef _TEST_ARRAY_H_
 #define _TEST_ARRAY_H_
 
-void test_array_create();
-void test_array_destroy();
+void test_array_new();
+void test_array_delete();
 void test_array_is_empty();
 void test_array_size();
 void test_array_foreach();

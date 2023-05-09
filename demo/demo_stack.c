@@ -2,7 +2,7 @@
 #include "coop.h"
 
 int main() {
-    stack_t *stack = stack_create(Integer_delete);
+    stack_t *stack = stack_new(Integer_delete);
 
     for (int i = 0; i < 10; i++) {
         stack_push(stack, Integer_new(i));
@@ -15,7 +15,7 @@ int main() {
     }
     printf("\n");
 
-    stack_destroy(stack);
+    stack_delete(stack);
 
     return 0;
 }

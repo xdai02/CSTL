@@ -12,13 +12,13 @@ typedef struct array_t array_t;
  * @param destroy Callback function for destroying a data item.
  * @return Returns the created array_t object if successful, otherwise returns NULL.
  */
-array_t *array_create(compare_t compare, destroy_t destroy);
+array_t *array_new(compare_t compare, destroy_t destroy);
 
 /**
  * @brief Destroy an array_t object.
  * @param array The array_t object.
  */
-void array_destroy(array_t *array);
+void array_delete(array_t *array);
 
 /**
  * @brief Determine whether an array_t object is empty.

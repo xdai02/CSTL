@@ -2,7 +2,7 @@
 #include "coop.h"
 
 int main() {
-    deque_t *deque = deque_create(Integer_delete);
+    deque_t *deque = deque_new(Integer_delete);
 
     // Create a deque = [4, 3, 2, 1, 0, 0, 1, 2, 3, 4]
     for (int i = 0; i < 5; i++) {
@@ -22,7 +22,7 @@ int main() {
     }
     printf("\n");
 
-    deque_destroy(deque);
+    deque_delete(deque);
 
     return 0;
 }

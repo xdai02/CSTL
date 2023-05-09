@@ -12,7 +12,7 @@ struct ordered_set_t {
  * @param destroy Callback function for destroying a data item.
  * @return Returns the created ordered_set_t object if successful, otherwise returns NULL.
  */
-ordered_set_t *ordered_set_create(compare_t compare, destroy_t destroy) {
+ordered_set_t *ordered_set_new(compare_t compare, destroy_t destroy) {
     ordered_set_t *set = NULL;
 
     return_value_if_fail(compare != NULL, NULL);
@@ -20,7 +20,7 @@ ordered_set_t *ordered_set_create(compare_t compare, destroy_t destroy) {
     set = (ordered_set_t *)malloc(sizeof(ordered_set_t));
     return_value_if_fail(set != NULL, NULL);
 
-    set->tree = red_black_tree_create(compare, destroy);
+    set->tree = red_black_tree_new(compare, destroy);
     if (set->tree == NULL) {
         free(set);
         return NULL;
@@ -34,9 +34,9 @@ ordered_set_t *ordered_set_create(compare_t compare, destroy_t destroy) {
  * @brief Destroy an ordered_set_t object.
  * @param set The ordered_set_t object.
  */
-void ordered_set_destroy(ordered_set_t *set) {
+void ordered_set_delete(ordered_set_t *set) {
     return_if_fail(set != NULL);
-    red_black_tree_destroy(set->tree);
+    red_black_tree_delete(set->tree);
     free(set);
 }
 
@@ -133,9 +133,9 @@ ordered_set_t *ordered_set_union(const ordered_set_t *set1, const ordered_set_t 
     return_value_if(set1 == NULL && set2 == NULL, NULL);
 
     if (set1 == NULL) {
-        union_set = ordered_set_create(set2->compare, NULL);
+        union_set = ordered_set_new(set2->compare, NULL);
     } else {
-        union_set = ordered_set_create(set1->compare, NULL);
+        union_set = ordered_set_new(set1->compare, NULL);
     }
     return_value_if_fail(union_set != NULL, NULL);
 
@@ -177,9 +177,9 @@ ordered_set_t *ordered_set_intersection(const ordered_set_t *set1, const ordered
     return_value_if(set1 == NULL && set2 == NULL, NULL);
 
     if (set1 == NULL) {
-        intersection_set = ordered_set_create(set2->compare, NULL);
+        intersection_set = ordered_set_new(set2->compare, NULL);
     } else {
-        intersection_set = ordered_set_create(set1->compare, NULL);
+        intersection_set = ordered_set_new(set1->compare, NULL);
     }
     return_value_if_fail(intersection_set != NULL, NULL);
 
@@ -213,7 +213,7 @@ ordered_set_t *ordered_set_difference(const ordered_set_t *set1, const ordered_s
 
     return_value_if_fail(set1 != NULL, NULL);
 
-    difference_set = ordered_set_create(set1->compare, NULL);
+    difference_set = ordered_set_new(set1->compare, NULL);
     return_value_if_fail(difference_set != NULL, NULL);
 
     iterator = red_black_tree_iterator_create(set1->tree);
@@ -248,8 +248,8 @@ ordered_set_t *ordered_set_symmetric_difference(const ordered_set_t *set1, const
     intersection_set = ordered_set_intersection(set1, set2);
     symmetric_difference_set = ordered_set_difference(union_set, intersection_set);
 
-    ordered_set_destroy(union_set);
-    ordered_set_destroy(intersection_set);
+    ordered_set_delete(union_set);
+    ordered_set_delete(intersection_set);
     return symmetric_difference_set;
 }
 
@@ -268,7 +268,7 @@ bool ordered_set_is_disjoint(const ordered_set_t *set1, const ordered_set_t *set
 
     intersection_set = ordered_set_intersection(set1, set2);
     is_disjoint = ordered_set_is_empty(intersection_set);
-    ordered_set_destroy(intersection_set);
+    ordered_set_delete(intersection_set);
     return is_disjoint;
 }
 

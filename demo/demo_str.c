@@ -2,7 +2,7 @@
 #include "coop.h"
 
 int main() {
-    string_t *fruits = string_create("APPLE, Banana, cherry, DURIAN");
+    string_t *fruits = string_new("APPLE, Banana, cherry, DURIAN");
 
     char **tokens = string_split(fruits, ", ");
 
@@ -22,7 +22,7 @@ int main() {
     }
     free(tokens);
 
-    string_destroy(fruits);
+    string_delete(fruits);
 
     return 0;
 }

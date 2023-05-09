@@ -10,13 +10,13 @@ typedef struct string_t string_t;
  * @param str The primitive string.
  * @return Returns a string_t pointer if the memory allocation succeeds, otherwise returns NULL.
  */
-string_t *string_create(const char *str);
+string_t *string_new(const char *str);
 
 /**
  * @brief Destroy the string_t object.
  * @param string The string_t object.
  */
-void string_destroy(string_t *string);
+void string_delete(string_t *string);
 
 /**
  * @brief Clone a string_t object.

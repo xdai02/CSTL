@@ -72,7 +72,7 @@ static color_t __node_color(node_t *node) {
  * @param destroy Callback function for destroying a data item.
  * @return Returns the red_black_tree_t object if create successfully, otherwise returns NULL.
  */
-red_black_tree_t *red_black_tree_create(compare_t compare, destroy_t destroy) {
+red_black_tree_t *red_black_tree_new(compare_t compare, destroy_t destroy) {
     red_black_tree_t *tree = NULL;
 
     return_value_if_fail(compare != NULL, NULL);
@@ -91,7 +91,7 @@ red_black_tree_t *red_black_tree_create(compare_t compare, destroy_t destroy) {
  * @brief Destroy a red_black_tree_t object.
  * @param tree The red_black_tree_t object.
  */
-void red_black_tree_destroy(red_black_tree_t *tree) {
+void red_black_tree_delete(red_black_tree_t *tree) {
     return_if_fail(tree != NULL);
     __node_destroy(tree, tree->root);
     free(tree);

@@ -10,13 +10,13 @@ typedef struct queue_t queue_t;
  * @param destroy Callback function for destroying a data item.
  * @return Returns the created queue_t object if successful, otherwise return NULL.
  */
-queue_t *queue_create(destroy_t destroy);
+queue_t *queue_new(destroy_t destroy);
 
 /**
  * @brief Destroy a queue_t object.
  * @param queue The queue_t object.
  */
-void queue_destroy(queue_t *queue);
+void queue_delete(queue_t *queue);
 
 /**
  * @brief Determine whether a queue_t object is empty.

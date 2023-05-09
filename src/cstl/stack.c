@@ -10,11 +10,11 @@ struct stack_t {
  * @param destroy Callback function for destroying a data item.
  * @return Returns the created stack_t object if successful, otherwise return NULL.
  */
-stack_t *stack_create(destroy_t destroy) {
+stack_t *stack_new(destroy_t destroy) {
     stack_t *stack = (stack_t *)malloc(sizeof(stack_t));
     return_value_if_fail(stack != NULL, NULL);
 
-    stack->array = array_create(NULL, destroy);
+    stack->array = array_new(NULL, destroy);
     if (stack->array == NULL) {
         free(stack);
         return NULL;
@@ -27,9 +27,9 @@ stack_t *stack_create(destroy_t destroy) {
  * @brief Destroy a stack_t object.
  * @param stack The stack_t object.
  */
-void stack_destroy(stack_t *stack) {
+void stack_delete(stack_t *stack) {
     return_if_fail(stack != NULL);
-    array_destroy(stack->array);
+    array_delete(stack->array);
     free(stack);
 }
 

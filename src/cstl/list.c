@@ -34,7 +34,7 @@ static node_t *__node_create(T elem) {
  * @param destroy Callback function for destroying a data item.
  * @return Returns the created list_t object if successful, otherwise returns NULL.
  */
-list_t *list_create(compare_t compare, destroy_t destroy) {
+list_t *list_new(compare_t compare, destroy_t destroy) {
     list_t *list = (list_t *)malloc(sizeof(list_t));
     return_value_if_fail(list != NULL, NULL);
 
@@ -51,7 +51,7 @@ list_t *list_create(compare_t compare, destroy_t destroy) {
  * @brief Destroy a list_t object.
  * @param list The list_t object.
  */
-void list_destroy(list_t *list) {
+void list_delete(list_t *list) {
     return_if_fail(list != NULL);
     list_clear(list);
     free(list);

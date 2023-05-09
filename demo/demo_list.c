@@ -12,7 +12,7 @@ void Integer_triple(T elem) {
 }
 
 int main() {
-    list_t *list = list_create(Integer_compare, Integer_delete);
+    list_t *list = list_new(Integer_compare, Integer_delete);
 
     for (int i = 0; i < 10; i++) {
         list_push_back(list, Integer_new(i));
@@ -26,7 +26,7 @@ int main() {
     list_foreach(list, Integer_print);
     printf("\n");
 
-    list_destroy(list);
+    list_delete(list);
 
     return 0;
 }

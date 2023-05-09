@@ -4,68 +4,68 @@
 
 #define N 1000
 
-void test_red_black_tree_create() {
-    red_black_tree_t *tree = red_black_tree_create(UnsignedCharacter_compare, UnsignedCharacter_delete);
+void test_red_black_tree_new() {
+    red_black_tree_t *tree = red_black_tree_new(UnsignedCharacter_compare, UnsignedCharacter_delete);
     assert(tree != NULL);
     assert(red_black_tree_is_empty(tree) == true);
     assert(red_black_tree_size(tree) == 0);
-    red_black_tree_destroy(tree);
+    red_black_tree_delete(tree);
 }
 
-void test_red_black_tree_destroy() {
-    red_black_tree_t *tree = red_black_tree_create(UnsignedShort_compare, UnsignedShort_delete);
+void test_red_black_tree_delete() {
+    red_black_tree_t *tree = red_black_tree_new(UnsignedShort_compare, UnsignedShort_delete);
     assert(tree != NULL);
-    red_black_tree_destroy(tree);
+    red_black_tree_delete(tree);
 }
 
 void test_red_black_tree_is_empty() {
-    red_black_tree_t *tree = red_black_tree_create(UnsignedInteger_compare, UnsignedInteger_delete);
+    red_black_tree_t *tree = red_black_tree_new(UnsignedInteger_compare, UnsignedInteger_delete);
     assert(red_black_tree_is_empty(tree) == true);
     red_black_tree_insert(tree, UnsignedInteger_new(0));
     assert(red_black_tree_is_empty(tree) == false);
-    red_black_tree_destroy(tree);
+    red_black_tree_delete(tree);
 }
 
 void test_red_black_tree_size() {
     int i = 0;
     red_black_tree_t *tree = NULL;
 
-    tree = red_black_tree_create(UnsignedLong_compare, UnsignedLong_delete);
+    tree = red_black_tree_new(UnsignedLong_compare, UnsignedLong_delete);
     assert(red_black_tree_size(tree) == 0);
     for (i = 0; i < N; i++) {
         red_black_tree_insert(tree, UnsignedLong_new(i));
     }
     assert(red_black_tree_size(tree) == N);
-    red_black_tree_destroy(tree);
+    red_black_tree_delete(tree);
 
-    tree = red_black_tree_create(Short_compare, Short_delete);
+    tree = red_black_tree_new(Short_compare, Short_delete);
     assert(red_black_tree_size(tree) == 0);
     for (i = 0; i < N; i++) {
         red_black_tree_insert(tree, Short_new(N - i - 1));
     }
     assert(red_black_tree_size(tree) == N);
-    red_black_tree_destroy(tree);
+    red_black_tree_delete(tree);
 
-    tree = red_black_tree_create(Integer_compare, Integer_delete);
+    tree = red_black_tree_new(Integer_compare, Integer_delete);
     assert(red_black_tree_size(tree) == 0);
     for (i = 0; i < N; i++) {
         red_black_tree_insert(tree, Integer_new(i));
         red_black_tree_insert(tree, Integer_new(N - i - 1));
     }
     assert(red_black_tree_size(tree) == N);
-    red_black_tree_destroy(tree);
+    red_black_tree_delete(tree);
 }
 
 void test_red_black_tree_clear() {
     int i = 0;
-    red_black_tree_t *tree = red_black_tree_create(Integer_compare, Integer_delete);
+    red_black_tree_t *tree = red_black_tree_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         red_black_tree_insert(tree, Integer_new(i));
     }
     assert(red_black_tree_size(tree) == N);
     red_black_tree_clear(tree);
     assert(red_black_tree_is_empty(tree) == true);
-    red_black_tree_destroy(tree);
+    red_black_tree_delete(tree);
 }
 
 void test_red_black_tree_contains() {
@@ -73,7 +73,7 @@ void test_red_black_tree_contains() {
     red_black_tree_t *tree = NULL;
     Integer *integer;
 
-    tree = red_black_tree_create(Integer_compare, Integer_delete);
+    tree = red_black_tree_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         red_black_tree_insert(tree, Integer_new(i));
     }
@@ -88,7 +88,7 @@ void test_red_black_tree_contains() {
         Integer_delete(integer);
     }
 
-    red_black_tree_destroy(tree);
+    red_black_tree_delete(tree);
 }
 
 static int buffer[N] = {0};
@@ -109,7 +109,7 @@ void test_red_black_tree_foreach() {
     int i = 0;
     red_black_tree_t *tree = NULL;
 
-    tree = red_black_tree_create(Integer_compare, Integer_delete);
+    tree = red_black_tree_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         red_black_tree_insert(tree, Integer_new(i));
     }
@@ -131,29 +131,29 @@ void test_red_black_tree_foreach() {
         assert(buffer[i] == 3 * i);
     }
 
-    red_black_tree_destroy(tree);
+    red_black_tree_delete(tree);
 }
 
 void test_red_black_tree_insert() {
     int i = 0;
     red_black_tree_t *tree = NULL;
 
-    tree = red_black_tree_create(Integer_compare, Integer_delete);
+    tree = red_black_tree_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         red_black_tree_insert(tree, Integer_new(i));
     }
     assert(red_black_tree_size(tree) == N);
-    red_black_tree_destroy(tree);
+    red_black_tree_delete(tree);
 
-    tree = red_black_tree_create(Integer_compare, Integer_delete);
+    tree = red_black_tree_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         red_black_tree_insert(tree, Integer_new(i));
         red_black_tree_insert(tree, Integer_new(i));
     }
     assert(red_black_tree_size(tree) == N);
-    red_black_tree_destroy(tree);
+    red_black_tree_delete(tree);
 
-    tree = red_black_tree_create(Integer_compare, Integer_delete);
+    tree = red_black_tree_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i += 2) {
         red_black_tree_insert(tree, Integer_new(i));
     }
@@ -161,7 +161,7 @@ void test_red_black_tree_insert() {
         red_black_tree_insert(tree, Integer_new(i));
     }
     assert(red_black_tree_size(tree) == N);
-    red_black_tree_destroy(tree);
+    red_black_tree_delete(tree);
 }
 
 void test_red_black_tree_remove() {
@@ -169,7 +169,7 @@ void test_red_black_tree_remove() {
     red_black_tree_t *tree = NULL;
     Integer *integer;
 
-    tree = red_black_tree_create(Integer_compare, Integer_delete);
+    tree = red_black_tree_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         red_black_tree_insert(tree, Integer_new(i));
     }
@@ -179,9 +179,9 @@ void test_red_black_tree_remove() {
         Integer_delete(integer);
     }
     assert(red_black_tree_is_empty(tree) == true);
-    red_black_tree_destroy(tree);
+    red_black_tree_delete(tree);
 
-    tree = red_black_tree_create(Integer_compare, Integer_delete);
+    tree = red_black_tree_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         red_black_tree_insert(tree, Integer_new(i));
     }
@@ -192,9 +192,9 @@ void test_red_black_tree_remove() {
         Integer_delete(integer);
     }
     assert(red_black_tree_is_empty(tree) == true);
-    red_black_tree_destroy(tree);
+    red_black_tree_delete(tree);
 
-    tree = red_black_tree_create(Integer_compare, Integer_delete);
+    tree = red_black_tree_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         red_black_tree_insert(tree, Integer_new(i));
     }
@@ -204,9 +204,9 @@ void test_red_black_tree_remove() {
         Integer_delete(integer);
     }
     assert(red_black_tree_size(tree) == N / 2);
-    red_black_tree_destroy(tree);
+    red_black_tree_delete(tree);
 
-    tree = red_black_tree_create(Integer_compare, Integer_delete);
+    tree = red_black_tree_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         red_black_tree_insert(tree, Integer_new(i));
     }
@@ -216,7 +216,7 @@ void test_red_black_tree_remove() {
         Integer_delete(integer);
     }
     assert(red_black_tree_size(tree) == N - 1);
-    red_black_tree_destroy(tree);
+    red_black_tree_delete(tree);
 }
 
 void test_red_black_tree_iterator() {
@@ -225,7 +225,7 @@ void test_red_black_tree_iterator() {
     iterator_t *iterator = NULL;
     Integer *integer;
 
-    tree = red_black_tree_create(Integer_compare, Integer_delete);
+    tree = red_black_tree_new(Integer_compare, Integer_delete);
     for (i = 0; i < N; i++) {
         red_black_tree_insert(tree, Integer_new(i));
     }
@@ -240,5 +240,5 @@ void test_red_black_tree_iterator() {
     }
 
     red_black_tree_iterator_destroy(iterator);
-    red_black_tree_destroy(tree);
+    red_black_tree_delete(tree);
 }

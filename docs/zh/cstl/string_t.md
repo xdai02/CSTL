@@ -4,12 +4,12 @@
 
 
 
-## string_create()
+## string_new()
 
 - 原型
 
 ```c
-string_t *string_create(const char *str);
+string_t *string_new(const char *str);
 ```
 
 - 描述
@@ -21,17 +21,17 @@ string_t *string_create(const char *str);
 - 用例
 
 ```c
-string_t *s = string_create("Hello, World!");
+string_t *s = string_new("Hello, World!");
 ```
 
 
 
-## string_destroy()
+## string_delete()
 
 - 原型
 
 ```c
-void string_destroy(string_t *string);
+void string_delete(string_t *string);
 ```
 
 - 描述
@@ -41,8 +41,8 @@ void string_destroy(string_t *string);
 - 用例
 
 ```c
-string_t *s = string_create("Hello, World!");
-string_destroy(s);
+string_t *s = string_new("Hello, World!");
+string_delete(s);
 ```
 
 
@@ -65,7 +65,7 @@ string_t *string_clone(const string_t *string);
 - 用例
 
 ```c
-string_t *s1 = string_create("Hello World");
+string_t *s1 = string_new("Hello World");
 string_t *s2 = string_clone(s1);
 ```
 
@@ -88,7 +88,7 @@ size_t string_length(const string_t *string);
 - 用例
 
 ```c
-string_t *s = string_create("Hello, World!");
+string_t *s = string_new("Hello, World!");
 printf("%d\n", string_length(s));
 ```
 
@@ -111,7 +111,7 @@ bool string_is_empty(const string_t *string);
 - 用例
 
 ```c
-string_t *s = string_create("Hello, World!");
+string_t *s = string_new("Hello, World!");
 if (string_is_empty(s)) {
     // ...
 }
@@ -136,7 +136,7 @@ const char *string_get(const string_t *string);
 - 用例
 
 ```c
-string_t *s = string_create("Hello, World!");
+string_t *s = string_new("Hello, World!");
 printf("%s\n", string_get(s));
 ```
 
@@ -160,7 +160,7 @@ char string_char_at(const string_t *string, size_t index);
 - 用例
 
 ```c
-string_t *s = string_create("Hello, World!");
+string_t *s = string_new("Hello, World!");
 printf("%c\n", string_char_at(5));
 ```
 
@@ -185,7 +185,7 @@ string_t *string_set_char_at(string_t *string, size_t index, char c);
 - 用例
 
 ```c
-string_t *s = string_create("hello, world!");
+string_t *s = string_new("hello, world!");
 string_set_char_at(s, 0, 'H');
 ```
 
@@ -208,7 +208,7 @@ string_t *string_clear(string_t *string);
 - 用例
 
 ```c
-string_t *s = string_create("hello, world!");
+string_t *s = string_new("hello, world!");
 string_clear(s);
 ```
 
@@ -232,8 +232,8 @@ bool string_equal(const string_t *string1, const string_t *string2);
 - 用例
 
 ```c
-string_t *s1 = string_create("Hello World");
-string_t *s2 = string_create("Hello World");
+string_t *s1 = string_new("Hello World");
+string_t *s2 = string_new("Hello World");
 if (string_equal(s1, s2)) {
     // ...
 }
@@ -259,8 +259,8 @@ bool string_equal_ignore_case(const string_t *string1, const string_t *string2);
 - 用例
 
 ```c
-string_t *s1 = string_create("Hello World");
-string_t *s2 = string_create("HELLO WORLD");
+string_t *s1 = string_new("Hello World");
+string_t *s2 = string_new("HELLO WORLD");
 if (string_equal_ignore_case(s1, s2)) {
     // ...
 }
@@ -285,7 +285,7 @@ size_t string_hash(const string_t *string);
 - 用例
 
 ```c
-string_t *string = string_create("hello");
+string_t *string = string_new("hello");
 printf("%d\n", string_hash(string));
 ```
 
@@ -311,8 +311,8 @@ int string_compare(const string_t *string1, const string_t *string2);
 - 用例
 
 ```c
-string_t *s1 = string_create("Hello World");
-string_t *s2 = string_create("HELLO WORLD");
+string_t *s1 = string_new("Hello World");
+string_t *s2 = string_new("HELLO WORLD");
 printf("%d\n", string_compare(s1, s2));
 ```
 
@@ -335,7 +335,7 @@ string_t *string_tolower(string_t *string);
 - 用例
 
 ```c
-string_t *s = string_create("Hello World");
+string_t *s = string_new("Hello World");
 string_tolower(s);
 ```
 
@@ -358,7 +358,7 @@ string_t *string_toupper(string_t *string);
 - 用例
 
 ```c
-string_t *s = string_create("Hello World");
+string_t *s = string_new("Hello World");
 string_toupper(s);
 ```
 
@@ -382,7 +382,7 @@ bool string_starts_with(const string_t *string, const char *prefix);
 - 用例
 
 ```c
-string_t *s = string_create("hello world");
+string_t *s = string_new("hello world");
 if (string_starts_with(s, "hello")) {
     // ...
 }
@@ -408,7 +408,7 @@ bool string_ends_with(const string_t *string, const char *suffix);
 - 用例
 
 ```c
-string_t *s = string_create("hello world");
+string_t *s = string_new("hello world");
 if (string_ends_with(s, "world")) {
     // ...
 }
@@ -434,7 +434,7 @@ int string_index_of_char(const string_t *string, char c);
 - 用例
 
 ```c
-string_t *s = string_create("Hello, world!");
+string_t *s = string_new("Hello, world!");
 int index = string_index_of_char(s, ',');
 if (index != -1) {
     // ...
@@ -461,7 +461,7 @@ int string_index_of_string(const string_t *string, const char *str);
 - 用例
 
 ```c
-string_t *s = string_create("Hello, world!");
+string_t *s = string_new("Hello, world!");
 int index = string_index_of_string(s, "world");
 if (index != -1) {
     // ...
@@ -488,7 +488,7 @@ bool string_contains_string(const string_t *string, const char *str);
 - 用例
 
 ```c
-string_t *s = string_create("Hello, world!");
+string_t *s = string_new("Hello, world!");
 if (string_contains_string(s, "world")) {
     // ...
 }
@@ -513,7 +513,7 @@ string_t *string_reverse(string_t *string);
 - 用例
 
 ```c
-string_t *s = string_create("hello, world");
+string_t *s = string_new("hello, world");
 string_reverse(s);
 ```
 
@@ -536,7 +536,7 @@ string_t *string_strip(string_t *string);
 - 用例
 
 ```c
-string_t *s = string_create("\n\t  hello world\n\t   ");
+string_t *s = string_new("\n\t  hello world\n\t   ");
 string_strip(s);
 ```
 
@@ -564,7 +564,7 @@ char *string_substring(const string_t *string, int start, int end)
 - 用例
 
 ```c
-string_t *s = string_create("Hello, world!");
+string_t *s = string_new("Hello, world!");
 char *substr = string_substring(s, 7, 12);
 printf("%s\n", substr);
 ```
@@ -589,7 +589,7 @@ size_t string_count_substring(const string_t *string, const char *substr);
 - 用例
 
 ```c
-string_t *s = string_create("Hello World Hello World!");
+string_t *s = string_new("Hello World Hello World!");
 int count = string_count_substring(s, "World");
 printf("%d\n", count);
 ```
@@ -614,7 +614,7 @@ string_t *string_append_char(string_t *string, char c);
 - 用例
 
 ```c
-string_t *s = string_create("hello");
+string_t *s = string_new("hello");
 string_append_char(s, '!');
 ```
 
@@ -639,7 +639,7 @@ string_t *string_insert_char(string_t *string, size_t index, char c);
 - 用例
 
 ```c
-string_t *s = string_create("hello");
+string_t *s = string_new("hello");
 string_insert_char(s, 5, ',');
 ```
 
@@ -663,7 +663,7 @@ string_t *string_concat(string_t *string, const char *str);
 - 用例
 
 ```c
-string_t *s = string_create("hello");
+string_t *s = string_new("hello");
 string_concat(s, " world");
 ```
 
@@ -688,7 +688,7 @@ string_t *string_insert_string(string_t *string, size_t index, const char *str);
 - 用例
 
 ```c
-string_t *s = string_create("helloworld");
+string_t *s = string_new("helloworld");
 string_insert_string(str, 5, ", ");
 ```
 
@@ -712,7 +712,7 @@ string_t *string_remove_char(string_t *string, char c);
 - 用例
 
 ```c
-string_t *s = string_create("Hello, world");
+string_t *s = string_new("Hello, world");
 string_remove_char(s, 'o');
 ```
 
@@ -736,7 +736,7 @@ string_t *string_remove_string(string_t *string, const char *str);
 - 用例
 
 ```c
-string_t *s = string_create("This is a test");
+string_t *s = string_new("This is a test");
 string_remove_char(s, "is");
 ```
 
@@ -761,7 +761,7 @@ string_t *string_replace_char(string_t *string, char old_char, char new_char);
 - 用例
 
 ```c
-string_t *s = string_create("Hello World");
+string_t *s = string_new("Hello World");
 string_replace_char(s, 'o', 'X');
 ```
 
@@ -786,7 +786,7 @@ char *str_replace_string(char *str, const char *old_str, const char *new_str);
 - 用例
 
 ```c
-string_t *s = string_create("Hello World");
+string_t *s = string_new("Hello World");
 str_replace_string(s, "World", "Earth");
 ```
 
@@ -814,7 +814,7 @@ char **string_split(const string_t *string, const char *delimiter);
 - 用例
 
 ```c
-string_t *s = string_create("123, 456, 789");
+string_t *s = string_new("123, 456, 789");
 char **tokens = string_split(s, ", ");
 int i = 0;
 while (tokens[i] != NULL) {

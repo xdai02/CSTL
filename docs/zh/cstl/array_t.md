@@ -4,12 +4,12 @@
 
 
 
-## array_create()
+## array_new()
 
 - 原型
 
 ```c
-array_t *array_create(compare_t compare, destroy_t destroy);
+array_t *array_new(compare_t compare, destroy_t destroy);
 ```
 
 - 描述
@@ -23,16 +23,16 @@ array_t *array_create(compare_t compare, destroy_t destroy);
 
 ```c
 // Create an integer array using Integer wrapper
-array_t *array1 = array_create(Integer_compare, Integer_delete);
+array_t *array1 = array_new(Integer_compare, Integer_delete);
 
 // Create a double array using Double wrapper
-array_t *array2 = array_create(Double_compare, Double_delete);
+array_t *array2 = array_new(Double_compare, Double_delete);
 
 // Create a boolean array using Boolean wrapper
-array_t *array3 = array_create(Boolean_compare, Boolean_delete);
+array_t *array3 = array_new(Boolean_compare, Boolean_delete);
 
 // Create a character array using Character wrapper
-array_t *array4 = array_create(Character_compare, Character_delete);
+array_t *array4 = array_new(Character_compare, Character_delete);
 ```
 
 ```c
@@ -55,19 +55,19 @@ void Employee_delete(void *ptr) {
 }
 
 // Create an array of employees
-array_t *employees = array_create(Employee_compare, Employee_delete);
+array_t *employees = array_new(Employee_compare, Employee_delete);
 
 // ...
 ```
 
 
 
-## array_destroy()
+## array_delete()
 
 - 原型
 
 ```c
-void array_destroy(array_t *array);
+void array_delete(array_t *array);
 ```
 
 - 描述
@@ -77,8 +77,8 @@ void array_destroy(array_t *array);
 - 用例
 
 ```c
-array_t *array = array_create(Integer_compare, Integer_delete);
-array_destroy(array);
+array_t *array = array_new(Integer_compare, Integer_delete);
+array_delete(array);
 ```
 
 
@@ -100,11 +100,11 @@ bool array_is_empty(const array_t *array);
 - 用例
 
 ```c
-array_t *array = array_create(Integer_compare, Integer_delete);
+array_t *array = array_new(Integer_compare, Integer_delete);
 if (array_is_empty(array)) {
     // ...
 }
-array_destroy(array);
+array_delete(array);
 ```
 
 
@@ -126,9 +126,9 @@ size_t array_size(const array_t *array);
 - 用例
 
 ```c
-array_t *array = array_create(Integer_compare, Integer_delete);
+array_t *array = array_new(Integer_compare, Integer_delete);
 printf("%d\n", array_size(array));
-array_destroy(array);
+array_delete(array);
 ```
 
 
@@ -163,7 +163,7 @@ void Integer_triple(T elem) {
 
 int main() {
     // Create an array of integers
-    array_t *array = array_create(Integer_compare, Integer_delete);
+    array_t *array = array_new(Integer_compare, Integer_delete);
 
     for (int i = 0; i < 10; i++) {
         // Add the integer object to the array
@@ -182,7 +182,7 @@ int main() {
     printf("\n");
 
     // Destroy the array
-    array_destroy(array);
+    array_delete(array);
 
     return 0;
 }
@@ -207,14 +207,14 @@ array_t *array_clear(array_t *array);
 - 用例
 
 ```c
-array_t *array = array_create(Integer_compare, Integer_delete);
+array_t *array = array_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     array_append(array, Integer_new(i));
 }
 
 array_clear(array);
-array_destroy(array);
+array_delete(array);
 ```
 
 
@@ -237,7 +237,7 @@ T array_get(const array_t *array, size_t index);
 - 用例
 
 ```c
-array_t *array = array_create(Integer_compare, Integer_delete);
+array_t *array = array_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     array_append(array, Integer_new(i));
@@ -246,7 +246,7 @@ for (int i = 0; i < 10; i++) {
 Integer *integer = (Integer *)array_get(array, 5);
 printf("%d\n", Integer_get(integer));
 
-array_destroy(array);
+array_delete(array);
 ```
 
 
@@ -270,14 +270,14 @@ array_t *array_set(array_t *array, size_t index, T elem);
 - 用例
 
 ```c
-array_t *array = array_create(Integer_compare, Integer_delete);
+array_t *array = array_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     array_append(array, Integer_new(i));
 }
 
 array_set(array, 5, Integer_new(50));
-array_destroy(array);
+array_delete(array);
 ```
 
 
@@ -300,11 +300,11 @@ array_t *array_append(array_t *array, T elem);
 - 用例
 
 ```c
-array_t *array = array_create(Integer_compare, Integer_delete);
+array_t *array = array_new(Integer_compare, Integer_delete);
 for (int i = 0; i < 10; i++) {
     array_append(array, Integer_new(i));
 }
-array_destroy(array);
+array_delete(array);
 ```
 
 
@@ -328,12 +328,12 @@ array_t *array_insert(array_t *array, size_t index, T elem);
 - 用例
 
 ```c
-array_t *array = array_create(Integer_compare, Integer_delete);
+array_t *array = array_new(Integer_compare, Integer_delete);
 array_insert(array, 0, Integer_new(1));
 array_insert(array, 1, Integer_new(2));
 array_insert(array, 0, Integer_new(3));
 array_insert(array, 2, Integer_new(4));
-array_destroy(array);
+array_delete(array);
 ```
 
 
@@ -356,14 +356,14 @@ T array_remove(array_t *array, size_t index);
 - 用例
 
 ```c
-array_t *array = array_create(Integer_compare, Integer_delete);
+array_t *array = array_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     array_append(array, Integer_new(i));
 }
 
 array_remove(array, 5);
-array_destroy(array);
+array_delete(array);
 ```
 
 
@@ -386,7 +386,7 @@ size_t array_index_of(const array_t *array, T elem);
 - 用例
 
 ```c
-array_t *array = array_create(Integer_compare, Integer_delete);
+array_t *array = array_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     array_append(array, Integer_new(i));
@@ -396,7 +396,7 @@ Integer *target = Integer_new(5);
 printf("%d\n", array_index_of(array, target));
 Integer_delete(target);
 
-array_destroy(array);
+array_delete(array);
 ```
 
 
@@ -419,7 +419,7 @@ bool array_contains(const array_t *array, T elem);
 - 用例
 
 ```c
-array_t *array = array_create(Integer_compare, Integer_delete);
+array_t *array = array_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     array_append(array, Integer_new(i));
@@ -431,7 +431,7 @@ if (array_contains(array, target)) {
 }
 Integer_delete(target);
 
-array_destroy(array);
+array_delete(array);
 ```
 
 
@@ -454,7 +454,7 @@ size_t array_count(const array_t *array, T elem);
 - 用例
 
 ```c
-array_t *array = array_create(Integer_compare, Integer_delete);
+array_t *array = array_new(Integer_compare, Integer_delete);
 
 array_append(array, Integer_new(1));
 array_append(array, Integer_new(2));
@@ -466,7 +466,7 @@ Integer *target = Integer_new(2);
 printf("%d\n", array_count(array, target));
 Integer_delete(target);
 
-array_destroy(array);
+array_delete(array);
 ```
 
 
@@ -488,14 +488,14 @@ array_t *array_reverse(array_t *array);
 - 用例
 
 ```c
-array_t *array = array_create(Integer_compare, Integer_delete);
+array_t *array = array_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     array_append(array, Integer_new(i));
 }
 
 array_reverse(array);
-array_destroy(array);
+array_delete(array);
 ```
 
 
@@ -517,7 +517,7 @@ array_t *array_sort(array_t *array);
 - 用例
 
 ```c
-array_t *array = array_create(Integer_compare, Integer_delete);
+array_t *array = array_new(Integer_compare, Integer_delete);
 
 array_append(array, Integer_new(4));
 array_append(array, Integer_new(1));
@@ -526,7 +526,7 @@ array_append(array, Integer_new(7));
 array_append(array, Integer_new(6));
 
 array_sort(array);
-array_destroy(array);
+array_delete(array);
 ```
 
 
@@ -597,7 +597,7 @@ T array_iterator_next(iterator_t *iterator);
 - 用例
 
 ```c
-array_t *array = array_create(Integer_compare, Integer_delete);
+array_t *array = array_new(Integer_compare, Integer_delete);
 for (i = 0; i < 10; i++) {
     array_append(array, Integer_new(i));
 }
@@ -609,6 +609,6 @@ while (array_iterator_has_next(iterator)) {
 }
 
 array_iterator_destroy(iterator);
-array_destroy(array);
+array_delete(array);
 ```
 

@@ -188,8 +188,8 @@ typedef size_t (*hash_t)(const T data);
 ```c
 typedef struct string_t string_t;
 
-string_t *string_create(const char *str);
-void string_destroy(string_t *string);
+string_t *string_new(const char *str);
+void string_delete(string_t *string);
 string_t *string_clone(const string_t *string);
 size_t string_length(const string_t *string);
 bool string_is_empty(const string_t *string);
@@ -228,8 +228,8 @@ char **string_split(const string_t *string, const char *delimiter);
 ```c
 typedef struct array_t array_t;
 
-array_t *array_create(compare_t compare, destroy_t destroy);
-void array_destroy(array_t *array);
+array_t *array_new(compare_t compare, destroy_t destroy);
+void array_delete(array_t *array);
 bool array_is_empty(const array_t *array);
 size_t array_size(const array_t *array);
 void array_foreach(array_t *array, visit_t visit);
@@ -255,8 +255,8 @@ T array_iterator_next(iterator_t *iterator);
 ```c
 typedef struct list_t list_t;
 
-list_t *list_create(compare_t compare, destroy_t destroy);
-void list_destroy(list_t *list);
+list_t *list_new(compare_t compare, destroy_t destroy);
+void list_delete(list_t *list);
 bool list_is_empty(const list_t *list);
 size_t list_size(const list_t *list);
 void list_foreach(list_t *list, visit_t visit);
@@ -286,8 +286,8 @@ T list_iterator_next(iterator_t *iterator);
 ```c
 typedef struct stack_t stack_t;
 
-stack_t *stack_create(destroy_t destroy);
-void stack_destroy(stack_t *stack);
+stack_t *stack_new(destroy_t destroy);
+void stack_delete(stack_t *stack);
 bool stack_is_empty(const stack_t *stack);
 size_t stack_size(const stack_t *stack);
 stack_t *stack_clear(stack_t *stack);
@@ -301,8 +301,8 @@ T stack_peek(const stack_t *stack);
 ```c
 typedef struct queue_t queue_t;
 
-queue_t *queue_create(destroy_t destroy);
-void queue_destroy(queue_t *queue);
+queue_t *queue_new(destroy_t destroy);
+void queue_delete(queue_t *queue);
 bool queue_is_empty(const queue_t *queue);
 size_t queue_size(const queue_t *queue);
 queue_t *queue_clear(queue_t *queue);
@@ -316,8 +316,8 @@ T queue_peek(const queue_t *queue);
 ```c
 typedef struct deque_t deque_t;
 
-deque_t *deque_create(destroy_t destroy);
-void deque_destroy(deque_t *deque);
+deque_t *deque_new(destroy_t destroy);
+void deque_delete(deque_t *deque);
 bool deque_is_empty(const deque_t *deque);
 size_t deque_size(const deque_t *deque);
 deque_t *deque_clear(deque_t *deque);
@@ -334,8 +334,8 @@ T deque_get_back(const deque_t *deque);
 ```c
 typedef struct red_black_tree_t red_black_tree_t;
 
-red_black_tree_t *red_black_tree_create(compare_t compare, destroy_t destroy);
-void red_black_tree_destroy(red_black_tree_t *tree);
+red_black_tree_t *red_black_tree_new(compare_t compare, destroy_t destroy);
+void red_black_tree_delete(red_black_tree_t *tree);
 bool red_black_tree_is_empty(const red_black_tree_t *tree);
 size_t red_black_tree_size(const red_black_tree_t *tree);
 red_black_tree_t *red_black_tree_clear(red_black_tree_t *tree);
@@ -354,8 +354,8 @@ T red_black_tree_iterator_next(iterator_t *iterator);
 ```c
 typedef struct hash_table_t hash_table_t;
 
-hash_table_t *hash_table_create(compare_t compare, destroy_t destroy_key, destroy_t destroy_value, hash_t hash);
-void hash_table_destroy(hash_table_t *hash_table);
+hash_table_t *hash_table_new(compare_t compare, destroy_t destroy_key, destroy_t destroy_value, hash_t hash);
+void hash_table_delete(hash_table_t *hash_table);
 bool hash_table_is_empty(const hash_table_t *hash_table);
 size_t hash_table_size(const hash_table_t *hash_table);
 void hash_table_foreach(hash_table_t *hash_table, visit_pair_t visit);
@@ -370,8 +370,8 @@ T hash_table_get(const hash_table_t *hash_table, T key);
 ```c
 typedef struct ordered_set_t ordered_set_t;
 
-ordered_set_t *ordered_set_create(compare_t compare, destroy_t destroy);
-void ordered_set_destroy(ordered_set_t *set);
+ordered_set_t *ordered_set_new(compare_t compare, destroy_t destroy);
+void ordered_set_delete(ordered_set_t *set);
 bool ordered_set_is_empty(const ordered_set_t *set);
 size_t ordered_set_size(const ordered_set_t *set);
 void ordered_set_foreach(ordered_set_t *set, visit_t visit);
@@ -482,7 +482,7 @@ COOP
 #include <coop.h>
 
 int main() {
-	array_t *arr = array_create(Integer_compare, Integer_delete);
+	array_t *arr = array_new(Integer_compare, Integer_delete);
 	for(int i = 0; i < 10; i++) {
 		array_append(arr, Integer_new(i));
 	}
@@ -492,7 +492,7 @@ int main() {
 		printf("%d ", Integer_get(integer));
 	}
 
-	array_destroy(arr);
+	array_delete(arr);
 	return 0;
 }
 ```

@@ -4,12 +4,12 @@
 
 
 
-## list_create()
+## list_new()
 
 - 原型
 
 ```c
-list_t *list_create(compare_t compare, destroy_t destroy);
+list_t *list_new(compare_t compare, destroy_t destroy);
 ```
 
 - 描述
@@ -23,16 +23,16 @@ list_t *list_create(compare_t compare, destroy_t destroy);
 
 ```c
 // Create an integer linked list using Integer wrapper
-list_t *list1 = list_create(Integer_compare, Integer_delete);
+list_t *list1 = list_new(Integer_compare, Integer_delete);
 
 // Create a double linked list using Double wrapper
-list_t *list2 = list_create(Double_compare, Double_delete);
+list_t *list2 = list_new(Double_compare, Double_delete);
 
 // Create a boolean linked list using Boolean wrapper
-list_t *list3 = list_create(Boolean_compare, Boolean_delete);
+list_t *list3 = list_new(Boolean_compare, Boolean_delete);
 
 // Create a character linked list using Character wrapper
-list_t *list4 = list_create(Character_compare, Character_delete);
+list_t *list4 = list_new(Character_compare, Character_delete);
 ```
 
 ```c
@@ -55,19 +55,19 @@ void Employee_delete(void *ptr) {
 }
 
 // Create a list of employees
-list_t *employees = list_create(Employee_compare, Employee_delete);
+list_t *employees = list_new(Employee_compare, Employee_delete);
 
 // ...
 ```
 
 
 
-## list_destroy()
+## list_delete()
 
 - 原型
 
 ```c
-void list_destroy(list_t *list);
+void list_delete(list_t *list);
 ```
 
 - 描述
@@ -77,8 +77,8 @@ void list_destroy(list_t *list);
 - 用例
 
 ```c
-list_t *list = list_create(Integer_compare, Integer_delete);
-list_destroy(list);
+list_t *list = list_new(Integer_compare, Integer_delete);
+list_delete(list);
 ```
 
 
@@ -100,11 +100,11 @@ bool list_is_empty(const list_t *list);
 - 用例
 
 ```c
-list_t *list = list_create(Integer_compare, Integer_delete);
+list_t *list = list_new(Integer_compare, Integer_delete);
 if (list_is_empty(list)) {
     // ...
 }
-list_destroy(list);
+list_delete(list);
 ```
 
 
@@ -126,9 +126,9 @@ size_t list_size(const list_t *list);
 - 用例
 
 ```c
-list_t *list = list_create(Integer_compare, Integer_delete);
+list_t *list = list_new(Integer_compare, Integer_delete);
 printf("%d\n", list_size(list));
-list_destroy(list);
+list_delete(list);
 ```
 
 
@@ -163,7 +163,7 @@ void Integer_triple(T elem) {
 
 int main() {
     // Create a list of integers
-    list_t *list = list_create(Integer_compare, Integer_delete);
+    list_t *list = list_new(Integer_compare, Integer_delete);
 
     for (int i = 0; i < 10; i++) {
         // Add the integer object to the list
@@ -182,7 +182,7 @@ int main() {
     printf("\n");
 
     // Destroy the list
-    list_destroy(list);
+    list_delete(list);
 
     return 0;
 }
@@ -207,14 +207,14 @@ list_t *list_clear(list_t *list);
 - 用例
 
 ```c
-list_t *list = list_create(Integer_compare, Integer_delete);
+list_t *list = list_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     list_push_back(list, Integer_new(i));
 }
 
 list_clear(list);
-list_destroy(list);
+list_delete(list);
 ```
 
 
@@ -237,7 +237,7 @@ T list_get(const list_t *list, size_t index);
 - 用例
 
 ```c
-list_t *list= list_create(Integer_compare, Integer_delete);
+list_t *list= list_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     list_push_back(list, Integer_new(i));
@@ -246,7 +246,7 @@ for (int i = 0; i < 10; i++) {
 Integer *integer = (Integer *)list_get(list, 5);
 printf("%d\n", Integer_get(integer));
 
-list_destroy(list);
+list_delete(list);
 ```
 
 
@@ -270,14 +270,14 @@ list_t *list_set(list_t *list, size_t index, T elem);
 - 用例
 
 ```c
-list_t *list = list_create(Integer_compare, Integer_delete);
+list_t *list = list_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     list_push_back(list, Integer_new(i));
 }
 
 list_set(list, 5, Integer_new(50));
-list_destroy(list);
+list_delete(list);
 ```
 
 
@@ -300,7 +300,7 @@ int list_index_of(const list_t *list, T elem);
 - 用例
 
 ```c
-list_t *list = list_create(Integer_compare, Integer_delete);
+list_t *list = list_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     list_push_back(list, Integer_new(i));
@@ -310,7 +310,7 @@ Integer *target = Integer_new(5);
 printf("%d\n", list_index_of(list, target));
 Integer_delete(target);
 
-list_destroy(list);
+list_delete(list);
 ```
 
 
@@ -333,7 +333,7 @@ bool list_contains(const list_t *list, T elem);
 - 用例
 
 ```c
-list_t *list = list_create(Integer_compare, Integer_delete);
+list_t *list = list_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     list_push_back(list, Integer_new(i));
@@ -345,7 +345,7 @@ if (list_contains(list, target)) {
 }
 Integer_delete(target);
 
-list_destroy(list);
+list_delete(list);
 ```
 
 
@@ -368,7 +368,7 @@ size_t list_count(const list_t *list, T elem);
 - 用例
 
 ```c
-list_t *list = list_create(Integer_compare, Integer_delete);
+list_t *list = list_new(Integer_compare, Integer_delete);
 
 list_push_back(list, Integer_new(1));
 list_push_back(list, Integer_new(2));
@@ -380,7 +380,7 @@ Integer *target = Integer_new(2);
 printf("%d\n", list_count(list, target));
 Integer_delete(target);
 
-list_destroy(list);
+list_delete(list);
 ```
 
 
@@ -402,7 +402,7 @@ T list_get_front(const list_t *list);
 - 用例
 
 ```c
-list_t *list = list_create(Integer_compare, Integer_delete);
+list_t *list = list_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     list_push_back(list, Integer_new(i));
@@ -411,7 +411,7 @@ for (int i = 0; i < 10; i++) {
 Integer *integer = (Integer *)list_get_front(list);
 printf("%d\n", Integer_get(integer));
 
-list_destroy(list);
+list_delete(list);
 ```
 
 
@@ -433,7 +433,7 @@ T list_get_back(const list_t *list);
 - 用例
 
 ```c
-list_t *list = list_create(Integer_compare, Integer_delete);
+list_t *list = list_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     list_push_back(list, Integer_new(i));
@@ -442,7 +442,7 @@ for (int i = 0; i < 10; i++) {
 Integer *integer = (Integer *)list_get_back(list);
 printf("%d\n", Integer_get(integer));
 
-list_destroy(list);
+list_delete(list);
 ```
 
 
@@ -465,13 +465,13 @@ list_t *list_push_front(list_t *list, T elem);
 - 用例
 
 ```c
-list_t *list = list_create(Integer_compare, Integer_delete);
+list_t *list = list_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     list_push_front(list, Integer_new(i));
 }
 
-list_destroy(list);
+list_delete(list);
 ```
 
 
@@ -494,13 +494,13 @@ list_t *list_push_back(list_t *list, T elem);
 - 用例
 
 ```c
-list_t *list = list_create(Integer_compare, Integer_delete);
+list_t *list = list_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     list_push_back(list, Integer_new(i));
 }
 
-list_destroy(list);
+list_delete(list);
 ```
 
 
@@ -522,7 +522,7 @@ T list_pop_front(list_t *list);
 - 用例
 
 ```c
-list_t *list = list_create(Integer_compare, Integer_delete);
+list_t *list = list_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     list_push_back(list, Integer_new(i));
@@ -531,7 +531,7 @@ for (int i = 0; i < 10; i++) {
 Integer *integer = (Integer *)list_pop_front(list);
 printf("%d\n", Integer_get(integer));
 
-list_destroy(list);
+list_delete(list);
 ```
 
 
@@ -553,7 +553,7 @@ T list_pop_back(list_t *list);
 - 用例
 
 ```c
-list_t *list = list_create(Integer_compare, Integer_delete);
+list_t *list = list_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     list_push_back(list, Integer_new(i));
@@ -562,7 +562,7 @@ for (int i = 0; i < 10; i++) {
 Integer *integer = (Integer *)list_pop_back(list);
 printf("%d\n", Integer_get(integer));
 
-list_destroy(list);
+list_delete(list);
 ```
 
 
@@ -586,12 +586,12 @@ list_t *list_insert(list_t *list, size_t index, T elem);
 - 用例
 
 ```c
-list_t *list = list_create(Integer_compare, Integer_delete);
+list_t *list = list_new(Integer_compare, Integer_delete);
 list_insert(list, 0, Integer_new(1));
 list_insert(list, 1, Integer_new(2));
 list_insert(list, 0, Integer_new(3));
 list_insert(list, 2, Integer_new(4));
-list_destroy(list);
+list_delete(list);
 ```
 
 
@@ -614,14 +614,14 @@ T list_remove(list_t *list, size_t index);
 - 用例
 
 ```c
-list_t *list = list_create(Integer_compare, Integer_delete);
+list_t *list = list_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     list_push_back(list, Integer_new(i));
 }
 
 list_remove(list, 5);
-list_destroy(list);
+list_delete(list);
 ```
 
 
@@ -643,14 +643,14 @@ list_t *list_reverse(list_t *list);
 - 用例
 
 ```c
-list_t *list = list_create(Integer_compare, Integer_delete);
+list_t *list = list_new(Integer_compare, Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     list_push_back(list, Integer_new(i));
 }
 
 list_reverse(list);
-list_destroy(list);
+list_delete(list);
 ```
 
 
@@ -721,7 +721,7 @@ T list_iterator_next(iterator_t *iterator);
 - 用例
 
 ```c
-list_t *list = list_create(Integer_compare, Integer_delete);
+list_t *list = list_new(Integer_compare, Integer_delete);
 for (i = 0; i < 10; i++) {
     list_push_back(list, Integer_new(i));
 }
@@ -733,6 +733,6 @@ while (list_iterator_has_next(iterator)) {
 }
 
 list_iterator_destroy(iterator);
-list_destroy(list);
+list_delete(list);
 ```
 

@@ -15,7 +15,7 @@ struct string_t {
  * @param str The primitive string.
  * @return Returns a string_t pointer if the memory allocation succeeds, otherwise returns NULL.
  */
-string_t *string_create(const char *str) {
+string_t *string_new(const char *str) {
     string_t *string = NULL;
     size_t len;
 
@@ -41,7 +41,7 @@ string_t *string_create(const char *str) {
  * @brief Destroy the string_t object.
  * @param string The string_t object.
  */
-void string_destroy(string_t *string) {
+void string_delete(string_t *string) {
     return_if_fail(string != NULL);
     free(string->string);
     free(string);
@@ -98,7 +98,7 @@ static bool __string_resize(string_t *string) {
  */
 string_t *string_clone(const string_t *string) {
     return_value_if_fail(string != NULL, NULL);
-    return string_create(string->string);
+    return string_new(string->string);
 }
 
 /**

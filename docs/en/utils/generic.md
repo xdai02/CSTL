@@ -23,7 +23,7 @@ typedef struct array_t {
     size_t capacity;
 } array_t;
 
-array_t *array_create() {
+array_t *array_new() {
     array_t *array = (array_t *)malloc(sizeof(array_t));
     array->data = (T *)malloc(sizeof(T) * 16);
     array->size = 0;
@@ -87,7 +87,7 @@ typedef struct {
     char *str;
 } MyString;
 
-void mystring_destroy(T data) {
+void mystring_delete(T data) {
     MyString *mystring = (MyString *)data;
     free(mystring->str);
 }

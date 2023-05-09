@@ -12,13 +12,13 @@ typedef struct red_black_tree_t red_black_tree_t;
  * @param destroy Callback function for destroying a data item.
  * @return Returns the red_black_tree_t object if create successfully, otherwise returns NULL.
  */
-red_black_tree_t *red_black_tree_create(compare_t compare, destroy_t destroy);
+red_black_tree_t *red_black_tree_new(compare_t compare, destroy_t destroy);
 
 /**
  * @brief Destroy a red_black_tree_t object.
  * @param tree The red_black_tree_t object.
  */
-void red_black_tree_destroy(red_black_tree_t *tree);
+void red_black_tree_delete(red_black_tree_t *tree);
 
 /**
  * @brief Determine whether the red_black_tree_t object is empty.

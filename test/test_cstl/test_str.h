@@ -1,8 +1,8 @@
 #ifndef _TEST_STR_H_
 #define _TEST_STR_H_
 
-void test_string_create();
-void test_string_destroy();
+void test_string_new();
+void test_string_delete();
 void test_string_clone();
 void test_string_length();
 void test_string_is_empty();

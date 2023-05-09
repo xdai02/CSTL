@@ -4,12 +4,12 @@
 
 
 
-## stack_create()
+## stack_new()
 
 - Prototype
 
 ```c
-stack_t *stack_create(destroy_t destroy);
+stack_t *stack_new(destroy_t destroy);
 ```
 
 - Description
@@ -22,26 +22,26 @@ stack_t *stack_create(destroy_t destroy);
 
 ```c
 // Create an integer stack using Integer wrapper
-stack_t *stack1 = stack_create(Integer_delete);
+stack_t *stack1 = stack_new(Integer_delete);
 
 // Create a double stack using Double wrapper
-stack_t *stack2 = stack_create(Double_delete);
+stack_t *stack2 = stack_new(Double_delete);
 
 // Create a boolean stack using Boolean wrapper
-stack_t *stack3 = stack_create(Boolean_delete);
+stack_t *stack3 = stack_new(Boolean_delete);
 
 // Create a character stack using Character wrapper
-stack_t *stack4 = stack_create(Character_delete);
+stack_t *stack4 = stack_new(Character_delete);
 ```
 
 
 
-## stack_destroy()
+## stack_delete()
 
 - Prototype
 
 ```c
-void stack_destroy(stack_t *stack);
+void stack_delete(stack_t *stack);
 ```
 
 - Description
@@ -51,8 +51,8 @@ void stack_destroy(stack_t *stack);
 - Usage
 
 ```c
-stack_t *stack = stack_create(Integer_delete);
-stack_destroy(stack);
+stack_t *stack = stack_new(Integer_delete);
+stack_delete(stack);
 ```
 
 
@@ -74,11 +74,11 @@ bool stack_is_empty(const stack_t *stack);
 - Usage
 
 ```c
-stack_t *stack = stack_create(Integer_delete);
+stack_t *stack = stack_new(Integer_delete);
 if (stack_is_empty(stack)) {
     // ...
 }
-stack_destroy(stack);
+stack_delete(stack);
 ```
 
 
@@ -100,9 +100,9 @@ size_t stack_size(const stack_t *stack);
 - Usage
 
 ```c
-stack_t *stack = stack_create(Integer_delete);
+stack_t *stack = stack_new(Integer_delete);
 printf("%d\n", stack_size(stack));
-stack_destroy(stack);
+stack_delete(stack);
 ```
 
 
@@ -124,14 +124,14 @@ stack_t *stack_clear(stack_t *stack);
 - Usage
 
 ```c
-stack_t *stack = stack_create(Integer_delete);
+stack_t *stack = stack_new(Integer_delete);
 
 for (int i = 0; i < 10; i++) {
     stack_push(stack, Integer_new(i));
 }
 
 stack_clear(stack);
-stack_destroy(stack);
+stack_delete(stack);
 ```
 
 
@@ -154,11 +154,11 @@ stack_t *stack_push(stack_t *stack, T elem);
 - Usage
 
 ```c
-stack_t *stack = stack_create(Integer_delete);
+stack_t *stack = stack_new(Integer_delete);
 for (int i = 0; i < 10; i++) {
     stack_push(stack, Integer_new(i));
 }
-stack_destroy(stack);
+stack_delete(stack);
 ```
 
 
@@ -180,12 +180,12 @@ T stack_pop(stack_t *stack);
 - Usage
 
 ```c
-stack_t *stack = stack_create(Integer_delete);
+stack_t *stack = stack_new(Integer_delete);
 for (int i = 0; i < 10; i++) {
     stack_push(stack, Integer_new(i));
 }
 stack_pop(stack);
-stack_destroy(stack);
+stack_delete(stack);
 ```
 
 
@@ -207,11 +207,11 @@ T stack_peek(const stack_t *stack);
 - Usage
 
 ```c
-stack_t *stack = stack_create(Integer_delete);
+stack_t *stack = stack_new(Integer_delete);
 for (int i = 0; i < 10; i++) {
     stack_push(stack, Integer_new(i));
 }
 printf("%d\n", Integer_get(stack_peek(stack)));
-stack_destroy(stack);
+stack_delete(stack);
 ```
 

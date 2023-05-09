@@ -10,11 +10,11 @@ struct deque_t {
  * @param destroy Callback function for destroying a data item.
  * @return Returns the created deque_t object if successful, otherwise return NULL.
  */
-deque_t *deque_create(destroy_t destroy) {
+deque_t *deque_new(destroy_t destroy) {
     deque_t *deque = (deque_t *)malloc(sizeof(deque_t));
     return_value_if_fail(deque != NULL, NULL);
 
-    deque->list = list_create(NULL, destroy);
+    deque->list = list_new(NULL, destroy);
     if (deque->list == NULL) {
         free(deque);
         return NULL;
@@ -27,9 +27,9 @@ deque_t *deque_create(destroy_t destroy) {
  * @brief Destroy a deque_t object.
  * @param deque The deque_t object.
  */
-void deque_destroy(deque_t *deque) {
+void deque_delete(deque_t *deque) {
     return_if_fail(deque != NULL);
-    list_destroy(deque->list);
+    list_delete(deque->list);
     free(deque);
 }
 
