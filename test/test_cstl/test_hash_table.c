@@ -5,7 +5,7 @@
 #define N 1000
 
 void test_hash_table_new() {
-    hash_table_t *hash_table = hash_table_new(UnsignedCharacter_compare, UnsignedCharacter_delete, UnsignedCharacter_delete, UnsignedCharacter_hash);
+    hash_table_t *hash_table = hash_table_new(UnsignedCharacter_compare, UnsignedCharacter_hash);
     assert(hash_table != NULL);
     assert(hash_table_is_empty(hash_table) == true);
     assert(hash_table_size(hash_table) == 0);
@@ -13,15 +13,18 @@ void test_hash_table_new() {
 }
 
 void test_hash_table_delete() {
-    hash_table_t *hash_table = hash_table_new(UnsignedShort_compare, UnsignedShort_delete, UnsignedShort_delete, UnsignedShort_hash);
+    hash_table_t *hash_table = hash_table_new(UnsignedShort_compare, UnsignedShort_hash);
     assert(hash_table != NULL);
     hash_table_delete(hash_table);
 }
 
 void test_hash_table_is_empty() {
-    hash_table_t *hash_table = hash_table_new(UnsignedInteger_compare, UnsignedInteger_delete, UnsignedInteger_delete, UnsignedInteger_hash);
+    hash_table_t *hash_table = NULL;
+    pair_t *pair;
+    hash_table = hash_table_new(UnsignedInteger_compare, UnsignedInteger_hash);
     assert(hash_table_is_empty(hash_table) == true);
-    hash_table_put(hash_table, UnsignedInteger_new(0), UnsignedInteger_new(0));
+    pair = pair_new(UnsignedInteger_new(0), UnsignedInteger_new(0), UnsignedInteger_delete, UnsignedInteger_delete);
+    hash_table_put(hash_table, pair);
     assert(hash_table_is_empty(hash_table) == false);
     hash_table_delete(hash_table);
 }
@@ -29,23 +32,26 @@ void test_hash_table_is_empty() {
 void test_hash_table_size() {
     int i = 0;
     hash_table_t *hash_table = NULL;
-
-    hash_table = hash_table_new(UnsignedLong_compare, UnsignedLong_delete, UnsignedLong_delete, UnsignedLong_hash);
+    pair_t *pair;
+    hash_table = hash_table_new(UnsignedLong_compare, UnsignedLong_hash);
     assert(hash_table_is_empty(hash_table) == true);
     for (i = 0; i < N; i++) {
-        hash_table_put(hash_table, UnsignedLong_new(i), UnsignedLong_new(i));
+        pair = pair_new(UnsignedLong_new(i), UnsignedLong_new(i), UnsignedLong_delete, UnsignedLong_delete);
+        hash_table_put(hash_table, pair);
     }
     assert(hash_table_size(hash_table) == N);
     hash_table_delete(hash_table);
 
-    hash_table = hash_table_new(Integer_compare, Integer_delete, Integer_delete, Integer_hash);
+    hash_table = hash_table_new(Integer_compare, Integer_hash);
     assert(hash_table_is_empty(hash_table) == true);
     for (i = 0; i < N; i++) {
-        hash_table_put(hash_table, Integer_new(i), Integer_new(i));
+        pair = pair_new(Integer_new(i), Integer_new(i), Integer_delete, Integer_delete);
+        hash_table_put(hash_table, pair);
     }
     assert(hash_table_size(hash_table) == N);
     for (i = 0; i < N; i++) {
-        hash_table_put(hash_table, Integer_new(i), Integer_new(N - i - 1));
+        pair = pair_new(Integer_new(i), Integer_new(N - i - 1), Integer_delete, Integer_delete);
+        hash_table_put(hash_table, pair);
     }
     assert(hash_table_size(hash_table) == N);
     hash_table_delete(hash_table);
@@ -55,20 +61,24 @@ static int keys[N] = {0};
 static int values[N] = {0};
 static int n = 0;
 
-static void key_value_store(T key, T value) {
-    Integer *k = (Integer *)key;
-    Integer *v = (Integer *)value;
-    keys[n] = Integer_get(k);
-    values[n] = Integer_get(v);
+static void key_value_store(pair_t *pair) {
+    Integer *key = pair_get_key(pair);
+    Integer *value = pair_get_value(pair);
+    keys[n] = Integer_get(key);
+    values[n] = Integer_get(value);
     n++;
 }
 
 void test_hash_table_foreach() {
     int i = 0;
-    hash_table_t *hash_table = hash_table_new(Integer_compare, Integer_delete, Integer_delete, Integer_hash);
+    hash_table_t *hash_table = NULL;
+    pair_t *pair;
+
+    hash_table = hash_table_new(Integer_compare, Integer_hash);
 
     for (i = 0; i < N; i++) {
-        hash_table_put(hash_table, Integer_new(i), Integer_new(i * i));
+        pair = pair_new(Integer_new(i), Integer_new(i * i), Integer_delete, Integer_delete);
+        hash_table_put(hash_table, pair);
     }
 
     n = 0;
@@ -85,10 +95,14 @@ void test_hash_table_foreach() {
 
 void test_hash_table_clear() {
     int i = 0;
-    hash_table_t *hash_table = hash_table_new(Short_compare, Short_delete, Short_delete, Short_hash);
+    hash_table_t *hash_table = NULL;
+    pair_t *pair;
+
+    hash_table = hash_table_new(Short_compare, Short_hash);
     assert(hash_table_is_empty(hash_table) == true);
     for (i = 0; i < N; i++) {
-        hash_table_put(hash_table, Short_new(i), Short_new(i));
+        pair = pair_new(Short_new(i), Short_new(i), Short_delete, Short_delete);
+        hash_table_put(hash_table, pair);
     }
     assert(hash_table_size(hash_table) == N);
     hash_table_clear(hash_table);
@@ -139,15 +153,17 @@ static size_t Point_hash(const void *ptr) {
 void test_hash_table_put() {
     int i = 0;
     hash_table_t *hash_table = NULL;
+    pair_t *pair;
     Integer *key;
     Integer *integer;
     char *string;
     Character *character;
     Point *point;
 
-    hash_table = hash_table_new(Integer_compare, Integer_delete, Integer_delete, Integer_hash);
+    hash_table = hash_table_new(Integer_compare, Integer_hash);
     for (i = 0; i < N; i++) {
-        hash_table_put(hash_table, Integer_new(i), Integer_new(i));
+        pair = pair_new(Integer_new(i), Integer_new(i), Integer_delete, Integer_delete);
+        hash_table_put(hash_table, pair);
     }
     assert(hash_table_size(hash_table) == N);
     for (i = 0; i < N; i++) {
@@ -159,10 +175,14 @@ void test_hash_table_put() {
     }
     hash_table_delete(hash_table);
 
-    hash_table = hash_table_new(Integer_compare, Integer_delete, NULL, Integer_hash);
-    hash_table_put(hash_table, Integer_new(0), "hello");
-    hash_table_put(hash_table, Integer_new(1), "world");
-    hash_table_put(hash_table, Integer_new(2), "test");
+    hash_table = hash_table_new(Integer_compare, Integer_hash);
+
+    pair = pair_new(Integer_new(0), "hello", Integer_delete, NULL);
+    hash_table_put(hash_table, pair);
+    pair = pair_new(Integer_new(1), "world", Integer_delete, NULL);
+    hash_table_put(hash_table, pair);
+    pair = pair_new(Integer_new(2), "test", Integer_delete, NULL);
+    hash_table_put(hash_table, pair);
 
     assert(hash_table_size(hash_table) == 3);
 
@@ -184,8 +204,10 @@ void test_hash_table_put() {
     assert(strcmp(string, "test") == 0);
     Integer_delete(key);
 
-    hash_table_put(hash_table, Integer_new(0), "HELLO");
-    hash_table_put(hash_table, Integer_new(1), "WORLD");
+    pair = pair_new(Integer_new(0), "HELLO", Integer_delete, NULL);
+    hash_table_put(hash_table, pair);
+    pair = pair_new(Integer_new(1), "WORLD", Integer_delete, NULL);
+    hash_table_put(hash_table, pair);
 
     assert(hash_table_size(hash_table) == 3);
 
@@ -209,11 +231,15 @@ void test_hash_table_put() {
 
     hash_table_delete(hash_table);
 
-    hash_table = hash_table_new(Point_compare, Point_delete, Character_delete, Point_hash);
-    hash_table_put(hash_table, Point_new(1, 1), Character_new('A'));
-    hash_table_put(hash_table, Point_new(1, 2), Character_new('B'));
-    hash_table_put(hash_table, Point_new(2, 1), Character_new('C'));
-    hash_table_put(hash_table, Point_new(2, 2), Character_new('D'));
+    hash_table = hash_table_new(Point_compare, Point_hash);
+    pair = pair_new(Point_new(1, 1), Character_new('A'), Point_delete, Character_delete);
+    hash_table_put(hash_table, pair);
+    pair = pair_new(Point_new(1, 2), Character_new('B'), Point_delete, Character_delete);
+    hash_table_put(hash_table, pair);
+    pair = pair_new(Point_new(2, 1), Character_new('C'), Point_delete, Character_delete);
+    hash_table_put(hash_table, pair);
+    pair = pair_new(Point_new(2, 2), Character_new('D'), Point_delete, Character_delete);
+    hash_table_put(hash_table, pair);
     assert(hash_table_size(hash_table) == 4);
 
     point = Point_new(1, 1);
@@ -240,9 +266,12 @@ void test_hash_table_put() {
     assert(Character_get(character) == 'D');
     Point_delete(point);
 
-    hash_table_put(hash_table, Point_new(1, 1), Character_new('a'));
-    hash_table_put(hash_table, Point_new(2, 1), Character_new('c'));
-    hash_table_put(hash_table, Point_new(3, 3), Character_new('E'));
+    pair = pair_new(Point_new(1, 1), Character_new('a'), Point_delete, Character_delete);
+    hash_table_put(hash_table, pair);
+    pair = pair_new(Point_new(2, 1), Character_new('c'), Point_delete, Character_delete);
+    hash_table_put(hash_table, pair);
+    pair = pair_new(Point_new(3, 3), Character_new('E'), Point_delete, Character_delete);
+    hash_table_put(hash_table, pair);
 
     assert(hash_table_size(hash_table) == 5);
 
@@ -282,14 +311,16 @@ void test_hash_table_put() {
 void test_hash_table_remove() {
     int i = 0;
     hash_table_t *hash_table = NULL;
+    pair_t *pair;
     Integer *key;
     char *string;
     Character *character;
     Point *point;
 
-    hash_table = hash_table_new(Integer_compare, Integer_delete, Integer_delete, Integer_hash);
+    hash_table = hash_table_new(Integer_compare, Integer_hash);
     for (i = 0; i < N; i++) {
-        hash_table_put(hash_table, Integer_new(i), Integer_new(i));
+        pair = pair_new(Integer_new(i), Integer_new(i), Integer_delete, Integer_delete);
+        hash_table_put(hash_table, pair);
     }
     for (i = 0; i < N; i++) {
         key = Integer_new(i);
@@ -299,10 +330,13 @@ void test_hash_table_remove() {
     assert(hash_table_is_empty(hash_table) == true);
     hash_table_delete(hash_table);
 
-    hash_table = hash_table_new(Integer_compare, Integer_delete, NULL, Integer_hash);
-    hash_table_put(hash_table, Integer_new(0), "hello");
-    hash_table_put(hash_table, Integer_new(1), "world");
-    hash_table_put(hash_table, Integer_new(2), "test");
+    hash_table = hash_table_new(Integer_compare, Integer_hash);
+    pair = pair_new(Integer_new(0), "hello", Integer_delete, NULL);
+    hash_table_put(hash_table, pair);
+    pair = pair_new(Integer_new(1), "world", Integer_delete, NULL);
+    hash_table_put(hash_table, pair);
+    pair = pair_new(Integer_new(2), "test", Integer_delete, NULL);
+    hash_table_put(hash_table, pair);
 
     key = Integer_new(0);
     hash_table_remove(hash_table, key);
@@ -330,11 +364,15 @@ void test_hash_table_remove() {
 
     hash_table_delete(hash_table);
 
-    hash_table = hash_table_new(Point_compare, Point_delete, Character_delete, Point_hash);
-    hash_table_put(hash_table, Point_new(1, 1), Character_new('A'));
-    hash_table_put(hash_table, Point_new(1, 2), Character_new('B'));
-    hash_table_put(hash_table, Point_new(2, 1), Character_new('C'));
-    hash_table_put(hash_table, Point_new(2, 2), Character_new('D'));
+    hash_table = hash_table_new(Point_compare, Point_hash);
+    pair = pair_new(Point_new(1, 1), Character_new('A'), Point_delete, Character_delete);
+    hash_table_put(hash_table, pair);
+    pair = pair_new(Point_new(1, 2), Character_new('B'), Point_delete, Character_delete);
+    hash_table_put(hash_table, pair);
+    pair = pair_new(Point_new(2, 1), Character_new('C'), Point_delete, Character_delete);
+    hash_table_put(hash_table, pair);
+    pair = pair_new(Point_new(2, 2), Character_new('D'), Point_delete, Character_delete);
+    hash_table_put(hash_table, pair);
 
     point = Point_new(1, 1);
     hash_table_remove(hash_table, point);
@@ -372,15 +410,17 @@ void test_hash_table_remove() {
 void test_hash_table_get() {
     int i = 0;
     hash_table_t *hash_table = NULL;
+    pair_t *pair;
     Integer *key;
     Integer *integer;
     char *string;
     Character *character;
     Point *point;
 
-    hash_table = hash_table_new(Integer_compare, Integer_delete, Integer_delete, Integer_hash);
+    hash_table = hash_table_new(Integer_compare, Integer_hash);
     for (i = 0; i < N; i++) {
-        hash_table_put(hash_table, Integer_new(i), Integer_new(i));
+        pair = pair_new(Integer_new(i), Integer_new(i), Integer_delete, Integer_delete);
+        hash_table_put(hash_table, pair);
     }
     for (i = 0; i < N; i++) {
         key = Integer_new(i);
@@ -391,12 +431,17 @@ void test_hash_table_get() {
     }
     hash_table_delete(hash_table);
 
-    hash_table = hash_table_new(Integer_compare, Integer_delete, NULL, Integer_hash);
-    hash_table_put(hash_table, Integer_new(0), "hello");
-    hash_table_put(hash_table, Integer_new(1), "world");
-    hash_table_put(hash_table, Integer_new(2), "test");
-    hash_table_put(hash_table, Integer_new(0), "HELLO");
-    hash_table_put(hash_table, Integer_new(1), "WORLD");
+    hash_table = hash_table_new(Integer_compare, Integer_hash);
+    pair = pair_new(Integer_new(0), "hello", Integer_delete, NULL);
+    hash_table_put(hash_table, pair);
+    pair = pair_new(Integer_new(1), "world", Integer_delete, NULL);
+    hash_table_put(hash_table, pair);
+    pair = pair_new(Integer_new(2), "test", Integer_delete, NULL);
+    hash_table_put(hash_table, pair);
+    pair = pair_new(Integer_new(0), "HELLO", Integer_delete, NULL);
+    hash_table_put(hash_table, pair);
+    pair = pair_new(Integer_new(1), "WORLD", Integer_delete, NULL);
+    hash_table_put(hash_table, pair);
 
     key = Integer_new(0);
     string = hash_table_get(hash_table, key);
@@ -418,14 +463,21 @@ void test_hash_table_get() {
 
     hash_table_delete(hash_table);
 
-    hash_table = hash_table_new(Point_compare, Point_delete, Character_delete, Point_hash);
-    hash_table_put(hash_table, Point_new(1, 1), Character_new('A'));
-    hash_table_put(hash_table, Point_new(1, 2), Character_new('B'));
-    hash_table_put(hash_table, Point_new(2, 1), Character_new('C'));
-    hash_table_put(hash_table, Point_new(2, 2), Character_new('D'));
-    hash_table_put(hash_table, Point_new(1, 1), Character_new('a'));
-    hash_table_put(hash_table, Point_new(2, 1), Character_new('c'));
-    hash_table_put(hash_table, Point_new(3, 3), Character_new('E'));
+    hash_table = hash_table_new(Point_compare, Point_hash);
+    pair = pair_new(Point_new(1, 1), Character_new('A'), Point_delete, Character_delete);
+    hash_table_put(hash_table, pair);
+    pair = pair_new(Point_new(1, 2), Character_new('B'), Point_delete, Character_delete);
+    hash_table_put(hash_table, pair);
+    pair = pair_new(Point_new(2, 1), Character_new('C'), Point_delete, Character_delete);
+    hash_table_put(hash_table, pair);
+    pair = pair_new(Point_new(2, 2), Character_new('D'), Point_delete, Character_delete);
+    hash_table_put(hash_table, pair);
+    pair = pair_new(Point_new(1, 1), Character_new('a'), Point_delete, Character_delete);
+    hash_table_put(hash_table, pair);
+    pair = pair_new(Point_new(2, 1), Character_new('c'), Point_delete, Character_delete);
+    hash_table_put(hash_table, pair);
+    pair = pair_new(Point_new(3, 3), Character_new('E'), Point_delete, Character_delete);
+    hash_table_put(hash_table, pair);
 
     point = Point_new(1, 1);
     character = (Character *)hash_table_get(hash_table, point);
@@ -461,5 +513,4 @@ void test_hash_table_get() {
 }
 
 void test_hash_table_iterator() {
-    /* TODO */
 }

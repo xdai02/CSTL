@@ -1,6 +1,7 @@
 #include "cstl/unordered_set.h"
 #include "cstl/hash_table.h"
 
+#if 0
 struct unordered_set_t {
     hash_table_t *hash_table;
 };
@@ -14,6 +15,7 @@ struct unordered_set_t {
  */
 unordered_set_t *unordered_set_new(compare_t compare, destroy_t destroy, hash_t hash) {
     unordered_set_t *set = NULL;
+    pair_t *pair = NULL;
 
     return_value_if_fail(compare != NULL && hash != NULL, NULL);
 
@@ -123,3 +125,5 @@ unordered_set_t *unordered_set_remove(unordered_set_t *set, T elem) {
     hash_table_remove(set->hash_table, elem);
     return set;
 }
+
+#endif

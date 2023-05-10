@@ -10,48 +10,14 @@ struct hash_table_t {
     size_t size;
     size_t capacity;
     compare_t compare;
-    destroy_t destroy_key;
-    destroy_t destroy_value;
     hash_t hash;
 };
 
-/**
- * @brief Create a pair_t object.
- * @param key The key of the pair.
- * @param value The value of the pair.
- * @return Returns the created pair_t object if successful, otherwise returns NULL.
- */
-static pair_t *__pair_new(T key, T value) {
-    pair_t *pair = NULL;
-
-    return_value_if_fail(key != NULL && value != NULL, NULL);
-
-    pair = (pair_t *)malloc(sizeof(pair_t));
-    return_value_if_fail(pair != NULL, NULL);
-
-    pair->key = key;
-    pair->value = value;
-    return pair;
-}
-
-static destroy_t __destroy_key = NULL;
-static destroy_t __destroy_value = NULL;
-
-/**
- * @brief Destroy a pair_t object.
- * @param data The pair_t object.
- */
 static void __pair_delete(T data) {
-    pair_t *pair = (pair_t *)data;
-    return_if_fail(pair != NULL);
-
-    if (__destroy_key != NULL) {
-        __destroy_key(pair->key);
-    }
-    if (__destroy_value != NULL) {
-        __destroy_value(pair->value);
-    }
-    free(pair);
+    pair_t *pair = NULL;
+    return_if_fail(data != NULL);
+    pair = (pair_t *)data;
+    pair_delete(pair);
 }
 
 /**
@@ -76,17 +42,15 @@ static size_t __hash(const hash_table_t *hash_table, T key) {
 /**
  * @brief Create a hash_table_t object.
  * @param compare Callback function for comparing two keys.
- * @param destroy_key Callback function for destroying a key.
- * @param destroy_value Callback function for destroying a value.
  * @param hash Callback function for hashing a key.
  * @return Returns the created hash_table_t object if successful, otherwise returns NULL.
  */
-hash_table_t *hash_table_new(compare_t compare, destroy_t destroy_key, destroy_t destroy_value, hash_t hash) {
+hash_table_t *hash_table_new(compare_t compare, hash_t hash) {
     hash_table_t *hash_table = NULL;
     size_t i = 0;
     size_t j = 0;
 
-    return_value_if_fail(compare != NULL, NULL);
+    return_value_if_fail(compare != NULL && hash != NULL, NULL);
 
     hash_table = (hash_table_t *)malloc(sizeof(hash_table_t));
     return_value_if_fail(hash_table != NULL, NULL);
@@ -98,7 +62,7 @@ hash_table_t *hash_table_new(compare_t compare, destroy_t destroy_key, destroy_t
     }
 
     for (i = 0; i < DEFAULT_CAPACITY; i++) {
-        hash_table->buckets[i] = list_new(compare, __pair_delete);
+        hash_table->buckets[i] = list_new(NULL, __pair_delete);
         if (hash_table->buckets[i] == NULL) {
             for (j = 0; j < i; j++) {
                 list_delete(hash_table->buckets[j]);
@@ -112,8 +76,6 @@ hash_table_t *hash_table_new(compare_t compare, destroy_t destroy_key, destroy_t
     hash_table->size = 0;
     hash_table->capacity = DEFAULT_CAPACITY;
     hash_table->compare = compare;
-    hash_table->destroy_key = destroy_key;
-    hash_table->destroy_value = destroy_value;
     hash_table->hash = hash;
 
     return hash_table;
@@ -128,12 +90,10 @@ void hash_table_delete(hash_table_t *hash_table) {
 
     return_if_fail(hash_table != NULL);
 
-    __destroy_key = hash_table->destroy_key;
-    __destroy_value = hash_table->destroy_value;
-
     for (i = 0; i < hash_table->capacity; i++) {
         list_delete(hash_table->buckets[i]);
     }
+
     free(hash_table->buckets);
     free(hash_table);
 }
@@ -176,7 +136,7 @@ void hash_table_foreach(hash_table_t *hash_table, visit_pair_t visit) {
 
         while (list_iterator_has_next(iterator)) {
             pair = (pair_t *)list_iterator_next(iterator);
-            visit(pair->key, pair->value);
+            visit(pair);
         }
 
         list_iterator_delete(iterator);
@@ -193,12 +153,10 @@ hash_table_t *hash_table_clear(hash_table_t *hash_table) {
 
     return_value_if_fail(hash_table != NULL, NULL);
 
-    __destroy_key = hash_table->destroy_key;
-    __destroy_value = hash_table->destroy_value;
-
     for (i = 0; i < hash_table->capacity; i++) {
         list_clear(hash_table->buckets[i]);
     }
+
     hash_table->size = 0;
     return hash_table;
 }
@@ -226,7 +184,7 @@ static bool __hash_table_resize(hash_table_t *hash_table) {
     return_value_if_fail(new_buckets != NULL, false);
 
     for (i = 0; i < new_capacity; i++) {
-        new_buckets[i] = list_new(hash_table->compare, __pair_delete);
+        new_buckets[i] = list_new(NULL, __pair_delete);
         if (new_buckets[i] == NULL) {
             for (j = 0; j < i; j++) {
                 list_delete(new_buckets[j]);
@@ -253,7 +211,7 @@ static bool __hash_table_resize(hash_table_t *hash_table) {
 
         while (list_iterator_has_next(iterator)) {
             pair = (pair_t *)list_iterator_next(iterator);
-            new_index = __hash(hash_table, pair->key);
+            new_index = __hash(hash_table, pair_get_key(pair));
             list_push_back(new_buckets[new_index], pair);
         }
 
@@ -273,52 +231,44 @@ static bool __hash_table_resize(hash_table_t *hash_table) {
 /**
  * @brief Put a key-value pair into a hash_table_t object.
  * @param hash_table The hash_table_t object.
- * @param key The key.
- * @param value The value.
+ * @param pair The pair_t object.
  * @return Returns the modified hash_table_t object.
  */
-hash_table_t *hash_table_put(hash_table_t *hash_table, T key, T value) {
+hash_table_t *hash_table_put(hash_table_t *hash_table, pair_t *pair) {
     size_t index = 0;
     list_t *bucket = NULL;
     iterator_t *iterator = NULL;
-    pair_t *pair;
+    pair_t *current_pair = NULL;
+    pair_t *removed_pair = NULL;
+    size_t i = 0;
 
-    return_value_if_fail(hash_table != NULL, NULL);
-    return_value_if_fail(key != NULL && value != NULL, hash_table);
+    return_value_if_fail(hash_table != NULL && pair != NULL, hash_table);
 
-    index = __hash(hash_table, key);
+    index = __hash(hash_table, pair_get_key(pair));
     bucket = hash_table->buckets[index];
 
     iterator = list_iterator_new(bucket);
     return_value_if_fail(iterator != NULL, hash_table);
 
+    i = 0;
     while (list_iterator_has_next(iterator)) {
-        pair = (pair_t *)list_iterator_next(iterator);
+        current_pair = (pair_t *)list_iterator_next(iterator);
 
-        /* Key already exists, update the value */
-        if (hash_table->compare(pair->key, key) == 0) {
-            if (hash_table->destroy_key != NULL) {
-                hash_table->destroy_key(key);
-            }
-            if (hash_table->destroy_value != NULL) {
-                hash_table->destroy_value(pair->value);
-            }
-            pair->value = value;
+        /* Key already exists */
+        if (hash_table->compare(pair_get_key(pair), pair_get_key(current_pair)) == 0) {
+            removed_pair = (pair_t *)list_remove(bucket, i);
+            pair_delete(removed_pair);
+            list_push_back(bucket, pair);
             list_iterator_delete(iterator);
             return hash_table;
         }
+        i++;
     }
+    list_iterator_delete(iterator);
 
     /* Key not found, insert a new pair */
-    pair = __pair_new(key, value);
-    if (pair == NULL) {
-        list_iterator_delete(iterator);
-        return hash_table;
-    }
-
     list_push_back(bucket, pair);
     hash_table->size++;
-    list_iterator_delete(iterator);
 
     if ((float)hash_table->size / hash_table->capacity > LOAD_FACTOR_THRESHOLD) {
         return_value_if_fail(__hash_table_resize(hash_table), hash_table);
@@ -352,11 +302,9 @@ hash_table_t *hash_table_remove(hash_table_t *hash_table, T key) {
     i = 0;
     while (list_iterator_has_next(iterator)) {
         pair = (pair_t *)list_iterator_next(iterator);
-        if (hash_table->compare(pair->key, key) == 0) {
+        if (hash_table->compare(pair_get_key(pair), key) == 0) {
             pair = list_remove(bucket, i);
-            __destroy_key = hash_table->destroy_key;
-            __destroy_value = hash_table->destroy_value;
-            __pair_delete(pair);
+            pair_delete(pair);
             hash_table->size--;
             break;
         }
@@ -391,8 +339,8 @@ T hash_table_get(const hash_table_t *hash_table, T key) {
 
     while (list_iterator_has_next(iterator)) {
         pair = (pair_t *)list_iterator_next(iterator);
-        if (hash_table->compare(pair->key, key) == 0) {
-            value = pair->value;
+        if (hash_table->compare(pair_get_key(pair), key) == 0) {
+            value = pair_get_value(pair);
             break;
         }
     }

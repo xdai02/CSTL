@@ -4,6 +4,7 @@
 #include "utils/utils.h"
 #include "iterator.h"
 
+#if 0
 typedef struct unordered_set_t unordered_set_t;
 
 /**
@@ -157,5 +158,7 @@ bool unordered_set_iterator_has_next(const iterator_t *iterator);
  * @return Returns the next element of the iterator.
  */
 T unordered_set_iterator_next(iterator_t *iterator);
+
+#endif
 
 #endif

@@ -2,24 +2,30 @@
 #define _HASH_TABLE_H_
 
 #include "utils/utils.h"
+#include "cstl/pair.h"
 #include "iterator.h"
 
-typedef struct pair_t {
-    T key;
-    T value;
-} pair_t;
+/**
+ * @brief A generic function pointer type for visiting a key-value pair.
+ * @param pair The key-value pair to be visited.
+ */
+typedef void (*visit_pair_t)(pair_t *pair);
+
+/**
+ * @brief A generic function pointer type for hashing a data item.
+ * @param data The data item to be hashed.
+ */
+typedef size_t (*hash_t)(const T data);
 
 typedef struct hash_table_t hash_table_t;
 
 /**
  * @brief Create a hash_table_t object.
  * @param compare Callback function for comparing two keys.
- * @param destroy_key Callback function for destroying a key.
- * @param destroy_value Callback function for destroying a value.
  * @param hash Callback function for hashing a key.
  * @return Returns the created hash_table_t object if successful, otherwise returns NULL.
  */
-hash_table_t *hash_table_new(compare_t compare, destroy_t destroy_key, destroy_t destroy_value, hash_t hash);
+hash_table_t *hash_table_new(compare_t compare, hash_t hash);
 
 /**
  * @brief Destroy a hash_table_t object.
@@ -58,11 +64,10 @@ hash_table_t *hash_table_clear(hash_table_t *hash_table);
 /**
  * @brief Put a key-value pair into a hash_table_t object.
  * @param hash_table The hash_table_t object.
- * @param key The key.
- * @param value The value.
+ * @param pair The pair_t object.
  * @return Returns the modified hash_table_t object.
  */
-hash_table_t *hash_table_put(hash_table_t *hash_table, T key, T value);
+hash_table_t *hash_table_put(hash_table_t *hash_table, pair_t *pair);
 
 /**
  * @brief Remove a key-value pair from a hash_table_t object by given key.
