@@ -131,21 +131,21 @@ void employee_print(T data) {
 - Prototype
 
 ```c
-typedef void (*visit_pair_t)(T key, T value);
+typedef void (*visit_pair_t)(T pair);
 ```
 
 - Description
     - A generic function pointer type for visiting a key-value pair.
 - Parameters
-    - `key`: The key of the pair to be visited.
-    - `value`: The value of the pair to be visited.
+    - `pair`: The `pair_t` object to be visited.
 - Usage
 
 ```c
-void key_value_print(T key, T value) {
-    Integer *k = (Integer *)key;
-    Integer *v = (Integer *)value;
-    printf("key=%d, value=%d\n", Integer_get(k), Integer_get(v));
+void key_value_print(T pair) {
+    pair = (pair_t *)pair;
+    Integer *key = pair_get_key(pair);
+    Integer *value = pair_get_value(pair);
+	printf("key=%d, value=%d\n", Integer_get(k), Integer_get(v));
 }
 ```
 

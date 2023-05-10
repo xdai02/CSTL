@@ -13,6 +13,10 @@ struct hash_table_t {
     hash_t hash;
 };
 
+/**
+ * @brief Helper function for deleting a pair_t object.
+ * @param data The pair_t object.
+ */
 static void __pair_delete(T data) {
     pair_t *pair = NULL;
     return_if_fail(data != NULL);

@@ -61,9 +61,13 @@ static int keys[N] = {0};
 static int values[N] = {0};
 static int n = 0;
 
-static void key_value_store(pair_t *pair) {
-    Integer *key = pair_get_key(pair);
-    Integer *value = pair_get_value(pair);
+static void key_value_store(T pair) {
+    Integer *key;
+    Integer *value;
+
+    pair = (pair_t *)pair;
+    key = pair_get_key(pair);
+    value = pair_get_value(pair);
     keys[n] = Integer_get(key);
     values[n] = Integer_get(value);
     n++;
@@ -513,4 +517,29 @@ void test_hash_table_get() {
 }
 
 void test_hash_table_iterator() {
+    int i = 0;
+    hash_table_t *hash_table = NULL;
+    pair_t *pair;
+    iterator_t *iterator = NULL;
+    Integer *key;
+    Integer *value;
+
+    hash_table = hash_table_new(Integer_compare, Integer_hash);
+
+    for (i = 0; i < N; i++) {
+        pair = pair_new(Integer_new(i), Integer_new(i * i), Integer_delete, Integer_delete);
+        hash_table_put(hash_table, pair);
+    }
+
+    iterator = hash_table_iterator_new(hash_table);
+    while (hash_table_iterator_has_next(iterator)) {
+        pair = hash_table_iterator_next(iterator);
+        assert(pair != NULL);
+        key = (Integer *)pair_get_key(pair);
+        value = (Integer *)pair_get_value(pair);
+        assert(Integer_get(value) == Integer_get(key) * Integer_get(key));
+    }
+    hash_table_iterator_delete(iterator);
+
+    hash_table_delete(hash_table);
 }

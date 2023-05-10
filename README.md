@@ -174,7 +174,7 @@ size_t Boolean_hash(const void *ptr);
 typedef int (*compare_t)(const T data1, const T data2);
 typedef void (*destroy_t)(T data);
 typedef void (*visit_t)(T data);
-typedef void (*visit_pair_t)(T key, T value);
+typedef void (*visit_pair_t)(T pair);
 typedef size_t (*hash_t)(const T data);
 ```
 
@@ -349,20 +349,37 @@ bool red_black_tree_iterator_has_next(const iterator_t *iterator);
 T red_black_tree_iterator_next(iterator_t *iterator);
 ```
 
+- [x] **pair**: Key-value `pair_t`.
+
+```c
+typedef struct pair_t pair_t;
+
+pair_t *pair_new(T key, T value, destroy_t destroy_key, destroy_t destroy_value);
+void pair_delete(pair_t *pair);
+T pair_get_key(const pair_t *pair);
+T pair_get_value(const pair_t *pair);
+pair_t *pair_set_key(pair_t *pair, T key);
+pair_t *pair_set_value(pair_t *pair, T value);
+```
+
 - [x] **hash_table**:  `hash_table_t` that resolves collisions using separate chaining.
 
 ```c
 typedef struct hash_table_t hash_table_t;
 
-hash_table_t *hash_table_new(compare_t compare, destroy_t destroy_key, destroy_t destroy_value, hash_t hash);
+hash_table_t *hash_table_new(compare_t compare, hash_t hash);
 void hash_table_delete(hash_table_t *hash_table);
 bool hash_table_is_empty(const hash_table_t *hash_table);
 size_t hash_table_size(const hash_table_t *hash_table);
 void hash_table_foreach(hash_table_t *hash_table, visit_pair_t visit);
 hash_table_t *hash_table_clear(hash_table_t *hash_table);
-hash_table_t *hash_table_put(hash_table_t *hash_table, T key, T value);
+hash_table_t *hash_table_put(hash_table_t *hash_table, pair_t *pair);
 hash_table_t *hash_table_remove(hash_table_t *hash_table, T key);
 T hash_table_get(const hash_table_t *hash_table, T key);
+iterator_t *hash_table_iterator_new(const hash_table_t *hash_table);
+void hash_table_iterator_delete(iterator_t *iterator);
+bool hash_table_iterator_has_next(const iterator_t *iterator);
+pair_t *hash_table_iterator_next(iterator_t *iterator);
 ```
 
 - [x] **ordered_set**: Red black tree based `ordered_set_t`.

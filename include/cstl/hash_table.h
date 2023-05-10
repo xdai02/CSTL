@@ -5,18 +5,6 @@
 #include "cstl/pair.h"
 #include "iterator.h"
 
-/**
- * @brief A generic function pointer type for visiting a key-value pair.
- * @param pair The key-value pair to be visited.
- */
-typedef void (*visit_pair_t)(pair_t *pair);
-
-/**
- * @brief A generic function pointer type for hashing a data item.
- * @param data The data item to be hashed.
- */
-typedef size_t (*hash_t)(const T data);
-
 typedef struct hash_table_t hash_table_t;
 
 /**

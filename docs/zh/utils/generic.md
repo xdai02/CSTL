@@ -131,21 +131,21 @@ void employee_print(T data) {
 - 原型
 
 ```c
-typedef void (*visit_pair_t)(T key, T value);
+typedef void (*visit_pair_t)(T pair);
 ```
 
 - 描述
     - 用于访问key-value对的函数指针。
 - 参数
-    - `key`：需要被访问的key。
-    - `value`：需要被访问的value。
+    - `pair`：需要被访问的`pair_t`对象。
 - 用例
 
 ```c
-void key_value_print(T key, T value) {
-    Integer *k = (Integer *)key;
-    Integer *v = (Integer *)value;
-    printf("key=%d, value=%d\n", Integer_get(k), Integer_get(v));
+void key_value_print(T pair) {
+    pair = (pair_t *)pair;
+    Integer *key = pair_get_key(pair);
+    Integer *value = pair_get_value(pair);
+	printf("key=%d, value=%d\n", Integer_get(k), Integer_get(v));
 }
 ```
 
