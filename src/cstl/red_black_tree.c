@@ -170,13 +170,10 @@ void red_black_tree_foreach(red_black_tree_t *tree, visit_t visit) {
     return_if_fail(tree != NULL && visit != NULL);
 
     iterator = red_black_tree_iterator_new(tree);
-    return_if_fail(iterator != NULL);
-
     while (red_black_tree_iterator_has_next(iterator)) {
         key = red_black_tree_iterator_next(iterator);
         visit(key);
     }
-
     red_black_tree_iterator_delete(iterator);
 }
 

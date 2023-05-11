@@ -136,13 +136,10 @@ void hash_table_foreach(hash_table_t *hash_table, visit_pair_t visit) {
 
     for (i = 0; i < hash_table->capacity; i++) {
         iterator = list_iterator_new(hash_table->buckets[i]);
-        return_if_fail(iterator != NULL);
-
         while (list_iterator_has_next(iterator)) {
             pair = (pair_t *)list_iterator_next(iterator);
             visit(pair);
         }
-
         list_iterator_delete(iterator);
     }
 }
@@ -251,10 +248,8 @@ hash_table_t *hash_table_put(hash_table_t *hash_table, pair_t *pair) {
     index = __hash(hash_table, pair_get_key(pair));
     bucket = hash_table->buckets[index];
 
-    iterator = list_iterator_new(bucket);
-    return_value_if_fail(iterator != NULL, hash_table);
-
     i = 0;
+    iterator = list_iterator_new(bucket);
     while (list_iterator_has_next(iterator)) {
         current_pair = (pair_t *)list_iterator_next(iterator);
 
@@ -300,10 +295,8 @@ hash_table_t *hash_table_remove(hash_table_t *hash_table, T key) {
     index = __hash(hash_table, key);
     bucket = hash_table->buckets[index];
 
-    iterator = list_iterator_new(bucket);
-    return_value_if_fail(iterator != NULL, hash_table);
-
     i = 0;
+    iterator = list_iterator_new(bucket);
     while (list_iterator_has_next(iterator)) {
         pair = (pair_t *)list_iterator_next(iterator);
         if (hash_table->compare(pair_get_key(pair), key) == 0) {
@@ -339,8 +332,6 @@ T hash_table_get(const hash_table_t *hash_table, T key) {
     bucket = hash_table->buckets[index];
 
     iterator = list_iterator_new(bucket);
-    return_value_if_fail(iterator != NULL, NULL);
-
     while (list_iterator_has_next(iterator)) {
         pair = (pair_t *)list_iterator_next(iterator);
         if (hash_table->compare(pair_get_key(pair), key) == 0) {
@@ -348,8 +339,8 @@ T hash_table_get(const hash_table_t *hash_table, T key) {
             break;
         }
     }
-
     list_iterator_delete(iterator);
+    
     return value;
 }
 

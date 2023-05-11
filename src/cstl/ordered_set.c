@@ -141,7 +141,6 @@ ordered_set_t *ordered_set_union(const ordered_set_t *set1, const ordered_set_t 
 
     if (set1 != NULL) {
         iterator = red_black_tree_iterator_new(set1->tree);
-        return_value_if_fail(iterator != NULL, NULL);
         while (red_black_tree_iterator_has_next(iterator)) {
             elem = red_black_tree_iterator_next(iterator);
             ordered_set_add(union_set, elem);
@@ -186,7 +185,6 @@ ordered_set_t *ordered_set_intersection(const ordered_set_t *set1, const ordered
     return_value_if(set1 == NULL || set2 == NULL, intersection_set);
 
     iterator = red_black_tree_iterator_new(set1->tree);
-    return_value_if_fail(iterator != NULL, NULL);
     while (red_black_tree_iterator_has_next(iterator)) {
         elem = red_black_tree_iterator_next(iterator);
         if (ordered_set_contains(set2, elem)) {
@@ -217,7 +215,6 @@ ordered_set_t *ordered_set_difference(const ordered_set_t *set1, const ordered_s
     return_value_if_fail(difference_set != NULL, NULL);
 
     iterator = red_black_tree_iterator_new(set1->tree);
-    return_value_if_fail(iterator != NULL, NULL);
     while (red_black_tree_iterator_has_next(iterator)) {
         elem = red_black_tree_iterator_next(iterator);
         if (!ordered_set_contains(set2, elem)) {
@@ -296,6 +293,7 @@ bool ordered_set_is_subset(const ordered_set_t *set1, const ordered_set_t *set2)
         }
     }
     red_black_tree_iterator_delete(iterator);
+    
     return is_subset;
 }
 
