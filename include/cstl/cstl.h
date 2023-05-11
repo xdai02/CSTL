@@ -11,5 +11,6 @@
 #include "red_black_tree.h"
 #include "hash_table.h"
 #include "ordered_set.h"
+#include "unordered_set.h"
 
 #endif

@@ -1,9 +1,9 @@
 #include "cstl/unordered_set.h"
 #include "cstl/hash_table.h"
 
-#if 0
 struct unordered_set_t {
     hash_table_t *hash_table;
+    destroy_t destroy;
 };
 
 /**
@@ -15,19 +15,19 @@ struct unordered_set_t {
  */
 unordered_set_t *unordered_set_new(compare_t compare, destroy_t destroy, hash_t hash) {
     unordered_set_t *set = NULL;
-    pair_t *pair = NULL;
 
     return_value_if_fail(compare != NULL && hash != NULL, NULL);
 
     set = (unordered_set_t *)malloc(sizeof(unordered_set_t));
     return_value_if_fail(set != NULL, NULL);
 
-    set->hash_table = hash_table_new(compare, destroy, NULL, hash);
+    set->hash_table = hash_table_new(compare, hash);
     if (set->hash_table == NULL) {
         free(set);
         return NULL;
     }
 
+    set->destroy = destroy;
     return set;
 }
 
@@ -63,8 +63,10 @@ size_t unordered_set_size(const unordered_set_t *set) {
 
 static visit_t __visit = NULL;
 
-static void __visit_pair(T key, T value) {
-    __visit(key);
+static void __visit_pair(T pair) {
+    return_if_fail(pair != NULL);
+    pair = (pair_t *)pair;
+    __visit(pair_get_key(pair));
 }
 
 /**
@@ -108,8 +110,10 @@ bool unordered_set_contains(const unordered_set_t *set, T elem) {
  * @return Returns the modified unordered_set_t object.
  */
 unordered_set_t *unordered_set_add(unordered_set_t *set, T elem) {
+    pair_t *pair = NULL;
     return_value_if_fail(set != NULL && elem != NULL, set);
-    hash_table_put(set->hash_table, elem, elem);
+    pair = pair_new(elem, elem, set->destroy, NULL);
+    hash_table_put(set->hash_table, pair);
     return set;
 }
 
@@ -125,5 +129,3 @@ unordered_set_t *unordered_set_remove(unordered_set_t *set, T elem) {
     hash_table_remove(set->hash_table, elem);
     return set;
 }
-
-#endif

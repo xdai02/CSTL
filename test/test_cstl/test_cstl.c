@@ -179,6 +179,20 @@ void test_ordered_set() {
     printf("[PASS] ordered_set\n");
 }
 
+void test_unordered_set() {
+    test_unordered_set_new();
+    test_unordered_set_delete();
+    test_unordered_set_is_empty();
+    test_unordered_set_size();
+    test_unordered_set_foreach();
+    test_unordered_set_clear();
+    test_unordered_set_contains();
+    test_unordered_set_add();
+    test_unordered_set_remove();
+
+    printf("[PASS] unordered_set\n");
+}
+
 void test_cstl() {
     test_str();
     test_array();
@@ -189,4 +203,5 @@ void test_cstl() {
     test_red_black_tree();
     test_hash_table();
     test_ordered_set();
+    test_unordered_set();
 }
