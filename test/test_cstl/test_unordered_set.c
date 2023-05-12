@@ -210,3 +210,760 @@ void test_unordered_set_remove() {
     assert(unordered_set_size(set) == N - 1);
     unordered_set_delete(set);
 }
+
+void test_unordered_set_union() {
+    unordered_set_t *set1 = NULL;
+    unordered_set_t *set2 = NULL;
+    unordered_set_t *set3 = NULL;
+    iterator_t *iterator = NULL;
+    Integer *integer;
+    int i = 0;
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N / 2; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+    for (i = N / 2; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i));
+    }
+
+    set3 = unordered_set_union(set1, set2);
+    assert(unordered_set_size(set3) == N);
+
+    iterator = unordered_set_iterator_new(set3);
+    while (unordered_set_iterator_has_next(iterator)) {
+        integer = (Integer *)unordered_set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
+    }
+
+    unordered_set_iterator_delete(iterator);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i + 1));
+    }
+
+    set3 = unordered_set_union(set1, set2);
+    assert(unordered_set_size(set3) == N + 1);
+
+    iterator = unordered_set_iterator_new(set3);
+    while (unordered_set_iterator_has_next(iterator)) {
+        integer = (Integer *)unordered_set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) <= N);
+    }
+
+    unordered_set_iterator_delete(iterator);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+
+    set3 = unordered_set_union(set1, set2);
+    assert(unordered_set_size(set3) == N);
+
+    iterator = unordered_set_iterator_new(set3);
+    while (unordered_set_iterator_has_next(iterator)) {
+        integer = (Integer *)unordered_set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
+    }
+
+    unordered_set_iterator_delete(iterator);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i));
+    }
+
+    set3 = unordered_set_union(set1, set2);
+    assert(unordered_set_size(set3) == N);
+
+    iterator = unordered_set_iterator_new(set3);
+    while (unordered_set_iterator_has_next(iterator)) {
+        integer = (Integer *)unordered_set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
+    }
+
+    unordered_set_iterator_delete(iterator);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    set3 = unordered_set_union(set1, set2);
+    assert(unordered_set_is_empty(set3) == true);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+
+    set3 = unordered_set_union(NULL, NULL);
+    assert(set3 == NULL);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+    set3 = unordered_set_union(set1, NULL);
+    assert(set3 != NULL);
+    assert(unordered_set_size(set3) == N);
+    unordered_set_delete(set1);
+    unordered_set_delete(set3);
+
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i));
+    }
+    set3 = unordered_set_union(NULL, set2);
+    assert(set3 != NULL);
+    assert(unordered_set_size(set3) == N);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+}
+
+void test_unordered_set_intersection() {
+    unordered_set_t *set1 = NULL;
+    unordered_set_t *set2 = NULL;
+    unordered_set_t *set3 = NULL;
+    iterator_t *iterator = NULL;
+    Integer *integer;
+    int i = 0;
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i));
+    }
+
+    set3 = unordered_set_intersection(set1, set2);
+    assert(unordered_set_size(set3) == N);
+
+    iterator = unordered_set_iterator_new(set3);
+    while (unordered_set_iterator_has_next(iterator)) {
+        integer = (Integer *)unordered_set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) <= N);
+    }
+
+    unordered_set_iterator_delete(iterator);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N / 2; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+    for (i = N / 2; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i));
+    }
+
+    set3 = unordered_set_intersection(set1, set2);
+    assert(unordered_set_is_empty(set3) == true);
+
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i + 1));
+    }
+
+    set3 = unordered_set_intersection(set1, set2);
+    assert(unordered_set_size(set3) == N - 1);
+
+    iterator = unordered_set_iterator_new(set3);
+    while (unordered_set_iterator_has_next(iterator)) {
+        integer = (Integer *)unordered_set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 1 && Integer_get(integer) < N);
+    }
+
+    unordered_set_iterator_delete(iterator);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+
+    set3 = unordered_set_intersection(set1, set2);
+    assert(unordered_set_is_empty(set3) == true);
+
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i));
+    }
+
+    set3 = unordered_set_intersection(set1, set2);
+    assert(unordered_set_is_empty(set3) == true);
+
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set3 = unordered_set_intersection(set1, set2);
+    assert(unordered_set_is_empty(set3) == true);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+
+    set3 = unordered_set_intersection(NULL, NULL);
+    assert(set3 == NULL);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+    set3 = unordered_set_intersection(set1, NULL);
+    assert(set3 != NULL);
+    assert(unordered_set_is_empty(set3) == true);
+    unordered_set_delete(set1);
+    unordered_set_delete(set3);
+
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i));
+    }
+    set3 = unordered_set_intersection(NULL, set2);
+    assert(set3 != NULL);
+    assert(unordered_set_is_empty(set3) == true);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+}
+
+void test_unordered_set_difference() {
+    unordered_set_t *set1 = NULL;
+    unordered_set_t *set2 = NULL;
+    unordered_set_t *set3 = NULL;
+    iterator_t *iterator = NULL;
+    Integer *integer;
+    int i = 0;
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i));
+    }
+
+    set3 = unordered_set_difference(set1, set2);
+    assert(unordered_set_is_empty(set3) == true);
+
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N / 2; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+    for (i = N / 2; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i));
+    }
+
+    set3 = unordered_set_difference(set1, set2);
+    assert(unordered_set_size(set3) == N / 2);
+
+    iterator = unordered_set_iterator_new(set3);
+    while (unordered_set_iterator_has_next(iterator)) {
+        integer = (Integer *)unordered_set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) < N / 2);
+    }
+
+    unordered_set_iterator_delete(iterator);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i + 1));
+    }
+
+    set3 = unordered_set_difference(set1, set2);
+    assert(unordered_set_size(set3) == 1);
+
+    iterator = unordered_set_iterator_new(set3);
+    while (unordered_set_iterator_has_next(iterator)) {
+        integer = (Integer *)unordered_set_iterator_next(iterator);
+        assert(Integer_get(integer) == 0);
+    }
+
+    unordered_set_iterator_delete(iterator);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+
+    set3 = unordered_set_difference(set1, set2);
+    assert(unordered_set_size(set3) == N);
+
+    iterator = unordered_set_iterator_new(set3);
+    while (unordered_set_iterator_has_next(iterator)) {
+        integer = (Integer *)unordered_set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
+    }
+
+    unordered_set_iterator_delete(iterator);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i));
+    }
+
+    set3 = unordered_set_difference(set1, set2);
+    assert(unordered_set_is_empty(set3) == true);
+
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set3 = unordered_set_difference(set1, set2);
+    assert(unordered_set_is_empty(set3) == true);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+
+    set3 = unordered_set_difference(NULL, NULL);
+    assert(set3 == NULL);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+
+    set3 = unordered_set_difference(set1, NULL);
+    assert(set3 != NULL);
+    assert(unordered_set_size(set3) == N);
+
+    iterator = unordered_set_iterator_new(set3);
+    while (unordered_set_iterator_has_next(iterator)) {
+        integer = (Integer *)unordered_set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
+    }
+
+    unordered_set_iterator_delete(iterator);
+    unordered_set_delete(set1);
+    unordered_set_delete(set3);
+
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i));
+    }
+    set3 = unordered_set_difference(NULL, set2);
+    assert(set3 == NULL);
+    unordered_set_delete(set2);
+}
+
+void test_unordered_set_symmetric_difference() {
+    unordered_set_t *set1 = NULL;
+    unordered_set_t *set2 = NULL;
+    unordered_set_t *set3 = NULL;
+    iterator_t *iterator = NULL;
+    Integer *integer;
+    int i = 0;
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i));
+    }
+
+    set3 = unordered_set_symmetric_difference(set1, set2);
+    assert(unordered_set_is_empty(set3) == true);
+
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N / 2; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+    for (i = N / 2; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i));
+    }
+
+    set3 = unordered_set_symmetric_difference(set1, set2);
+    assert(unordered_set_size(set3) == N);
+
+    iterator = unordered_set_iterator_new(set3);
+    while (unordered_set_iterator_has_next(iterator)) {
+        integer = (Integer *)unordered_set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
+    }
+
+    unordered_set_iterator_delete(iterator);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i + 1));
+    }
+
+    set3 = unordered_set_symmetric_difference(set1, set2);
+    assert(unordered_set_size(set3) == 2);
+
+    iterator = unordered_set_iterator_new(set3);
+    while (unordered_set_iterator_has_next(iterator)) {
+        integer = (Integer *)unordered_set_iterator_next(iterator);
+        assert(Integer_get(integer) == 0 || Integer_get(integer) == N);
+    }
+
+    unordered_set_iterator_delete(iterator);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+
+    set3 = unordered_set_symmetric_difference(set1, set2);
+    assert(unordered_set_size(set3) == N);
+
+    iterator = unordered_set_iterator_new(set3);
+    while (unordered_set_iterator_has_next(iterator)) {
+        integer = (Integer *)unordered_set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
+    }
+
+    unordered_set_iterator_delete(iterator);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i));
+    }
+
+    set3 = unordered_set_symmetric_difference(set1, set2);
+    assert(unordered_set_size(set3) == N);
+
+    iterator = unordered_set_iterator_new(set3);
+    while (unordered_set_iterator_has_next(iterator)) {
+        integer = (Integer *)unordered_set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
+    }
+
+    unordered_set_iterator_delete(iterator);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set3 = unordered_set_symmetric_difference(set1, set2);
+    assert(unordered_set_is_empty(set3) == true);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+
+    set3 = unordered_set_symmetric_difference(NULL, NULL);
+    assert(set3 == NULL);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+
+    set3 = unordered_set_symmetric_difference(set1, NULL);
+    assert(set3 != NULL);
+    assert(unordered_set_size(set3) == N);
+
+    iterator = unordered_set_iterator_new(set3);
+    while (unordered_set_iterator_has_next(iterator)) {
+        integer = (Integer *)unordered_set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
+    }
+
+    unordered_set_iterator_delete(iterator);
+    unordered_set_delete(set1);
+    unordered_set_delete(set3);
+
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i));
+    }
+    set3 = unordered_set_symmetric_difference(NULL, set2);
+    assert(set3 != NULL);
+    assert(unordered_set_size(set3) == N);
+
+    iterator = unordered_set_iterator_new(set3);
+    while (unordered_set_iterator_has_next(iterator)) {
+        integer = (Integer *)unordered_set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
+    }
+
+    unordered_set_iterator_delete(iterator);
+    unordered_set_delete(set2);
+    unordered_set_delete(set3);
+}
+
+void test_unordered_set_is_disjoint() {
+    unordered_set_t *set1 = NULL;
+    unordered_set_t *set2 = NULL;
+    int i = 0;
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i));
+    }
+
+    assert(unordered_set_is_disjoint(set1, set2) == false);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N / 2; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+    for (i = N / 2; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i));
+    }
+
+    assert(unordered_set_is_disjoint(set1, set2) == true);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i + 1));
+    }
+
+    assert(unordered_set_is_disjoint(set1, set2) == false);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+    assert(unordered_set_is_disjoint(set1, set2) == true);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i));
+    }
+    assert(unordered_set_is_disjoint(set1, set2) == true);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    assert(unordered_set_is_disjoint(set1, set2) == true);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+}
+
+void test_unordered_set_is_subset() {
+    unordered_set_t *set1 = NULL;
+    unordered_set_t *set2 = NULL;
+    int i = 0;
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N / 2; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i));
+    }
+
+    assert(unordered_set_is_subset(set1, set2) == true);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i));
+    }
+
+    assert(unordered_set_is_subset(set1, set2) == true);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N / 2; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+    for (i = N / 2; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i));
+    }
+
+    assert(unordered_set_is_subset(set1, set2) == false);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i + 1));
+    }
+
+    assert(unordered_set_is_subset(set1, set2) == false);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set1, Integer_new(i));
+    }
+    assert(unordered_set_is_subset(set1, set2) == false);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set2, Integer_new(i));
+    }
+    assert(unordered_set_is_subset(set1, set2) == true);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+
+    set1 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    set2 = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    assert(unordered_set_is_subset(set1, set2) == true);
+    unordered_set_delete(set1);
+    unordered_set_delete(set2);
+}
+
+void test_unordered_set_iterator() {
+    int i = 0;
+    unordered_set_t *set = NULL;
+    iterator_t *iterator = NULL;
+    Integer *integer;
+
+    set = unordered_set_new(Integer_compare, Integer_delete, Integer_hash);
+    for (i = 0; i < N; i++) {
+        unordered_set_add(set, Integer_new(i));
+    }
+
+    iterator = unordered_set_iterator_new(set);
+
+    i = 0;
+    while (unordered_set_iterator_has_next(iterator)) {
+        integer = (Integer *)unordered_set_iterator_next(iterator);
+        assert(Integer_get(integer) >= 0 && Integer_get(integer) < N);
+        i++;
+    }
+
+    unordered_set_iterator_delete(iterator);
+    unordered_set_delete(set);
+}

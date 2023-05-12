@@ -189,6 +189,13 @@ void test_unordered_set() {
     test_unordered_set_contains();
     test_unordered_set_add();
     test_unordered_set_remove();
+    test_unordered_set_union();
+    test_unordered_set_intersection();
+    test_unordered_set_difference();
+    test_unordered_set_symmetric_difference();
+    test_unordered_set_is_disjoint();
+    test_unordered_set_is_subset();
+    test_unordered_set_iterator();
 
     printf("[PASS] unordered_set\n");
 }
