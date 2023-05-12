@@ -382,56 +382,56 @@ bool hash_table_iterator_has_next(const iterator_t *iterator);
 pair_t *hash_table_iterator_next(iterator_t *iterator);
 ```
 
-- [x] **ordered_set**: Red black tree based `ordered_set_t`.
+- [x] **tree_set**: Red black tree based `tree_set_t`.
 
 ```c
-typedef struct ordered_set_t ordered_set_t;
+typedef struct tree_set_t tree_set_t;
 
-ordered_set_t *ordered_set_new(compare_t compare, destroy_t destroy);
-void ordered_set_delete(ordered_set_t *set);
-bool ordered_set_is_empty(const ordered_set_t *set);
-size_t ordered_set_size(const ordered_set_t *set);
-void ordered_set_foreach(ordered_set_t *set, visit_t visit);
-ordered_set_t *ordered_set_clear(ordered_set_t *set);
-bool ordered_set_contains(const ordered_set_t *set, T elem);
-ordered_set_t *ordered_set_add(ordered_set_t *set, T elem);
-ordered_set_t *ordered_set_remove(ordered_set_t *set, T elem);
-ordered_set_t *ordered_set_union(const ordered_set_t *set1, const ordered_set_t *set2);
-ordered_set_t *ordered_set_intersection(const ordered_set_t *set1, const ordered_set_t *set2);
-ordered_set_t *ordered_set_difference(const ordered_set_t *set1, const ordered_set_t *set2);
-ordered_set_t *ordered_set_symmetric_difference(const ordered_set_t *set1, const ordered_set_t *set2);
-bool ordered_set_is_disjoint(const ordered_set_t *set1, const ordered_set_t *set2);
-bool ordered_set_is_subset(const ordered_set_t *set1, const ordered_set_t *set2);
-iterator_t *ordered_set_iterator_new(const ordered_set_t *set);
-void ordered_set_iterator_delete(iterator_t *iterator);
-bool ordered_set_iterator_has_next(const iterator_t *iterator);
-T ordered_set_iterator_next(iterator_t *iterator);
+tree_set_t *tree_set_new(compare_t compare, destroy_t destroy);
+void tree_set_delete(tree_set_t *set);
+bool tree_set_is_empty(const tree_set_t *set);
+size_t tree_set_size(const tree_set_t *set);
+void tree_set_foreach(tree_set_t *set, visit_t visit);
+tree_set_t *tree_set_clear(tree_set_t *set);
+bool tree_set_contains(const tree_set_t *set, T elem);
+tree_set_t *tree_set_add(tree_set_t *set, T elem);
+tree_set_t *tree_set_remove(tree_set_t *set, T elem);
+tree_set_t *tree_set_union(const tree_set_t *set1, const tree_set_t *set2);
+tree_set_t *tree_set_intersection(const tree_set_t *set1, const tree_set_t *set2);
+tree_set_t *tree_set_difference(const tree_set_t *set1, const tree_set_t *set2);
+tree_set_t *tree_set_symmetric_difference(const tree_set_t *set1, const tree_set_t *set2);
+bool tree_set_is_disjoint(const tree_set_t *set1, const tree_set_t *set2);
+bool tree_set_is_subset(const tree_set_t *set1, const tree_set_t *set2);
+iterator_t *tree_set_iterator_new(const tree_set_t *set);
+void tree_set_iterator_delete(iterator_t *iterator);
+bool tree_set_iterator_has_next(const iterator_t *iterator);
+T tree_set_iterator_next(iterator_t *iterator);
 ```
 
-- [x] **unordered_set**: Hash table based `unordered_set_t`.
+- [x] **hash_set**: Hash table based `hash_set_t`.
 
 ```c
-typedef struct unordered_set_t unordered_set_t;
+typedef struct hash_set_t hash_set_t;
 
-unordered_set_t *unordered_set_new(compare_t compare, destroy_t destroy, hash_t hash);
-void unordered_set_delete(unordered_set_t *set);
-bool unordered_set_is_empty(const unordered_set_t *set);
-size_t unordered_set_size(const unordered_set_t *set);
-void unordered_set_foreach(unordered_set_t *set, visit_t visit);
-unordered_set_t *unordered_set_clear(unordered_set_t *set);
-bool unordered_set_contains(const unordered_set_t *set, T elem);
-unordered_set_t *unordered_set_add(unordered_set_t *set, T elem);
-unordered_set_t *unordered_set_remove(unordered_set_t *set, T elem);
-unordered_set_t *unordered_set_union(const unordered_set_t *set1, const unordered_set_t *set2);
-unordered_set_t *unordered_set_intersection(const unordered_set_t *set1, const unordered_set_t *set2);
-unordered_set_t *unordered_set_difference(const unordered_set_t *set1, const unordered_set_t *set2);
-unordered_set_t *unordered_set_symmetric_difference(const unordered_set_t *set1, const unordered_set_t *set2);
-bool unordered_set_is_disjoint(const unordered_set_t *set1, const unordered_set_t *set2);
-bool unordered_set_is_subset(const unordered_set_t *set1, const unordered_set_t *set2);
-iterator_t *unordered_set_iterator_new(const unordered_set_t *set);
-void unordered_set_iterator_delete(iterator_t *iterator);
-bool unordered_set_iterator_has_next(const iterator_t *iterator);
-T unordered_set_iterator_next(iterator_t *iterator);
+hash_set_t *hash_set_new(compare_t compare, destroy_t destroy, hash_t hash);
+void hash_set_delete(hash_set_t *set);
+bool hash_set_is_empty(const hash_set_t *set);
+size_t hash_set_size(const hash_set_t *set);
+void hash_set_foreach(hash_set_t *set, visit_t visit);
+hash_set_t *hash_set_clear(hash_set_t *set);
+bool hash_set_contains(const hash_set_t *set, T elem);
+hash_set_t *hash_set_add(hash_set_t *set, T elem);
+hash_set_t *hash_set_remove(hash_set_t *set, T elem);
+hash_set_t *hash_set_union(const hash_set_t *set1, const hash_set_t *set2);
+hash_set_t *hash_set_intersection(const hash_set_t *set1, const hash_set_t *set2);
+hash_set_t *hash_set_difference(const hash_set_t *set1, const hash_set_t *set2);
+hash_set_t *hash_set_symmetric_difference(const hash_set_t *set1, const hash_set_t *set2);
+bool hash_set_is_disjoint(const hash_set_t *set1, const hash_set_t *set2);
+bool hash_set_is_subset(const hash_set_t *set1, const hash_set_t *set2);
+iterator_t *hash_set_iterator_new(const hash_set_t *set);
+void hash_set_iterator_delete(iterator_t *iterator);
+bool hash_set_iterator_has_next(const iterator_t *iterator);
+T hash_set_iterator_next(iterator_t *iterator);
 ```
 
 - [ ] **ordered_map**: Red black tree based `ordered_map_t` for key-value pairs.

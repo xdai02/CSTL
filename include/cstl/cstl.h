@@ -10,7 +10,7 @@
 #include "deque.h"
 #include "red_black_tree.h"
 #include "hash_table.h"
-#include "ordered_set.h"
-#include "unordered_set.h"
+#include "tree_set.h"
+#include "hash_set.h"
 
 #endif

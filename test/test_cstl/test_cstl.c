@@ -158,46 +158,46 @@ void test_hash_table() {
     printf("[PASS] hash_table\n");
 }
 
-void test_ordered_set() {
-    test_ordered_set_new();
-    test_ordered_set_delete();
-    test_ordered_set_is_empty();
-    test_ordered_set_size();
-    test_ordered_set_foreach();
-    test_ordered_set_clear();
-    test_ordered_set_contains();
-    test_ordered_set_add();
-    test_ordered_set_remove();
-    test_ordered_set_union();
-    test_ordered_set_intersection();
-    test_ordered_set_difference();
-    test_ordered_set_symmetric_difference();
-    test_ordered_set_is_disjoint();
-    test_ordered_set_is_subset();
-    test_ordered_set_iterator();
+void test_tree_set() {
+    test_tree_set_new();
+    test_tree_set_delete();
+    test_tree_set_is_empty();
+    test_tree_set_size();
+    test_tree_set_foreach();
+    test_tree_set_clear();
+    test_tree_set_contains();
+    test_tree_set_add();
+    test_tree_set_remove();
+    test_tree_set_union();
+    test_tree_set_intersection();
+    test_tree_set_difference();
+    test_tree_set_symmetric_difference();
+    test_tree_set_is_disjoint();
+    test_tree_set_is_subset();
+    test_tree_set_iterator();
 
-    printf("[PASS] ordered_set\n");
+    printf("[PASS] tree_set\n");
 }
 
-void test_unordered_set() {
-    test_unordered_set_new();
-    test_unordered_set_delete();
-    test_unordered_set_is_empty();
-    test_unordered_set_size();
-    test_unordered_set_foreach();
-    test_unordered_set_clear();
-    test_unordered_set_contains();
-    test_unordered_set_add();
-    test_unordered_set_remove();
-    test_unordered_set_union();
-    test_unordered_set_intersection();
-    test_unordered_set_difference();
-    test_unordered_set_symmetric_difference();
-    test_unordered_set_is_disjoint();
-    test_unordered_set_is_subset();
-    test_unordered_set_iterator();
+void test_hash_set() {
+    test_hash_set_new();
+    test_hash_set_delete();
+    test_hash_set_is_empty();
+    test_hash_set_size();
+    test_hash_set_foreach();
+    test_hash_set_clear();
+    test_hash_set_contains();
+    test_hash_set_add();
+    test_hash_set_remove();
+    test_hash_set_union();
+    test_hash_set_intersection();
+    test_hash_set_difference();
+    test_hash_set_symmetric_difference();
+    test_hash_set_is_disjoint();
+    test_hash_set_is_subset();
+    test_hash_set_iterator();
 
-    printf("[PASS] unordered_set\n");
+    printf("[PASS] hash_set\n");
 }
 
 void test_cstl() {
@@ -209,6 +209,6 @@ void test_cstl() {
     test_deque();
     test_red_black_tree();
     test_hash_table();
-    test_ordered_set();
-    test_unordered_set();
+    test_tree_set();
+    test_hash_set();
 }

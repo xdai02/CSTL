@@ -9,8 +9,8 @@
 #include "test_deque.h"
 #include "test_red_black_tree.h"
 #include "test_hash_table.h"
-#include "test_ordered_set.h"
-#include "test_unordered_set.h"
+#include "test_tree_set.h"
+#include "test_hash_set.h"
 
 void test_cstl();
 
