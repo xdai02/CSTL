@@ -5,7 +5,7 @@
 #define N 1000
 
 void test_tree_map_new() {
-    tree_map_t *map = tree_map_new(UnsignedLong_compare, UnsignedLong_delete);
+    tree_map_t *map = tree_map_new(UnsignedLong_compare);
     assert(map != NULL);
     assert(tree_map_is_empty(map) == true);
     assert(tree_map_size(map) == 0);
@@ -13,7 +13,7 @@ void test_tree_map_new() {
 }
 
 void test_tree_map_delete() {
-    tree_map_t *map = tree_map_new(UnsignedShort_compare, UnsignedShort_delete);
+    tree_map_t *map = tree_map_new(UnsignedShort_compare);
     assert(map != NULL);
     tree_map_delete(map);
 }
@@ -22,7 +22,7 @@ void test_tree_map_is_empty() {
     tree_map_t *map = NULL;
     pair_t *pair;
 
-    map = tree_map_new(UnsignedInteger_compare, (destroy_t)pair_delete);
+    map = tree_map_new(UnsignedInteger_compare);
     assert(tree_map_is_empty(map) == true);
     pair = pair_new(UnsignedInteger_new(0), UnsignedInteger_new(0), UnsignedInteger_delete, UnsignedInteger_delete);
     tree_map_put(map, pair);
@@ -35,7 +35,7 @@ void test_tree_map_size() {
     tree_map_t *map = NULL;
     pair_t *pair;
 
-    map = tree_map_new(UnsignedInteger_compare, (destroy_t)pair_delete);
+    map = tree_map_new(UnsignedInteger_compare);
     assert(tree_map_size(map) == 0);
     for (i = 0; i < N; i++) {
         pair = pair_new(UnsignedInteger_new(i), UnsignedInteger_new(i), UnsignedInteger_delete, UnsignedInteger_delete);
@@ -44,7 +44,7 @@ void test_tree_map_size() {
     assert(tree_map_size(map) == N);
     tree_map_delete(map);
 
-    map = tree_map_new(Integer_compare, (destroy_t)pair_delete);
+    map = tree_map_new(Integer_compare);
     assert(tree_map_size(map) == 0);
     for (i = 0; i < N; i++) {
         pair = pair_new(Integer_new(i), Integer_new(i), Integer_delete, Integer_delete);
@@ -77,7 +77,7 @@ void test_tree_map_foreach() {
     tree_map_t *map = NULL;
     pair_t *pair;
 
-    map = tree_map_new(Integer_compare, (destroy_t)pair_delete);
+    map = tree_map_new(Integer_compare);
 
     for (i = 0; i < N; i++) {
         pair = pair_new(Integer_new(i), Integer_new(i * i), Integer_delete, Integer_delete);
@@ -101,7 +101,7 @@ void test_tree_map_clear() {
     tree_map_t *map = NULL;
     pair_t *pair;
 
-    map = tree_map_new(Integer_compare, (destroy_t)pair_delete);
+    map = tree_map_new(Integer_compare);
     assert(tree_map_is_empty(map) == true);
     for (i = 0; i < N; i++) {
         pair = pair_new(Integer_new(i), Integer_new(i), Integer_delete, Integer_delete);
@@ -110,6 +110,32 @@ void test_tree_map_clear() {
     assert(tree_map_size(map) == N);
     tree_map_clear(map);
     assert(tree_map_is_empty(map) == true);
+    tree_map_delete(map);
+}
+
+void test_tree_map_contains() {
+    int i = 0;
+    tree_map_t *map = NULL;
+    pair_t *pair;
+    Integer *key;
+
+    map = tree_map_new(Integer_compare);
+    
+    for (i = 0; i < N; i++) {
+        pair = pair_new(Integer_new(i), Integer_new(i), Integer_delete, Integer_delete);
+        tree_map_put(map, pair);
+    }
+
+    for (i = 0; i < N; i++) {
+        key = Integer_new(randint(0, 3 * N));
+        if (Integer_get(key) < N) {
+            assert(tree_map_contains(map, key) == true);
+        } else {
+            assert(tree_map_contains(map, key) == false);
+        }
+        Integer_delete(key);
+    }
+
     tree_map_delete(map);
 }
 
@@ -158,7 +184,7 @@ void test_tree_map_put() {
     Character *character;
     Point *point;
 
-    map = tree_map_new(Integer_compare, (destroy_t)pair_delete);
+    map = tree_map_new(Integer_compare);
     for (i = 0; i < N; i++) {
         pair = pair_new(Integer_new(i), Integer_new(i), Integer_delete, Integer_delete);
         tree_map_put(map, pair);
@@ -174,7 +200,7 @@ void test_tree_map_put() {
     }
     tree_map_delete(map);
 
-    map = tree_map_new(Integer_compare, (destroy_t)pair_delete);
+    map = tree_map_new(Integer_compare);
 
     pair = pair_new(Integer_new(0), "hello", Integer_delete, NULL);
     tree_map_put(map, pair);
@@ -230,7 +256,7 @@ void test_tree_map_put() {
 
     tree_map_delete(map);
 
-    map = tree_map_new(Point_compare, (destroy_t)pair_delete);
+    map = tree_map_new(Point_compare);
     pair = pair_new(Point_new(1, 1), Character_new('A'), Point_delete, Character_delete);
     tree_map_put(map, pair);
     pair = pair_new(Point_new(1, 2), Character_new('B'), Point_delete, Character_delete);
@@ -316,7 +342,7 @@ void test_tree_map_remove() {
     Character *character;
     Point *point;
 
-    map = tree_map_new(Integer_compare, (destroy_t)pair_delete);
+    map = tree_map_new(Integer_compare);
     for (i = 0; i < N; i++) {
         pair = pair_new(Integer_new(i), Integer_new(i), Integer_delete, Integer_delete);
         tree_map_put(map, pair);
@@ -329,7 +355,7 @@ void test_tree_map_remove() {
     assert(tree_map_is_empty(map) == true);
     tree_map_delete(map);
 
-    map = tree_map_new(Integer_compare, (destroy_t)pair_delete);
+    map = tree_map_new(Integer_compare);
     pair = pair_new(Integer_new(0), "hello", Integer_delete, NULL);
     tree_map_put(map, pair);
     pair = pair_new(Integer_new(1), "world", Integer_delete, NULL);
@@ -363,7 +389,7 @@ void test_tree_map_remove() {
 
     tree_map_delete(map);
 
-    map = tree_map_new(Point_compare, (destroy_t)pair_delete);
+    map = tree_map_new(Point_compare);
     pair = pair_new(Point_new(1, 1), Character_new('A'), Point_delete, Character_delete);
     tree_map_put(map, pair);
     pair = pair_new(Point_new(1, 2), Character_new('B'), Point_delete, Character_delete);
@@ -416,7 +442,7 @@ void test_tree_map_get() {
     Character *character;
     Point *point;
 
-    map = tree_map_new(Integer_compare, (destroy_t)pair_delete);
+    map = tree_map_new(Integer_compare);
     for (i = 0; i < N; i++) {
         pair = pair_new(Integer_new(i), Integer_new(i), Integer_delete, Integer_delete);
         tree_map_put(map, pair);
@@ -430,7 +456,7 @@ void test_tree_map_get() {
     }
     tree_map_delete(map);
 
-    map = tree_map_new(Integer_compare, (destroy_t)pair_delete);
+    map = tree_map_new(Integer_compare);
     pair = pair_new(Integer_new(0), "hello", Integer_delete, NULL);
     tree_map_put(map, pair);
     pair = pair_new(Integer_new(1), "world", Integer_delete, NULL);
@@ -462,7 +488,7 @@ void test_tree_map_get() {
 
     tree_map_delete(map);
 
-    map = tree_map_new(Point_compare, (destroy_t)pair_delete);
+    map = tree_map_new(Point_compare);
     pair = pair_new(Point_new(1, 1), Character_new('A'), Point_delete, Character_delete);
     tree_map_put(map, pair);
     pair = pair_new(Point_new(1, 2), Character_new('B'), Point_delete, Character_delete);
@@ -513,6 +539,34 @@ void test_tree_map_get() {
     assert(character != NULL);
     assert(Character_get(character) == 'E');
     Point_delete(point);
+
+    tree_map_delete(map);
+}
+
+void test_tree_map_iterator() {
+    int i = 0;
+    tree_map_t *map = NULL;
+    pair_t *pair;
+    iterator_t *iterator = NULL;
+    Integer *key;
+    Integer *value;
+
+    map = tree_map_new(Integer_compare);
+
+    for (i = 0; i < N; i++) {
+        pair = pair_new(Integer_new(i), Integer_new(i * i), Integer_delete, Integer_delete);
+        tree_map_put(map, pair);
+    }
+
+    iterator = tree_map_iterator_new(map);
+    while (tree_map_iterator_has_next(iterator)) {
+        pair = tree_map_iterator_next(iterator);
+        assert(pair != NULL);
+        key = (Integer *)pair_get_key(pair);
+        value = (Integer *)pair_get_value(pair);
+        assert(Integer_get(value) == Integer_get(key) * Integer_get(key));
+    }
+    tree_map_iterator_delete(iterator);
 
     tree_map_delete(map);
 }

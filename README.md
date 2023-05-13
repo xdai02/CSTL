@@ -373,6 +373,7 @@ bool hash_table_is_empty(const hash_table_t *hash_table);
 size_t hash_table_size(const hash_table_t *hash_table);
 void hash_table_foreach(hash_table_t *hash_table, visit_pair_t visit);
 hash_table_t *hash_table_clear(hash_table_t *hash_table);
+bool hash_table_contains(const hash_table_t *hash_table, T key);
 hash_table_t *hash_table_put(hash_table_t *hash_table, pair_t *pair);
 hash_table_t *hash_table_remove(hash_table_t *hash_table, T key);
 T hash_table_get(const hash_table_t *hash_table, T key);
@@ -434,18 +435,31 @@ bool hash_set_iterator_has_next(const iterator_t *iterator);
 T hash_set_iterator_next(iterator_t *iterator);
 ```
 
-- [ ] **ordered_map**: Red black tree based `ordered_map_t` for key-value pairs.
+- [x] **tree_map**: Red black tree based `tree_map_t` for key-value pairs.
 
 ```c
-typedef struct ordered_map_t ordered_map_t;
+typedef struct tree_map_t tree_map_t;
 
-// TODO
+tree_map_t *tree_map_new(compare_t compare);
+void tree_map_delete(tree_map_t *map);
+bool tree_map_is_empty(tree_map_t *map);
+size_t tree_map_size(tree_map_t *map);
+void tree_map_foreach(tree_map_t *map, visit_pair_t visit);
+tree_map_t *tree_map_clear(tree_map_t *map);
+bool tree_map_contains(const tree_map_t *map, T key);
+tree_map_t *tree_map_put(tree_map_t *map, pair_t *pair);
+tree_map_t *tree_map_remove(tree_map_t *map, T key);
+T tree_map_get(const tree_map_t *map, T key);
+iterator_t *tree_map_iterator_new(const tree_map_t *map);
+void tree_map_iterator_delete(iterator_t *iterator);
+bool tree_map_iterator_has_next(const iterator_t *iterator);
+T tree_map_iterator_next(iterator_t *iterator);
 ```
 
-- [ ] **unordered_map**: Hash table based `unordered_map_t` for key-value pairs.
+- [ ] **hash_map**: Hash table based `hash_map_t` for key-value pairs.
 
 ```c
-typedef struct unordered_map_t unordered_map_t;
+typedef struct hash_map_t hash_map_t;
 
 // TODO
 ```

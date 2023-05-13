@@ -150,6 +150,7 @@ void test_hash_table() {
     test_hash_table_size();
     test_hash_table_foreach();
     test_hash_table_clear();
+    test_hash_table_contains();
     test_hash_table_put();
     test_hash_table_remove();
     test_hash_table_get();
@@ -207,9 +208,11 @@ void test_tree_map() {
     test_tree_map_size();
     test_tree_map_foreach();
     test_tree_map_clear();
+    test_tree_map_contains();
     test_tree_map_put();
     test_tree_map_remove();
     test_tree_map_get();
+    test_tree_map_iterator();
 
     printf("[PASS] tree_map\n");
 }

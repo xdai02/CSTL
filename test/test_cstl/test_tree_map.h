@@ -7,8 +7,10 @@ void test_tree_map_is_empty();
 void test_tree_map_size();
 void test_tree_map_foreach();
 void test_tree_map_clear();
+void test_tree_map_contains();
 void test_tree_map_put();
 void test_tree_map_remove();
 void test_tree_map_get();
+void test_tree_map_iterator();
 
 #endif

@@ -50,6 +50,15 @@ void hash_table_foreach(hash_table_t *hash_table, visit_pair_t visit);
 hash_table_t *hash_table_clear(hash_table_t *hash_table);
 
 /**
+ * @brief Check if a hash_table_t object contains the specified key.
+ * @param hash_table The hash_table_t object.
+ * @param key The key.
+ * @return Returns true if the hash_table_t object contains the specified key, otherwise returns false.
+ * @note Caller MUST free the parameter `key` (if applicable).
+ */
+bool hash_table_contains(const hash_table_t *hash_table, T key);
+
+/**
  * @brief Put a key-value pair into a hash_table_t object.
  * @param hash_table The hash_table_t object.
  * @param pair The pair_t object.

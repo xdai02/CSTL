@@ -163,6 +163,18 @@ hash_table_t *hash_table_clear(hash_table_t *hash_table) {
 }
 
 /**
+ * @brief Check if a hash_table_t object contains the specified key.
+ * @param hash_table The hash_table_t object.
+ * @param key The key.
+ * @return Returns true if the hash_table_t object contains the specified key, otherwise returns false.
+ * @note Caller MUST free the parameter `key` (if applicable).
+ */
+bool hash_table_contains(const hash_table_t *hash_table, T key) {
+    return_value_if_fail(hash_table != NULL && key != NULL, false);
+    return hash_table_get(hash_table, key) != NULL;
+}
+
+/**
  * @brief Resize a hash_table_t object.
  *        Double the hash_table_t object if the load factor is greater than 0.75.
  * @param hash_table The hash_table_t object.
@@ -340,7 +352,7 @@ T hash_table_get(const hash_table_t *hash_table, T key) {
         }
     }
     list_iterator_delete(iterator);
-    
+
     return value;
 }
 

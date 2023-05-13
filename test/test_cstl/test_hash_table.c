@@ -114,6 +114,32 @@ void test_hash_table_clear() {
     hash_table_delete(hash_table);
 }
 
+void test_hash_table_contains() {
+    int i = 0;
+    hash_table_t *hash_table = NULL;
+    pair_t *pair;
+    Integer *key;
+
+    hash_table = hash_table_new(Integer_compare, Integer_hash);
+
+    for (i = 0; i < N; i++) {
+        pair = pair_new(Integer_new(i), Integer_new(i), Integer_delete, Integer_delete);
+        hash_table_put(hash_table, pair);
+    }
+
+    for (i = 0; i < N; i++) {
+        key = Integer_new(randint(0, 3 * N));
+        if (Integer_get(key) < N) {
+            assert(hash_table_contains(hash_table, key) == true);
+        } else {
+            assert(hash_table_contains(hash_table, key) == false);
+        }
+        Integer_delete(key);
+    }
+
+    hash_table_delete(hash_table);
+}
+
 typedef struct Point {
     int x;
     int y;

@@ -67,6 +67,10 @@ size_t hash_set_size(const hash_set_t *set) {
 
 static visit_t __visit = NULL;
 
+/**
+ * @brief Pirvate function for visiting a pair_t object.
+ * @param pair The pair_t object.
+ */
 static void __visit_pair(T pair) {
     return_if_fail(pair != NULL);
     pair = (pair_t *)pair;
