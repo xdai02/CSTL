@@ -11,6 +11,7 @@
 #include "test_hash_table.h"
 #include "test_tree_set.h"
 #include "test_hash_set.h"
+#include "test_tree_map.h"
 
 void test_cstl();
 

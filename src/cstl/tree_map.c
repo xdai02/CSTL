@@ -6,15 +6,24 @@ struct tree_map_t {
     compare_t compare;
 };
 
+static compare_t __compare = NULL;
+
+static int __pair_compare(const T data1, const T data2) {
+    pair_t *pair1 = (pair_t *)data1;
+    pair_t *pair2 = (pair_t *)data2;
+    return __compare(pair_get_key(pair1), pair_get_key(pair2));
+}
+
 tree_map_t *tree_map_new(compare_t compare, destroy_t destroy) {
     tree_map_t *map = NULL;
 
     return_value_if_fail(compare != NULL, NULL);
 
     map = (tree_map_t *)malloc(sizeof(tree_map_t));
-    return_valueif_fail(map != NULL, NULL);
+    return_value_if_fail(map != NULL, NULL);
 
-    map->tree = red_black_tree_new(compare, destroy);
+    __compare = compare;
+    map->tree = red_black_tree_new(__pair_compare, destroy);
     if (map->tree == NULL) {
         free(map);
         return NULL;
@@ -62,14 +71,24 @@ tree_map_t *tree_map_clear(tree_map_t *map) {
 
 tree_map_t *tree_map_put(tree_map_t *map, pair_t *pair) {
     return_value_if_fail(map != NULL && pair != NULL, map);
+
+    if (red_black_tree_contains(map->tree, pair)) {
+        red_black_tree_remove(map->tree, pair);
+    }
     red_black_tree_insert(map->tree, pair);
     return map;
 }
 
 /* @note */
 tree_map_t *tree_map_remove(tree_map_t *map, T key) {
+    pair_t *pair = NULL;
+
     return_value_if_fail(map != NULL && key != NULL, map);
-    red_black_tree_remove(map->tree, key);
+
+    pair = pair_new(key, NULL, NULL, NULL);
+    red_black_tree_remove(map->tree, pair);
+    pair_delete(pair);
+
     return map;
 }
 

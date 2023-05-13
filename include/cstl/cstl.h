@@ -12,5 +12,6 @@
 #include "hash_table.h"
 #include "tree_set.h"
 #include "hash_set.h"
+#include "tree_map.h"
 
 #endif
