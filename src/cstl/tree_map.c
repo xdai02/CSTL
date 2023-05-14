@@ -25,7 +25,7 @@ static int __pair_compare(const T data1, const T data2) {
 /**
  * @brief Create a tree_map_t object.
  * @param compare Callback function for comparing two keys.
- * @return Returns the created hash_table_t object if successful, otherwise returns NULL.
+ * @return Returns the created tree_map_t object if successful, otherwise returns NULL.
  */
 tree_map_t *tree_map_new(compare_t compare) {
     tree_map_t *map = NULL;

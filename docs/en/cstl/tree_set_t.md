@@ -311,9 +311,9 @@ for (int i = 0; i < 10; i++) {
     tree_set_add(set, Integer_new(i));
 }
 
-Integer *integer = Integer_new(5);
-tree_set_remove(array, integer);
-Integer_delete(integer);
+Integer *target = Integer_new(5);
+tree_set_remove(array, target);
+Integer_delete(target);
 
 tree_set_delete(set);
 ```
