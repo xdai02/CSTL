@@ -71,7 +71,7 @@ void tree_map_delete(tree_map_t *map);
 
 ```c
 tree_map_t *map = tree_map_new(Integer_compare);
-tree_map_delete(set);
+tree_map_delete(map);
 ```
 
 
@@ -97,7 +97,7 @@ tree_map_t *map = tree_map_new(Integer_compare);
 if (tree_map_is_empty(map)) {
     // ...
 }
-tree_map_delete(set);
+tree_map_delete(map);
 ```
 
 
@@ -120,7 +120,7 @@ size_t tree_map_size(tree_map_t *map);
 
 ```c
 tree_map_t *map = tree_map_new(Integer_compare);
-printf("%d\n", tree_map_size(set));
+printf("%d\n", tree_map_size(map));
 tree_map_delete(map);
 ```
 
@@ -158,10 +158,10 @@ int main() {
         tree_map_put(map, pair);
     }
 
-    tree_map_foreach(set, item_print);
+    tree_map_foreach(map, item_print);
     printf("\n");
 
-    tree_map_delete(set);
+    tree_map_delete(map);
 
     return 0;
 }
@@ -193,8 +193,8 @@ for (int i = 0; i < 10; i++) {
     tree_map_put(map, pair);
 }
 
-tree_map_clear(set);
-tree_map_delete(set);
+tree_map_clear(map);
+tree_map_delete(map);
 ```
 
 
