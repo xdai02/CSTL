@@ -217,6 +217,22 @@ void test_tree_map() {
     printf("[PASS] tree_map\n");
 }
 
+void test_hash_map() {
+    test_hash_map_new();
+    test_hash_map_delete();
+    test_hash_map_is_empty();
+    test_hash_map_size();
+    test_hash_map_foreach();
+    test_hash_map_clear();
+    test_hash_map_contains();
+    test_hash_map_put();
+    test_hash_map_remove();
+    test_hash_map_get();
+    test_hash_map_iterator();
+
+    printf("[PASS] hash_map\n");
+}
+
 void test_cstl() {
     test_str();
     test_array();
@@ -229,4 +245,5 @@ void test_cstl() {
     test_tree_set();
     test_hash_set();
     test_tree_map();
+    test_hash_map();
 }

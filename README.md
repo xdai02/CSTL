@@ -456,12 +456,25 @@ bool tree_map_iterator_has_next(const iterator_t *iterator);
 T tree_map_iterator_next(iterator_t *iterator);
 ```
 
-- [ ] **hash_map**: Hash table based `hash_map_t` for key-value pairs.
+- [x] **hash_map**: Hash table based `hash_map_t` for key-value pairs.
 
 ```c
 typedef struct hash_map_t hash_map_t;
 
-// TODO
+hash_map_t *hash_map_new(compare_t compare, hash_t hash);
+void hash_map_delete(hash_map_t *map);
+bool hash_map_is_empty(hash_map_t *map);
+size_t hash_map_size(hash_map_t *map);
+void hash_map_foreach(hash_map_t *map, visit_pair_t visit);
+hash_map_t *hash_map_clear(hash_map_t *map);
+bool hash_map_contains(const hash_map_t *map, T key);
+hash_map_t *hash_map_put(hash_map_t *map, pair_t *pair);
+hash_map_t *hash_map_remove(hash_map_t *map, T key);
+T hash_map_get(const hash_map_t *map, T key);
+iterator_t *hash_map_iterator_new(const hash_map_t *map);
+void hash_map_iterator_delete(iterator_t *iterator);
+bool hash_map_iterator_has_next(const iterator_t *iterator);
+T hash_map_iterator_next(iterator_t *iterator);
 ```
 
 
