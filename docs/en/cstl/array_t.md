@@ -353,6 +353,9 @@ T array_remove(array_t *array, size_t index);
     - `index`: The index.
 - Return
     - Returns the removed element if successful, otherwise returns `NULL`.
+- Note
+    - Caller **MUST** free the returned element (if applicable).
+
 - Usage
 
 ```c

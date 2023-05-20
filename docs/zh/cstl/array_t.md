@@ -353,6 +353,8 @@ T array_remove(array_t *array, size_t index);
     - `index`：下标。
 - 返回值
     - 返回被删除的元素，失败返回`NULL`。
+- 注意
+    - 调用者**必须**释放参数`key`（如适用）。
 - 用例
 
 ```c

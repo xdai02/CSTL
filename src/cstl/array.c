@@ -195,6 +195,7 @@ array_t *array_insert(array_t *array, size_t index, T elem) {
  * @param array The array_t object.
  * @param index The index.
  * @return Returns the removed element.
+ * @note Caller MUST free the returned element (if applicable).
  */
 T array_remove(array_t *array, size_t index) {
     size_t i = 0;
