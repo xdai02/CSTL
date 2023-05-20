@@ -8,10 +8,12 @@ struct heap_t {
 };
 
 heap_t *heap_new(heap_type_t heap_type, compare_t compare, destroy_t destroy) {
+    heap_t *heap = NULL;
+
     return_value_if_fail(heap_type == MIN_HEAP || heap_type == MAX_HEAP, NULL);
     return_value_if_fail(compare != NULL, NULL);
 
-    heap_t *heap = (heap_t *)malloc(sizeof(heap_t));
+    heap = (heap_t *)malloc(sizeof(heap_t));
     return_value_if_fail(heap != NULL, NULL);
 
     heap->array = array_new(compare, destroy);
@@ -41,6 +43,12 @@ size_t heap_size(const heap_t *heap) {
     return array_size(heap->array);
 }
 
+heap_t *heap_clear(heap_t *heap) {
+    return_value_if_fail(heap != NULL, NULL);
+    array_clear(heap->array);
+    return heap;
+}
+
 static heap_t *__heapify_up(heap_t *heap, size_t index) {
     size_t parent_index;
     T current;
@@ -63,8 +71,7 @@ static heap_t *__heapify_up(heap_t *heap, size_t index) {
         }
 
         if (should_swap) {
-            array_set(heap->array, index, parent);
-            array_set(heap->array, parent_index, current);
+            array_swap(heap->array, index, parent_index);
             index = parent_index;
         } else {
             break;
@@ -121,8 +128,7 @@ static heap_t *__heapify_down(heap_t *heap, size_t index) {
             break;
         }
 
-        array_set(heap->array, index, array_get(heap->array, chosen_index));
-        array_set(heap->array, chosen_index, current);
+        array_swap(heap->array, index, chosen_index);
         index = chosen_index;
     }
 

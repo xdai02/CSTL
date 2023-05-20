@@ -118,6 +118,37 @@ void test_array_set() {
     array_delete(array);
 }
 
+void test_array_swap() {
+    int i = 0;
+    array_t *array = NULL;
+
+    array = array_new(Integer_compare, Integer_delete);
+    for (i = 0; i < N; i++) {
+        array_append(array, Integer_new(i));
+    }
+    for (i = 0; i < N / 2; i++) {
+        array_swap(array, i, N - i - 1);
+    }
+    for (i = 0; i < N; i++) {
+        Integer *integer = (Integer *)array_get(array, i);
+        assert(Integer_get(integer) == N - i - 1);
+    }
+    array_delete(array);
+
+    array = array_new(Integer_compare, Integer_delete);
+    for (i = 0; i < N; i++) {
+        array_append(array, Integer_new(i));
+    }
+    for (i = 0; i < N; i++) {
+        array_swap(array, i, i);
+    }
+    for (i = 0; i < N; i++) {
+        Integer *integer = (Integer *)array_get(array, i);
+        assert(Integer_get(integer) == i);
+    }
+    array_delete(array);
+}
+
 void test_array_append() {
     int i = 0;
     array_t *array = NULL;

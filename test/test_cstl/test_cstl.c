@@ -47,6 +47,7 @@ void test_array() {
     test_array_clear();
     test_array_get();
     test_array_set();
+    test_array_swap();
     test_array_append();
     test_array_insert();
     test_array_remove();
@@ -126,6 +127,21 @@ void test_deque() {
     test_deque_get_back();
 
     printf("[PASS] deque\n");
+}
+
+void test_heap() {
+    test_heap_new();
+    test_heap_delete();
+    test_heap_is_empty();
+    test_heap_size();
+#if 0
+    test_heap_clear();
+#endif
+    test_heap_push();
+    test_heap_pop();
+    test_heap_peek();
+
+    printf("[PASS] heap\n");
 }
 
 void test_red_black_tree() {
@@ -240,6 +256,7 @@ void test_cstl() {
     test_stack();
     test_queue();
     test_deque();
+    test_heap();
     test_red_black_tree();
     test_hash_table();
     test_tree_set();

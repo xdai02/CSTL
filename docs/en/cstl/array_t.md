@@ -282,6 +282,37 @@ array_delete(array);
 
 
 
+## array_swap()
+
+- Prototype
+
+```c
+array_t *array_swap(array_t *array, size_t index1, size_t index2);
+```
+
+- Description
+    - Swap two elements in an `array_t` object.
+- Parameters
+    - `array`: The `array_t` object.
+    - `index1`: The index of the first element.
+    - `index2`: The index of the second element.
+- Return
+    - Returns the modified `array_t` object.
+- Usage
+
+```c
+array_t *array = array_new(Integer_compare, Integer_delete);
+
+for (int i = 0; i < 10; i++) {
+    array_append(array, Integer_new(i));
+}
+
+array_swap(array, 2, 8);
+array_delete(array);
+```
+
+
+
 ## array_append()
 
 - Prototype

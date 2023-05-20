@@ -9,6 +9,7 @@ void test_array_foreach();
 void test_array_clear();
 void test_array_get();
 void test_array_set();
+void test_array_swap();
 void test_array_append();
 void test_array_insert();
 void test_array_remove();

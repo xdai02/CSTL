@@ -66,6 +66,15 @@ T array_get(const array_t *array, size_t index);
 array_t *array_set(array_t *array, size_t index, T elem);
 
 /**
+ * @brief Swap two elements in an array_t object.
+ * @param array The array_t object.
+ * @param index1 The index of the first element.
+ * @param index2 The index of the second element.
+ * @return Returns the modified array_t object.
+ */
+array_t *array_swap(array_t *array, size_t index1, size_t index2);
+
+/**
  * @brief Append an element to the end of an array_t object.
  * @param array The array_t object.
  * @param elem The element.

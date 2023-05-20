@@ -126,6 +126,21 @@ array_t *array_set(array_t *array, size_t index, T elem) {
 }
 
 /**
+ * @brief Swap two elements in an array_t object.
+ * @param array The array_t object.
+ * @param index1 The index of the first element.
+ * @param index2 The index of the second element.
+ * @return Returns the modified array_t object.
+ */
+array_t *array_swap(array_t *array, size_t index1, size_t index2) {
+    return_value_if_fail(array != NULL, NULL);
+    return_value_if_fail(index1 >= 0 && index1 < array->size, array);
+    return_value_if_fail(index2 >= 0 && index2 < array->size, array);
+    swap(array->data[index1], array->data[index2], T);
+    return array;
+}
+
+/**
  * @brief Resize an array_t object.
  *        1. If the size of the array_t object is less than half of the capacity, the capacity is halved.
  *        2. If the size of the array_t object is greater than or equal to the capacity, the capacity is increased by 50%.

@@ -8,6 +8,7 @@
 #include "stack.h"
 #include "queue.h"
 #include "deque.h"
+#include "heap.h"
 #include "red_black_tree.h"
 #include "hash_table.h"
 #include "tree_set.h"

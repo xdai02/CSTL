@@ -75,10 +75,19 @@ bool Character_equals(const Character *character1, const Character *character2) 
 int Character_compare(const void *ptr1, const void *ptr2) {
     Character *character1 = NULL;
     Character *character2 = NULL;
+
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
+
     character1 = (Character *)ptr1;
     character2 = (Character *)ptr2;
-    return character1->value - character2->value;
+
+    if (character1->value == character2->value) {
+        return 0;
+    } else if (character1->value < character2->value) {
+        return -1;
+    } else {
+        return 1;
+    }
 }
 
 /**
@@ -165,10 +174,19 @@ bool UnsignedCharacter_equals(const UnsignedCharacter *uc1, const UnsignedCharac
 int UnsignedCharacter_compare(const void *ptr1, const void *ptr2) {
     UnsignedCharacter *uc1 = NULL;
     UnsignedCharacter *uc2 = NULL;
+
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
+
     uc1 = (UnsignedCharacter *)ptr1;
     uc2 = (UnsignedCharacter *)ptr2;
-    return uc1->value - uc2->value;
+
+    if (uc1->value == uc2->value) {
+        return 0;
+    } else if (uc1->value < uc2->value) {
+        return -1;
+    } else {
+        return 1;
+    }
 }
 
 /**
@@ -255,10 +273,19 @@ bool Short_equals(const Short *short1, const Short *short2) {
 int Short_compare(const void *ptr1, const void *ptr2) {
     Short *short1 = NULL;
     Short *short2 = NULL;
+
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
+
     short1 = (Short *)ptr1;
     short2 = (Short *)ptr2;
-    return short1->value - short2->value;
+
+    if (short1->value == short2->value) {
+        return 0;
+    } else if (short1->value < short2->value) {
+        return -1;
+    } else {
+        return 1;
+    }
 }
 
 /**
@@ -345,10 +372,19 @@ bool UnsignedShort_equals(const UnsignedShort *us1, const UnsignedShort *us2) {
 int UnsignedShort_compare(const void *ptr1, const void *ptr2) {
     UnsignedShort *us1 = NULL;
     UnsignedShort *us2 = NULL;
+
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
+
     us1 = (UnsignedShort *)ptr1;
     us2 = (UnsignedShort *)ptr2;
-    return us1->value - us2->value;
+
+    if (us1->value == us2->value) {
+        return 0;
+    } else if (us1->value < us2->value) {
+        return -1;
+    } else {
+        return 1;
+    }
 }
 
 /**
@@ -435,10 +471,19 @@ bool Integer_equals(const Integer *integer1, const Integer *integer2) {
 int Integer_compare(const void *ptr1, const void *ptr2) {
     Integer *integer1 = NULL;
     Integer *integer2 = NULL;
+
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
+
     integer1 = (Integer *)ptr1;
     integer2 = (Integer *)ptr2;
-    return integer1->value - integer2->value;
+
+    if (integer1->value == integer2->value) {
+        return 0;
+    } else if (integer1->value < integer2->value) {
+        return -1;
+    } else {
+        return 1;
+    }
 }
 
 /**
@@ -525,10 +570,19 @@ bool UnsignedInteger_equals(const UnsignedInteger *ui1, const UnsignedInteger *u
 int UnsignedInteger_compare(const void *ptr1, const void *ptr2) {
     UnsignedInteger *ui1 = NULL;
     UnsignedInteger *ui2 = NULL;
+
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
+
     ui1 = (UnsignedInteger *)ptr1;
     ui2 = (UnsignedInteger *)ptr2;
-    return ui1->value - ui2->value;
+
+    if (ui1->value == ui2->value) {
+        return 0;
+    } else if (ui1->value < ui2->value) {
+        return -1;
+    } else {
+        return 1;
+    }
 }
 
 /**
@@ -615,10 +669,18 @@ bool Long_equals(const Long *long1, const Long *long2) {
 int Long_compare(const void *ptr1, const void *ptr2) {
     Long *long1 = NULL;
     Long *long2 = NULL;
+
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
     long1 = (Long *)ptr1;
     long2 = (Long *)ptr2;
-    return long1->value - long2->value;
+
+    if (long1->value == long2->value) {
+        return 0;
+    } else if (long1->value < long2->value) {
+        return -1;
+    } else {
+        return 1;
+    }
 }
 
 /**
@@ -705,10 +767,19 @@ bool UnsignedLong_equals(const UnsignedLong *ul1, const UnsignedLong *ul2) {
 int UnsignedLong_compare(const void *ptr1, const void *ptr2) {
     UnsignedLong *ul1 = NULL;
     UnsignedLong *ul2 = NULL;
+
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
+
     ul1 = (UnsignedLong *)ptr1;
     ul2 = (UnsignedLong *)ptr2;
-    return ul1->value - ul2->value;
+
+    if (ul1->value == ul2->value) {
+        return 0;
+    } else if (ul1->value < ul2->value) {
+        return -1;
+    } else {
+        return 1;
+    }
 }
 
 /**
@@ -999,10 +1070,19 @@ bool Boolean_equals(const Boolean *boolean1, const Boolean *boolean2) {
 int Boolean_compare(const void *ptr1, const void *ptr2) {
     Boolean *boolean1 = NULL;
     Boolean *boolean2 = NULL;
+
     exit_if_fail(ptr1 != NULL && ptr2 != NULL);
+
     boolean1 = (Boolean *)ptr1;
     boolean2 = (Boolean *)ptr2;
-    return boolean1->value - boolean2->value;
+
+    if (boolean1->value == boolean2->value) {
+        return 0;
+    } else if (boolean1->value < boolean2->value) {
+        return -1;
+    } else {
+        return 1;
+    }
 }
 
 /**

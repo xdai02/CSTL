@@ -282,6 +282,37 @@ array_delete(array);
 
 
 
+## array_swap()
+
+- 原型
+
+```c
+array_t *array_swap(array_t *array, size_t index1, size_t index2);
+```
+
+- 描述
+    - 交换`array_t`对象中的两个元素。
+- 参数
+    - `array`：`array_t`对象。
+    - `index1`：第一个元素的下标。
+    - `index2`：第二个元素的下标。
+- 返回值
+    - 返回修改后的`array_t`对象。
+- 用例
+
+```c
+array_t *array = array_new(Integer_compare, Integer_delete);
+
+for (int i = 0; i < 10; i++) {
+    array_append(array, Integer_new(i));
+}
+
+array_swap(array, 2, 8);
+array_delete(array);
+```
+
+
+
 ## array_append()
 
 - 原型
