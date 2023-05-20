@@ -236,6 +236,7 @@ void array_foreach(array_t *array, visit_t visit);
 array_t *array_clear(array_t *array);
 T array_get(const array_t *array, size_t index);
 array_t *array_set(array_t *array, size_t index, T elem);
+array_t *array_swap(array_t *array, size_t index1, size_t index2);
 array_t *array_append(array_t *array, T elem);
 array_t *array_insert(array_t *array, size_t index, T elem);
 T array_remove(array_t *array, size_t index);
