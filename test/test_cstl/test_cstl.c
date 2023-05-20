@@ -134,9 +134,7 @@ void test_heap() {
     test_heap_delete();
     test_heap_is_empty();
     test_heap_size();
-#if 0
     test_heap_clear();
-#endif
     test_heap_push();
     test_heap_pop();
     test_heap_peek();

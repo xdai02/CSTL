@@ -177,6 +177,8 @@ T queue_dequeue(queue_t *queue);
     - `queue`: The `queue_t` object.
 - Return
     - Returns the dequeued element.
+- Note
+    - Caller **MUST** free the returned element (if applicable).
 - Usage
 
 ```c
@@ -184,7 +186,11 @@ queue_t *queue = queue_new(Integer_delete);
 for (int i = 0; i < 10; i++) {
     queue_enqueue(queue, Integer_new(i));
 }
-queue_dequeue(queue);
+
+Integer *value = queue_dequeue(queue);
+printf("%d\n", Integer_get(value));
+Integer_delete(value);
+
 queue_delete(queue);
 ```
 

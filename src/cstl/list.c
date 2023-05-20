@@ -331,6 +331,7 @@ list_t *list_push_back(list_t *list, T elem) {
  * @brief Remove the first element of the list_t object.
  * @param list The list_t object.
  * @return Returns the removed element if successful, otherwise returns NULL.
+ * @note Caller MUST free the returned element (if applicable).
  */
 T list_pop_front(list_t *list) {
     node_t *node = NULL;
@@ -359,6 +360,7 @@ T list_pop_front(list_t *list) {
  * @brief Remove the last element of the list_t object.
  * @param list The list_t object.
  * @return Returns the removed element if successful, otherwise returns NULL.
+ * @note Caller MUST free the returned element (if applicable).
  */
 T list_pop_back(list_t *list) {
     node_t *node = NULL;
@@ -425,6 +427,7 @@ list_t *list_insert(list_t *list, size_t index, T elem) {
  * @param list The list_t object.
  * @param index The index.
  * @return Returns the removed element if successful, otherwise returns NULL.
+ * @note Caller MUST free the returned element (if applicable).
  */
 T list_remove(list_t *list, size_t index) {
     node_t *node = NULL;

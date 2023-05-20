@@ -92,6 +92,7 @@ deque_t *deque_push_back(deque_t *deque, T elem) {
  * @brief Pop an element from the front of a deque_t object.
  * @param deque The deque_t object.
  * @return Returns the popped element.
+ * @note Caller MUST free the returned element (if applicable).
  */
 T deque_pop_front(deque_t *deque) {
     return_value_if_fail(deque != NULL, NULL);
@@ -102,6 +103,7 @@ T deque_pop_front(deque_t *deque) {
  * @brief Pop an element from the back of a deque_t object.
  * @param deque The deque_t object.
  * @return Returns the popped element.
+ * @note Caller MUST free the returned element (if applicable).
  */
 T deque_pop_back(deque_t *deque) {
     return_value_if_fail(deque != NULL, NULL);

@@ -519,6 +519,9 @@ T list_pop_front(list_t *list);
     - `list`: The `list_t` object.
 - Return
     - Returns the removed element if successful, otherwise returns `NULL`.
+- Note
+    - Caller **MUST** free the returned element (if applicable).
+
 - Usage
 
 ```c
@@ -528,8 +531,9 @@ for (int i = 0; i < 10; i++) {
     list_push_back(list, Integer_new(i));
 }
 
-Integer *integer = (Integer *)list_pop_front(list);
-printf("%d\n", Integer_get(integer));
+Integer *value = list_pop_front(list);
+printf("%d\n", Integer_get(value));
+Integer_delete(value);
 
 list_delete(list);
 ```
@@ -550,6 +554,8 @@ T list_pop_back(list_t *list);
     - `list`: The `list_t` object.
 - Return
     - Returns the removed element if successful, otherwise returns `NULL`.
+- Note
+    - Caller **MUST** free the returned element (if applicable).
 - Usage
 
 ```c
@@ -559,8 +565,9 @@ for (int i = 0; i < 10; i++) {
     list_push_back(list, Integer_new(i));
 }
 
-Integer *integer = (Integer *)list_pop_back(list);
-printf("%d\n", Integer_get(integer));
+Integer *value = list_pop_back(list);
+printf("%d\n", Integer_get(value));
+Integer_delete(value);
 
 list_delete(list);
 ```
@@ -611,6 +618,8 @@ T list_remove(list_t *list, size_t index);
     - `index`: The index.
 - Return
     - Returns the removed element if successful, otherwise returns `NULL`.
+- Note
+    - Caller **MUST** free the returned element (if applicable).
 - Usage
 
 ```c
@@ -620,7 +629,10 @@ for (int i = 0; i < 10; i++) {
     list_push_back(list, Integer_new(i));
 }
 
-list_remove(list, 5);
+Integer *value = list_remove(list, 5);
+printf("%d\n", Integer_get(value));
+Integer_delete(value);
+
 list_delete(list);
 ```
 

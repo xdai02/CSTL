@@ -95,10 +95,106 @@ void test_heap_clear() {
 }
 
 void test_heap_push() {
+    heap_t *heap = NULL;
+    int i = 0;
+
+    heap = heap_new(MIN_HEAP, Integer_compare, Integer_delete);
+    assert(heap_is_empty(heap) == true);
+    for (i = 0; i < N; i++) {
+        heap_push(heap, Integer_new(i));
+    }
+    assert(heap_size(heap) == N);
+    heap_delete(heap);
+
+    heap = heap_new(MAX_HEAP, Integer_compare, Integer_delete);
+    assert(heap_is_empty(heap) == true);
+    for (i = 0; i < N; i++) {
+        heap_push(heap, Integer_new(i));
+    }
+    assert(heap_size(heap) == N);
+    heap_delete(heap);
 }
 
 void test_heap_pop() {
+    heap_t *heap = NULL;
+    int i = 0;
+    Integer *integer;
+
+    heap = heap_new(MIN_HEAP, Integer_compare, Integer_delete);
+    assert(heap_is_empty(heap) == true);
+    for (i = 0; i < N; i++) {
+        heap_push(heap, Integer_new(i));
+    }
+    assert(heap_size(heap) == N);
+    for (i = 0; i < N; i++) {
+        integer = (Integer *)heap_pop(heap);
+        assert(integer != NULL);
+        assert(Integer_get(integer) == i);
+        Integer_delete(integer);
+    }
+    assert(heap_is_empty(heap) == true);
+    heap_delete(heap);
+
+    heap = heap_new(MAX_HEAP, Integer_compare, Integer_delete);
+    assert(heap_is_empty(heap) == true);
+    for (i = 0; i < N; i++) {
+        heap_push(heap, Integer_new(i));
+    }
+    assert(heap_size(heap) == N);
+    for (i = N - 1; i >= 0; i--) {
+        integer = (Integer *)heap_pop(heap);
+        assert(integer != NULL);
+        assert(Integer_get(integer) == i);
+        Integer_delete(integer);
+    }
+    assert(heap_is_empty(heap) == true);
+    heap_delete(heap);
 }
 
 void test_heap_peek() {
+    heap_t *heap = NULL;
+    int i = 0;
+    Integer *integer;
+
+    heap = heap_new(MIN_HEAP, Integer_compare, Integer_delete);
+    assert(heap_is_empty(heap) == true);
+    for (i = 0; i < N; i++) {
+        heap_push(heap, Integer_new(i));
+        integer = (Integer *)heap_peek(heap);
+        assert(integer != NULL);
+        assert(Integer_get(integer) == 0);
+    }
+    assert(heap_size(heap) == N);
+    for (i = 0; i < N; i++) {
+        integer = (Integer *)heap_peek(heap);
+        assert(integer != NULL);
+        assert(Integer_get(integer) == i);
+        integer = (Integer *)heap_pop(heap);
+        assert(integer != NULL);
+        assert(Integer_get(integer) == i);
+        Integer_delete(integer);
+    }
+    assert(heap_is_empty(heap) == true);
+    heap_delete(heap);
+
+    heap = heap_new(MAX_HEAP, Integer_compare, Integer_delete);
+    assert(heap_is_empty(heap) == true);
+    for (i = 0; i < N; i++) {
+        heap_push(heap, Integer_new(i));
+        integer = (Integer *)heap_peek(heap);
+        assert(integer != NULL);
+        assert(Integer_get(integer) == i);
+    }
+    assert(heap_size(heap) == N);
+    for (i = N - 1; i >= 0; i--) {
+        integer = (Integer *)heap_peek(heap);
+        assert(integer != NULL);
+        assert(Integer_get(integer) == i);
+        integer = (Integer *)heap_pop(heap);
+        assert(integer != NULL);
+        assert(Integer_get(integer) == i);
+        Integer_delete(integer);
+    }
+    assert(heap_is_empty(heap) == true);
+    heap_delete(heap);
 }

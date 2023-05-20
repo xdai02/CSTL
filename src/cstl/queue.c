@@ -80,6 +80,7 @@ queue_t *queue_enqueue(queue_t *queue, T elem) {
  * @brief Dequeue an element from a queue_t object.
  * @param queue The queue_t object.
  * @return Returns the dequeued element.
+ * @note Caller MUST free the returned element (if applicable).
  */
 T queue_dequeue(queue_t *queue) {
     return_value_if_fail(queue != NULL, NULL);

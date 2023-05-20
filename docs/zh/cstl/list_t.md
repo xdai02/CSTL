@@ -519,6 +519,8 @@ T list_pop_front(list_t *list);
     - `list`：`list_t`对象。
 - 返回值
     - 返回被删除的元素，失败返回`NULL`。
+- 注意
+    - 调用者**必须**释放返回元素（如适用）。
 - 用例
 
 ```c
@@ -528,8 +530,9 @@ for (int i = 0; i < 10; i++) {
     list_push_back(list, Integer_new(i));
 }
 
-Integer *integer = (Integer *)list_pop_front(list);
-printf("%d\n", Integer_get(integer));
+Integer *value = list_pop_front(list);
+printf("%d\n", Integer_get(value));
+Integer_delete(value);
 
 list_delete(list);
 ```
@@ -550,6 +553,8 @@ T list_pop_back(list_t *list);
     - `list`：`list_t`对象。
 - 返回值
     - 返回被删除的元素，失败返回`NULL`。
+- 注意
+    - 调用者**必须**释放返回元素（如适用）。
 - 用例
 
 ```c
@@ -559,8 +564,9 @@ for (int i = 0; i < 10; i++) {
     list_push_back(list, Integer_new(i));
 }
 
-Integer *integer = (Integer *)list_pop_back(list);
-printf("%d\n", Integer_get(integer));
+Integer *value = list_pop_back(list);
+printf("%d\n", Integer_get(value));
+Integer_delete(value);
 
 list_delete(list);
 ```
@@ -611,6 +617,8 @@ T list_remove(list_t *list, size_t index);
     - `index`：下标。
 - 返回值
     - 返回修改后的`list_t`对象。
+- 注意
+    - 调用者**必须**释放返回元素（如适用）。
 - 用例
 
 ```c
@@ -620,7 +628,10 @@ for (int i = 0; i < 10; i++) {
     list_push_back(list, Integer_new(i));
 }
 
-list_remove(list, 5);
+Integer *value = list_remove(list, 5);
+printf("%d\n", Integer_get(value));
+Integer_delete(value);
+
 list_delete(list);
 ```
 

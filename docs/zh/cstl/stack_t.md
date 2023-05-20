@@ -177,6 +177,9 @@ T stack_pop(stack_t *stack);
     - `stack`：`stack_t`对象。
 - 返回值
     - 返回出栈元素。
+- 注意
+    - 调用者**必须**释放返回元素（如适用）。
+
 - 用例
 
 ```c
@@ -184,7 +187,11 @@ stack_t *stack = stack_new(Integer_delete);
 for (int i = 0; i < 10; i++) {
     stack_push(stack, Integer_new(i));
 }
-stack_pop(stack);
+
+Integer *value = stack_pop(stack);
+printf("%d\n", Integer_get(value));
+Integer_delete(value);
+
 stack_delete(stack);
 ```
 

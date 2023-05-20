@@ -177,6 +177,8 @@ T queue_dequeue(queue_t *queue);
     - `queue`：`queue_t`对象。
 - 返回值
     - 返回出队元素。
+- 注意
+    - 调用者**必须**释放返回元素（如适用）。
 - 用例
 
 ```c
@@ -184,7 +186,11 @@ queue_t *queue = queue_new(Integer_delete);
 for (int i = 0; i < 10; i++) {
     queue_enqueue(queue, Integer_new(i));
 }
-queue_dequeue(queue);
+
+Integer *value = queue_dequeue(queue);
+printf("%d\n", Integer_get(value));
+Integer_delete(value);
+
 queue_delete(queue);
 ```
 
@@ -214,5 +220,4 @@ for (int i = 0; i < 10; i++) {
 printf("%d\n", Integer_get(queue_peek(queue)));
 queue_delete(queue);
 ```
-
 

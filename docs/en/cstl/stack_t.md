@@ -17,7 +17,7 @@ stack_t *stack_new(destroy_t destroy);
 - Parameters
     - `destroy`: Callback function for destroying a data item.
 - Return
-    - Return the created `stack_t` object if successful, otherwise return `NULL`.
+    - Returns the created `stack_t` object if successful, otherwise return `NULL`.
 - Usage
 
 ```c
@@ -145,7 +145,7 @@ stack_t *stack_push(stack_t *stack, T elem);
 ```
 
 - Description
-    - Push an element onto the `stack_t` object.
+    - Push an element into the `stack_t` object.
 - Parameters
     - `stack`: The `stack_t` object.
     - `elem`: The element.
@@ -177,6 +177,9 @@ T stack_pop(stack_t *stack);
     - `stack`: The `stack_t` object.
 - Return
     - Returns the popped element.
+- Note
+    - Caller **MUST** free the returned element (if applicable).
+
 - Usage
 
 ```c
@@ -184,7 +187,11 @@ stack_t *stack = stack_new(Integer_delete);
 for (int i = 0; i < 10; i++) {
     stack_push(stack, Integer_new(i));
 }
-stack_pop(stack);
+
+Integer *value = stack_pop(stack);
+printf("%d\n", Integer_get(value));
+Integer_delete(value);
+
 stack_delete(stack);
 ```
 

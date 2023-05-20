@@ -204,6 +204,8 @@ T deque_pop_front(deque_t *deque);
     - `deque`：`deque_t`对象。
 - 返回值
     - 返回队头元素。
+- 注意
+    - 调用者**必须**释放返回元素（如适用）。
 - 用例
 
 ```c
@@ -211,7 +213,11 @@ deque_t *deque= deque_new(Integer_delete);
 for (int i = 0; i < 10; i++) {
     deque_push_back(deque, Integer_new(i));
 }
-deque_pop_front(deque);
+
+Integer *value = deque_pop_front(deque);
+printf("%d\n", Integer_get(value));
+Integer_delete(value);
+
 deque_delete(deque);
 ```
 
@@ -231,6 +237,8 @@ T deque_pop_back(deque_t *deque);
     - `deque`：`deque_t`对象。
 - 返回值
     - 返回队尾元素。
+- 注意
+    - 调用者**必须**释放返回元素（如适用）。
 - 用例
 
 ```c
@@ -238,7 +246,11 @@ deque_t *deque= deque_new(Integer_delete);
 for (int i = 0; i < 10; i++) {
     deque_push_back(deque, Integer_new(i));
 }
-deque_pop_back(deque);
+
+Integer *value = deque_pop_back(deque);
+printf("%d\n", Integer_get(value));
+Integer_delete(value);
+
 deque_delete(deque);
 ```
 

@@ -40,7 +40,7 @@ size_t stack_size(const stack_t *stack);
 stack_t *stack_clear(stack_t *stack);
 
 /**
- * @brief Push an element onto the stack_t object.
+ * @brief Push an element into the stack_t object.
  * @param stack The stack_t object.
  * @param elem The element.
  * @return Returns the modified stack_t object.
@@ -51,6 +51,7 @@ stack_t *stack_push(stack_t *stack, T elem);
  * @brief Pop an element from the stack_t object.
  * @param stack The stack_t object.
  * @return Returns the popped element.
+ * @note Caller MUST free the returned element (if applicable).
  */
 T stack_pop(stack_t *stack);
 
