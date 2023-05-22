@@ -888,12 +888,15 @@ int Float_compare(const void *ptr1, const void *ptr2) {
  */
 size_t Float_hash(const void *ptr) {
     Float *f = NULL;
-    uint32_t bits;
+    union float_to_uint_t {
+        float f;
+        uint32_t uint;
+    } converter;
 
     exit_if_fail(ptr != NULL);
     f = (Float *)ptr;
-    bits = *((uint32_t *)&f->value);
-    return (size_t)bits;
+    converter.f = f->value;
+    return (size_t)converter.uint;
 }
 
 /**
@@ -990,12 +993,15 @@ int Double_compare(const void *ptr1, const void *ptr2) {
  */
 size_t Double_hash(const void *ptr) {
     Double *d = NULL;
-    uint64_t bits;
+    union double2_ulong_t {
+        double d;
+        uint64_t uint;
+    } converter;
 
     exit_if_fail(ptr != NULL);
     d = (Double *)ptr;
-    bits = *((uint64_t *)&d->value);
-    return (size_t)bits;
+    converter.d = d->value;
+    return (size_t)converter.uint;
 }
 
 /**
