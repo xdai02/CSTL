@@ -8,11 +8,127 @@
 [![CodeQL](https://github.com/xdai02/COOP/actions/workflows/codeql.yml/badge.svg)](https://github.com/xdai02/COOP/actions/workflows/codeql.yml)
 [![License](https://img.shields.io/badge/license-GNU-blue.svg)](https://github.com/xdai02/COOP/blob/main/LICENSE)
 
-
 **COOP** is a library that provides object-oriented features in C, similar to those used in other languages such as C++, Java, or Python. It simplifies the process of working with complex data structures and algorithms in C.
 
 
-# utils
+
+## Usage
+
+1. Cloning `COOP`
+
+```
+git clone git@github.com:xdai02/COOP.git
+```
+
+2. Installation
+
+```
+sudo apt install gcc
+sudo apt install cmake
+sudo apt install make
+```
+
+3. Run
+
+   - Run test code
+
+     ```
+     cmake ./
+     make
+     ./bin/test_coop
+     ```
+
+   - Run demo code
+
+     ```
+     cd demo
+     cmake ./
+     make
+     ./bin/demo_[module_name]
+     ```
+
+4. Clean intermediate files
+
+```
+make clean_all
+```
+
+
+
+## Static/Shared Library
+
+1. Generate static/shared library.
+
+```shell
+cmake ./
+```
+
+2. Project structure
+
+```shell
+COOP
+├── bin
+│   └── libcoop.a
+│   └── libcoop.so
+│   └── test_coop
+├── include
+│   └── coop.h
+├── src
+```
+
+3. Put your code (e.g. *main.c*) together with the `COOP` library.
+
+```shell
+├── COOP
+│   └── bin
+│   └── include
+│   └── src
+├── main.c
+```
+
+4. Sample code in *main.c*
+
+```c
+#include <stdio.h>
+#include <coop.h>
+
+int main() {
+	array_t *arr = array_new(Integer_compare, Integer_delete);
+	for(int i = 0; i < 10; i++) {
+		array_append(arr, Integer_new(i));
+	}
+
+	for(int i = 0; i < 10; i++) {
+		Integer *integer = array_get(arr, i);
+		printf("%d ", Integer_get(integer));
+	}
+
+	array_delete(arr);
+	return 0;
+}
+```
+
+5. Compilation
+
+   - Link to **static** library
+
+     ```shell
+     gcc -Wall main.c -o main_static -ICOOP/include -static -LCOOP/bin -lcoop
+     ./main_static
+     ```
+
+   - Link to **shared** library
+
+     ```shell
+     export LD_LIBRARY_PATH=COOP/bin:$LD_LIBRARY_PATH
+     gcc -Wall main.c -o main_shared -ICOOP/include -LCOOP -lcoop
+     ./main_shared
+     ```
+
+
+
+
+## utils
 
 - [x] **types**: Typedefs and macros for basic and derived data types.
 - [x] **exception**: Basic exception handling mechanism for checking validality.
@@ -188,7 +304,7 @@ typedef size_t (*hash_t)(const T data);
 
 
 
-# cstl
+## cstl
 
 - [x] **iterator**: `iterator_t` for traversing data structures.
 - [x] **str**: Dynamic `string_t ` with automatic memory management.
@@ -505,102 +621,4 @@ bool hash_map_iterator_has_next(const iterator_t *iterator);
 T hash_map_iterator_next(iterator_t *iterator);
 ```
 
-
-
-# Usage
-
-- Run test code
-
-```shell
-cmake ./
-make
-./bin/test_coop
-```
-
-- Run demo code
-
-```shell
-cd demo
-cmake ./
-make
-./bin/demo_[module_name]
-```
-
-- Clean intermediate files
-
-```shell
-make clean_all
-```
-
-
-
-# Library
-
-1. Generate static/shared library.
-
-```shell
-cmake ./
-```
-
-2. Project structure
-
-```shell
-COOP
-├── bin
-│   └── libcoop.a
-│   └── libcoop.so
-│   └── test_coop
-├── include
-│   └── coop.h
-├── src
-```
-
-3. Put your code (e.g. *main.c*) together with the `COOP` library.
-
-```shell
-├── COOP
-│   └── bin
-│   └── include
-│   └── src
-├── main.c
-```
-
-4. Sample code in *main.c*
-
-```c
-#include <stdio.h>
-#include <coop.h>
-
-int main() {
-	array_t *arr = array_new(Integer_compare, Integer_delete);
-	for(int i = 0; i < 10; i++) {
-		array_append(arr, Integer_new(i));
-	}
-
-	for(int i = 0; i < 10; i++) {
-		Integer *integer = array_get(arr, i);
-		printf("%d ", Integer_get(integer));
-	}
-
-	array_delete(arr);
-	return 0;
-}
-```
-
-5. Compilation
-
-    - Link to **static** library
-
-        ```shell
-        gcc -Wall main.c -o main_static -ICOOP/include -static -LCOOP/bin -lcoop
-        ./main_static
-        ```
-
-    - Link to **shared** library
-
-        ```shell
-        export LD_LIBRARY_PATH=COOP/bin:$LD_LIBRARY_PATH
-        gcc -Wall main.c -o main_shared -ICOOP/include -LCOOP -lcoop
-        ./main_shared
-        ```
 
