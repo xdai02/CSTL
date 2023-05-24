@@ -1,7 +1,15 @@
 # COOP
 
-**COOP** is a library that provides object-oriented features in C, similar to those used in other languages such as C++, Java, or Python. It simplifies the process of working with complex data structures and algorithms in C.
+[![Release](https://img.shields.io/github/v/release/xdai02/COOP.svg)](https://github.com/xdai02/COOP/releases/latest)
+![Commits](https://img.shields.io/github/commits-since/xdai02/COOP/v1.0)
+![Activity](https://img.shields.io/github/commit-activity/m/xdai02/COOP)
+![Contributors](https://img.shields.io/github/contributors/xdai02/COOP)
+[![COOP CI](https://github.com/xdai02/COOP/actions/workflows/coop_ci.yml/badge.svg?)](https://github.com/xdai02/COOP/actions/workflows/coop_ci.yml)
+[![CodeQL](https://github.com/xdai02/COOP/actions/workflows/codeql.yml/badge.svg)](https://github.com/xdai02/COOP/actions/workflows/codeql.yml)
+[![License](https://img.shields.io/badge/license-GNU-blue.svg)](https://github.com/xdai02/COOP/blob/main/LICENSE)
 
+
+**COOP** is a library that provides object-oriented features in C, similar to those used in other languages such as C++, Java, or Python. It simplifies the process of working with complex data structures and algorithms in C.
 
 
 # utils
