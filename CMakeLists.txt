@@ -6,7 +6,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
 # Set compilation flags
-add_compile_options(-O2 -pedantic)
+add_compile_options(-O2 -pedantic -UNDEBUG)
 if(MSVC)
     add_compile_options(/W4)
 else()
