@@ -1,7 +1,10 @@
 #ifndef _ARRAY_H_
 #define _ARRAY_H_
 
-#include "utils/utils.h"
+#include "utils/exception.h"
+#include "utils/types.h"
+#include "utils/numeric.h"
+#include "utils/generic.h"
 #include "iterator.h"
 
 typedef struct array_t array_t;

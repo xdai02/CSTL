@@ -1,7 +1,9 @@
 #ifndef _HASH_SET_H_
 #define _HASH_SET_H_
 
-#include "utils/utils.h"
+#include "utils/exception.h"
+#include "utils/types.h"
+#include "utils/generic.h"
 #include "iterator.h"
 
 typedef struct hash_set_t hash_set_t;

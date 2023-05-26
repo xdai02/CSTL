@@ -1,7 +1,9 @@
 #ifndef _QUEUE_H_
 #define _QUEUE_H_
 
-#include "utils/utils.h"
+#include "utils/exception.h"
+#include "utils/types.h"
+#include "utils/generic.h"
 
 typedef struct queue_t queue_t;
 

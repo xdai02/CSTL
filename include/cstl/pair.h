@@ -1,7 +1,9 @@
 #ifndef _PAIR_H_
 #define _PAIR_H_
 
-#include "utils/utils.h"
+#include "utils/exception.h"
+#include "utils/types.h"
+#include "utils/generic.h"
 
 typedef struct pair_t pair_t;
 

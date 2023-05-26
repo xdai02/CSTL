@@ -1,23 +1,23 @@
-# COOP
+# CSTL
 
-[![Release](https://img.shields.io/github/v/release/xdai02/COOP.svg)](https://github.com/xdai02/COOP/releases/latest)
-![Commits](https://img.shields.io/github/commits-since/xdai02/COOP/v1.0)
-![Activity](https://img.shields.io/github/commit-activity/m/xdai02/COOP)
-![Contributors](https://img.shields.io/github/contributors/xdai02/COOP)
-[![COOP CI](https://github.com/xdai02/COOP/actions/workflows/coop_ci.yml/badge.svg?)](https://github.com/xdai02/COOP/actions/workflows/coop_ci.yml)
-[![CodeQL](https://github.com/xdai02/COOP/actions/workflows/codeql.yml/badge.svg)](https://github.com/xdai02/COOP/actions/workflows/codeql.yml)
-[![License](https://img.shields.io/badge/license-GNU-blue.svg)](https://github.com/xdai02/COOP/blob/main/LICENSE)
+[![Release](https://img.shields.io/github/v/release/xdai02/CSTL.svg)](https://github.com/xdai02/CSTL/releases/latest)
+![Commits](https://img.shields.io/github/commits-since/xdai02/CSTL/v1.0)
+![Activity](https://img.shields.io/github/commit-activity/m/xdai02/CSTL)
+![Contributors](https://img.shields.io/github/contributors/xdai02/CSTL)
+[![CSTL CI](https://github.com/xdai02/CSTL/actions/workflows/cstl_ci.yml/badge.svg?)](https://github.com/xdai02/CSTL/actions/workflows/cstl_ci.yml)
+[![CodeQL](https://github.com/xdai02/CSTL/actions/workflows/codeql.yml/badge.svg)](https://github.com/xdai02/CSTL/actions/workflows/codeql.yml)
+[![License](https://img.shields.io/badge/license-GNU-blue.svg)](https://github.com/xdai02/CSTL/blob/main/LICENSE)
 
-**COOP** is a library that provides object-oriented features in C, similar to those used in other languages such as C++, Java, or Python. It simplifies the process of working with complex data structures and algorithms in C.
+**CSTL** is a library that implements STL in C, which simplifies the process of working with complex data structures and algorithms.
 
 
 
 ## Usage
 
-1. Cloning `COOP`
+1. Cloning `CSTL`
 
 ```
-git clone git@github.com:xdai02/COOP.git
+git clone git@github.com:xdai02/CSTL.git
 ```
 
 2. Installation
@@ -35,7 +35,7 @@ sudo apt install make
      ```
      cmake ./
      make
-     ./bin/test_coop
+     ./bin/test_cstl
      ```
 
    - Run demo code
@@ -66,20 +66,20 @@ cmake ./
 2. Project structure
 
 ```shell
-COOP
+CSTL
 ├── bin
-│   └── libcoop.a
-│   └── libcoop.so
-│   └── test_coop
+│   └── libcstl.a
+│   └── libcstl.so
+│   └── test_cstl
 ├── include
-│   └── coop.h
+│   └── cstl.h
 ├── src
 ```
 
-3. Put your code (e.g. *main.c*) together with the `COOP` library.
+3. Put your code (e.g. *main.c*) together with the `CSTL` library.
 
 ```shell
-├── COOP
+├── CSTL
 │   └── bin
 │   └── include
 │   └── src
@@ -90,7 +90,7 @@ COOP
 
 ```c
 #include <stdio.h>
-#include <coop.h>
+#include <cstl.h>
 
 int main() {
 	array_t *arr = array_new(Integer_compare, Integer_delete);
@@ -113,15 +113,15 @@ int main() {
    - Link to **static** library
 
      ```shell
-     gcc -Wall main.c -o main_static -ICOOP/include -static -LCOOP/bin -lcoop
+     gcc -Wall main.c -o main_static -ICSTL/include -static -LCSTL/bin -lcstl
      ./main_static
      ```
 
    - Link to **shared** library
 
      ```shell
-     export LD_LIBRARY_PATH=COOP/bin:$LD_LIBRARY_PATH
-     gcc -Wall main.c -o main_shared -ICOOP/include -LCOOP -lcoop
+     export LD_LIBRARY_PATH=CSTL/bin:$LD_LIBRARY_PATH
+     gcc -Wall main.c -o main_shared -ICSTL/include -LCSTL -lcstl
      ./main_shared
      ```
 

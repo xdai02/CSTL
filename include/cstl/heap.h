@@ -1,7 +1,9 @@
 #ifndef _HEAP_H_
 #define _HEAP_H_
 
-#include "utils/utils.h"
+#include "utils/exception.h"
+#include "utils/types.h"
+#include "utils/generic.h"
 
 typedef struct heap_t heap_t;
 

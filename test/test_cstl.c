@@ -1,5 +1,89 @@
 #include <stdio.h>
-#include "test_cstl.h"
+#include "test_utils/test_numeric.h"
+#include "test_utils/test_random.h"
+#include "test_utils/test_c_str.h"
+#include "test_utils/test_wrapper.h"
+#include "test_cstl/test_str.h"
+#include "test_cstl/test_array.h"
+#include "test_cstl/test_list.h"
+#include "test_cstl/test_stack.h"
+#include "test_cstl/test_queue.h"
+#include "test_cstl/test_deque.h"
+#include "test_cstl/test_heap.h"
+#include "test_cstl/test_red_black_tree.h"
+#include "test_cstl/test_hash_table.h"
+#include "test_cstl/test_tree_set.h"
+#include "test_cstl/test_hash_set.h"
+#include "test_cstl/test_tree_map.h"
+#include "test_cstl/test_hash_map.h"
+
+void test_numeric() {
+    test_min();
+    test_max();
+    test_swap();
+    test_float_equal();
+    test_double_equal();
+
+    printf("[PASS] numeric\n");
+}
+
+void test_random() {
+    test_randint();
+    test_uniform();
+    test_shuffle();
+
+    printf("[PASS] random\n");
+}
+
+void test_c_str() {
+    test_str_clear();
+    test_str_equal();
+    test_str_equal_ignore_case();
+    test_str_tolower();
+    test_str_toupper();
+    test_str_starts_with();
+    test_str_ends_with();
+    test_str_index_of_char();
+    test_str_index_of_string();
+    test_str_contains_string();
+    test_str_reverse();
+    test_str_strip();
+    test_str_substring();
+    test_str_count_substring();
+    test_str_append_char();
+    test_str_insert_char();
+    test_str_insert_string();
+    test_str_remove_char();
+    test_str_remove_string();
+    test_str_replace_char();
+    test_str_replace_string();
+    test_str_split();
+
+    printf("[PASS] c_str\n");
+}
+
+void test_wrapper() {
+    test_Character();
+    test_UnsignedCharacter();
+    test_Short();
+    test_UnsignedShort();
+    test_Integer();
+    test_UnsignedInteger();
+    test_Long();
+    test_UnsignedLong();
+    test_Float();
+    test_Double();
+    test_Boolean();
+
+    printf("[PASS] wrapper\n");
+}
+
+void test_utils() {
+    test_numeric();
+    test_random();
+    test_c_str();
+    test_wrapper();
+}
 
 void test_str() {
     test_string_new();
@@ -261,4 +345,12 @@ void test_cstl() {
     test_hash_set();
     test_tree_map();
     test_hash_map();
+}
+
+int main() {
+    test_utils();
+    test_cstl();
+    
+    printf("[PASS] ALL\n");
+    return 0;
 }

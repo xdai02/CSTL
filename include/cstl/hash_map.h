@@ -1,7 +1,9 @@
 #ifndef _HASH_MAP_H_
 #define _HASH_MAP_H_
 
-#include "utils/utils.h"
+#include "utils/exception.h"
+#include "utils/types.h"
+#include "utils/generic.h"
 #include "cstl/pair.h"
 #include "iterator.h"
 

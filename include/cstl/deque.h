@@ -1,7 +1,9 @@
 #ifndef _DEQUE_H_
 #define _DEQUE_H_
 
-#include "utils/utils.h"
+#include "utils/exception.h"
+#include "utils/types.h"
+#include "utils/generic.h"
 
 typedef struct deque_t deque_t;
 

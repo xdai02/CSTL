@@ -1,7 +1,9 @@
 #ifndef _STACK_H_
 #define _STACK_H_
 
-#include "utils/utils.h"
+#include "utils/exception.h"
+#include "utils/types.h"
+#include "utils/generic.h"
 
 typedef struct stack_t stack_t;
 

@@ -1,7 +1,9 @@
 #ifndef _TREE_SET_H_
 #define _TREE_SET_H_
 
-#include "utils/utils.h"
+#include "utils/exception.h"
+#include "utils/types.h"
+#include "utils/generic.h"
 #include "iterator.h"
 
 typedef struct tree_set_t tree_set_t;

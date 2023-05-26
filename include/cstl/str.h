@@ -1,7 +1,10 @@
 #ifndef _STR_H_
 #define _STR_H_
 
-#include "utils/utils.h"
+#include "utils/exception.h"
+#include "utils/types.h"
+#include "utils/generic.h"
+#include "utils/c_str.h"
 
 typedef struct string_t string_t;
 
