@@ -247,9 +247,9 @@ void test_Float() {
     Float *f2 = Float_new(2.2f);
     Float *f3 = Float_new(1.1f);
 
-    assert(Float_get(f1) == 1.1f);
-    assert(Float_get(f2) == 2.2f);
-    assert(Float_get(f3) == 1.1f);
+    assert(float_equal(Float_get(f1), 1.1f));
+    assert(float_equal(Float_get(f2), 2.2f));
+    assert(float_equal(Float_get(f3), 1.1f));
 
     assert(Float_compare(f1, f2) < 0);
     assert(Float_compare(f2, f1) > 0);
@@ -277,9 +277,9 @@ void test_Double() {
     Double *d2 = Double_new(2.2);
     Double *d3 = Double_new(1.1);
 
-    assert(Double_get(d1) == 1.1);
-    assert(Double_get(d2) == 2.2);
-    assert(Double_get(d3) == 1.1);
+    assert(double_equal(Double_get(d1), 1.1));
+    assert(double_equal(Double_get(d2), 2.2));
+    assert(double_equal(Double_get(d3), 1.1));
 
     assert(Double_compare(d1, d2) < 0);
     assert(Double_compare(d2, d1) > 0);
