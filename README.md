@@ -61,6 +61,7 @@ make clean_all
 
 ```shell
 cmake ./
+make
 ```
 
 2. Project structure
@@ -90,7 +91,7 @@ CSTL
 
 ```c
 #include <stdio.h>
-#include <cstl.h>
+#include "cstl.h"
 
 int main() {
 	array_t *arr = array_new(Integer_compare, Integer_delete);
@@ -620,5 +621,4 @@ void hash_map_iterator_delete(iterator_t *iterator);
 bool hash_map_iterator_has_next(const iterator_t *iterator);
 T hash_map_iterator_next(iterator_t *iterator);
 ```
-
 
